@@ -1,0 +1,49 @@
+﻿<ResourceDictionary xmlns:system="clr-namespace:System;assembly=mscorlib"
+                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <BitmapImage x:Key="WindowXMLIcon">pack://application:,,,/MBCode.FrameworkDemoWFP.InterfazUsuario;component/recursos/Iconos/MBCode.ico</BitmapImage>
+    <BitmapImage x:Key="WindowDemoCulture">pack://application:,,,/MBCode.FrameworkDemoWFP.InterfazUsuario;component/recursos/Iconos/Catalan.ico</BitmapImage>
+    <BitmapImage x:Key="WindowDemoCultureIcon">pack://application:,,,/MBCode.FrameworkDemoWFP.InterfazUsuario;component/recursos/Iconos/catalan.ico</BitmapImage>
+    <BitmapImage x:Key="WindowDemoDataBaseIcon">pack://application:,,,/MBCode.FrameworkDemoWFP.InterfazUsuario;component/recursos/Iconos/MBCode.ico</BitmapImage>
+    <ImageSource x:Key="DataBaseType">pack://application:,,,/MBCode.FrameworkDemoWFP.InterfazUsuario;component/recursos/Imagenes/Database-CFG.png</ImageSource>
+    <ImageSource x:Key="DataBaseSecurity">pack://application:,,,/MBCode.FrameworkDemoWFP.InterfazUsuario;component/recursos/Imagenes/Database-Key.png</ImageSource>
+    <ImageSource x:Key="DataBaseConnect">pack://application:,,,/MBCode.FrameworkDemoWFP.InterfazUsuario;component/recursos/Imagenes/Database-Connect.png</ImageSource>
+    <ImageSource x:Key="DataBaseDisconnect">pack://application:,,,/MBCode.FrameworkDemoWFP.InterfazUsuario;component/recursos/Imagenes/Database-Disconnect.png</ImageSource>
+    <ImageSource x:Key="DataBaseQueryText">pack://application:,,,/MBCode.FrameworkDemoWFP.InterfazUsuario;component/recursos/Imagenes/Database-QueryText.png</ImageSource>
+    <ImageSource x:Key="DataBaseQueryResult">pack://application:,,,/MBCode.FrameworkDemoWFP.InterfazUsuario;component/recursos/Imagenes/Database-QueryResult.png</ImageSource>
+    <ImageSource x:Key="Tables">pack://application:,,,/MBCode.FrameworkDemoWFP.InterfazUsuario;component/recursos/Imagenes/Tables.png</ImageSource>
+    <ImageSource x:Key="Report">pack://application:,,,/MBCode.FrameworkDemoWFP.InterfazUsuario;component/recursos/Imagenes/Report.png</ImageSource>
+    <system:String x:Key="WPFTitle">Demo de la clase del Framework: 'CultureManager'</system:String>
+    <system:String x:Key="WPFBtn_DeactivateMenu">Desactivar Menu</system:String>
+    <system:String x:Key="WPFMenuItem_Idioma">Idioma</system:String>
+    <system:String x:Key="WPFMenuItem_Tema">Tema</system:String>
+    <system:String x:Key="WPFBtn_AbrirHijo">Obrir Fill</system:String>
+    <system:String x:Key="WPFMenuItem_Ingles">Anglès</system:String>
+    <system:String x:Key="WPFMenuItem_Frances">Francès</system:String>
+    <system:String x:Key="WPFMenuItem_Español">Castellà</system:String>
+    <system:String x:Key="WPFMenuItem_Catalán">Català</system:String>
+    <system:String x:Key="WPFMenuItem_Temas">Temes</system:String>
+    <system:String x:Key="WPFMenuItem_AppTemas">Temes d'Aplicació</system:String>
+    <system:String x:Key="WPFMenuItem_Ayuda">Ajuda</system:String>
+    <system:String x:Key="WPFChildTitle">Demo de la classe del Framework: 'CultureManager' (Formulari Fill)</system:String>
+    <system:String x:Key="WPFBtn_TestProgressBar">Testejar ProgressBar</system:String>
+    <system:String x:Key="WPFTi_Page1">Plana 1</system:String>
+    <system:String x:Key="WPFTi_Page2">Plana 2</system:String>
+    <system:String x:Key="WPFLbl_Page1">Camp 1: </system:String>
+    <system:String x:Key="WPFChk_Optional">Opcional</system:String>
+    <system:String x:Key="WPFRBTN_Option_1">Option 1</system:String>
+    <system:String x:Key="WPFRBTN_Option_2">Option 2</system:String>
+    <system:String x:Key="WPFChk_Enabled">Estat de la Finestra</system:String>
+    <system:String x:Key="WPFBtn_Change">Canviar</system:String>
+    <system:String x:Key="WPFTN_RootNode">Arrel</system:String>
+    <system:String x:Key="WPFTN_SoonNode_1">Fill_1</system:String>
+    <system:String x:Key="WPFTN_SoonNode_2">Fill_2</system:String>
+    <system:String x:Key="WPFTN_ChildNode">Node</system:String>
+    <system:String x:Key="WPFLST_ColumnName_1">Columna_1</system:String>
+    <system:String x:Key="WPFLST_ColumnName_2">Columna_2</system:String>
+    <system:String x:Key="WPFLST_ColumnName_3">Columna_3</system:String>
+    <system:String x:Key="WPFLST_ColumnName_4">Columna_4</system:String>
+    <system:String x:Key="WPFCMB_ComboName">SELECTOR :</system:String>
+
+</ResourceDictionary>

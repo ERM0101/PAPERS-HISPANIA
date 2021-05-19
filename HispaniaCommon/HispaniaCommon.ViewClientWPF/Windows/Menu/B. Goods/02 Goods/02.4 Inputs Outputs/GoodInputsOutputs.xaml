@@ -1,0 +1,382 @@
+﻿<Window
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:my="clr-namespace:MBCode.Framework.Managers.Culture;assembly=MBCode.Framework"
+    x:Class="HispaniaCommon.ViewClientWPF.Windows.GoodInputsOutputs" 
+        mc:Ignorable="d"
+        Title="Moviments (Entrades/Soprtides)" Icon="{DynamicResource WindowDemoDataBaseIcon}"  Width="1280" Height="900" MinWidth="1280" MinHeight="900" Foreground="#FF9B211D"
+        WindowStartupLocation="CenterScreen" ResizeMode="CanResize">
+    <Window.Resources>
+        <ResourceDictionary >
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/HispaniaCommon.ViewClientWPF;component/Recursos/Resources/HispaniaCommon.ViewClientWPF.es.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/HispaniaCommon.ViewClientWPF;component/Recursos/Themes/HispaniaComptabilitat.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <GridView x:Key="GridViewForEntries" x:Shared="false">
+                <GridViewColumn Width="Auto">
+                    <GridViewColumnHeader Content="Data" />
+                    <GridViewColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid Background="#FF0A3E69">
+                                <TextBlock Text="{Binding IO_Date_Str}" Foreground="White" TextAlignment="Center" Margin="2,0,2,0"/>
+                            </Grid>
+                        </DataTemplate>
+                    </GridViewColumn.CellTemplate>
+                </GridViewColumn>
+                <GridViewColumn Width="Auto">
+                    <GridViewColumnHeader Content="Tipus" />
+                    <GridViewColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid Background="Transparent" HorizontalAlignment="Stretch" >
+                                <TextBlock Text="{Binding IO_Type}" TextAlignment="Left" Margin="2,0,2,0"/>
+                            </Grid>
+                        </DataTemplate>
+                    </GridViewColumn.CellTemplate>
+                </GridViewColumn>
+                <GridViewColumn Width="Auto">
+                    <GridViewColumnHeader Content="Número Albarà" />
+                    <GridViewColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid Background="Transparent" HorizontalAlignment="Stretch" >
+                                <TextBlock Text="{Binding DeliveryNote_Id_Str}" TextAlignment="Left" Margin="2,0,2,0"/>
+                            </Grid>
+                        </DataTemplate>
+                    </GridViewColumn.CellTemplate>
+                </GridViewColumn>
+                <GridViewColumn Width="Auto">
+                    <GridViewColumnHeader Content="Any Albarà" />
+                    <GridViewColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid Background="Transparent" HorizontalAlignment="Stretch" >
+                                <TextBlock Text="{Binding DeliveryNote_Year_Str}" TextAlignment="Left" Margin="2,0,2,0"/>
+                            </Grid>
+                        </DataTemplate>
+                    </GridViewColumn.CellTemplate>
+                </GridViewColumn>
+                <GridViewColumn Width="Auto">
+                    <GridViewColumnHeader Content="Número Factura" />
+                    <GridViewColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid Background="Transparent" HorizontalAlignment="Stretch" >
+                                <TextBlock Text="{Binding Bill_Id_Str}" TextAlignment="Left" Margin="2,0,2,0"/>
+                            </Grid>
+                        </DataTemplate>
+                    </GridViewColumn.CellTemplate>
+                </GridViewColumn>
+                <GridViewColumn Width="Auto">
+                    <GridViewColumnHeader Content="Any Factura" />
+                    <GridViewColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid Background="Transparent" HorizontalAlignment="Stretch" >
+                                <TextBlock Text="{Binding Bill_Year_Str}" TextAlignment="Left" Margin="2,0,2,0"/>
+                            </Grid>
+                        </DataTemplate>
+                    </GridViewColumn.CellTemplate>
+                </GridViewColumn>
+                <GridViewColumn Width="Auto">
+                    <GridViewColumnHeader Content="Sèrie Factura" />
+                    <GridViewColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid Background="Transparent" HorizontalAlignment="Stretch" >
+                                <TextBlock Text="{Binding Bill_Serie_Str}" TextAlignment="Left" Margin="2,0,2,0"/>
+                            </Grid>
+                        </DataTemplate>
+                    </GridViewColumn.CellTemplate>
+                </GridViewColumn>
+                <GridViewColumn Width="Auto">
+                    <GridViewColumnHeader Content="Client" />
+                    <GridViewColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid Background="Transparent" HorizontalAlignment="Stretch" >
+                                <TextBlock Text="{Binding Customer_Id_Str}" TextAlignment="Left" Margin="2,0,2,0"/>
+                            </Grid>
+                        </DataTemplate>
+                    </GridViewColumn.CellTemplate>
+                </GridViewColumn>
+                <GridViewColumn Width="Auto">
+                    <GridViewColumnHeader Content="Unitats d'Expedició" />
+                    <GridViewColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid Background="Transparent" HorizontalAlignment="Stretch" >
+                                <TextBlock Text="{Binding Amount_Shipping}" TextAlignment="Left" Margin="2,0,2,0"/>
+                            </Grid>
+                        </DataTemplate>
+                    </GridViewColumn.CellTemplate>
+                </GridViewColumn>
+                <GridViewColumn Width="Auto">
+                    <GridViewColumnHeader Content="Unitats de Facturació" />
+                    <GridViewColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid Background="Transparent" HorizontalAlignment="Stretch" >
+                                <TextBlock Text="{Binding Amount_Billing}" TextAlignment="Left" Margin="2,0,2,0"/>
+                            </Grid>
+                        </DataTemplate>
+                    </GridViewColumn.CellTemplate>
+                </GridViewColumn>
+                <GridViewColumn Width="Auto">
+                    <GridViewColumnHeader Content="Preu" />
+                    <GridViewColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid Background="Transparent" HorizontalAlignment="Stretch" >
+                                <TextBlock Text="{Binding Price, StringFormat={}{0:0.00€}, ConverterCulture=ca-ES}" 
+                                           TextAlignment="Left" Margin="2,0,2,0"/>
+                            </Grid>
+                        </DataTemplate>
+                    </GridViewColumn.CellTemplate>
+                </GridViewColumn>
+            </GridView>
+            <GridView x:Key="GridViewForOutputs" x:Shared="false">
+                <GridViewColumn Width="Auto">
+                    <GridViewColumnHeader Content="Data" />
+                    <GridViewColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid Background="#FF0A3E69">
+                                <TextBlock Text="{Binding IO_Date_Str}" Foreground="White" TextAlignment="Center" Margin="2,0,2,0"/>
+                            </Grid>
+                        </DataTemplate>
+                    </GridViewColumn.CellTemplate>
+                </GridViewColumn>
+                <GridViewColumn Width="Auto">
+                    <GridViewColumnHeader Content="Tipus" />
+                    <GridViewColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid Background="Transparent" HorizontalAlignment="Stretch" >
+                                <TextBlock Text="{Binding IO_Type}" TextAlignment="Left" Margin="2,0,2,0"/>
+                            </Grid>
+                        </DataTemplate>
+                    </GridViewColumn.CellTemplate>
+                </GridViewColumn>
+                <GridViewColumn Width="Auto">
+                    <GridViewColumnHeader Content="Situació" />
+                    <GridViewColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid Background="Transparent" HorizontalAlignment="Stretch" >
+                                <TextBlock Text="{Binding IO_State_Str}" TextAlignment="Left" Margin="2,0,2,0"/>
+                            </Grid>
+                        </DataTemplate>
+                    </GridViewColumn.CellTemplate>
+                </GridViewColumn>
+                <GridViewColumn Width="Auto">
+                    <GridViewColumnHeader Content="Unitats d'Expedició" />
+                    <GridViewColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid Background="Transparent" HorizontalAlignment="Stretch" >
+                                <TextBlock Text="{Binding Amount_Shipping}" TextAlignment="Left" Margin="2,0,2,0"/>
+                            </Grid>
+                        </DataTemplate>
+                    </GridViewColumn.CellTemplate>
+                </GridViewColumn>
+                <GridViewColumn Width="Auto">
+                    <GridViewColumnHeader Content="Unitats de Facturació" />
+                    <GridViewColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid Background="Transparent" HorizontalAlignment="Stretch" >
+                                <TextBlock Text="{Binding Amount_Billing}" TextAlignment="Left" Margin="2,0,2,0"/>
+                            </Grid>
+                        </DataTemplate>
+                    </GridViewColumn.CellTemplate>
+                </GridViewColumn>
+                <GridViewColumn Width="Auto">
+                    <GridViewColumnHeader Content="Preu" />
+                    <GridViewColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid Background="Transparent" HorizontalAlignment="Stretch" >
+                                <TextBlock Text="{Binding Price_Str}" TextAlignment="Left" Margin="2,0,2,0"/>
+                            </Grid>
+                        </DataTemplate>
+                    </GridViewColumn.CellTemplate>
+                </GridViewColumn>
+                <GridViewColumn Width="Auto">
+                    <GridViewColumnHeader Content="Nº Albarà" />
+                    <GridViewColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid Background="Transparent" HorizontalAlignment="Stretch" >
+                                <TextBlock Text="{Binding DeliveryNote_Id_Str}" TextAlignment="Left" Margin="2,0,2,0"/>
+                            </Grid>
+                        </DataTemplate>
+                    </GridViewColumn.CellTemplate>
+                </GridViewColumn>
+                <GridViewColumn Width="Auto">
+                    <GridViewColumnHeader Content="Any Albarà" />
+                    <GridViewColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid Background="Transparent" HorizontalAlignment="Stretch" >
+                                <TextBlock Text="{Binding DeliveryNote_Year_Str}" TextAlignment="Left" Margin="2,0,2,0"/>
+                            </Grid>
+                        </DataTemplate>
+                    </GridViewColumn.CellTemplate>
+                </GridViewColumn>
+                <GridViewColumn Width="Auto">
+                    <GridViewColumnHeader Content="Nº Factura" />
+                    <GridViewColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid Background="Transparent" HorizontalAlignment="Stretch" >
+                                <TextBlock Text="{Binding Bill_Id_Str}" TextAlignment="Left" Margin="2,0,2,0"/>
+                            </Grid>
+                        </DataTemplate>
+                    </GridViewColumn.CellTemplate>
+                </GridViewColumn>
+                <GridViewColumn Width="Auto">
+                    <GridViewColumnHeader Content="Any Factura" />
+                    <GridViewColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid Background="Transparent" HorizontalAlignment="Stretch" >
+                                <TextBlock Text="{Binding Bill_Year_Str}" TextAlignment="Left" Margin="2,0,2,0"/>
+                            </Grid>
+                        </DataTemplate>
+                    </GridViewColumn.CellTemplate>
+                </GridViewColumn>
+                <GridViewColumn Width="Auto">
+                    <GridViewColumnHeader Content="Sèrie Factura" />
+                    <GridViewColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid Background="Transparent" HorizontalAlignment="Stretch" >
+                                <TextBlock Text="{Binding Bill_Serie_Str}" TextAlignment="Left" Margin="2,0,2,0"/>
+                            </Grid>
+                        </DataTemplate>
+                    </GridViewColumn.CellTemplate>
+                </GridViewColumn>
+                <GridViewColumn Width="Auto">
+                    <GridViewColumnHeader Content="Nº Client" />
+                    <GridViewColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid Background="Transparent" HorizontalAlignment="Stretch" >
+                                <TextBlock Text="{Binding Customer_Id_Str}" TextAlignment="Left" Margin="2,0,2,0"/>
+                            </Grid>
+                        </DataTemplate>
+                    </GridViewColumn.CellTemplate>
+                </GridViewColumn>
+                <GridViewColumn Width="Auto">
+                    <GridViewColumnHeader Content="Client" />
+                    <GridViewColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid Background="Transparent" HorizontalAlignment="Stretch" >
+                                <TextBlock Text="{Binding Customer_Alias}" TextAlignment="Left" Margin="2,0,2,0"/>
+                            </Grid>
+                        </DataTemplate>
+                    </GridViewColumn.CellTemplate>
+                </GridViewColumn>
+            </GridView>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="80" />
+                <RowDefinition Height="30" Name="rdSearchPannel"/>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="30" Name="rdOperationPannel"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <GroupBox x:Name="gbGeneralData" Margin="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{DynamicResource NonEditableGroupBox}">
+                    <GroupBox.Header>
+                        <BulletDecorator>
+                            <BulletDecorator.Bullet>
+                                <Image Width="16" Source="{DynamicResource Hispania}"/>
+                            </BulletDecorator.Bullet>
+                            <TextBlock Margin="10,0"><Run Text="Dades de l'Article"/></TextBlock>
+                        </BulletDecorator>
+                    </GroupBox.Header>
+                    <Grid>
+                        <Grid Grid.Row="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="75"/>
+                                <ColumnDefinition Width="85"/>
+                                <ColumnDefinition Width="90"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="20"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Column="0" x:Name="lblGoodCode" Content="CODI :" Margin="10,4,0,0" FontWeight="Bold" HorizontalAlignment="Center" 
+                                   VerticalAlignment="Center" IsEnabled="False"/>
+                            <TextBox Grid.Column="1" x:Name="tbGoodCode" Height="23" Margin="0,4,4,0" HorizontalAlignment="Stretch" VerticalAlignment="Center" 
+                                     HorizontalContentAlignment="Center" MaxLength="20" IsReadOnly="True" IsTabStop="False"/>
+                            <Label Grid.Column="2" x:Name="lblGoodDescription"  Content="DESCRIPCIÓ :" Margin="4,4,0,0" FontWeight="Bold" HorizontalAlignment="Center" 
+                                   VerticalAlignment="Center" IsEnabled="False"/>
+                            <TextBox Grid.Column="3" x:Name="tbGoodDescription" Height="23" Margin="0,4,4,0" HorizontalAlignment="Stretch" VerticalAlignment="Center" 
+                                     HorizontalContentAlignment="Center" MaxLength="50" IsReadOnly="True" IsTabStop="False"/>
+                        </Grid>
+                    </Grid>
+                </GroupBox>
+            </Grid>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="60"/>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="55"/>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="35"/>
+                </Grid.ColumnDefinitions>
+                <ComboBox Grid.Column="0" x:Name="cbFieldItemToSearch" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="4,4,4,0" Height="23"/>
+                <TextBox Grid.Column="1" x:Name="tbItemToSearch" HorizontalAlignment="Stretch" VerticalAlignment="Center" HorizontalContentAlignment="Left" 
+                         Margin="4,4,4,0" Height="23" GotFocus="TBGotFocus"/>
+                <Label Grid.Column="2" x:Name="lblEntry"  Content="Entrades" Margin="0,8,4,0" FontWeight="Bold" HorizontalAlignment="Right" 
+                        VerticalAlignment="Center"/>
+                <CheckBox Grid.Column="3" x:Name="chkbEntry" Height="23" HorizontalAlignment="Stretch" 
+                          VerticalAlignment="Center" Margin="0,14,4,0" IsChecked="True"/>
+                <Label Grid.Column="4" x:Name="lblOutput"  Content="Sortides" Margin="0,8,4,0" FontWeight="Bold" HorizontalAlignment="Right" 
+                        VerticalAlignment="Center"/>
+                <CheckBox Grid.Column="5" x:Name="chkbOutput" Height="23" HorizontalAlignment="Stretch" 
+                          VerticalAlignment="Center" Margin="0,14,4,0" IsChecked="True"/>
+                <Button Grid.Column="6" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,4,0,0" x:Name="btnRefresh" Width="30" Height="25" 
+                        Background="{DynamicResource RefreshBrush}" ToolTip="Refrescar Dades">
+                        <StackPanel x:Name="spRefresh" Margin="2" Orientation="Horizontal">
+                            <Image Height="16" Margin="0" Source="{DynamicResource RefreshButtonImage}" Width="16"/>
+                        </StackPanel>
+                </Button>
+            </Grid>
+            <GroupBox Grid.Row="2" x:Name="gbItemsList" Margin="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <GroupBox.Header>
+                    <BulletDecorator>
+                        <BulletDecorator.Bullet>
+                            <Image Width="16" Source="{DynamicResource ItemsList}"/>
+                        </BulletDecorator.Bullet>
+                        <TextBlock Margin="10,0"><Run Text="Moviments (Entrades/Sortides)"/></TextBlock>
+                    </BulletDecorator>
+                </GroupBox.Header>
+                <ListView x:Name="ListItems" ItemsSource="{Binding DataList}" IsSynchronizedWithCurrentItem="True"
+                            HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectionMode="Single"
+                            View="{StaticResource GridViewForEntries}">
+                </ListView>
+            </GroupBox>
+            <Grid Grid.Row="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="5"/>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="90"/>
+                    <ColumnDefinition Width="150"/>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="150"/>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,2,0,0" x:Name="btnCreateExcel" Width="115" Height="23">
+                    <StackPanel x:Name="spCreateExcel" Margin="2" Orientation="Horizontal">
+                        <Image Height="16" Margin="0,0,12,0" Source="{DynamicResource Excel}" Width="16"/>
+                        <TextBlock x:Name="tbCreateExcel" Text="Crear Excel" />
+                    </StackPanel>
+                </Button>
+                <Button Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,2,0,0" x:Name="btnExit" Width="80" Height="23">
+                    <StackPanel x:Name="spExit" Margin="2" Orientation="Horizontal">
+                        <Image Height="16" Margin="0,0,10,0" Source="{DynamicResource Exit}" Width="16"/>
+                        <TextBlock x:Name="tbAdd" Text="Sortir" />
+                    </StackPanel>
+                </Button>
+                <Label Grid.Column="3" x:Name="lblAcumAmountShipping"  Content="Suma Unitats Expedició: " 
+                       Margin="0,0,0,0" FontWeight="Bold" HorizontalAlignment="Center" 
+                       VerticalAlignment="Center" IsEnabled="False"/>
+                <TextBox Grid.Column="4" x:Name="tbAcumAmountShipping" HorizontalAlignment="Stretch" 
+                         VerticalAlignment="Center" Margin="4,0,4,0" Height="23" IsEnabled="False"/>
+                <Label Grid.Column="5" x:Name="lblAcumAmountBilling"  Content="Suma Unitats Facturació: " 
+                       Margin="0,0,0,0" FontWeight="Bold" HorizontalAlignment="Center" 
+                       VerticalAlignment="Center" IsEnabled="False"/>
+                <TextBox Grid.Column="6" x:Name="tbAcumAmountBilling" HorizontalAlignment="Stretch" 
+                         VerticalAlignment="Center" Margin="4,0,4,0" Height="23" IsEnabled="False"/>
+            </Grid>
+        </Grid>
+        <my:CultureAddInWPF HorizontalAlignment="Left" VerticalAlignment="Top" Height="0" Width="0" Margin="0"/>
+    </Grid>
+</Window>

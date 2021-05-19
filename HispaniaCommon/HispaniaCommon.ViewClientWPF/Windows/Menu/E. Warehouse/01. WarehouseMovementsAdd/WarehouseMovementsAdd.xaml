@@ -1,0 +1,206 @@
+﻿<Window
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:my="clr-namespace:MBCode.Framework.Managers.Culture;assembly=MBCode.Framework"
+    x:Class="HispaniaCommon.ViewClientWPF.Windows.WarehouseMovementsAdd" 
+        mc:Ignorable="d"
+        Title="Moviments de Magatzem (Creació de nous moviments)"  Icon="{DynamicResource WindowDemoDataBaseIcon}" Width="1280" Height="900" MinWidth="1280" MinHeight="900" Foreground="#FF9B211D"
+        WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+    <Window.Resources>
+        <ResourceDictionary >
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/HispaniaCommon.ViewClientWPF;component/Recursos/Resources/HispaniaCommon.ViewClientWPF.es.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/HispaniaCommon.ViewClientWPF;component/Recursos/Themes/HispaniaComptabilitat.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="132" />
+            <RowDefinition Height="30" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="2*" />
+                <RowDefinition Height="2*" />
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="85"/>
+                    <ColumnDefinition Width="80"/>
+                    <ColumnDefinition Width="390"/>
+                    <ColumnDefinition Width="90"/>
+                    <ColumnDefinition Width="80"/>
+                    <ColumnDefinition Width="80"/>
+                    <ColumnDefinition Width="80"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="30"/>
+                    <ColumnDefinition Width="105"/>
+                </Grid.ColumnDefinitions>
+                <TextBox Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="4,2,0,1" IsReadOnly="True"
+                         Background="SteelBlue" Foreground="White" FontWeight="Bold" HorizontalContentAlignment="Center" Text="Nº MOV."/>
+                <TextBox Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="4,1,0,1" IsReadOnly="True"
+                         Background="SteelBlue" Foreground="White" FontWeight="Bold" HorizontalContentAlignment="Center" Text="DATA"/>
+                <TextBox Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="4,2,0,1" IsReadOnly="True"
+                         Background="SteelBlue" Foreground="White" FontWeight="Bold" HorizontalContentAlignment="Center" Text="ARTICLE"/>
+                <TextBox Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="2,2,0,1" IsReadOnly="True"
+                         Background="SteelBlue" Foreground="White" FontWeight="Bold" HorizontalContentAlignment="Center" Text="TIPUS"/>
+                <TextBox Grid.Column="4" VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="2,2,0,1" IsReadOnly="True"
+                         Background="SteelBlue" Foreground="White" FontWeight="Bold" HorizontalContentAlignment="Center" Text="U. FACT."/>
+                <TextBox Grid.Column="5" VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="2,2,0,1" IsReadOnly="True"
+                         Background="SteelBlue" Foreground="White" FontWeight="Bold" HorizontalContentAlignment="Center" Text="U. EXP."/>
+                <TextBox Grid.Column="6" VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="2,2,0,1" IsReadOnly="True"
+                         Background="SteelBlue" Foreground="White" FontWeight="Bold" HorizontalContentAlignment="Center" Text="PREU"/>
+                <TextBox Grid.Column="7" VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="2,2,0,1" IsReadOnly="True"
+                         Background="SteelBlue" Foreground="White" FontWeight="Bold" HorizontalContentAlignment="Center" Text="PROVEÏDOR"/>
+                <TextBox Grid.Column="8" VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="2,2,6,1" IsReadOnly="True"
+                         Background="SteelBlue" Foreground="White" FontWeight="Bold" HorizontalContentAlignment="Center" Text="C"
+                         ToolTip="CONFORME"/>
+            </Grid>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="85"/>
+                    <ColumnDefinition Width="80"/>
+                    <ColumnDefinition Width="80"/>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="210"/>
+                    <ColumnDefinition Width="90"/>
+                    <ColumnDefinition Width="80"/>
+                    <ColumnDefinition Width="80"/>
+                    <ColumnDefinition Width="80"/>
+                    <ColumnDefinition Width="80"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="30"/>
+                    <ColumnDefinition Width="105"/>
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" >
+                    <TextBox VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="4,1,1,1" IsReadOnly="True"
+                             Background="#FFDBEDF9" Foreground="DarkSlateBlue" FontWeight="Bold" HorizontalContentAlignment="Center" Text="    FILTRE"/>
+                    <StackPanel Margin="2" Orientation="Horizontal"  VerticalAlignment="Stretch" HorizontalAlignment="Stretch" >
+                        <Image Margin="7,0,10,0" Source="{DynamicResource FilterQuery}" Width="14"  Height="14"/>
+                    </StackPanel>
+                </Grid>
+                <TextBox Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="2,1,0,1" IsReadOnly="True"
+                         Background="SteelBlue" Foreground="White" FontWeight="Bold" HorizontalContentAlignment="Center" Text="CODI"/>
+                <TextBox Grid.Column="4" VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="2,1,0,1" IsReadOnly="True"
+                         Background="SteelBlue" Foreground="White" FontWeight="Bold" HorizontalContentAlignment="Center" Text="DESCRIPCIÓ"/>
+                <TextBox Grid.Column="6" x:Name="tbUnitBillingDefinition" Margin="2,2,0,0" IsReadOnly="True" Background="LightGoldenrodYellow" 
+                         VerticalContentAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
+                <TextBox Grid.Column="7" x:Name="tbUnitShippingDefinition" Margin="2,2,0,0" IsReadOnly="True" Background="LightGoldenrodYellow" 
+                         VerticalContentAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
+                <Grid Grid.Column="9" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" >
+                    <TextBox VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="4,1,1,1" IsReadOnly="True"
+                             Background="#FFDBEDF9" Foreground="DarkSlateBlue" FontWeight="Bold" HorizontalContentAlignment="Center" Text="    FILTRE"/>
+                    <StackPanel Margin="2" Orientation="Horizontal"  VerticalAlignment="Stretch" HorizontalAlignment="Stretch" >
+                        <Image Margin="7,0,10,0" Source="{DynamicResource FilterQuery}" Width="14"  Height="14"/>
+                    </StackPanel>
+                </Grid>
+                <TextBox Grid.Column="10" VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="2,1,0,1" IsReadOnly="True"
+                         Background="SteelBlue" Foreground="White" FontWeight="Bold" HorizontalContentAlignment="Center" Text="NOM" />
+            </Grid>
+        </Grid>
+        <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Visible">
+            <Grid Name="DataWarehouseMovementsGrid">
+                <Grid.Resources>
+                    <Style TargetType="{x:Type Panel}">
+                        <Setter Property="Margin" Value="0,0,0,6" />
+                    </Style>
+                </Grid.Resources>
+            </Grid>
+        </ScrollViewer>
+        <Grid Grid.Row="2" Margin="4">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="25"/>
+                <RowDefinition Height="25"/>
+                <RowDefinition Height="25"/>
+                <RowDefinition Height="25"/>
+                <RowDefinition Height="25"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="125"/>
+                <ColumnDefinition Width="155"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="125"/>
+                <ColumnDefinition Width="155"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="125"/>
+                <ColumnDefinition Width="160"/>
+                <ColumnDefinition Width="160"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <TextBox Grid.Column="1" Grid.Row="1" Margin="1" FontWeight="Bold" Background="SteelBlue" Foreground="White"
+                     VerticalAlignment="Stretch" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" 
+                     IsReadOnly="True" Text="TOTAL"/>
+            <TextBox Grid.Column="2" Grid.Row="1" x:Name="tbAmount" Margin="1" IsReadOnly="True"
+                     HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Right"/>
+            <TextBox Grid.Column="4" Grid.Row="1" Margin="1" FontWeight="Bold" Background="SteelBlue" Foreground="White"
+                     VerticalAlignment="Stretch" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" 
+                     IsReadOnly="True" Text="PREU DE COST"/>
+            <TextBox Grid.Column="5" Grid.Row="1" x:Name="tbPriceCost" Margin="1" IsReadOnly="True"
+                     HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Right"/>
+            <TextBox Grid.Column="4" Grid.Row="2" Margin="1" FontWeight="Bold" Background="SteelBlue" Foreground="White"
+                     VerticalAlignment="Stretch" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" 
+                     IsReadOnly="True" Text="PREU MIG"/>
+            <TextBox Grid.Column="5" Grid.Row="2" x:Name="tbAveragePriceCost" Margin="1" IsReadOnly="True"
+                     HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Right"/>
+            <TextBox Grid.Column="4" Grid.Row="3" Margin="1" FontWeight="Bold" Background="SteelBlue" Foreground="White"
+                     VerticalAlignment="Stretch" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" 
+                     IsReadOnly="True" Text="VALOR"/>
+            <TextBox Grid.Column="5" Grid.Row="3" x:Name="tbValue" Margin="1" IsReadOnly="True"
+                     HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Right"/>
+            <TextBox Grid.Column="8" Grid.Row="0" Margin="1" FontWeight="Bold" Background="SteelBlue" Foreground="White"
+                     VerticalAlignment="Stretch" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" 
+                     IsReadOnly="True" Text="UNITATS DE FACTURACIÓ"/>
+            <TextBox Grid.Column="9" Grid.Row="0" Margin="1" FontWeight="Bold" Background="SteelBlue" Foreground="White"
+                     VerticalAlignment="Stretch" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" 
+                     IsReadOnly="True" Text="UNITATS D'EXPEDICIÓ"/>
+            <TextBox Grid.Column="7" Grid.Row="1" Margin="1" FontWeight="Bold" Background="SteelBlue" Foreground="White"
+                     VerticalAlignment="Stretch" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" 
+                     IsReadOnly="True" Text="EXISTÈNCIES"/>
+            <TextBox Grid.Column="8" Grid.Row="1" x:Name="tbBillingUnitStocks" Margin="2,1,2,1" IsReadOnly="True"
+                     HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Center"/>
+            <TextBox Grid.Column="9" Grid.Row="1" x:Name="tbShippingUnitStocks" Margin="2,1,2,1" IsReadOnly="True"
+                     HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Center"/>
+            <TextBox Grid.Column="7" Grid.Row="2" Margin="1" FontWeight="Bold" Background="SteelBlue" Foreground="White"
+                     VerticalAlignment="Stretch" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" 
+                     IsReadOnly="True" Text="DISPONIBLE"/>
+            <TextBox Grid.Column="8" Grid.Row="2" x:Name="tbBillingUnitAvailable" Margin="2,1,2,1" IsReadOnly="True"
+                     HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Center"/>
+            <TextBox Grid.Column="9" Grid.Row="2" x:Name="tbShippingUnitAvailable" Margin="2,1,2,1" IsReadOnly="True"
+                     HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Center"/>
+            <TextBox Grid.Column="7" Grid.Row="3" Margin="1" FontWeight="Bold" Background="SteelBlue" Foreground="White"
+                     VerticalAlignment="Stretch" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" 
+                     IsReadOnly="True" Text="ENTRADES"/>
+            <TextBox Grid.Column="8" Grid.Row="3" x:Name="tbBillingUnitEntrance" Margin="2,1,2,1" IsReadOnly="True"
+                     HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Center"/>
+            <TextBox Grid.Column="9" Grid.Row="3" x:Name="tbShippingUnitEntrance" Margin="2,1,2,1" IsReadOnly="True"
+                     HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Center"/>
+            <TextBox Grid.Column="7" Grid.Row="4" Margin="1" FontWeight="Bold" Background="SteelBlue" Foreground="White"
+                     VerticalAlignment="Stretch" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" 
+                     IsReadOnly="True" Text="SORTIDES"/>
+            <TextBox Grid.Column="8" Grid.Row="4" x:Name="tbBillingUnitDepartures" Margin="2,1,2,1" IsReadOnly="True"
+                     HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Center"/>
+            <TextBox Grid.Column="9" Grid.Row="4" x:Name="tbShippingUnitDepartures" Margin="2,1,2,1" IsReadOnly="True"
+                     HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Center"/>
+        </Grid>
+        <Grid Grid.Row="3" Margin="15,0,15,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="95"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,2,0,0" x:Name="btnExit" Width="90" Height="23">
+                <StackPanel x:Name="spExit"  Margin="2" Orientation="Horizontal">
+                    <Image Height="16" Margin="-5,0,15,0" Source="{DynamicResource Exit}" Width="16" />
+                    <TextBlock x:Name="tbExit" Text="Sortir" />
+                </StackPanel>
+            </Button>
+        </Grid>
+        <my:CultureAddInWPF HorizontalAlignment="Left" VerticalAlignment="Top" Height="0" Width="0" Margin="0"/>
+    </Grid>
+</Window>

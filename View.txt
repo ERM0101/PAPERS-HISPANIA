@@ -1,0 +1,3 @@
+                    //CollectionViewSource.GetDefaultView(cbGood.ItemsSource).Filter = UserFilter;
+                    //CollectionViewSource.GetDefaultView(cbGood.ItemsSource).SortDescriptions.Add(new SortDescription("Good_Code", ListSortDirection.Ascending));
+                    //lblCountMismatchesReceipts.Content = ((CollectionView)CollectionViewSource.GetDefaultView(cbGood.ItemsSource)).Count.ToString();

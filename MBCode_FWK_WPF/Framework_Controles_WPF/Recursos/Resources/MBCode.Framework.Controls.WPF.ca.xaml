@@ -1,0 +1,52 @@
+﻿<ResourceDictionary xmlns:system="clr-namespace:System;assembly=mscorlib"
+                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <system:String x:Key="AcceptText">Acceptar</system:String>
+    <system:String x:Key="CancelText">Cancel·lar</system:String>
+    <ImageSource x:Key="AcceptImage">pack://application:,,,/MBCode.Framework.Controls.WPF;component/Recursos/Imagenes/Aceptar.png</ImageSource>
+    <ImageSource x:Key="CancelImage">pack://application:,,,/MBCode.Framework.Controls.WPF;component/Recursos/Imagenes/Cancel.png</ImageSource>
+    <system:String x:Key="CloseWindowText">Cierra la ventana actual.</system:String>
+    <ImageSource x:Key="CloseWindowImage">pack://application:,,,/MBCode.Framework.Controls.WPF;component/Recursos/Imagenes/CloseApp.png</ImageSource>
+    <ImageSource x:Key="CloseAppNotSelectedTransparentImage">pack://application:,,,/MBCode.Framework.Controls.WPF;component/Recursos/Imagenes/CloseAppNotSelectedTransparent.png</ImageSource>
+    <system:String x:Key="CollapseWindowText">Minimiza la ventana actual.</system:String>
+    <ImageSource x:Key="CollapseWindowImage">pack://application:,,,/MBCode.Framework.Controls.WPF;component/Recursos/Imagenes/CollapseWindow.png</ImageSource>
+    <ImageSource x:Key="CollapseWindowNotSelectedTransparentImage">pack://application:,,,/MBCode.Framework.Controls.WPF;component/Recursos/Imagenes/CollapseWindowNotSelectedTransparent.png</ImageSource>
+    <system:String x:Key="MinimizeConsoleText">Minimiza la ventana actual.</system:String>
+    <ImageSource x:Key="MinimizeConsoleImage">pack://application:,,,/MBCode.Framework.Controls.WPF;component/Recursos/Imagenes/MinimizeConsole.png</ImageSource>
+    <ImageSource x:Key="MinimizeConsoleNotSelectedImage">pack://application:,,,/MBCode.Framework.Controls.WPF;component/Recursos/Imagenes/MinimizeConsoleNotSelected.png</ImageSource>
+    <ImageSource x:Key="ClockImage">pack://application:,,,/MBCode.Framework.Controls.WPF;component/Recursos/Imagenes/Reloj.png</ImageSource>
+    <ImageSource x:Key="MsgErrorImage">pack://application:,,,/MBCode.Framework.Controls.WPF;component/Recursos/Imagenes/MsgError.png</ImageSource>
+    <ImageSource x:Key="MsgWarningImage">pack://application:,,,/MBCode.Framework.Controls.WPF;component/Recursos/Imagenes/MsgWarning.png</ImageSource>
+    <ImageSource x:Key="MsgImportantWarningImage">pack://application:,,,/MBCode.Framework.Controls.WPF;component/Recursos/Imagenes/MsgImportantWarning.png</ImageSource>
+    <ImageSource x:Key="MsgInformationImage">pack://application:,,,/MBCode.Framework.Controls.WPF;component/Recursos/Imagenes/MsgInformation.png</ImageSource>
+    <system:String x:Key="MSG_CultureManager_000">Error, al definir la Cultura Actual.</system:String>
+    <system:String x:Key="MSG_CultureManager_001">Error, al definir el nombre de la Cultura Actual, valor '{0}' incorrecto.</system:String>
+    <system:String x:Key="MSG_CultureAssemblyWPF_000">Error, al definir el ensamblador que contiene el fichero de recursos, valor '{0}' incorrecto.</system:String>
+    <system:String x:Key="MSG_CultureAssemblyWPF_001">Error, al definir el nombre del fichero de recursos, valor '{0}' incorrecto.</system:String>
+    <system:String x:Key="MSG_CultureAssemblyWPF_002">Error, al definir el directorio que contiene el fichero de recursos, valor '{0}' incorrecto.</system:String>
+    <system:String x:Key="MSG_CultureAddInWPF_000">Error, al definir el ensamblado que contiene el fichero de recursos, valor '{0}' incorrecto.</system:String>
+    <system:String x:Key="MSG_CultureAddInWPF_001">Error, al definir el nombre del fichero de recursos, valor '{0}' incorrecto.</system:String>
+    <system:String x:Key="MSG_CultureAddInWPF_002">Error, al definir el directorio que contiene el fichero de recursos, valor '{0}' incorrecto.</system:String>
+    <system:String x:Key="MSG_CultureAddInWPF_003">Error, al definir la ventana que es gestionada por la clase, valor '{0}' incorrecto.</system:String>
+    <system:String x:Key="MSG_CultureAddIn_000">Error, al definir la lista de elementos a ignorar, valor '{0}' incorrecto.</system:String>
+    <system:String x:Key="MSG_CultureAddIn_001">Error, al definir la ventana que es gestionada por la clase, valor '{0}' incorrecto.</system:String>
+    <system:String x:Key="MSG_ThemeInfo_000">Error, al definir un nuevo tema, valor '{0}' incorrecto.</system:String>
+    <system:String x:Key="MSG_ThemeInfo_001">Error, al definir el ensamblado que contiene el fichero de tema, valor '{0}' incorrecto.</system:String>
+    <system:String x:Key="MSG_ThemeInfo_002">Error, al definir el directorio que contiene el fichero de tema, valor '{0}' incorrecto.</system:String>
+    <system:String x:Key="MSG_ThemeInfo_003">Error, al definir el nombre del fichero de tema, valor '{0}' incorrecto.</system:String>
+    <system:String x:Key="MSG_ThemeManager_000">Error, al definir un nuevo tema, valor '{0}' incorrecto.</system:String>
+    <system:String x:Key="MSG_DateTimeManager_000">Error, formato incorrecto.</system:String>
+    <system:String x:Key="MSG_DateTimeManager_001">Error, entrada incorrecta.</system:String>
+    <system:String x:Key="MSG_DateTimeManager_002">Error, número de horas incorrecto.</system:String>
+    <system:String x:Key="MSG_DateTimeManager_003">Error, número de minutos incorrecto.</system:String>
+    <system:String x:Key="MSG_DateTimeManager_004">Error, número de segundos incorrecto.</system:String>
+    <system:String x:Key="MSG_XMLManager_000">Error, no existe el nodo '{0}' en el documento XML.</system:String>
+    <system:String x:Key="MSG_XMLManager_001">Error, ya existe el nodo '{0}' en el documento XML.</system:String>
+    <system:String x:Key="MSG_RegExpManager_000">Error, el texto contiene carácteres inválidos '{0}'.</system:String>
+    <system:String x:Key="MSG_RegExpManager_001">Error, el segmento '{0}' de la dirección IP, tiene un valor incorrecto.</system:String>
+    <system:String x:Key="MSG_RegExpManager_002">Error, número de segmentos de la dirección IP incorrecto.</system:String>
+    <system:String x:Key="MSG_RegExpManager_003">Error, formato de la dirección IP incorrecto.</system:String>
+    <system:String x:Key="MSG_RegExpManager_004">Error, cadena a analizar nula o vacía.</system:String>
+
+</ResourceDictionary>

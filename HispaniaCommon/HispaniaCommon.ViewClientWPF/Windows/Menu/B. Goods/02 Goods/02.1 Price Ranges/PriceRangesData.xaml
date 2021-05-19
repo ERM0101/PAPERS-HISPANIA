@@ -1,0 +1,80 @@
+﻿<UserControl x:Class="HispaniaCommon.ViewClientWPF.UserControls.PriceRangesData"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:HispaniaCommon.ViewClientWPF.UserControls"
+             xmlns:Culture="clr-namespace:MBCode.Framework.Managers.Culture;assembly=MBCode.Framework" 
+             mc:Ignorable="d" 
+             d:DesignHeight="100" d:DesignWidth="1010" MinWidth="1010">
+    <UserControl.Resources>
+        <ResourceDictionary >
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/HispaniaCommon.ViewClientWPF;component/Recursos/Resources/HispaniaCommon.ViewClientWPF.es.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/HispaniaCommon.ViewClientWPF;component/Recursos/Themes/HispaniaComptabilitat.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid Name="grdMain" Background="WhiteSmoke">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="30" Name="cdButtons"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="65"/>
+                <ColumnDefinition Width="110"/>
+                <ColumnDefinition Width="90"/>
+                <ColumnDefinition Width="250"/>
+                <ColumnDefinition Width="50"/>
+                <ColumnDefinition Width="50"/>
+                <ColumnDefinition Width="60"/>
+                <ColumnDefinition Width="125"/>
+                <ColumnDefinition Width="60"/>
+                <ColumnDefinition Width="125"/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0" x:Name="lblGood" Content="ARTICLE :" Margin="4,4,4,0" FontWeight="Bold" HorizontalAlignment="Center" 
+                   VerticalAlignment="Center" IsEnabled="False"/>
+            <TextBox Grid.Column="1" x:Name="tbGood" Height="23" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontWeight="Bold"
+                     HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="4,4,4,0" MaxLength="10" IsReadOnly="True" IsTabStop="False"/>
+            <Label Grid.Column="2" x:Name="lblGoodDescription" Content="DESCRIPCIÓ :" Margin="4,4,4,0" FontWeight="Bold" HorizontalAlignment="Center" 
+                   VerticalAlignment="Center" IsEnabled="False"/>
+            <TextBox Grid.Column="3" x:Name="tbGoodDescription" Height="23" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontWeight="Bold"
+                     HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="4,4,4,0" MaxLength="10" IsReadOnly="True" IsTabStop="False"/>
+            <Label Grid.Column="4" x:Name="lblPriceRangeSequence" Content="CODI :" Margin="4,4,4,0" FontWeight="Bold" HorizontalAlignment="Center" 
+                   VerticalAlignment="Center" IsEnabled="False"/>
+            <TextBox Grid.Column="5" x:Name="tbPriceRangeSequence" Height="23" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontWeight="Bold"
+                     HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="0,4,4,0" MaxLength="3" IsReadOnly="True" IsTabStop="False"/>
+            <Label Grid.Column="6" x:Name="lblSince" Content="DES DE :" Margin="4,4,4,0" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"
+                   HorizontalContentAlignment="Center" IsEnabled="False"/>
+            <TextBox Grid.Column="7" x:Name="tbSince" Height="23"  MaxLength="20" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" 
+                     VerticalAlignment="Center" Margin="4,4,4,0" IsReadOnly="True" GotFocus="TBGotFocus"/>
+            <Label Grid.Column="8" x:Name="lblUntil" Content="FINS A :" Margin="4,4,4,0" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"
+                   HorizontalContentAlignment="Center" IsEnabled="False"/>
+            <TextBox Grid.Column="9" x:Name="tbUntil" Height="23"  MaxLength="20" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" 
+                     VerticalAlignment="Center" Margin="4,4,4,0" IsReadOnly="True" GotFocus="TBGotFocus"/>
+        </Grid>
+        <Grid Grid.Row="1" Margin="15,0,15,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="120" Name="cbAcceptButton"/>
+                <ColumnDefinition Width="2*"  Name="cbMiddleColumn"/>
+                <ColumnDefinition Width="120"/>
+                <ColumnDefinition Width="3*"/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,2,0,0" x:Name="btnAccept" Width="115" Height="23">
+                <StackPanel x:Name="spAccept" Margin="2" Orientation="Horizontal">
+                    <Image Height="16" Margin="0,0,10,0" Source="{DynamicResource Accept}" Width="16"/>
+                    <TextBlock x:Name="tbAccept" Text="Acceptar" />
+                </StackPanel>
+            </Button>
+            <Button Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,2,0,0" x:Name="btnCancel" Width="115" Height="23">
+                <StackPanel x:Name="spCancel"  Margin="2" Orientation="Horizontal">
+                    <Image Height="16" Margin="0,0,10,0" Source="{DynamicResource Cancel}" Width="16" />
+                    <TextBlock x:Name="tbCancel" Text="Cancel·lar" />
+                </StackPanel>
+            </Button>
+        </Grid>
+        <Culture:CultureAddInUserControlWPF HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0" Height="0" Width="0"/>
+    </Grid>
+</UserControl>

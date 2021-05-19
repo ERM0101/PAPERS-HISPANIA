@@ -1,0 +1,14 @@
+                //Process p = new Process
+                //{
+                //    StartInfo = new ProcessStartInfo
+                //    {
+                //        Verb = "print",
+                //        FileName = PDF_FileName,
+                //        CreateNoWindow = true,
+                //        WindowStyle = ProcessWindowStyle.Hidden
+                //    }
+                //};
+                //p.Start();
+                //p.WaitForInputIdle();
+                //Thread.Sleep(5000);
+                //if (!p.CloseMainWindow())  p.Kill();

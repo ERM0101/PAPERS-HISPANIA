@@ -1,0 +1,13 @@
+
+        /// <summary>
+        /// Select all text in sender TextBox control.
+        /// </summary>
+        /// <param name="sender">TextBox control that has produced the event.</param>
+        /// <param name="e">Parameters associateds to the event.</param>
+        private void TBGotFocus(object sender, RoutedEventArgs e)
+        {
+            GlobalViewModel.Instance.SelectAllTextInGotFocusEvent(sender, e);
+        }
+
+GotFocus="TBGotFocus"
+

@@ -1,0 +1,453 @@
+﻿<Window
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:my="clr-namespace:MBCode.Framework.Managers.Culture;assembly=MBCode.Framework"
+    x:Class="HispaniaCommon.ViewClientWPF.Windows.GoodRanges" 
+        mc:Ignorable="d"
+        Title="Marge Article" Icon="{DynamicResource WindowDemoDataBaseIcon}"  Width="1069" Height="800" MinWidth="1069" MinHeight="550" Foreground="#FF9B211D"
+        WindowStartupLocation="CenterScreen" ResizeMode="CanResize">
+    <Window.Resources>
+        <ResourceDictionary >
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/HispaniaCommon.ViewClientWPF;component/Recursos/Resources/HispaniaCommon.ViewClientWPF.es.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/HispaniaCommon.ViewClientWPF;component/Recursos/Themes/HispaniaComptabilitat.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="80" />
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="50" />
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <GroupBox x:Name="gbGeneralData" Margin="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{DynamicResource NonEditableGroupBox}">
+                    <GroupBox.Header>
+                        <BulletDecorator>
+                            <BulletDecorator.Bullet>
+                                <Image Width="16" Source="{DynamicResource Hispania}"/>
+                            </BulletDecorator.Bullet>
+                            <TextBlock Margin="10,0"><Run Text="Dades de l'Article"/></TextBlock>
+                        </BulletDecorator>
+                    </GroupBox.Header>
+                    <Grid>
+                        <Grid Grid.Row="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="75"/>
+                                <ColumnDefinition Width="85"/>
+                                <ColumnDefinition Width="90"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="20"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Column="0" x:Name="lblGoodCode" Content="CODI :" Margin="10,4,0,0" FontWeight="Bold" HorizontalAlignment="Center" 
+                                   VerticalAlignment="Center" IsEnabled="False"/>
+                            <TextBox Grid.Column="1" x:Name="tbGoodCode" Height="23" Margin="0,4,4,0" HorizontalAlignment="Stretch" VerticalAlignment="Center" 
+                                     HorizontalContentAlignment="Center" MaxLength="20" IsReadOnly="True"/>
+                            <Label Grid.Column="2" x:Name="lblGoodDescription"  Content="DESCRIPCIÓ :" Margin="4,4,0,0" FontWeight="Bold" HorizontalAlignment="Center" 
+                                   VerticalAlignment="Center" IsEnabled="False"/>
+                            <TextBox Grid.Column="3" x:Name="tbGoodDescription" Height="23" Margin="0,4,4,0" HorizontalAlignment="Stretch" VerticalAlignment="Center" 
+                                     HorizontalContentAlignment="Center" MaxLength="50" IsReadOnly="True"/>
+                        </Grid>
+                    </Grid>
+                </GroupBox>
+            </Grid>
+            <Grid Grid.Row="1">
+                <GroupBox Grid.Column="0" x:Name="gbAcumSalesCosts" Margin="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{DynamicResource NonEditableGroupBox}">
+                    <GroupBox.Header>
+                        <BulletDecorator>
+                            <BulletDecorator.Bullet>
+                                <Image Width="16" Source="{DynamicResource Report}"/>
+                            </BulletDecorator.Bullet>
+                            <TextBlock Margin="10,0"><Run Text="Acumulats de Vendes i Costos"/></TextBlock>
+                        </BulletDecorator>
+                    </GroupBox.Header>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="150"/>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width="200"/>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width="200"/>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width="200"/>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width="200"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="10"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="10"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="10"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="10"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="10"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="10"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="10"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="10"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="10"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="10"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="10"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="10"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="10"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Grid Grid.Row="1" Grid.Column="3">
+                            <Grid.Background>
+                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                    <GradientStop Color="Black" Offset="0"/>
+                                    <GradientStop Color="White" Offset="1"/>
+                                    <GradientStop Color="#FFA0A0A0"/>
+                                </LinearGradientBrush>
+                            </Grid.Background>
+                            <Label x:Name="lblLabelSALES"  Content="VENDES" Foreground="#FF3F3F3F" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            </Label>
+                        </Grid>
+                        <Grid Grid.Row="1" Grid.Column="5">
+                            <Grid.Background>
+                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                    <GradientStop Color="Black" Offset="0"/>
+                                    <GradientStop Color="White" Offset="1"/>
+                                    <GradientStop Color="#FFA0A0A0"/>
+                                </LinearGradientBrush>
+                            </Grid.Background>
+                            <Label x:Name="lblLabelCOSTS"  Content="COSTOS" Foreground="#FF3F3F3F" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            </Label>
+                        </Grid>
+                        <Grid Grid.Row="1" Grid.Column="7">
+                            <Grid.Background>
+                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                    <GradientStop Color="Black" Offset="0"/>
+                                    <GradientStop Color="#FF6B6B6B" Offset="1"/>
+                                    <GradientStop Color="#FF6B6B6B"/>
+                                </LinearGradientBrush>
+                            </Grid.Background>
+                            <Label x:Name="lblLabelGOODRANGEPERCENT"  Content="PERCENTATGE DE MARGE" Foreground="White" FontWeight="Bold" 
+                                   HorizontalAlignment="Center" VerticalAlignment="Center">
+                            </Label>
+                        </Grid>
+                        <Grid Grid.Row="1" Grid.Column="9">
+                            <Grid.Background>
+                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                    <GradientStop Color="Black" Offset="0"/>
+                                    <GradientStop Color="#FF6B6B6B" Offset="1"/>
+                                    <GradientStop Color="#FF6B6B6B"/>
+                                </LinearGradientBrush>
+                            </Grid.Background>
+                            <Label x:Name="lblLabelGOODRANGEPERCENTREAL"  Content="PERCENTATGE DE MARGE REAL" Foreground="White" FontWeight="Bold" 
+                                   HorizontalAlignment="Center" VerticalAlignment="Center">
+                            </Label>
+                        </Grid>
+                        <Grid Grid.Row="3" Grid.Column="1">
+                            <Grid.Background>
+                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                    <GradientStop Color="Black" Offset="0"/>
+                                    <GradientStop Color="White" Offset="1"/>
+                                    <GradientStop Color="#FFA0A0A0"/>
+                                </LinearGradientBrush>
+                            </Grid.Background>
+                            <Label x:Name="lblLabelJANUARY"  Content="GENER" Foreground="#FF3F3F3F" FontWeight="Bold" 
+                                   HorizontalAlignment="Center" VerticalAlignment="Center">
+                            </Label>
+                        </Grid>
+                        <TextBox Grid.Row="3" Grid.Column="3" x:Name="tbCumulativeSalesRetailPrice1" Height="23" MaxLength="20" HorizontalContentAlignment="Center" 
+                                 HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" IsReadOnly="True" GotFocus="TBGotFocus"/>
+                        <TextBox Grid.Row="3" Grid.Column="5" x:Name="tbCumulativeSalesCost1" Height="23" MaxLength="20" HorizontalContentAlignment="Center" 
+                                 HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" IsReadOnly="True" GotFocus="TBGotFocus"/>
+                        <TextBox Grid.Row="3" Grid.Column="7" x:Name="tbGoodRange1" Height="23" MaxLength="20" HorizontalContentAlignment="Center" 
+                                 HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" IsReadOnly="True" IsTabStop="False"/>
+                        <TextBox Grid.Row="3" Grid.Column="9" x:Name="tbGoodRange1Real" Height="23" MaxLength="20" HorizontalContentAlignment="Center" 
+                                 HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" IsReadOnly="True" IsTabStop="False"/>
+                        <Grid Grid.Row="5" Grid.Column="1">
+                            <Grid.Background>
+                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                    <GradientStop Color="Black" Offset="0"/>
+                                    <GradientStop Color="White" Offset="1"/>
+                                    <GradientStop Color="#FFA0A0A0"/>
+                                </LinearGradientBrush>
+                            </Grid.Background>
+                            <Label x:Name="lblLabelFEBRUARY"  Content="FEBRER" Foreground="#FF3F3F3F" FontWeight="Bold" 
+                                   HorizontalAlignment="Center" VerticalAlignment="Center">
+                            </Label>
+                        </Grid>
+                        <TextBox Grid.Row="5" Grid.Column="3" x:Name="tbCumulativeSalesRetailPrice2" Height="23" MaxLength="20" HorizontalContentAlignment="Center" 
+                                 HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" IsReadOnly="True" GotFocus="TBGotFocus"/>
+                        <TextBox Grid.Row="5" Grid.Column="5" x:Name="tbCumulativeSalesCost2" Height="23" MaxLength="20" HorizontalContentAlignment="Center" 
+                                 HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" IsReadOnly="True" GotFocus="TBGotFocus"/>
+                        <TextBox Grid.Row="5" Grid.Column="7" x:Name="tbGoodRange2" Height="23" MaxLength="20" HorizontalContentAlignment="Center" 
+                                 HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" IsReadOnly="True" IsTabStop="False"/>
+                        <TextBox Grid.Row="5" Grid.Column="9" x:Name="tbGoodRange2Real" Height="23" MaxLength="20" HorizontalContentAlignment="Center" 
+                                 HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" IsReadOnly="True" IsTabStop="False"/>
+                        <Grid Grid.Row="7" Grid.Column="1">
+                            <Grid.Background>
+                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                    <GradientStop Color="Black" Offset="0"/>
+                                    <GradientStop Color="White" Offset="1"/>
+                                    <GradientStop Color="#FFA0A0A0"/>
+                                </LinearGradientBrush>
+                            </Grid.Background>
+                            <Label x:Name="lblLabelMARS"  Content="MARÇ" Foreground="#FF3F3F3F" FontWeight="Bold" 
+                                   HorizontalAlignment="Center" VerticalAlignment="Center">
+                            </Label>
+                        </Grid>
+                        <TextBox Grid.Row="7" Grid.Column="3" x:Name="tbCumulativeSalesRetailPrice3" Height="23" MaxLength="20" HorizontalContentAlignment="Center" 
+                                 HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" IsReadOnly="True" GotFocus="TBGotFocus"/>
+                        <TextBox Grid.Row="7" Grid.Column="5" x:Name="tbCumulativeSalesCost3" Height="23" MaxLength="20" HorizontalContentAlignment="Center" 
+                                 HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" IsReadOnly="True" GotFocus="TBGotFocus"/>
+                        <TextBox Grid.Row="7" Grid.Column="7" x:Name="tbGoodRange3" Height="23" MaxLength="20" HorizontalContentAlignment="Center" 
+                                 HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" IsReadOnly="True" IsTabStop="False"/>
+                        <TextBox Grid.Row="7" Grid.Column="9" x:Name="tbGoodRange3Real" Height="23" MaxLength="20" HorizontalContentAlignment="Center" 
+                                 HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" IsReadOnly="True" IsTabStop="False"/>
+                        <Grid Grid.Row="9" Grid.Column="1">
+                            <Grid.Background>
+                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                    <GradientStop Color="Black" Offset="0"/>
+                                    <GradientStop Color="White" Offset="1"/>
+                                    <GradientStop Color="#FFA0A0A0"/>
+                                </LinearGradientBrush>
+                            </Grid.Background>
+                            <Label x:Name="lblLabelAPRIL"  Content="ABRIL" Foreground="#FF3F3F3F" FontWeight="Bold" 
+                                   HorizontalAlignment="Center" VerticalAlignment="Center">
+                            </Label>
+                        </Grid>
+                        <TextBox Grid.Row="9" Grid.Column="3" x:Name="tbCumulativeSalesRetailPrice4" Height="23" MaxLength="20" HorizontalContentAlignment="Center" 
+                                 HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" IsReadOnly="True" GotFocus="TBGotFocus"/>
+                        <TextBox Grid.Row="9" Grid.Column="5" x:Name="tbCumulativeSalesCost4" Height="23" MaxLength="20" HorizontalContentAlignment="Center" 
+                                 HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" IsReadOnly="True" GotFocus="TBGotFocus"/>
+                        <TextBox Grid.Row="9" Grid.Column="7" x:Name="tbGoodRange4" Height="23" MaxLength="20" HorizontalContentAlignment="Center" 
+                                 HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" IsReadOnly="True" IsTabStop="False"/>
+                        <TextBox Grid.Row="9" Grid.Column="9" x:Name="tbGoodRange4Real" Height="23" MaxLength="20" HorizontalContentAlignment="Center" 
+                                 HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" IsReadOnly="True" IsTabStop="False"/>
+                        <Grid Grid.Row="11" Grid.Column="1">
+                            <Grid.Background>
+                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                    <GradientStop Color="Black" Offset="0"/>
+                                    <GradientStop Color="White" Offset="1"/>
+                                    <GradientStop Color="#FFA0A0A0"/>
+                                </LinearGradientBrush>
+                            </Grid.Background>
+                            <Label x:Name="lblLabelMAY"  Content="MAIG" Foreground="#FF3F3F3F" FontWeight="Bold" 
+                                   HorizontalAlignment="Center" VerticalAlignment="Center">
+                            </Label>
+                        </Grid>
+                        <TextBox Grid.Row="11" Grid.Column="3" x:Name="tbCumulativeSalesRetailPrice5" Height="23" MaxLength="20" HorizontalContentAlignment="Center" 
+                                 HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" IsReadOnly="True" GotFocus="TBGotFocus"/>
+                        <TextBox Grid.Row="11" Grid.Column="5" x:Name="tbCumulativeSalesCost5" Height="23" MaxLength="20" HorizontalContentAlignment="Center" 
+                                 HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" IsReadOnly="True" GotFocus="TBGotFocus"/>
+                        <TextBox Grid.Row="11" Grid.Column="7" x:Name="tbGoodRange5" Height="23" MaxLength="20" HorizontalContentAlignment="Center" 
+                                 HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" IsReadOnly="True" IsTabStop="False"/>
+                        <TextBox Grid.Row="11" Grid.Column="9" x:Name="tbGoodRange5Real" Height="23" MaxLength="20" HorizontalContentAlignment="Center" 
+                                 HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" IsReadOnly="True" IsTabStop="False"/>
+                        <Grid Grid.Row="13" Grid.Column="1">
+                            <Grid.Background>
+                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                    <GradientStop Color="Black" Offset="0"/>
+                                    <GradientStop Color="White" Offset="1"/>
+                                    <GradientStop Color="#FFA0A0A0"/>
+                                </LinearGradientBrush>
+                            </Grid.Background>
+                            <Label x:Name="lblLabelJUNE"  Content="JUNY" Foreground="#FF3F3F3F" FontWeight="Bold" 
+                                   HorizontalAlignment="Center" VerticalAlignment="Center">
+                            </Label>
+                        </Grid>
+                        <TextBox Grid.Row="13" Grid.Column="3" x:Name="tbCumulativeSalesRetailPrice6" Height="23" MaxLength="20" HorizontalContentAlignment="Center" 
+                                 HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" IsReadOnly="True" GotFocus="TBGotFocus"/>
+                        <TextBox Grid.Row="13" Grid.Column="5" x:Name="tbCumulativeSalesCost6" Height="23" MaxLength="20" HorizontalContentAlignment="Center" 
+                                 HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" IsReadOnly="True" GotFocus="TBGotFocus"/>
+                        <TextBox Grid.Row="13" Grid.Column="7" x:Name="tbGoodRange6" Height="23" MaxLength="20" HorizontalContentAlignment="Center" 
+                                 HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" IsReadOnly="True" IsTabStop="False"/>
+                        <TextBox Grid.Row="13" Grid.Column="9" x:Name="tbGoodRange6Real" Height="23" MaxLength="20" HorizontalContentAlignment="Center" 
+                                 HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" IsReadOnly="True" IsTabStop="False"/>
+                        <Grid Grid.Row="15" Grid.Column="1">
+                            <Grid.Background>
+                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                    <GradientStop Color="Black" Offset="0"/>
+                                    <GradientStop Color="White" Offset="1"/>
+                                    <GradientStop Color="#FFA0A0A0"/>
+                                </LinearGradientBrush>
+                            </Grid.Background>
+                            <Label x:Name="lblLabelJULY"  Content="JULIOL" Foreground="#FF3F3F3F" FontWeight="Bold" 
+                                   HorizontalAlignment="Center" VerticalAlignment="Center">
+                            </Label>
+                        </Grid>
+                        <TextBox Grid.Row="15" Grid.Column="3" x:Name="tbCumulativeSalesRetailPrice7" Height="23" MaxLength="20" HorizontalContentAlignment="Center" 
+                                 HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" IsReadOnly="True" GotFocus="TBGotFocus"/>
+                        <TextBox Grid.Row="15" Grid.Column="5" x:Name="tbCumulativeSalesCost7" Height="23" MaxLength="20" HorizontalContentAlignment="Center" 
+                                 HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" IsReadOnly="True" GotFocus="TBGotFocus"/>
+                        <TextBox Grid.Row="15" Grid.Column="7" x:Name="tbGoodRange7" Height="23" MaxLength="20" HorizontalContentAlignment="Center" 
+                                 HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" IsReadOnly="True" IsTabStop="False"/>
+                        <TextBox Grid.Row="15" Grid.Column="9" x:Name="tbGoodRange7Real" Height="23" MaxLength="20" HorizontalContentAlignment="Center" 
+                                 HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" IsReadOnly="True" IsTabStop="False"/>
+                        <Grid Grid.Row="17" Grid.Column="1">
+                            <Grid.Background>
+                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                    <GradientStop Color="Black" Offset="0"/>
+                                    <GradientStop Color="White" Offset="1"/>
+                                    <GradientStop Color="#FFA0A0A0"/>
+                                </LinearGradientBrush>
+                            </Grid.Background>
+                            <Label x:Name="lblLabelAUGUST"  Content="AGOST" Foreground="#FF3F3F3F" FontWeight="Bold" 
+                                   HorizontalAlignment="Center" VerticalAlignment="Center">
+                            </Label>
+                        </Grid>
+                        <TextBox Grid.Row="17" Grid.Column="3" x:Name="tbCumulativeSalesRetailPrice8" Height="23" MaxLength="20" HorizontalContentAlignment="Center" 
+                                 HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" IsReadOnly="True" GotFocus="TBGotFocus"/>
+                        <TextBox Grid.Row="17" Grid.Column="5" x:Name="tbCumulativeSalesCost8" Height="23" MaxLength="20" HorizontalContentAlignment="Center" 
+                                 HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" IsReadOnly="True" GotFocus="TBGotFocus"/>
+                        <TextBox Grid.Row="17" Grid.Column="7" x:Name="tbGoodRange8" Height="23" MaxLength="20" HorizontalContentAlignment="Center" 
+                                 HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" IsReadOnly="True" IsTabStop="False"/>
+                        <TextBox Grid.Row="17" Grid.Column="9" x:Name="tbGoodRange8Real" Height="23" MaxLength="20" HorizontalContentAlignment="Center" 
+                                 HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" IsReadOnly="True" IsTabStop="False"/>
+                        <Grid Grid.Row="19" Grid.Column="1">
+                            <Grid.Background>
+                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                    <GradientStop Color="Black" Offset="0"/>
+                                    <GradientStop Color="White" Offset="1"/>
+                                    <GradientStop Color="#FFA0A0A0"/>
+                                </LinearGradientBrush>
+                            </Grid.Background>
+                            <Label x:Name="lblLabelSETEMBER"  Content="SETEMBRE" Foreground="#FF3F3F3F" FontWeight="Bold" 
+                                   HorizontalAlignment="Center" VerticalAlignment="Center">
+                            </Label>
+                        </Grid>
+                        <TextBox Grid.Row="19" Grid.Column="3" x:Name="tbCumulativeSalesRetailPrice9" Height="23" MaxLength="20" HorizontalContentAlignment="Center" 
+                                 HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" IsReadOnly="True" GotFocus="TBGotFocus"/>
+                        <TextBox Grid.Row="19" Grid.Column="5" x:Name="tbCumulativeSalesCost9" Height="23" MaxLength="20" HorizontalContentAlignment="Center" 
+                                 HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" IsReadOnly="True" GotFocus="TBGotFocus"/>
+                        <TextBox Grid.Row="19" Grid.Column="7" x:Name="tbGoodRange9" Height="23" MaxLength="20" HorizontalContentAlignment="Center" 
+                                 HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" IsReadOnly="True" IsTabStop="False"/>
+                        <TextBox Grid.Row="19" Grid.Column="9" x:Name="tbGoodRange9Real" Height="23" MaxLength="20" HorizontalContentAlignment="Center" 
+                                 HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" IsReadOnly="True" IsTabStop="False"/>
+                        <Grid Grid.Row="21" Grid.Column="1">
+                            <Grid.Background>
+                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                    <GradientStop Color="Black" Offset="0"/>
+                                    <GradientStop Color="White" Offset="1"/>
+                                    <GradientStop Color="#FFA0A0A0"/>
+                                </LinearGradientBrush>
+                            </Grid.Background>
+                            <Label x:Name="lblLabelOCTOBER"  Content="OBTUBRE" Foreground="#FF3F3F3F" FontWeight="Bold" 
+                                   HorizontalAlignment="Center" VerticalAlignment="Center">
+                            </Label>
+                        </Grid>
+                        <TextBox Grid.Row="21" Grid.Column="3" x:Name="tbCumulativeSalesRetailPrice10" Height="23" MaxLength="20" HorizontalContentAlignment="Center" 
+                                 HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" IsReadOnly="True" GotFocus="TBGotFocus"/>
+                        <TextBox Grid.Row="21" Grid.Column="5" x:Name="tbCumulativeSalesCost10" Height="23" MaxLength="20" HorizontalContentAlignment="Center" 
+                                 HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" IsReadOnly="True" GotFocus="TBGotFocus"/>
+                        <TextBox Grid.Row="21" Grid.Column="7" x:Name="tbGoodRange10" Height="23" MaxLength="20" HorizontalContentAlignment="Center" 
+                                 HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" IsReadOnly="True" IsTabStop="False"/>
+                        <TextBox Grid.Row="21" Grid.Column="9" x:Name="tbGoodRange10Real" Height="23" MaxLength="20" HorizontalContentAlignment="Center" 
+                                 HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" IsReadOnly="True" IsTabStop="False"/>
+                        <Grid Grid.Row="23" Grid.Column="1">
+                            <Grid.Background>
+                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                    <GradientStop Color="Black" Offset="0"/>
+                                    <GradientStop Color="White" Offset="1"/>
+                                    <GradientStop Color="#FFA0A0A0"/>
+                                </LinearGradientBrush>
+                            </Grid.Background>
+                            <Label x:Name="lblLabelNOVEMBER"  Content="NOVEMBRE" Foreground="#FF3F3F3F" FontWeight="Bold" 
+                                   HorizontalAlignment="Center" VerticalAlignment="Center">
+                            </Label>
+                        </Grid>
+                        <TextBox Grid.Row="23" Grid.Column="3" x:Name="tbCumulativeSalesRetailPrice11" Height="23" MaxLength="20" HorizontalContentAlignment="Center" 
+                                 HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" IsReadOnly="True" GotFocus="TBGotFocus"/>
+                        <TextBox Grid.Row="23" Grid.Column="5" x:Name="tbCumulativeSalesCost11" Height="23" MaxLength="20" HorizontalContentAlignment="Center" 
+                                 HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" IsReadOnly="True" GotFocus="TBGotFocus"/>
+                        <TextBox Grid.Row="23" Grid.Column="7" x:Name="tbGoodRange11" Height="23" MaxLength="20" HorizontalContentAlignment="Center" 
+                                 HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" IsReadOnly="True" IsTabStop="False"/>
+                        <TextBox Grid.Row="23" Grid.Column="9" x:Name="tbGoodRange11Real" Height="23" MaxLength="20" HorizontalContentAlignment="Center" 
+                                 HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" IsReadOnly="True" IsTabStop="False"/>
+                        <Grid Grid.Row="25" Grid.Column="1">
+                            <Grid.Background>
+                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                    <GradientStop Color="Black" Offset="0"/>
+                                    <GradientStop Color="White" Offset="1"/>
+                                    <GradientStop Color="#FFA0A0A0"/>
+                                </LinearGradientBrush>
+                            </Grid.Background>
+                            <Label x:Name="lblLabelDECEMBER"  Content="DESEMBRE" Foreground="#FF3F3F3F" FontWeight="Bold" 
+                                   HorizontalAlignment="Center" VerticalAlignment="Center">
+                            </Label>
+                        </Grid>
+                        <TextBox Grid.Row="25" Grid.Column="3" x:Name="tbCumulativeSalesRetailPrice12" Height="23" MaxLength="20" HorizontalContentAlignment="Center" 
+                                 HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" IsReadOnly="True" GotFocus="TBGotFocus"/>
+                        <TextBox Grid.Row="25" Grid.Column="5" x:Name="tbCumulativeSalesCost12" Height="23" MaxLength="20" HorizontalContentAlignment="Center" 
+                                 HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" IsReadOnly="True" GotFocus="TBGotFocus"/>
+                        <TextBox Grid.Row="25" Grid.Column="7" x:Name="tbGoodRange12" Height="23" MaxLength="20" HorizontalContentAlignment="Center" 
+                                 HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" IsReadOnly="True" IsTabStop="False"/>
+                        <TextBox Grid.Row="25" Grid.Column="9" x:Name="tbGoodRange12Real" Height="23" MaxLength="20" HorizontalContentAlignment="Center" 
+                                 HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" IsReadOnly="True" IsTabStop="False"/>
+                        <Grid Grid.Row="27" Grid.Column="1">
+                            <Grid.Background>
+                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                    <GradientStop Color="Black" Offset="0"/>
+                                    <GradientStop Color="#FF6B6B6B" Offset="1"/>
+                                    <GradientStop Color="#FF6B6B6B"/>
+                                </LinearGradientBrush>
+                            </Grid.Background>
+                            <Label x:Name="lblLabelTOTAL"  Content="TOTAL" Foreground="White" FontWeight="Bold" 
+                                   HorizontalAlignment="Center" VerticalAlignment="Center">
+                            </Label>
+                        </Grid>
+                        <TextBox Grid.Row="27" Grid.Column="3" x:Name="tbRetailPriceRange" Height="23" MaxLength="20" HorizontalContentAlignment="Center" 
+                                 HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" IsReadOnly="True" GotFocus="TBGotFocus"/>
+                        <TextBox Grid.Row="27" Grid.Column="5" x:Name="tbSalesCostRange" Height="23" MaxLength="20" HorizontalContentAlignment="Center" 
+                                 HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" IsReadOnly="True" GotFocus="TBGotFocus"/>
+                        <TextBox Grid.Row="27" Grid.Column="7" x:Name="tbGoodRangeRange" Height="23" MaxLength="20" HorizontalContentAlignment="Center" 
+                                 HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" IsReadOnly="True" IsTabStop="False"/>
+                        <TextBox Grid.Row="27" Grid.Column="9" x:Name="tbGoodRangeRangeReal" Height="23" MaxLength="20" HorizontalContentAlignment="Center" 
+                                 HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" IsReadOnly="True" IsTabStop="False"/>
+                    </Grid>
+                </GroupBox>
+            </Grid>
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="4*"/>
+                    <ColumnDefinition Width="120" Name="cbAcceptButton"/>
+                    <ColumnDefinition Width="4*" Name="cbAcceptButtonExt"/>
+                    <ColumnDefinition Width="120" Name="cbEditButton"/>
+                    <ColumnDefinition Width="4*" Name="cbCancelButtonExt"/>
+                    <ColumnDefinition Width="120" Name="cbCancelButton"/>
+                    <ColumnDefinition Width="4*"/>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,2,0,0" x:Name="btnAccept" Width="115" Height="23">
+                    <StackPanel x:Name="spAccept" Margin="2" Orientation="Horizontal">
+                        <Image Height="16" Margin="0,0,10,0" Source="{DynamicResource Accept}" Width="16"/>
+                        <TextBlock x:Name="tbAccept" Text="Acceptar" />
+                    </StackPanel>
+                </Button>
+                <Button Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,2,0,0" x:Name="btnEdit" Width="105" Height="23">
+                    <StackPanel x:Name="spEdit"  Margin="2" Orientation="Horizontal">
+                        <Image Height="16" Margin="0,0,10,0" Source="{DynamicResource Edit}" Width="16" />
+                        <TextBlock x:Name="tbEdit" Text="Modificar" />
+                    </StackPanel>
+                </Button>
+                <Button Grid.Column="5" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,2,0,0" x:Name="btnCancel" Width="115" Height="23">
+                    <StackPanel x:Name="spCancel"  Margin="2" Orientation="Horizontal">
+                        <Image Height="16" Margin="0,0,10,0" Source="{DynamicResource Cancel}" Width="16" />
+                        <TextBlock x:Name="tbCancel" Text="Cancel·lar" />
+                    </StackPanel>
+                </Button>
+            </Grid>
+        </Grid>
+        <my:CultureAddInWPF HorizontalAlignment="Left" VerticalAlignment="Top" Height="0" Width="0" Margin="0"/>
+    </Grid>
+</Window>

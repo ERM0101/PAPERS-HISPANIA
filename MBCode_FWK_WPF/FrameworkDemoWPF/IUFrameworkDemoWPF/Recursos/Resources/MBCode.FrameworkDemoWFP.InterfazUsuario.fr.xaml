@@ -1,0 +1,49 @@
+﻿<ResourceDictionary xmlns:system="clr-namespace:System;assembly=mscorlib"
+                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <BitmapImage x:Key="WindowXMLIcon">pack://application:,,,/MBCode.FrameworkDemoWFP.InterfazUsuario;component/recursos/Iconos/MBCode.ico</BitmapImage>
+    <BitmapImage x:Key="WindowDemoCulture">pack://application:,,,/MBCode.FrameworkDemoWFP.InterfazUsuario;component/recursos/Iconos/French.ico</BitmapImage>
+    <BitmapImage x:Key="WindowDemoCultureIcon">pack://application:,,,/MBCode.FrameworkDemoWFP.InterfazUsuario;component/recursos/Iconos/French.ico</BitmapImage>
+    <BitmapImage x:Key="WindowDemoDataBaseIcon">pack://application:,,,/MBCode.FrameworkDemoWFP.InterfazUsuario;component/recursos/Iconos/MBCode.ico</BitmapImage>
+    <ImageSource x:Key="DataBaseType">pack://application:,,,/MBCode.FrameworkDemoWFP.InterfazUsuario;component/recursos/Imagenes/Database-CFG.png</ImageSource>
+    <ImageSource x:Key="DataBaseSecurity">pack://application:,,,/MBCode.FrameworkDemoWFP.InterfazUsuario;component/recursos/Imagenes/Database-Key.png</ImageSource>
+    <ImageSource x:Key="DataBaseConnect">pack://application:,,,/MBCode.FrameworkDemoWFP.InterfazUsuario;component/recursos/Imagenes/Database-Connect.png</ImageSource>
+    <ImageSource x:Key="DataBaseDisconnect">pack://application:,,,/MBCode.FrameworkDemoWFP.InterfazUsuario;component/recursos/Imagenes/Database-Disconnect.png</ImageSource>
+    <ImageSource x:Key="DataBaseQueryText">pack://application:,,,/MBCode.FrameworkDemoWFP.InterfazUsuario;component/recursos/Imagenes/Database-QueryText.png</ImageSource>
+    <ImageSource x:Key="DataBaseQueryResult">pack://application:,,,/MBCode.FrameworkDemoWFP.InterfazUsuario;component/recursos/Imagenes/Database-QueryResult.png</ImageSource>
+    <ImageSource x:Key="Tables">pack://application:,,,/MBCode.FrameworkDemoWFP.InterfazUsuario;component/recursos/Imagenes/Tables.png</ImageSource>
+    <ImageSource x:Key="Report">pack://application:,,,/MBCode.FrameworkDemoWFP.InterfazUsuario;component/recursos/Imagenes/Report.png</ImageSource>
+    <system:String x:Key="WPFTitle">Demo du classe du Framework: 'CultureManager'</system:String>
+    <system:String x:Key="WPFBtn_DeactivateMenu">Menu Deactivé</system:String>
+    <system:String x:Key="WPFMenuItem_Idioma">Langue</system:String>
+    <system:String x:Key="WPFMenuItem_Tema">Téme</system:String>
+    <system:String x:Key="WPFBtn_AbrirHijo">Ouvrir Form Fil</system:String>
+    <system:String x:Key="WPFMenuItem_Ingles">Anglais</system:String>
+    <system:String x:Key="WPFMenuItem_Frances">François</system:String>
+    <system:String x:Key="WPFMenuItem_Español">Espagnole</system:String>
+    <system:String x:Key="WPFMenuItem_Catalán">Catalan</system:String>
+    <system:String x:Key="WPFMenuItem_Temas">Temes</system:String>
+    <system:String x:Key="WPFMenuItem_AppTemas">Temes d'Application</system:String>
+    <system:String x:Key="WPFMenuItem_Ayuda">Aider</system:String>
+    <system:String x:Key="WPFChildTitle">Demo du classe du Framework: 'CultureManager' (Fenêtre Fille)</system:String>
+    <system:String x:Key="WPFBtn_TestProgressBar">Test ProgressBar</system:String>
+    <system:String x:Key="WPFTi_Page1">Page 1</system:String>
+    <system:String x:Key="WPFTi_Page2">Page 2</system:String>
+    <system:String x:Key="WPFLbl_Page1">Champ 1:</system:String>
+    <system:String x:Key="WPFChk_Optional">En option</system:String>
+    <system:String x:Key="WPFRBTN_Option_1">Option 1</system:String>
+    <system:String x:Key="WPFRBTN_Option_2">Option 2</system:String>
+    <system:String x:Key="WPFChk_Enabled">État Fenêtre</system:String>
+    <system:String x:Key="WPFBtn_Change">Change</system:String>
+    <system:String x:Key="WPFTN_RootNode">Racine</system:String>
+    <system:String x:Key="WPFTN_SoonNode_1">Fil_1</system:String>
+    <system:String x:Key="WPFTN_SoonNode_2">Fil_2</system:String>
+    <system:String x:Key="WPFTN_ChildNode">Noeud</system:String>
+    <system:String x:Key="WPFLST_ColumnName_1">Colonne_1</system:String>
+    <system:String x:Key="WPFLST_ColumnName_2">Colonne_2</system:String>
+    <system:String x:Key="WPFLST_ColumnName_3">Colonne_3</system:String>
+    <system:String x:Key="WPFLST_ColumnName_4">Colonne_4</system:String>
+    <system:String x:Key="WPFCMB_ComboName">SÉLECTEUR :</system:String>
+    
+</ResourceDictionary>

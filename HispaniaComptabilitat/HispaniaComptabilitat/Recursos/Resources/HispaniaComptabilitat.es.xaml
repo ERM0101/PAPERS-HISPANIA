@@ -1,0 +1,19 @@
+﻿<ResourceDictionary xmlns:system="clr-namespace:System;assembly=mscorlib"
+                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <system:String x:Key="WPFIdioma">Español</system:String>
+    <BitmapImage x:Key="HispaniaComptabilitatIcon">pack://application:,,,/HispaniaComptabilitat;component/recursos/Iconos/HispaniaComptabilitat.ico</BitmapImage>
+    <ImageSource x:Key="WindowsSelector">pack://application:,,,/HispaniaComptabilitat;component/recursos/Imagenes/WindowsSelector.png</ImageSource>
+    <ImageSource x:Key="Start">pack://application:,,,/HispaniaComptabilitat;component/recursos/Imagenes/Start.png</ImageSource>
+    <system:String x:Key="App_Msg000">Error, al iniciar la aplicación.\r\nDetalles: {0}\r\n</system:String>
+    <system:String x:Key="App_Msg001">Error, excepción no controlada.\r\nDetalles: {0}\r\n</system:String>
+    <system:String x:Key="App_Msg002">Error, al cerrar la aplicación.\r\nDetalles: {0}\r\n</system:String>
+    <system:String x:Key="App_Msg003">¿ Desea cerrar la aplicación y continuar con el cierre de sesión de Windows ?</system:String>
+    <system:String x:Key="App_Msg004">Cierre de la aplicación cancelado por el usuario.</system:String>
+    <system:String x:Key="App_Msg005">Error indeterminado al abrir la ventana de validación de credenciales.</system:String>
+    <system:String x:Key="App_Msg006">Entrada en la aplicación cancelada por el usuario.</system:String>
+    <system:String x:Key="App_Msg007">Error, al cambiar la cultura.\r\nDetalles: {0}\r\n</system:String>
+    <system:String x:Key="App_Msg008">Error, al gestionar el cierre de sesión.\r\nDetalles: {0}\r\n</system:String>
+
+</ResourceDictionary>

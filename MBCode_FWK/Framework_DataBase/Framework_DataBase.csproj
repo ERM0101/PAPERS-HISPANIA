@@ -1,0 +1,204 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{A79F13B4-970A-493C-A097-63AA20BBA073}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MBCode.Framework.DataBase</RootNamespace>
+    <AssemblyName>MBCode.Framework.DataBase</AssemblyName>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <IsWebBootstrapper>true</IsWebBootstrapper>
+    <PublishUrl>http://localhost/Framework/</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Web</InstallFrom>
+    <UpdateEnabled>true</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\DLL\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.OracleClient" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.XML" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AbstractClass\CADataTable.cs" />
+    <Compile Include="AbstractClass\CADbDataConnection.cs" />
+    <Compile Include="AbstractClass\CADbDataConnectionEventArgs.cs" />
+    <Compile Include="Utils\BDUtils.cs" />
+    <Compile Include="DataPersist.cs" />
+    <Compile Include="Connections\DbConnectionBase.cs" />
+    <Compile Include="Connections\DbConnectionORACLE.cs" />
+    <Compile Include="Connections\DbConnectionPROGRESS.cs" />
+    <Compile Include="Connections\DbConnectionSQLServer.cs" />
+    <Compile Include="Definitions\DbConstants.cs" />
+    <Compile Include="Definitions\DbEnumerators.cs" />
+    <Compile Include="ExchangeClass\DbDataConnectionORACLEEventArgs.cs" />
+    <Compile Include="ExchangeClass\DbDataConnectionPROGRESSrEventArgs.cs" />
+    <Compile Include="ExchangeClass\DbDataConnectionSQLServerEventArgs.cs" />
+    <Compile Include="Generators\GeneradorObjDAL.cs" />
+    <Compile Include="Generators\GeneradorObjDDL.cs" />
+    <Compile Include="Generators\GeneradorObjDDLInternal.cs" />
+    <Compile Include="Generators\GeneradorObjLN.cs" />
+    <Compile Include="Generators\GeneradorObjTablesDDLInternal.cs" />
+    <Compile Include="Info\DbConnectionInfo.cs" />
+    <Compile Include="Info\DbControllExecution.cs" />
+    <Compile Include="Info\DbKeyApp.cs" />
+    <Compile Include="Interfaces\IDbConnection.cs" />
+    <Compile Include="Interfaces\IDbDataConnection.cs" />
+    <Compile Include="Interfaces\IDbDataConnectionEventArgs.cs" />
+    <Compile Include="ConnectionManager.cs" />
+    <Compile Include="Managers\DbDataConnectionORACLE.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Managers\DbDataConnectionPROGRESS.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Managers\DbDataConnectionSQLServer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Utils\DataSetBD.cs" />
+    <Compile Include="Utils\DataTableBD.cs" />
+    <Compile Include="Utils\Forms\frmMostrarDatosDataSet.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Utils\Forms\frmMostrarDatosDataSet.designer.cs">
+      <DependentUpon>frmMostrarDatosDataSet.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utils\Forms\frmMostrarDatosTabla.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Utils\Forms\frmMostrarDatosTabla.designer.cs">
+      <DependentUpon>frmMostrarDatosTabla.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Utils\Forms\frmMostrarDatosDataSet.en.resx">
+      <DependentUpon>frmMostrarDatosDataSet.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utils\Forms\frmMostrarDatosDataSet.resx">
+      <DependentUpon>frmMostrarDatosDataSet.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utils\Forms\frmMostrarDatosTabla.en.resx">
+      <DependentUpon>frmMostrarDatosTabla.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utils\Forms\frmMostrarDatosTabla.resx">
+      <DependentUpon>frmMostrarDatosTabla.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Recursos\Resources\MBCode.Framework.DataBase.en.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Recursos\Resources\MBCode.Framework.DataBase.fr.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Recursos\Resources\MBCode.Framework.DataBase.es.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Framework\Framework.csproj">
+      <Project>{deeafbb4-b773-4e2d-ac6c-e081d927710f}</Project>
+      <Name>Framework</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Recursos\Resources\MBCode.Framework.DataBase.ca.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

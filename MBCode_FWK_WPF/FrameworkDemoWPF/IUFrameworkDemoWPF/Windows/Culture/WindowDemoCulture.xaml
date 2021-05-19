@@ -1,0 +1,61 @@
+﻿<Window x:Class="MBCode.FrameworkDemoWFP.InterfazUsuario.WindowDemoCulture"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="{DynamicResource WPFTitle}" Height="352" Width="601" Icon="{DynamicResource WindowDemoCultureIcon}" WindowStartupLocation="CenterScreen" DataContext="{Binding}" xmlns:my="clr-namespace:MBCode.Framework.Managers.Culture;assembly=MBCode.Framework">
+    <Window.Resources>
+        <ResourceDictionary >
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MBCode.FrameworkDemoWFP.InterfazUsuario;component/Recursos/Resources/MBCode.FrameworkDemoWFP.InterfazUsuario.ca.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MBCode.Framework;component/Recursos/Themes/MBCode.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="50"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <Grid Height="26" HorizontalAlignment="Stretch" Name="grid1" VerticalAlignment="Top">
+                    <Menu Height="26" HorizontalAlignment="Stretch" Name="menu1" VerticalAlignment="Top" VerticalContentAlignment="Stretch">
+                        <MenuItem Header="{DynamicResource WPFMenuItem_Idioma}" Name="miLanguage" ItemsSource="{Binding}">
+                            <MenuItem Header="{DynamicResource WPFMenuItem_Ingles}" Name="miEnglish"/>
+                            <MenuItem Header="{DynamicResource WPFMenuItem_Frances}" Name="miFrench"/>
+                            <MenuItem Header="{DynamicResource WPFMenuItem_Español}" Name="miSpanish"/>
+                            <MenuItem Header="{DynamicResource WPFMenuItem_Catalán}" Name="miCatalan"/>
+                        </MenuItem>
+                        <MenuItem Header="{DynamicResource WPFMenuItem_Temas}" Name="miTemas">
+                            <MenuItem Header="BureauBlack" Name="miBureauBlack"/>
+                            <MenuItem Header="BureauBlue" Name="miBureauBlue"/>
+                            <MenuItem Header="ExpressionDark" Name="miExpressionDark"/>
+                            <MenuItem Header="ExpressionLight" Name="miExpressionLight"/>
+                            <MenuItem Header="ShinyBlue" Name="miShinyBlue"/>
+                            <MenuItem Header="ShinyRed" Name="miShinyRed"/>
+                            <MenuItem Header="WhistlerBlue" Name="miWhistlerBlue"/>
+                        </MenuItem>
+                        <MenuItem Header="{DynamicResource WPFMenuItem_AppTemas}" Name="miAppTemas">
+                            <MenuItem Header="Hispania Vermell" Name="miHispania_Vermell"/>
+                            <MenuItem Header="Hispania Blau" Name="miHispania_Blau"/>
+                            <MenuItem Header="MBCode" Name="miMBCode"/>
+                            <MenuItem Header="Temp" Name="miTemp"/>
+                        </MenuItem>
+                        <MenuItem Header="{DynamicResource WPFMenuItem_Ayuda}" Name="miHelp"/>
+                    </Menu>
+                </Grid>
+                <Image Height="150" Source="{DynamicResource WindowDemoCulture}" HorizontalAlignment="Left" Margin="185,60,0,0" Name="image1" Stretch="Fill" VerticalAlignment="Top" Width="200" />
+                <RadioButton Content="{DynamicResource WPFMenuItem_Idioma}" Height="16" HorizontalAlignment="Left" Margin="450,130,0,0" Name="rbTest" VerticalAlignment="Top" Width="83" />
+                <RadioButton Content="{DynamicResource WPFMenuItem_Tema}" Height="16" HorizontalAlignment="Left" Margin="450,152,0,0" Name="rbTema" VerticalAlignment="Top" Width="83" />
+            </Grid>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0" Content="{DynamicResource WPFBtn_AbrirHijo}" Height="23" HorizontalAlignment="Center" Name="btnOpenChild" VerticalAlignment="Center" Width="125" />
+                <Button Grid.Column="1" Content="{DynamicResource WPFBtn_DeactivateMenu}" Height="23" HorizontalAlignment="Center" Name="btnDeactivateMenu" VerticalAlignment="Center" Width="125" />
+            </Grid>
+        </Grid>
+        <my:CultureAddInWPF HorizontalAlignment="Left" Margin="476,60,0,0" Name="cultureAddInWPF1" VerticalAlignment="Top" Height="35" Width="57" />
+    </Grid>
+</Window>

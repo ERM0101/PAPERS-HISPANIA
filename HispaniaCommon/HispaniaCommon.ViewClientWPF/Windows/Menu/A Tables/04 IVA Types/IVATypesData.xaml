@@ -1,0 +1,127 @@
+﻿<UserControl x:Class="HispaniaCommon.ViewClientWPF.UserControls.IVATypesData"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:Culture="clr-namespace:MBCode.Framework.Managers.Culture;assembly=MBCode.Framework"
+             mc:Ignorable="d" 
+             d:DesignHeight="320" d:DesignWidth="750" MinWidth="750" MinHeight="320">
+    <UserControl.Resources>
+        <ResourceDictionary >
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/HispaniaCommon.ViewClientWPF;component/Recursos/Resources/HispaniaCommon.ViewClientWPF.es.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/HispaniaCommon.ViewClientWPF;component/Recursos/Themes/HispaniaComptabilitat.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid Name="grdMain" Background="WhiteSmoke">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="30" Name="cdButtons"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="2*"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="50"/>
+                    <ColumnDefinition Width="50"/>
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" x:Name="lblIVATypesIVAType" Content="TIPUS :" Margin="4,4,4,0" FontWeight="Bold" HorizontalAlignment="Center" 
+                       VerticalAlignment="Center" IsEnabled="False"/>
+                <TextBox Grid.Column="1" x:Name="tbIVATypesIVAType" FontWeight="Bold" MaxLength="2" HorizontalContentAlignment="Center" Margin="0,4,4,0"
+                         HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="23" IsReadOnly="True" GotFocus="TBGotFocus"
+                         KeyboardNavigation.TabIndex="0" />
+            </Grid>
+            <Grid Grid.Row="1">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="135"/>
+                                <ColumnDefinition Width="70"/>
+                                <ColumnDefinition Width="185"/>
+                                <ColumnDefinition Width="70"/>
+                                <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" x:Name="lblIVATypesIVAPercent"  Content="PERCENTATGE D'IVA :" Margin="4,4,4,0" FontWeight="Bold" 
+                               HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" IsEnabled="False"/>
+                        <TextBox Grid.Column="1" x:Name="tbIVATypesIVAPercent" Height="23" MaxLength="7" HorizontalContentAlignment="Center"
+                                 HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="0,4,4,0" IsReadOnly="True" GotFocus="TBGotFocus"
+                                 KeyboardNavigation.TabIndex="1" />
+                        <Label Grid.Column="2" x:Name="lblIVATypesSurchargePercent"  Content="PERCENTATGE DE RECÀRREC :" Margin="4,4,4,0" FontWeight="Bold" 
+                               HorizontalAlignment="Center" VerticalAlignment="Center" IsEnabled="False"/>
+                        <TextBox Grid.Column="3" x:Name="tbIVATypesSurchargePercent" Height="23" MaxLength="7" HorizontalAlignment="Stretch" VerticalAlignment="Center" 
+                                 Margin="0,4,4,0" HorizontalContentAlignment="Center" IsReadOnly="True" GotFocus="TBGotFocus" KeyboardNavigation.TabIndex="4"/>
+                        <Button Grid.Column="4" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="5,2,4,0" x:Name="btnClearEndDateIVA" 
+                                Width="260" Height="23" IsEnabled="False" KeyboardNavigation.TabIndex="9">
+                                <StackPanel x:Name="spClearEndDateIVA" Margin="2" Orientation="Horizontal">
+                                    <Image Height="16" Margin="0,0,5,0" Source="{DynamicResource Erase}" Width="16"/>
+                                    <TextBlock x:Name="tbClearEndDateIVA" Text="Esborrar Fi període de validessa de l'IVA" />
+                                </StackPanel>
+                        </Button>
+                    </Grid>
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <GroupBox Grid.Column="0" Margin="5" Name="gbIniIVA" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource NonEditableGroupBox}">
+                            <GroupBox.Header>
+                                <BulletDecorator>
+                                    <BulletDecorator.Bullet>
+                                        <Image Width="16" Source="{DynamicResource CalendarStart}"/>
+                                    </BulletDecorator.Bullet>
+                                    <TextBlock Margin="10,0"><Run Text="Inici perióde de Validesa de l'IVA"/></TextBlock>
+                                </BulletDecorator>
+                            </GroupBox.Header>
+                            <Calendar Name="cldrIVATypes_IVAInitValidityData" SelectionMode="SingleDate" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                      IsHitTestVisible="False" BorderBrush="#FF9B211D" KeyboardNavigation.TabIndex="2"/>
+                        </GroupBox>
+                        <GroupBox Grid.Column="1" Margin="5" Name="gbEndIVA" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource NonEditableGroupBox}">
+                            <GroupBox.Header>
+                                <BulletDecorator>
+                                    <BulletDecorator.Bullet>
+                                        <Image Width="16" Source="{DynamicResource CalendarStop}"/>
+                                    </BulletDecorator.Bullet>
+                                    <TextBlock Margin="10,0"><Run Text="Fi perióde de Validesa de l'IVA"/></TextBlock>
+                                </BulletDecorator>
+                            </GroupBox.Header>
+                            <Calendar Name="cldrIVATypes_IVAEndValidityData" SelectionMode="SingleDate" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                      IsHitTestVisible="False" BorderBrush="#FF9B211D" KeyboardNavigation.TabIndex="3"/>
+                        </GroupBox>
+                    </Grid>
+                </Grid>
+            </Grid>
+        </Grid>
+        <Grid Grid.Row="2" Margin="15,0,15,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="120" Name="cbAcceptButton"/>
+                <ColumnDefinition Width="2*"  Name="cbMiddleColumn"/>
+                <ColumnDefinition Width="120"/>
+                <ColumnDefinition Width="3*"/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,2,0,0" x:Name="btnAccept" Width="115" Height="23"
+                    KeyboardNavigation.TabIndex="7">
+                <StackPanel x:Name="spAccept" Margin="2" Orientation="Horizontal">
+                    <Image Height="16" Margin="0,0,10,0" Source="{DynamicResource Accept}" Width="16"/>
+                    <TextBlock x:Name="tbAccept" Text="Acceptar" />
+                </StackPanel>
+            </Button>
+            <Button Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,2,0,0" x:Name="btnCancel" Width="115" Height="23"
+                    KeyboardNavigation.TabIndex="8">
+                <StackPanel x:Name="spCancel"  Margin="2" Orientation="Horizontal">
+                    <Image Height="16" Margin="0,0,10,0" Source="{DynamicResource Cancel}" Width="16" />
+                    <TextBlock x:Name="tbCancel" Text="Cancel·lar" />
+                </StackPanel>
+            </Button>
+        </Grid>
+        <Culture:CultureAddInUserControlWPF HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0" Height="0" Width="0"/>
+    </Grid>
+</UserControl>

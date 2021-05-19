@@ -1,0 +1,40 @@
+﻿<Window x:Class="MBCode.FrameworkDemoWFP.InterfazUsuario.WindowDemoXML"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Demo de la clase del Framework: 'Manager_XML'" Height="604" Width="867" Icon="{DynamicResource WindowXMLIcon}" WindowStartupLocation="CenterScreen" DataContext="{Binding}" xmlns:my="clr-namespace:MBCode.Framework.Managers.Culture;assembly=MBCode.Framework">
+    <Window.Resources>
+        <ResourceDictionary >
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MBCode.FrameworkDemoWFP.InterfazUsuario;component/Recursos/Resources/MBCode.FrameworkDemoWFP.InterfazUsuario.es.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MBCode.Framework;component/Recursos/Themes/MBCode.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid>
+        <Grid Height="26" HorizontalAlignment="Stretch" Name="grid1" VerticalAlignment="Top">
+            <Menu Height="26" HorizontalAlignment="Stretch" Name="menu1" VerticalAlignment="Top" VerticalContentAlignment="Stretch">
+                <MenuItem Header="Operaciones XML" Name="miXML"/>
+            </Menu>
+        </Grid>
+        <my:CultureAddInWPF HorizontalAlignment="Left" Margin="765,44,0,0" Name="cultureAddInWPF1" VerticalAlignment="Top" Height="35" Width="57" />
+        <GroupBox Header="Operaciones XML" Height="528" HorizontalAlignment="Left" Margin="0,32,0,0" Name="gbCommands" VerticalAlignment="Top" Width="232">
+            <Grid>
+                <Button Content="Realizar Operación" Height="23" HorizontalAlignment="Left" Margin="6,468,0,0" Name="btnDoAction" VerticalAlignment="Top" Width="208" />
+                <RadioButton Content="Create XML" Height="16" HorizontalAlignment="Left" Margin="17,16,0,0" Name="rbCreateXML" VerticalAlignment="Top" Width="140" />
+                <RadioButton Content="Create XML with root node" Height="16" HorizontalAlignment="Left" Margin="17,39,0,0" Name="rbCreateXMLWithRootNode" VerticalAlignment="Top" Width="172" />
+                <Label Content="Nodo : " Height="21" HorizontalAlignment="Left" Margin="10,410,0,0" Name="lblNodo" VerticalAlignment="Top" Visibility="Visible" />
+                <TextBox Background="#FFF7F1A0" Height="23" HorizontalAlignment="Left" Margin="54,408,0,0" Name="tbNodo" VerticalAlignment="Top" Width="160" Visibility="Visible" HorizontalContentAlignment="Center" Foreground="SteelBlue" />
+                <Label Content="Texto : " Height="21" HorizontalAlignment="Left" Margin="10,438,0,0" Name="lblTexto" VerticalAlignment="Top" Visibility="Visible" />
+                <TextBox Background="#FFF7F1A0" Height="23" HorizontalAlignment="Left" Margin="54,436,0,0" Name="tbTexto" VerticalAlignment="Top" Width="160" Visibility="Visible" HorizontalContentAlignment="Center" Foreground="SteelBlue" />
+                <RadioButton Content="Create node without attributes" Height="16" HorizontalAlignment="Left" Margin="17,61,0,0" Name="rbNodeWithoutAttributes" VerticalAlignment="Top" Width="197" />
+                <RadioButton Content="Create node with attributes" Height="16" HorizontalAlignment="Left" Margin="17,83,0,0" Name="rbNodeWithAttributes" VerticalAlignment="Top" Width="197" />
+                <RadioButton Content="Change node value" Height="16" HorizontalAlignment="Left" Margin="17,105,0,0" Name="rbChangeNodeValue" VerticalAlignment="Top" Width="197" />
+                <RadioButton Content="Change node attribute" Height="16" HorizontalAlignment="Left" Margin="17,127,0,0" Name="rbChangeNodeAttribute" VerticalAlignment="Top" Width="197" />
+                <ComboBox Height="23" HorizontalAlignment="Left" Margin="54,379,0,0" Name="cbPattern" VerticalAlignment="Top" Width="160" />
+                <Label Content="Patrón : " Height="21" HorizontalAlignment="Left" Margin="10,381,0,0" Name="lblPattern" VerticalAlignment="Top" Visibility="Visible" />
+                <RadioButton Content="Apply pattern" Height="16" HorizontalAlignment="Left" Margin="17,149,0,0" Name="rbApplyPatterm" VerticalAlignment="Top" Width="197" />
+            </Grid>
+        </GroupBox>
+        <TextBlock HorizontalAlignment="Stretch" Margin="238,34,0,0" Name="tbResult" Text="" VerticalAlignment="Stretch" Foreground="SteelBlue"><TextBlock.Background><RadialGradientBrush><GradientStop Color="#FFF5F5A3" Offset="0" /><GradientStop Color="#FFFFFFC9" Offset="1" /></RadialGradientBrush></TextBlock.Background></TextBlock>
+    </Grid>
+</Window>

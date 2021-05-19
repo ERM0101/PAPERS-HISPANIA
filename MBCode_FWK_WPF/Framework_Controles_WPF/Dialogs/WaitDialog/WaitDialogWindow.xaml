@@ -1,0 +1,102 @@
+﻿<Window x:Class="MBCode.Framework.Controls.WPF.Dialogs.WaitDialogWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:Culture="clr-namespace:MBCode.Framework.Managers.Culture;assembly=MBCode.Framework" 
+        Height="240" Width="486"  WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Loaded="OnLoaded">
+    <Window.Resources>
+        <ResourceDictionary >
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MBCode.Framework.Controls.WPF;component/Recursos/Resources/MBCode.Framework.Controls.WPF.es.xaml" />
+                <!--<ResourceDictionary Source="pack://application:,,,/MBCode.Framework;component/Recursos/Themes/MBCode.xaml" />-->
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid Background="Transparent" Margin="0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0" />
+            <RowDefinition Height="50" />
+            <RowDefinition Height="*" />
+            <RowDefinition x:Name="Row_AdditionalInfoAction" Height="50" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="1" Margin="0">
+            <Border BorderBrush="#BD3476B7" BorderThickness="1" CornerRadius="5" Margin="10,8,10,8">
+                <Border.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="LightSlateGray" Offset="0" />
+                        <GradientStop Color="White" Offset="1" />
+                    </LinearGradientBrush>
+                </Border.Background>
+                <Grid Margin="2" Background="#CDCAD3DB">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="40" />
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0" Content="Wait Window Title" x:Name="lblWaitWindowTitle" Margin="10,-5,10,0"
+						FontSize="16" FontWeight="Medium" Foreground="White"
+						VerticalAlignment="Center" HorizontalAlignment="Stretch" 
+						HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                    <Button x:Name="btnMinimize" Grid.Column="2" Margin="5,0,5,0" Height="25">
+                        <Button.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="LightSlateGray" Offset="0" />
+                                <GradientStop Color="White" Offset="1" />
+                            </LinearGradientBrush>
+                        </Button.Background>
+                        <Image x:Name="imgMinimizeConsole" Height="20" Width="20" Margin="0" 
+							HorizontalAlignment="Center" VerticalAlignment="Center" 
+							Source="{DynamicResource MinimizeConsoleNotSelectedImage}"/>
+                    </Button>
+                </Grid>
+            </Border>
+        </Grid>
+        <Grid Grid.Row="2" Margin="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="22"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="20" />
+                    <ColumnDefinition Width="40" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Image Grid.Column="1" x:Name="imgNormalIcon" Width="32" Height="32" Margin="0" 
+					HorizontalAlignment="Center" VerticalAlignment="Center" Source="{DynamicResource ClockImage}"/>
+                <Image Grid.Column="1" x:Name="imgMsgErrorIcon" Width="32" Height="32" Margin="0"  Visibility="Hidden"
+					HorizontalAlignment="Center" VerticalAlignment="Center" Source="{DynamicResource MsgErrorImage}"/>
+                <Image Grid.Column="1" x:Name="imgMsgWarningIcon" Width="20" Height="20" Margin="0"  Visibility="Hidden"
+					HorizontalAlignment="Center" VerticalAlignment="Center" Source="{DynamicResource MsgWarningImage}"/>
+                <Image Grid.Column="1" x:Name="imgMsgInformationIcon" Width="20" Height="20" Margin="0"  Visibility="Hidden"
+					HorizontalAlignment="Center" VerticalAlignment="Center" Source="{DynamicResource MsgInformationImage}"/>
+                <Image Grid.Column="1" x:Name="imgMsgNotificationIcon" Width="20" Height="20" Margin="0" Visibility="Hidden"
+					HorizontalAlignment="Center" VerticalAlignment="Center" Source="{DynamicResource MsgImportantWarningImage}"/>
+                <Border Grid.Column="2" BorderBrush="#FF828790" BorderThickness="1" CornerRadius="5" Margin="5, 5, 25, 4">
+                    <Border.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="White" Offset="0" />
+                            <GradientStop Color="#CDCAD3DB" Offset="1" />
+                        </LinearGradientBrush>
+                    </Border.Background>
+                    <TextBlock x:Name="tbAction" Margin="8, 5, 8, 5" Text="" TextAlignment="Justify" TextWrapping="Wrap" 
+						Background="Transparent" Foreground="#FF35516F" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+                </Border>
+            </Grid>
+            <ProgressBar Grid.Row="1" x:Name="pbElapsedTime" Background="#CDCAD3DB" BorderBrush="#FF828790"
+				HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="12,2,12,2" Height="12" />
+        </Grid>
+        <Grid Grid.Row="3" Margin="0" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="125" />
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="2" x:Name="btnCancel" Height="23" Width="100" Margin="2,2,2,0" IsCancel="True"
+				HorizontalAlignment="Left" VerticalAlignment="Center"  >
+                <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0" Orientation="Horizontal">
+                    <Image x:Name="imgBtnEditAgent" Height="16" Margin="0,0,4,0" Source="{DynamicResource CancelImage}" Width="16" />
+                    <TextBlock x:Name="lblBtnEditAgent" Text="{DynamicResource CancelText}" />
+                </StackPanel>
+            </Button>
+        </Grid>
+        <Culture:CultureAddInWPF HorizontalAlignment="Left" Height="100" Margin="35,60,0,0" Grid.Row="2" Grid.RowSpan="2" VerticalAlignment="Top" Width="100"/>
+    </Grid>
+</Window>
