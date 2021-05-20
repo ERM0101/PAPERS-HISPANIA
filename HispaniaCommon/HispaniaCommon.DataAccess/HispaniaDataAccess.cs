@@ -74,7 +74,8 @@ namespace HispaniaCommon.DataAccess
             {
                 using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
                 {
-                    using (SqlConnection conn = new SqlConnection(db.Database.Connection.ConnectionString + ";Password=Phispania2"))
+                    //using (SqlConnection conn = new SqlConnection(db.Database.Connection.ConnectionString + ";Password=Phispania2"))
+                    using (SqlConnection conn = new SqlConnection(db.Database.Connection.ConnectionString))
                     {
                         SqlCommand cmd = new SqlCommand(QuerySQL, conn);
                         conn.Open();
@@ -120,24 +121,25 @@ namespace HispaniaCommon.DataAccess
                     switch (SystemTable)
                     {
                         case SystemTables.Customer:
-                             IsEmpty = (db.Customers.Count() == 0); 
-                             break;
+                            IsEmpty = (db.Customers.Count() == 0);
+                            break;
                         case SystemTables.CustomerOrder:
-                             IsEmpty = (db.CustomerOrders.Count() == 0);
-                             break;
+                            IsEmpty = (db.CustomerOrders.Count() == 0);
+                            break;
                         case SystemTables.CustomerOrderMovement:
-                             IsEmpty = (db.CustomerOrderMovements.Count() == 0);
-                             break;
+                            IsEmpty = (db.CustomerOrderMovements.Count() == 0);
+                            break;
                         case SystemTables.Bill:
-                             IsEmpty = (db.Bills.Count() == 0);
-                             break;
+                            IsEmpty = (db.Bills.Count() == 0);
+                            break;
                         //case SystemTables.IssuanceSupplierOrder: // ToDo: Activate when IssuanceSupplierOrders will be implemented.
                         //     IsEmpty = (db.IssuanceSupplierOrders.Count() == 0);
                         //     break;
                         default:
-                             throw new Exception(string.Format(MsgErr, "Taula no reconeguda."));
+                            throw new Exception(string.Format(MsgErr, "Taula no reconeguda."));
                     }
-                    using (SqlConnection conn = new SqlConnection(db.Database.Connection.ConnectionString + ";Password=Phispania2"))
+                    //using (SqlConnection conn = new SqlConnection(db.Database.Connection.ConnectionString + ";Password=Phispania2"))
+                    using (SqlConnection conn = new SqlConnection(db.Database.Connection.ConnectionString))
                     {
                         conn.Open();
                         try
@@ -172,9 +174,9 @@ namespace HispaniaCommon.DataAccess
             switch (SystemTable)
             {
                 case SystemTables.Bill:
-                     break;
+                    break;
                 default:
-                     throw new Exception(string.Format(MsgErr, "Taula no reconeguda."));
+                    throw new Exception(string.Format(MsgErr, "Taula no reconeguda."));
             }
             bool FinishedWithErrors = false;
             string ExcepErrMsg = string.Empty;
@@ -187,39 +189,40 @@ namespace HispaniaCommon.DataAccess
                         try
                         {
                             //  Determina que cal fer el reseteig de la taula.
-                                bool IsResetNeeded = SystemTable == SystemTables.Bill;
+                            bool IsResetNeeded = SystemTable == SystemTables.Bill;
                             //  Si es necesari resetja el Id de la taula.
-                                if (IsResetNeeded)
+                            if (IsResetNeeded)
+                            {
+                                //using (SqlConnection conn = new SqlConnection(db.Database.Connection.ConnectionString + ";Password=Phispania2"))
+                                using (SqlConnection conn = new SqlConnection(db.Database.Connection.ConnectionString))
                                 {
-                                    using (SqlConnection conn = new SqlConnection(db.Database.Connection.ConnectionString + ";Password=Phispania2"))
+                                    conn.Open();
+                                    try
                                     {
-                                        conn.Open();
-                                        try
+                                        string query = string.Format("DBCC CHECKIDENT([{0}], RESEED, 0);", TableName);
+                                        using (SqlCommand command = new SqlCommand(query, conn))
                                         {
-                                            string query = string.Format("DBCC CHECKIDENT([{0}], RESEED, 0);", TableName);
-                                            using (SqlCommand command = new SqlCommand(query, conn))
-                                            {
-                                                Convert.ToInt32(command.ExecuteNonQuery());
-                                            }
-                                            conn.Close();
+                                            Convert.ToInt32(command.ExecuteNonQuery());
                                         }
-                                        catch (Exception ex)
-                                        {
-                                            conn.Close();
-                                            throw new Exception(string.Format(MsgErr, MsgManager.ExcepMsg(ex)));
-                                        }
+                                        conn.Close();
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        conn.Close();
+                                        throw new Exception(string.Format(MsgErr, MsgManager.ExcepMsg(ex)));
                                     }
                                 }
+                            }
                             //  Si la taula és la de Factures actualitza el valor del camp Num_Factura a paràmetres generals.
-                                if (SystemTable == SystemTables.Bill)
-                                {
-                                    HispaniaCompData.Parameter ParameterToModify = db.Parameters.ToList().First<HispaniaCompData.Parameter>();
-                                    ParameterToModify.Customer_NumBill = 1;
-                                    db.Entry(ParameterToModify).State = EntityState.Modified;
-                                    db.SaveChanges();
-                                }
+                            if (SystemTable == SystemTables.Bill)
+                            {
+                                HispaniaCompData.Parameter ParameterToModify = db.Parameters.ToList().First<HispaniaCompData.Parameter>();
+                                ParameterToModify.Customer_NumBill = 1;
+                                db.Entry(ParameterToModify).State = EntityState.Modified;
+                                db.SaveChanges();
+                            }
                             //  Accept the operations realised.
-                                dbTransaction.Commit();
+                            dbTransaction.Commit();
                         }
                         catch (Exception ex)
                         {
@@ -1014,14 +1017,14 @@ namespace HispaniaCommon.DataAccess
                         try
                         {
                             //  Save Customer information in Database
-                                HispaniaCompData.Customer CustomerToSave = db.Customers.Add(customer);
-                                db.SaveChanges();
-                                customer.Customer_Id = CustomerToSave.Customer_Id;
+                            HispaniaCompData.Customer CustomerToSave = db.Customers.Add(customer);
+                            db.SaveChanges();
+                            customer.Customer_Id = CustomerToSave.Customer_Id;
                             //  Save Related Customers information in Database
-                                db.RelatedCustomers.AddRange(relatedCustomers);
-                                db.SaveChanges();
+                            db.RelatedCustomers.AddRange(relatedCustomers);
+                            db.SaveChanges();
                             //  Accept the operations realised.
-                                dbTransaction.Commit();
+                            dbTransaction.Commit();
                         }
                         catch (Exception ex)
                         {
@@ -1051,16 +1054,16 @@ namespace HispaniaCommon.DataAccess
                         try
                         {
                             //  Save Customer information in Database
-                                db.Entry(customer).State = EntityState.Modified;
-                                db.SaveChanges();
+                            db.Entry(customer).State = EntityState.Modified;
+                            db.SaveChanges();
                             //  Remove Old Related Customers
-                                db.RelatedCustomers.RemoveRange(db.RelatedCustomers.Where(d => (d.Customer_Id == customer.Customer_Id)).ToList());
-                                db.SaveChanges();
+                            db.RelatedCustomers.RemoveRange(db.RelatedCustomers.Where(d => (d.Customer_Id == customer.Customer_Id)).ToList());
+                            db.SaveChanges();
                             //  Save Related Customers information in Database
-                                db.RelatedCustomers.AddRange(relatedCustomers);
-                                db.SaveChanges();
+                            db.RelatedCustomers.AddRange(relatedCustomers);
+                            db.SaveChanges();
                             //  Accept the operations realised.
-                                dbTransaction.Commit();
+                            dbTransaction.Commit();
                         }
                         catch (Exception ex)
                         {
@@ -1090,14 +1093,14 @@ namespace HispaniaCommon.DataAccess
                         try
                         {
                             //  Remove Old Related Customers
-                                db.RelatedCustomers.RemoveRange(db.RelatedCustomers.Where(d => (d.Customer_Id == customer.Customer_Id)).ToList());
-                                db.SaveChanges();
+                            db.RelatedCustomers.RemoveRange(db.RelatedCustomers.Where(d => (d.Customer_Id == customer.Customer_Id)).ToList());
+                            db.SaveChanges();
                             //  Delete Customer information in Database
-                                HispaniaCompData.Customer CustomerToDelete = db.Customers.Find(customer.Customer_Id);
-                                db.Customers.Remove(CustomerToDelete);
-                                db.SaveChanges();
+                            HispaniaCompData.Customer CustomerToDelete = db.Customers.Find(customer.Customer_Id);
+                            db.Customers.Remove(CustomerToDelete);
+                            db.SaveChanges();
                             //  Accept the operations realised.
-                                dbTransaction.Commit();
+                            dbTransaction.Commit();
                         }
                         catch (Exception ex)
                         {
@@ -1442,7 +1445,7 @@ namespace HispaniaCommon.DataAccess
         }
 
         [OperationContract]
-        public void UpdateBill(HispaniaCompData.Bill Bill, List<HispaniaCompData.Receipt> Receipts) 
+        public void UpdateBill(HispaniaCompData.Bill Bill, List<HispaniaCompData.Receipt> Receipts)
         {
             string ErrMsg;
             try
@@ -1454,17 +1457,17 @@ namespace HispaniaCommon.DataAccess
                         try
                         {
                             //  Save Bill information in Database
-                                db.Entry(Bill).State = EntityState.Modified;
-                                db.SaveChanges();
+                            db.Entry(Bill).State = EntityState.Modified;
+                            db.SaveChanges();
                             //  Save Receipts information in Database
-                                foreach (HispaniaCompData.Receipt Receipt in Receipts)
-                                {
-                                    if (GetReceipt(Receipt.Receipt_Id) is null) db.Receipts.Add(Receipt);
-                                    else db.Entry(Receipt).State = EntityState.Modified;
-                                    db.SaveChanges();
-                                }
+                            foreach (HispaniaCompData.Receipt Receipt in Receipts)
+                            {
+                                if (GetReceipt(Receipt.Receipt_Id) is null) db.Receipts.Add(Receipt);
+                                else db.Entry(Receipt).State = EntityState.Modified;
+                                db.SaveChanges();
+                            }
                             //  Accept the operations realised.
-                                dbTransaction.Commit();
+                            dbTransaction.Commit();
                         }
                         catch (Exception ex)
                         {
@@ -1546,7 +1549,7 @@ namespace HispaniaCommon.DataAccess
                 throw new Exception(MsgError, ex);
             }
         }
-        
+
         [OperationContract]
         public int GetLastBill(decimal YearQuery)
         {
@@ -2354,9 +2357,9 @@ namespace HispaniaCommon.DataAccess
                         try
                         {
                             //  Create Bad Debt and Bad Debt Movements records.
-                                CreateBadDebt(db, badDebt, badDebtMovementsToCreate);
+                            CreateBadDebt(db, badDebt, badDebtMovementsToCreate);
                             //  Accept the operations realised.
-                                dbTransaction.Commit();
+                            dbTransaction.Commit();
                         }
                         catch (Exception ex)
                         {
@@ -2368,7 +2371,7 @@ namespace HispaniaCommon.DataAccess
             }
             catch (DataException ex)
             {
-                string MsgError = string.Format("No es pot guardar l'impagat '{0}'\r\n{1}.", badDebt.BadDebt_Id, 
+                string MsgError = string.Format("No es pot guardar l'impagat '{0}'\r\n{1}.", badDebt.BadDebt_Id,
                                                 "Intentiu de nou, i si el problema persisteix consulti l'administrador");
                 throw new Exception(MsgError, ex);
             }
@@ -2384,26 +2387,26 @@ namespace HispaniaCommon.DataAccess
                                    List<HispaniaCompData.BadDebtMovement> badDebtMovementsToCreate, bool Update = false)
         {
             //  Create the register for the new Bad Debt.
-                HispaniaCompData.BadDebt BadDebtToSave = db.BadDebts.Add(badDebt);
-                db.SaveChanges();
-                badDebt.BadDebt_Id = BadDebtToSave.BadDebt_Id;
+            HispaniaCompData.BadDebt BadDebtToSave = db.BadDebts.Add(badDebt);
+            db.SaveChanges();
+            badDebt.BadDebt_Id = BadDebtToSave.BadDebt_Id;
             //  In this case it's needed to create the Bad Debt Movements (payements) records.
-                foreach (HispaniaCompData.BadDebtMovement payement in badDebtMovementsToCreate)
-                {
-                    payement.BadDebt_Id = badDebt.BadDebt_Id;
-                    db.BadDebtMovements.Add(payement);
-                    db.SaveChanges();
-                }
+            foreach (HispaniaCompData.BadDebtMovement payement in badDebtMovementsToCreate)
+            {
+                payement.BadDebt_Id = badDebt.BadDebt_Id;
+                db.BadDebtMovements.Add(payement);
+                db.SaveChanges();
+            }
             //  Update Customer Bad Debt information.
-                if (!Update)
-                {
-                    HispaniaCompData.Bill bill = db.Bills.Find(new object[] { badDebt.Bill_Id, badDebt.Bill_Year });
-                    HispaniaCompData.Customer customer = db.Customers.Find(bill.Customer_Id);
-                    customer.BillingData_NumUnpaid++;
-                    customer.BillingData_Unpaid += badDebt.Amount_Pending;
-                    db.Entry(customer).State = EntityState.Modified;
-                    db.SaveChanges();
-                }
+            if (!Update)
+            {
+                HispaniaCompData.Bill bill = db.Bills.Find(new object[] { badDebt.Bill_Id, badDebt.Bill_Year });
+                HispaniaCompData.Customer customer = db.Customers.Find(bill.Customer_Id);
+                customer.BillingData_NumUnpaid++;
+                customer.BillingData_Unpaid += badDebt.Amount_Pending;
+                db.Entry(customer).State = EntityState.Modified;
+                db.SaveChanges();
+            }
         }
 
         [OperationContract]
@@ -2441,17 +2444,17 @@ namespace HispaniaCommon.DataAccess
                         try
                         {
                             //  Delete previous Bad Debt Movement records.
-                                DeleteBadDebt(db, badDebt, true);
+                            DeleteBadDebt(db, badDebt, true);
                             //  Create Bad Debt and Bad Debt Movements records.
-                                CreateBadDebt(db, badDebt, badDebtMovements, true);
+                            CreateBadDebt(db, badDebt, badDebtMovements, true);
                             //  Update Customer Information
-                                HispaniaCompData.Bill bill = db.Bills.Find(new object[] { badDebt.Bill_Id, badDebt.Bill_Year });
-                                HispaniaCompData.Customer customer = db.Customers.Find(bill.Customer_Id);
-                                customer.BillingData_Unpaid = customer.BillingData_Unpaid - badDebtOld.Amount_Pending + badDebt.Amount_Pending;
-                                db.Entry(customer).State = EntityState.Modified;
-                                db.SaveChanges();
+                            HispaniaCompData.Bill bill = db.Bills.Find(new object[] { badDebt.Bill_Id, badDebt.Bill_Year });
+                            HispaniaCompData.Customer customer = db.Customers.Find(bill.Customer_Id);
+                            customer.BillingData_Unpaid = customer.BillingData_Unpaid - badDebtOld.Amount_Pending + badDebt.Amount_Pending;
+                            db.Entry(customer).State = EntityState.Modified;
+                            db.SaveChanges();
                             //  Accept the operations realised.
-                                dbTransaction.Commit();
+                            dbTransaction.Commit();
                         }
                         catch (Exception ex)
                         {
@@ -2481,9 +2484,9 @@ namespace HispaniaCommon.DataAccess
                         try
                         {
                             //  Delete Bad Debt and Bad Debt Movements records.
-                                DeleteBadDebt(db, badDebt);
+                            DeleteBadDebt(db, badDebt);
                             //  Accept the operations realised.
-                                dbTransaction.Commit();
+                            dbTransaction.Commit();
                         }
                         catch (Exception ex)
                         {
@@ -2496,7 +2499,7 @@ namespace HispaniaCommon.DataAccess
             catch (DataException ex)
             {
                 string MsgError = string.Format("No es pot esborrar l'impagat '{0}'\r\n{1}.",
-                                                badDebt.BadDebt_Id, 
+                                                badDebt.BadDebt_Id,
                                                 "Intentiu de nou, i si el problema persisteix consulti l'administrador");
                 throw new Exception(MsgError, ex);
             }
@@ -2510,24 +2513,24 @@ namespace HispaniaCommon.DataAccess
         private void DeleteBadDebt(HispaniaCompData.HispaniaComptabilitatEntities db, HispaniaCompData.BadDebt badDebt, bool Update = false)
         {
             //  Update Customer Bad Debt information.
-                if (!Update)
-                {
-                    HispaniaCompData.Bill bill = db.Bills.Find(new object[] { badDebt.Bill_Id, badDebt.Bill_Year });
-                    HispaniaCompData.Customer customer = db.Customers.Find(bill.Customer_Id);
-                    customer.BillingData_NumUnpaid--;
-                    customer.BillingData_Unpaid -= badDebt.Amount_Pending;
-                    db.Entry(customer).State = EntityState.Modified;
-                    db.SaveChanges();
-                }
+            if (!Update)
+            {
+                HispaniaCompData.Bill bill = db.Bills.Find(new object[] { badDebt.Bill_Id, badDebt.Bill_Year });
+                HispaniaCompData.Customer customer = db.Customers.Find(bill.Customer_Id);
+                customer.BillingData_NumUnpaid--;
+                customer.BillingData_Unpaid -= badDebt.Amount_Pending;
+                db.Entry(customer).State = EntityState.Modified;
+                db.SaveChanges();
+            }
             //  In this case it's needed to create the Bad Debt Movements (payements) records.
-                int BadDebt_Id_To_Operate = badDebt.BadDebt_Id;
-                List<HispaniaCompData.BadDebtMovement> BadDebMovementstToDelete = db.BadDebtMovements.Where(bdm => (bdm.BadDebt_Id == BadDebt_Id_To_Operate)).ToList(); 
-                db.BadDebtMovements.RemoveRange(BadDebMovementstToDelete);
-                db.SaveChanges();
+            int BadDebt_Id_To_Operate = badDebt.BadDebt_Id;
+            List<HispaniaCompData.BadDebtMovement> BadDebMovementstToDelete = db.BadDebtMovements.Where(bdm => (bdm.BadDebt_Id == BadDebt_Id_To_Operate)).ToList();
+            db.BadDebtMovements.RemoveRange(BadDebMovementstToDelete);
+            db.SaveChanges();
             //  Delete the register of the Bad Debt.
-                HispaniaCompData.BadDebt BadDebtToDelete = db.BadDebts.Find(BadDebt_Id_To_Operate);
-                db.BadDebts.Remove(BadDebtToDelete);
-                db.SaveChanges();
+            HispaniaCompData.BadDebt BadDebtToDelete = db.BadDebts.Find(BadDebt_Id_To_Operate);
+            db.BadDebts.Remove(BadDebtToDelete);
+            db.SaveChanges();
         }
 
         [OperationContract]
@@ -2565,7 +2568,7 @@ namespace HispaniaCommon.DataAccess
                                                 "Intentiu de nou, i si el problema persisteix consulti l'administrador");
                 throw new Exception(MsgError, ex);
             }
-        }        
+        }
 
         #endregion
 
@@ -2652,7 +2655,7 @@ namespace HispaniaCommon.DataAccess
             }
             catch (DataException ex)
             {
-                string MsgError = string.Format("No es pot trobar el pagament '{0}' de l'impagat del client.\r\n{1}.", 
+                string MsgError = string.Format("No es pot trobar el pagament '{0}' de l'impagat del client.\r\n{1}.",
                                                 BadDebtMovement_Id, "Intentiu de nou, i si el problema persisteix consulti l'administrador");
                 throw new Exception(MsgError, ex);
             }
@@ -2804,38 +2807,38 @@ namespace HispaniaCommon.DataAccess
                         try
                         {
                             //  Create the register for the new Customer Order
-                                HispaniaCompData.CustomerOrder CustomerOrderToSave = db.CustomerOrders.Add(customerOrder);
-                                db.SaveChanges();
-                                customerOrder.CustomerOrder_Id = CustomerOrderToSave.CustomerOrder_Id;
+                            HispaniaCompData.CustomerOrder CustomerOrderToSave = db.CustomerOrders.Add(customerOrder);
+                            db.SaveChanges();
+                            customerOrder.CustomerOrder_Id = CustomerOrderToSave.CustomerOrder_Id;
                             //  In this case it's only possible creation movements (DatabaseOp = CREATE)
-                                HispaniaCompData.Good MovementGood;
-                                foreach (HispaniaCompData.CustomerOrderMovement movement in movements[DataBaseOp.CREATE])
+                            HispaniaCompData.Good MovementGood;
+                            foreach (HispaniaCompData.CustomerOrderMovement movement in movements[DataBaseOp.CREATE])
+                            {
+                                movement.CustomerOrder_Id = customerOrder.CustomerOrder_Id;
+                                db.CustomerOrderMovements.Add(movement);
+                                db.SaveChanges();
+                                if (movement.According)
                                 {
-                                    movement.CustomerOrder_Id = customerOrder.CustomerOrder_Id;
-                                    db.CustomerOrderMovements.Add(movement);
+                                    MovementGood = db.Goods.Find(movement.Good_Id);
+                                    MovementGood.Billing_Unit_Available -= movement.Unit_Billing;
+                                    MovementGood.Shipping_Unit_Available -= movement.Unit_Shipping;
+                                    MovementGood.Billing_Unit_Departure += movement.Unit_Billing;
+                                    MovementGood.Shipping_Unit_Departure += movement.Unit_Shipping;
+                                    db.Entry(MovementGood).State = EntityState.Modified;
                                     db.SaveChanges();
-                                    if (movement.According)
-                                    {
-                                        MovementGood = db.Goods.Find(movement.Good_Id);
-                                        MovementGood.Billing_Unit_Available -= movement.Unit_Billing;
-                                        MovementGood.Shipping_Unit_Available -= movement.Unit_Shipping;
-                                        MovementGood.Billing_Unit_Departure += movement.Unit_Billing;
-                                        MovementGood.Shipping_Unit_Departure += movement.Unit_Shipping;
-                                        db.Entry(MovementGood).State = EntityState.Modified;
-                                        db.SaveChanges();
-                                    }
                                 }
+                            }
                             //  Accept the operations realised.
-                                dbTransaction.Commit();
+                            dbTransaction.Commit();
                         }
                         catch (Exception ex)
                         {
                             dbTransaction.Rollback();
-                            ErrMsg = "No es pot guardar la nova Comanda de Client\r\n" + 
+                            ErrMsg = "No es pot guardar la nova Comanda de Client\r\n" +
                                      "Intentiu de nou, i si el problema persisteix consulti l'administrador";
                             throw new Exception(ErrMsg, ex);
                         }
-                    } 
+                    }
                 }
             }
             catch (DataException ex)
@@ -2885,32 +2888,32 @@ namespace HispaniaCommon.DataAccess
                         try
                         {
                             //  Update The source Customer Order data.
-                                db.Entry(CustomerOrder).State = EntityState.Modified;
-                                db.SaveChanges();
+                            db.Entry(CustomerOrder).State = EntityState.Modified;
+                            db.SaveChanges();
                             //  Remove movements non according from the original CustomerOrder.
-                                HispaniaCompData.CustomerOrderMovement movementToDelete;
-                                foreach (HispaniaCompData.CustomerOrderMovement movement in movements_non_acoording)
-                                {
-                                    movementToDelete = db.CustomerOrderMovements.Find(movement.CustomerOrderMovement_Id);
-                                    db.CustomerOrderMovements.Remove(movementToDelete);
-                                    db.SaveChanges();
-                                }
-                            //  Create the register for the new Customer Order
-                                HispaniaCompData.CustomerOrder CustomerOrderToSave = db.CustomerOrders.Add(NewCustomerOrder);
+                            HispaniaCompData.CustomerOrderMovement movementToDelete;
+                            foreach (HispaniaCompData.CustomerOrderMovement movement in movements_non_acoording)
+                            {
+                                movementToDelete = db.CustomerOrderMovements.Find(movement.CustomerOrderMovement_Id);
+                                db.CustomerOrderMovements.Remove(movementToDelete);
                                 db.SaveChanges();
-                                NewCustomerOrder.CustomerOrder_Id = CustomerOrderToSave.CustomerOrder_Id;
+                            }
+                            //  Create the register for the new Customer Order
+                            HispaniaCompData.CustomerOrder CustomerOrderToSave = db.CustomerOrders.Add(NewCustomerOrder);
+                            db.SaveChanges();
+                            NewCustomerOrder.CustomerOrder_Id = CustomerOrderToSave.CustomerOrder_Id;
                             //  In this case it's only possible creation movements (DatabaseOp = CREATE)
-                                foreach (HispaniaCompData.CustomerOrderMovement movement in movements_non_acoording)
-                                {
-                                    movement.CustomerOrder_Id = NewCustomerOrder.CustomerOrder_Id;
-                                    db.CustomerOrderMovements.Add(movement);
-                                    db.SaveChanges();
-                                }
+                            foreach (HispaniaCompData.CustomerOrderMovement movement in movements_non_acoording)
+                            {
+                                movement.CustomerOrder_Id = NewCustomerOrder.CustomerOrder_Id;
+                                db.CustomerOrderMovements.Add(movement);
+                                db.SaveChanges();
+                            }
                             //  Accept the operations realised.
-                                dbTransaction.Commit();
+                            dbTransaction.Commit();
                             //  Indicate correct ends of the operation.
-                                ErrMsg = string.Empty;
-                                return true;
+                            ErrMsg = string.Empty;
+                            return true;
                         }
                         catch (Exception ex)
                         {
@@ -2919,7 +2922,7 @@ namespace HispaniaCommon.DataAccess
                                                    "Intentiu de nou, i si el problema persisteix consulti l'administrador");
                             throw new Exception(ErrMsg, ex);
                         }
-                    } 
+                    }
                 }
             }
             catch (DataException ex)
@@ -2961,79 +2964,80 @@ namespace HispaniaCommon.DataAccess
             try
             {
                 //  Exit from this function if Customer Order does not have associated a Delivery Note.
-                    if ((customerOrder.DeliveryNote_Id is null) || (customerOrder.DeliveryNote_Year is null)) // Delivery Note exist.
-                    {
-                        throw new Exception("Error, no hi ha cap Albarà associat a la Comanda de Client número: {0}.");
-                    }
+                if ((customerOrder.DeliveryNote_Id is null) || (customerOrder.DeliveryNote_Year is null)) // Delivery Note exist.
+                {
+                    throw new Exception("Error, no hi ha cap Albarà associat a la Comanda de Client número: {0}.");
+                }
                 //  Manage Customer Order information if Delivery Note is defined.
-                    using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                {
+                    using (var dbTransaction = db.Database.BeginTransaction())
                     {
-                        using (var dbTransaction = db.Database.BeginTransaction())
+                        try
                         {
-                            try
+                            //  Variables
+                            int CO_DeliveryNote_Id = (int)customerOrder.DeliveryNote_Id;
+                            decimal CO_DeliveryNote_Year = (decimal)customerOrder.DeliveryNote_Year;
+                            //  Get Delivery Note for Update
+                            HispaniaCompData.DeliveryNote DeliveryNote = db.DeliveryNotes.Find(new object[] { CO_DeliveryNote_Id, CO_DeliveryNote_Year });
+                            //  Step 1 : Determine if Date was changed of year
+                            if (DeliveryNote.Year == newDeliveryNoteDate.Year)
                             {
-                                //  Variables
-                                    int CO_DeliveryNote_Id = (int) customerOrder.DeliveryNote_Id;
-                                    decimal CO_DeliveryNote_Year = (decimal) customerOrder.DeliveryNote_Year;
-                                //  Get Delivery Note for Update
-                                    HispaniaCompData.DeliveryNote DeliveryNote = db.DeliveryNotes.Find(new object[] { CO_DeliveryNote_Id, CO_DeliveryNote_Year });
-                                //  Step 1 : Determine if Date was changed of year
-                                    if (DeliveryNote.Year == newDeliveryNoteDate.Year)
-                                    {
-                                        //  Step 1.1 : Update DeliveryNote Date in Customer Order.
-                                            customerOrder.DeliveryNote_Date = newDeliveryNoteDate;
-                                            UpdateCustomerOrder(db, customerOrder);
-                                        //  Step 1.2 : Update DeliveryNote Date.
-                                            DeliveryNote.Date = newDeliveryNoteDate;
-                                            UpdateDeliveryNote(db, DeliveryNote);
-                                    }
-                                    else
-                                    {
-                                        //  Step 1.1 : Create a new Delivery Note.
-                                            using (SqlConnection conn = new SqlConnection(db.Database.Connection.ConnectionString + ";Password=Phispania2"))
-                                            {
-                                                conn.Open();
-                                                try
-                                                {
-                                                    string Command = string.Format("INSERT INTO [COMPTABILITAT].[dbo].[DeliveryNote] (DeliveryNote_Id, [Year], [Date], FileNamePDF) " +
-                                                                                    "VALUES ({0}, '{1}', '{2}', '{3}')",
-                                                                                    CO_DeliveryNote_Id, newDeliveryNoteDate.Year, newDeliveryNoteDate, DeliveryNote.FileNamePDF);
-                                                    SqlCommand command_0 = new SqlCommand("SET DATEFORMAT dmy", conn);
-                                                    command_0.ExecuteNonQuery(); 
-                                                    SqlCommand command_1 = new SqlCommand("SET IDENTITY_INSERT [COMPTABILITAT].[dbo].[DeliveryNote] ON", conn);
-                                                    command_1.ExecuteNonQuery(); 
-                                                    SqlCommand command_2 = new SqlCommand(Command, conn);
-                                                    command_2.ExecuteNonQuery(); 
-                                                    SqlCommand command_3 = new SqlCommand("SET IDENTITY_INSERT [COMPTABILITAT].[dbo].[DeliveryNote] OFF", conn);
-                                                    command_3.ExecuteNonQuery(); 
-                                                }
-                                                catch (Exception ex)
-                                                {
-                                                    conn.Close();
-                                                    throw new Exception(MsgManager.ExcepMsg(ex));
-                                                }
-                                            }
-                                        //  Step 1.2 : Update DeliveryNote Information in Customer Order.
-                                            customerOrder.DeliveryNote_Id = CO_DeliveryNote_Id;
-                                            customerOrder.DeliveryNote_Year = newDeliveryNoteDate.Year;
-                                            customerOrder.DeliveryNote_Date = newDeliveryNoteDate;
-                                            UpdateCustomerOrder(db, customerOrder);
-                                        //  Step 1.3 : Remove old delivery Note.
-                                            db.DeliveryNotes.Remove(DeliveryNote);
-                                            db.SaveChanges();
-                                    }
-                                //  Accept the operations realised.
-                                    dbTransaction.Commit();
+                                //  Step 1.1 : Update DeliveryNote Date in Customer Order.
+                                customerOrder.DeliveryNote_Date = newDeliveryNoteDate;
+                                UpdateCustomerOrder(db, customerOrder);
+                                //  Step 1.2 : Update DeliveryNote Date.
+                                DeliveryNote.Date = newDeliveryNoteDate;
+                                UpdateDeliveryNote(db, DeliveryNote);
                             }
-                            catch (Exception ex)
+                            else
                             {
-                                dbTransaction.Rollback();
-                                ErrMsg = string.Format("Error, no es pot canviar la data de l'Albarà número '{0}'\r\n{1}.", customerOrder.CustomerOrder_Id,
-                                                       "Intentiu de nou, i si el problema persisteix consulti l'administrador");
-                                throw new Exception(ErrMsg, ex);
+                                //  Step 1.1 : Create a new Delivery Note.
+                                //using (SqlConnection conn = new SqlConnection(db.Database.Connection.ConnectionString + ";Password=Phispania2"))
+                                using (SqlConnection conn = new SqlConnection(db.Database.Connection.ConnectionString))
+                                {
+                                    conn.Open();
+                                    try
+                                    {
+                                        string Command = string.Format("INSERT INTO [COMPTABILITAT].[dbo].[DeliveryNote] (DeliveryNote_Id, [Year], [Date], FileNamePDF) " +
+                                                                        "VALUES ({0}, '{1}', '{2}', '{3}')",
+                                                                        CO_DeliveryNote_Id, newDeliveryNoteDate.Year, newDeliveryNoteDate, DeliveryNote.FileNamePDF);
+                                        SqlCommand command_0 = new SqlCommand("SET DATEFORMAT dmy", conn);
+                                        command_0.ExecuteNonQuery();
+                                        SqlCommand command_1 = new SqlCommand("SET IDENTITY_INSERT [COMPTABILITAT].[dbo].[DeliveryNote] ON", conn);
+                                        command_1.ExecuteNonQuery();
+                                        SqlCommand command_2 = new SqlCommand(Command, conn);
+                                        command_2.ExecuteNonQuery();
+                                        SqlCommand command_3 = new SqlCommand("SET IDENTITY_INSERT [COMPTABILITAT].[dbo].[DeliveryNote] OFF", conn);
+                                        command_3.ExecuteNonQuery();
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        conn.Close();
+                                        throw new Exception(MsgManager.ExcepMsg(ex));
+                                    }
+                                }
+                                //  Step 1.2 : Update DeliveryNote Information in Customer Order.
+                                customerOrder.DeliveryNote_Id = CO_DeliveryNote_Id;
+                                customerOrder.DeliveryNote_Year = newDeliveryNoteDate.Year;
+                                customerOrder.DeliveryNote_Date = newDeliveryNoteDate;
+                                UpdateCustomerOrder(db, customerOrder);
+                                //  Step 1.3 : Remove old delivery Note.
+                                db.DeliveryNotes.Remove(DeliveryNote);
+                                db.SaveChanges();
                             }
-                        } 
+                            //  Accept the operations realised.
+                            dbTransaction.Commit();
+                        }
+                        catch (Exception ex)
+                        {
+                            dbTransaction.Rollback();
+                            ErrMsg = string.Format("Error, no es pot canviar la data de l'Albarà número '{0}'\r\n{1}.", customerOrder.CustomerOrder_Id,
+                                                   "Intentiu de nou, i si el problema persisteix consulti l'administrador");
+                            throw new Exception(ErrMsg, ex);
+                        }
                     }
+                }
             }
             catch (DataException ex)
             {
@@ -3063,69 +3067,70 @@ namespace HispaniaCommon.DataAccess
                         try
                         {
                             //  Variables.
-                                int? DeliveryNote_Id = customerOrder.DeliveryNote_Id;
-                                decimal? DeliveryNote_Year = customerOrder.DeliveryNote_Year;                                
+                            int? DeliveryNote_Id = customerOrder.DeliveryNote_Id;
+                            decimal? DeliveryNote_Year = customerOrder.DeliveryNote_Year;
                             //  Manage Customer Order information if Delivery Note is defined.
-                                if ((DeliveryNote_Id != null) && (DeliveryNote_Year != null)) // Delivery Note exist.
+                            if ((DeliveryNote_Id != null) && (DeliveryNote_Year != null)) // Delivery Note exist.
+                            {
+                                //  Get Delivery Note for Update
+                                HispaniaCompData.DeliveryNote DeliveryNote = db.DeliveryNotes.Find(new object[] { DeliveryNote_Id, DeliveryNote_Year });
+                                //  Step 1 : Determine if Date was changed of year
+                                if (((DateTime)DeliveryNote.Date).Year != ((DateTime)customerOrder.DeliveryNote_Date).Year)
                                 {
-                                    //  Get Delivery Note for Update
-                                        HispaniaCompData.DeliveryNote DeliveryNote = db.DeliveryNotes.Find(new object[] { DeliveryNote_Id, DeliveryNote_Year });
-                                    //  Step 1 : Determine if Date was changed of year
-                                        if (((DateTime)DeliveryNote.Date).Year != ((DateTime)customerOrder.DeliveryNote_Date).Year)
+                                    //  Step 1.1 : Create a new Delivery Note.
+                                    int NewDeliveryNote_Year = ((DateTime)customerOrder.DeliveryNote_Date).Year;
+                                    //using (SqlConnection conn = new SqlConnection(db.Database.Connection.ConnectionString + ";Password=Phispania2"))
+                                    using (SqlConnection conn = new SqlConnection(db.Database.Connection.ConnectionString))
+                                    {
+                                        conn.Open();
+                                        try
                                         {
-                                            //  Step 1.1 : Create a new Delivery Note.
-                                                int NewDeliveryNote_Year = ((DateTime)customerOrder.DeliveryNote_Date).Year;
-                                                using (SqlConnection conn = new SqlConnection(db.Database.Connection.ConnectionString + ";Password=Phispania2"))
-                                                {
-                                                    conn.Open();
-                                                    try
-                                                    {
-                                                        string Command = string.Format("INSERT INTO [COMPTABILITAT].[dbo].[DeliveryNote] " +
-                                                                                       "(DeliveryNote_Id, [Year], [Date], FileNamePDF) " +
-                                                                                       "VALUES ({0}, '{1}', '{2}', '{3}')",
-                                                                                       customerOrder.DeliveryNote_Id, NewDeliveryNote_Year,
-                                                                                       customerOrder.DeliveryNote_Date, DeliveryNote.FileNamePDF);
-                                                        SqlCommand command_0 = new SqlCommand("SET DATEFORMAT dmy", conn);
-                                                        command_0.ExecuteNonQuery(); 
-                                                        SqlCommand command_1 = new SqlCommand("SET IDENTITY_INSERT [COMPTABILITAT].[dbo].[DeliveryNote] ON", conn);
-                                                        command_1.ExecuteNonQuery(); 
-                                                        SqlCommand command_2 = new SqlCommand(Command, conn);
-                                                        command_2.ExecuteNonQuery(); 
-                                                        SqlCommand command_3 = new SqlCommand("SET IDENTITY_INSERT [COMPTABILITAT].[dbo].[DeliveryNote] OFF", conn);
-                                                        command_3.ExecuteNonQuery(); 
-                                                    }
-                                                    catch (Exception ex)
-                                                    {
-                                                        conn.Close();
-                                                        throw new Exception(MsgManager.ExcepMsg(ex));
-                                                    }
-                                                }
-                                            //  Step 1.2 : Update Delivery Note Year of Customer Order.
-                                                customerOrder.DeliveryNote_Year = NewDeliveryNote_Year;
-                                            //  Step 1.3 : Call at the update method.
-                                                UpdateCustomerOrder(db, customerOrder, movements);
-                                            //  Step 1.4 : Remove old delivery Note.
-                                                db.DeliveryNotes.Remove(DeliveryNote);
-                                                db.SaveChanges();
+                                            string Command = string.Format("INSERT INTO [COMPTABILITAT].[dbo].[DeliveryNote] " +
+                                                                           "(DeliveryNote_Id, [Year], [Date], FileNamePDF) " +
+                                                                           "VALUES ({0}, '{1}', '{2}', '{3}')",
+                                                                           customerOrder.DeliveryNote_Id, NewDeliveryNote_Year,
+                                                                           customerOrder.DeliveryNote_Date, DeliveryNote.FileNamePDF);
+                                            SqlCommand command_0 = new SqlCommand("SET DATEFORMAT dmy", conn);
+                                            command_0.ExecuteNonQuery();
+                                            SqlCommand command_1 = new SqlCommand("SET IDENTITY_INSERT [COMPTABILITAT].[dbo].[DeliveryNote] ON", conn);
+                                            command_1.ExecuteNonQuery();
+                                            SqlCommand command_2 = new SqlCommand(Command, conn);
+                                            command_2.ExecuteNonQuery();
+                                            SqlCommand command_3 = new SqlCommand("SET IDENTITY_INSERT [COMPTABILITAT].[dbo].[DeliveryNote] OFF", conn);
+                                            command_3.ExecuteNonQuery();
                                         }
-                                        else
+                                        catch (Exception ex)
                                         {
-                                            //  Step 1.5 : Call at the update method.
-                                                UpdateCustomerOrder(db, customerOrder, movements);
-                                            //  Step 1.6 : Set new Date to Delivery Note.
-                                                DeliveryNote.Date = customerOrder.DeliveryNote_Date;
-                                            //  Step 1.7 : Update Delivery Note.
-                                                db.Entry(DeliveryNote).State = EntityState.Modified;
-                                                db.SaveChanges();
+                                            conn.Close();
+                                            throw new Exception(MsgManager.ExcepMsg(ex));
                                         }
+                                    }
+                                    //  Step 1.2 : Update Delivery Note Year of Customer Order.
+                                    customerOrder.DeliveryNote_Year = NewDeliveryNote_Year;
+                                    //  Step 1.3 : Call at the update method.
+                                    UpdateCustomerOrder(db, customerOrder, movements);
+                                    //  Step 1.4 : Remove old delivery Note.
+                                    db.DeliveryNotes.Remove(DeliveryNote);
+                                    db.SaveChanges();
                                 }
-                                else // Delivery Note don't exist.
+                                else
                                 {
-                                    //  Call at the update method.
-                                        UpdateCustomerOrder(db, customerOrder, movements);
+                                    //  Step 1.5 : Call at the update method.
+                                    UpdateCustomerOrder(db, customerOrder, movements);
+                                    //  Step 1.6 : Set new Date to Delivery Note.
+                                    DeliveryNote.Date = customerOrder.DeliveryNote_Date;
+                                    //  Step 1.7 : Update Delivery Note.
+                                    db.Entry(DeliveryNote).State = EntityState.Modified;
+                                    db.SaveChanges();
                                 }
+                            }
+                            else // Delivery Note don't exist.
+                            {
+                                //  Call at the update method.
+                                UpdateCustomerOrder(db, customerOrder, movements);
+                            }
                             //  Accept the operations realised.
-                                dbTransaction.Commit();
+                            dbTransaction.Commit();
                         }
                         catch (Exception ex)
                         {
@@ -3134,7 +3139,7 @@ namespace HispaniaCommon.DataAccess
                                                    "Intentiu de nou, i si el problema persisteix consulti l'administrador");
                             throw new Exception(ErrMsg, ex);
                         }
-                    } 
+                    }
                 }
             }
             catch (DataException ex)
@@ -3151,67 +3156,67 @@ namespace HispaniaCommon.DataAccess
                                          Dictionary<DataBaseOp, List<HispaniaCompData.CustomerOrderMovement>> movements)
         {
             //  Create the register for the new Customer Order
-                db.Entry(customerOrder).State = EntityState.Modified;
-                db.SaveChanges();
+            db.Entry(customerOrder).State = EntityState.Modified;
+            db.SaveChanges();
             //  Create list of movements to update
-                List<int> MovementsToUpdate = new List<int>();
-                foreach (HispaniaCompData.CustomerOrderMovement movementDELETE in movements[DataBaseOp.DELETE])
+            List<int> MovementsToUpdate = new List<int>();
+            foreach (HispaniaCompData.CustomerOrderMovement movementDELETE in movements[DataBaseOp.DELETE])
+            {
+                foreach (HispaniaCompData.CustomerOrderMovement movementCREATE in movements[DataBaseOp.CREATE])
                 {
-                    foreach (HispaniaCompData.CustomerOrderMovement movementCREATE in movements[DataBaseOp.CREATE])
+                    if (movementDELETE.CustomerOrderMovement_Id == movementCREATE.CustomerOrderMovement_Id)
                     {
-                        if (movementDELETE.CustomerOrderMovement_Id == movementCREATE.CustomerOrderMovement_Id)
-                        {
-                            MovementsToUpdate.Add(movementCREATE.CustomerOrderMovement_Id);
-                        }
+                        MovementsToUpdate.Add(movementCREATE.CustomerOrderMovement_Id);
                     }
                 }
+            }
             //  First execute DELETE queries
-                HispaniaCompData.Good MovementGood;
-                HispaniaCompData.CustomerOrderMovement movementToDelete;
-                foreach(HispaniaCompData.CustomerOrderMovement movement in movements[DataBaseOp.DELETE])
+            HispaniaCompData.Good MovementGood;
+            HispaniaCompData.CustomerOrderMovement movementToDelete;
+            foreach (HispaniaCompData.CustomerOrderMovement movement in movements[DataBaseOp.DELETE])
+            {
+                if (!MovementsToUpdate.Contains(movement.CustomerOrderMovement_Id))
                 {
-                    if (!MovementsToUpdate.Contains(movement.CustomerOrderMovement_Id))
-                    {
-                        movementToDelete = db.CustomerOrderMovements.Find(movement.CustomerOrderMovement_Id);
-                        db.CustomerOrderMovements.Remove(movementToDelete);
-                        db.SaveChanges();
-                    }
-                    if (movement.According)
-                    {
-                        MovementGood = db.Goods.Find(movement.Good_Id);
-                        MovementGood.Billing_Unit_Available += movement.Unit_Billing;
-                        MovementGood.Shipping_Unit_Available += movement.Unit_Shipping;
-                        MovementGood.Billing_Unit_Departure -= movement.Unit_Billing;
-                        MovementGood.Shipping_Unit_Departure -= movement.Unit_Shipping;
-                        db.Entry(MovementGood).State = EntityState.Modified;
-                        db.SaveChanges();
-                    }
+                    movementToDelete = db.CustomerOrderMovements.Find(movement.CustomerOrderMovement_Id);
+                    db.CustomerOrderMovements.Remove(movementToDelete);
+                    db.SaveChanges();
                 }
+                if (movement.According)
+                {
+                    MovementGood = db.Goods.Find(movement.Good_Id);
+                    MovementGood.Billing_Unit_Available += movement.Unit_Billing;
+                    MovementGood.Shipping_Unit_Available += movement.Unit_Shipping;
+                    MovementGood.Billing_Unit_Departure -= movement.Unit_Billing;
+                    MovementGood.Shipping_Unit_Departure -= movement.Unit_Shipping;
+                    db.Entry(MovementGood).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+            }
             //  Second execute CREATE queries
-                //foreach (HispaniaCompData.CustomerOrderMovement movement in movements[DataBaseOp.CREATE].OrderBy(m => m.CustomerOrderMovement_Id))
-                foreach (HispaniaCompData.CustomerOrderMovement movement in movements[DataBaseOp.CREATE])
+            //foreach (HispaniaCompData.CustomerOrderMovement movement in movements[DataBaseOp.CREATE].OrderBy(m => m.CustomerOrderMovement_Id))
+            foreach (HispaniaCompData.CustomerOrderMovement movement in movements[DataBaseOp.CREATE])
+            {
+                if (!MovementsToUpdate.Contains(movement.CustomerOrderMovement_Id)) // CREATE
                 {
-                    if (!MovementsToUpdate.Contains(movement.CustomerOrderMovement_Id)) // CREATE
-                    {
-                        db.CustomerOrderMovements.Add(movement);
-                        db.SaveChanges();
-                    }
-                    else // UPDATE
-                    {
-                        db.Entry(movement).State = EntityState.Modified;
-                        db.SaveChanges();
-                    }
-                    if (movement.According)
-                    {
-                        MovementGood = db.Goods.Find(movement.Good_Id);
-                        MovementGood.Billing_Unit_Available -= movement.Unit_Billing;
-                        MovementGood.Shipping_Unit_Available -= movement.Unit_Shipping;
-                        MovementGood.Billing_Unit_Departure += movement.Unit_Billing;
-                        MovementGood.Shipping_Unit_Departure += movement.Unit_Shipping;
-                        db.Entry(MovementGood).State = EntityState.Modified;
-                        db.SaveChanges();
-                    }
+                    db.CustomerOrderMovements.Add(movement);
+                    db.SaveChanges();
                 }
+                else // UPDATE
+                {
+                    db.Entry(movement).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+                if (movement.According)
+                {
+                    MovementGood = db.Goods.Find(movement.Good_Id);
+                    MovementGood.Billing_Unit_Available -= movement.Unit_Billing;
+                    MovementGood.Shipping_Unit_Available -= movement.Unit_Shipping;
+                    MovementGood.Billing_Unit_Departure += movement.Unit_Billing;
+                    MovementGood.Shipping_Unit_Departure += movement.Unit_Shipping;
+                    db.Entry(MovementGood).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+            }
         }
 
         #endregion
@@ -3231,27 +3236,27 @@ namespace HispaniaCommon.DataAccess
                         try
                         {
                             //  First execute DELETE queries for movements.
-                                HispaniaCompData.Good MovementGood;
-                                HispaniaCompData.CustomerOrderMovement movementToDelete;
-                                foreach(HispaniaCompData.CustomerOrderMovement movement in ReadCustomerOrderMovements(customerOrder.CustomerOrder_Id))
+                            HispaniaCompData.Good MovementGood;
+                            HispaniaCompData.CustomerOrderMovement movementToDelete;
+                            foreach (HispaniaCompData.CustomerOrderMovement movement in ReadCustomerOrderMovements(customerOrder.CustomerOrder_Id))
+                            {
+                                movementToDelete = db.CustomerOrderMovements.Find(movement.CustomerOrderMovement_Id);
+                                db.CustomerOrderMovements.Remove(movementToDelete);
+                                if (movement.According)
                                 {
-                                    movementToDelete = db.CustomerOrderMovements.Find(movement.CustomerOrderMovement_Id);
-                                    db.CustomerOrderMovements.Remove(movementToDelete);
-                                    if (movement.According)
-                                    {
-                                        MovementGood = db.Goods.Find(movement.Good_Id);
-                                        MovementGood.Billing_Unit_Available += movement.Unit_Billing;
-                                        MovementGood.Shipping_Unit_Available += movement.Unit_Shipping;
-                                        db.Entry(MovementGood).State = EntityState.Modified;
-                                        db.SaveChanges();
-                                    }
+                                    MovementGood = db.Goods.Find(movement.Good_Id);
+                                    MovementGood.Billing_Unit_Available += movement.Unit_Billing;
+                                    MovementGood.Shipping_Unit_Available += movement.Unit_Shipping;
+                                    db.Entry(MovementGood).State = EntityState.Modified;
+                                    db.SaveChanges();
                                 }
+                            }
                             //  Second execute DELETE query for the Customer Order.
-                                HispaniaCompData.CustomerOrder CustomerOrderToDelete = db.CustomerOrders.Find(customerOrder.CustomerOrder_Id);
-                                db.CustomerOrders.Remove(CustomerOrderToDelete);
-                                db.SaveChanges();
+                            HispaniaCompData.CustomerOrder CustomerOrderToDelete = db.CustomerOrders.Find(customerOrder.CustomerOrder_Id);
+                            db.CustomerOrders.Remove(CustomerOrderToDelete);
+                            db.SaveChanges();
                             //  Accept the operations realised.
-                                dbTransaction.Commit();
+                            dbTransaction.Commit();
                         }
                         catch (Exception ex)
                         {
@@ -3260,7 +3265,7 @@ namespace HispaniaCommon.DataAccess
                                                    "Intentiu de nou, i si el problema persisteix consulti l'administrador");
                             throw new Exception(ErrMsg, ex);
                         }
-                    } 
+                    }
                 }
             }
             catch (DataException ex)
@@ -3333,31 +3338,31 @@ namespace HispaniaCommon.DataAccess
                         try
                         {
                             //  Create a new DeliveryNote
-                                HispaniaCompData.DeliveryNote DeliveryNoteToSave = db.DeliveryNotes.Add(deliveryNote);
-                                db.SaveChanges();
-                                customerOrder.DeliveryNote_Id = DeliveryNoteToSave.DeliveryNote_Id;
-                                customerOrder.DeliveryNote_Year = DeliveryNoteToSave.Year;
-                                customerOrder.DeliveryNote_Date = DeliveryNoteToSave.Date;
+                            HispaniaCompData.DeliveryNote DeliveryNoteToSave = db.DeliveryNotes.Add(deliveryNote);
+                            db.SaveChanges();
+                            customerOrder.DeliveryNote_Id = DeliveryNoteToSave.DeliveryNote_Id;
+                            customerOrder.DeliveryNote_Year = DeliveryNoteToSave.Year;
+                            customerOrder.DeliveryNote_Date = DeliveryNoteToSave.Date;
                             //  Create the register for the new Customer Order
-                                db.Entry(customerOrder).State = EntityState.Modified;
-                                db.SaveChanges();
+                            db.Entry(customerOrder).State = EntityState.Modified;
+                            db.SaveChanges();
                             //  Accept the operations realised.
-                                dbTransaction.Commit();
+                            dbTransaction.Commit();
                         }
                         catch (Exception ex)
                         {
                             dbTransaction.Rollback();
-                            ErrMsg = string.Format("No es pot crear l'albarà de la Comanda de Client '{0}'\r\n{1}.", 
+                            ErrMsg = string.Format("No es pot crear l'albarà de la Comanda de Client '{0}'\r\n{1}.",
                                                    customerOrder.CustomerOrder_Id,
                                                    "Intentiu de nou, i si el problema persisteix consulti l'administrador");
                             throw new Exception(ErrMsg, ex);
                         }
-                    } 
+                    }
                 }
             }
             catch (DataException ex)
             {
-                ErrMsg = string.Format("No es pot crear l'albarà de la Comanda de Client '{0}'\r\n{1}.", 
+                ErrMsg = string.Format("No es pot crear l'albarà de la Comanda de Client '{0}'\r\n{1}.",
                                         customerOrder.CustomerOrder_Id,
                                        "Intentiu de nou, i si el problema persisteix consulti l'administrador");
                 throw new Exception(ErrMsg, ex);
@@ -3367,7 +3372,7 @@ namespace HispaniaCommon.DataAccess
         #endregion
 
         #region CreateBillForCustomerOrders
-        
+
         [OperationContract]
         public void CreateBillForCustomerOrders(HispaniaCompData.Bill Bill, HispaniaCompData.Customer Customer,
                                                 List<HispaniaCompData.CustomerOrder> CustomerOrdersList,
@@ -3387,84 +3392,84 @@ namespace HispaniaCommon.DataAccess
                         try
                         {
                             //  Create a new Bill
-                                HispaniaCompData.Bill BillToSave = db.Bills.Add(Bill);
-                                db.SaveChanges();
-                                Bill.Bill_Id = BillToSave.Bill_Id;
-                                LogDataAccess.Instance.WriteLog("Create Bill DA - Create Bill -> {0}.", Bill.Bill_Id);
+                            HispaniaCompData.Bill BillToSave = db.Bills.Add(Bill);
+                            db.SaveChanges();
+                            Bill.Bill_Id = BillToSave.Bill_Id;
+                            LogDataAccess.Instance.WriteLog("Create Bill DA - Create Bill -> {0}.", Bill.Bill_Id);
                             //  Assign Customer Orders selecteds at the new Bill and marks historic flag at true
-                                HispaniaCompData.CustomerOrder CustomerOrderToModify;
-                                foreach (HispaniaCompData.CustomerOrder customerOrder in CustomerOrdersList)
-                                {
-                                    CustomerOrderToModify = db.CustomerOrders.Find(customerOrder.CustomerOrder_Id);
-                                    CustomerOrderToModify.Bill_Id = Bill.Bill_Id;
-                                    CustomerOrderToModify.Bill_Year = Bill.Year;
-                                    CustomerOrderToModify.Bill_Serie_Id = Bill.Serie_Id;
-                                    CustomerOrderToModify.Bill_Date = Bill.Date;
-                                    CustomerOrderToModify.Historic = true;
-                                    db.Entry(CustomerOrderToModify).State = EntityState.Modified;
-                                    db.SaveChanges();
-                                    LogDataAccess.Instance.WriteLog("Create Bill DA - Update Customer Order -> {0}.", customerOrder.CustomerOrder_Id);
-                                }
-                            //  Marks the historic flag of the movements at true
-                                HispaniaCompData.Good MovementGoodToModify;
-                                foreach (HispaniaCompData.CustomerOrderMovement Movement in MovementsList)
-                                {
-                                    HispaniaCompData.CustomerOrderMovement MovementToModify = db.CustomerOrderMovements.Find(Movement.CustomerOrderMovement_Id);
-                                    MovementToModify.Historic = true;
-                                    db.Entry(MovementToModify).State = EntityState.Modified;
-                                    db.SaveChanges();
-                                    LogDataAccess.Instance.WriteLog("Create Bill DA - Movement -> {0}.", Movement.CustomerOrderMovement_Id);
-                                    MovementGoodToModify = db.Goods.Find(Movement.Good_Id);
-                                    MovementGoodToModify.Billing_Unit_Stocks -= Movement.Unit_Billing;
-                                    MovementGoodToModify.Shipping_Unit_Stocks -= Movement.Unit_Shipping;
-                                    db.Entry(MovementGoodToModify).State = EntityState.Modified;
-                                    db.SaveChanges();
-                                    LogDataAccess.Instance.WriteLog("Create Bill DA - MovementGood -> {0}.", MovementGoodToModify.Good_Code);
-                                }
-                            //  Add one register at Historic table for each movement of every Customer Order of the Bill
-                                foreach (HispaniaCompData.HistoCustomer HistoricMovement in HistoricMovementsList)
-                                {
-                                    HistoricMovement.Bill_Id = Bill.Bill_Id;
-                                    HistoricMovement.Bill_Year = Bill.Year;
-                                    HistoricMovement.Bill_Serie_Id = Bill.Serie_Id;   
-                                    HistoricMovement.Bill_Date = Bill.Date;
-                                    db.HistoCustomers.Add(HistoricMovement);
-                                    db.SaveChanges();
-                                    LogDataAccess.Instance.WriteLog("Create Bill DA - HistoricMovement -> {0}.", HistoricMovement.HistoCustomer_Id);
-                                }
-                            //  Add Receipts Registers
-                                foreach (HispaniaCompData.Receipt Receipt in ReceiptsList)
-                                {
-                                    Receipt.Bill_Id = Bill.Bill_Id;
-                                    Receipt.Bill_Year = Bill.Year;
-                                    Receipt.Bill_Serie_Id = Bill.Serie_Id;    
-                                    db.Receipts.Add(Receipt);
-                                    db.SaveChanges();
-                                    LogDataAccess.Instance.WriteLog("Create Bill DA - Receipt -> {0}.", Receipt.Receipt_Id);
-                                }
-                            //  Update Customer Risk and Sales Aggregate
-                                HispaniaCompData.Customer CustomerToModify = db.Customers.Find(Customer.Customer_Id);
-                                ActualizeCustomerAggregate(Bill, TotalAmount, ref CustomerToModify);
-                                CustomerToModify.BillingData_CurrentRisk += TotalAmount;
-                                db.Entry(CustomerToModify).State = EntityState.Modified;
+                            HispaniaCompData.CustomerOrder CustomerOrderToModify;
+                            foreach (HispaniaCompData.CustomerOrder customerOrder in CustomerOrdersList)
+                            {
+                                CustomerOrderToModify = db.CustomerOrders.Find(customerOrder.CustomerOrder_Id);
+                                CustomerOrderToModify.Bill_Id = Bill.Bill_Id;
+                                CustomerOrderToModify.Bill_Year = Bill.Year;
+                                CustomerOrderToModify.Bill_Serie_Id = Bill.Serie_Id;
+                                CustomerOrderToModify.Bill_Date = Bill.Date;
+                                CustomerOrderToModify.Historic = true;
+                                db.Entry(CustomerOrderToModify).State = EntityState.Modified;
                                 db.SaveChanges();
-                                LogDataAccess.Instance.WriteLog("Create Bill DA - CustomerToModify -> {0}.", CustomerToModify.Customer_Id);
+                                LogDataAccess.Instance.WriteLog("Create Bill DA - Update Customer Order -> {0}.", customerOrder.CustomerOrder_Id);
+                            }
+                            //  Marks the historic flag of the movements at true
+                            HispaniaCompData.Good MovementGoodToModify;
+                            foreach (HispaniaCompData.CustomerOrderMovement Movement in MovementsList)
+                            {
+                                HispaniaCompData.CustomerOrderMovement MovementToModify = db.CustomerOrderMovements.Find(Movement.CustomerOrderMovement_Id);
+                                MovementToModify.Historic = true;
+                                db.Entry(MovementToModify).State = EntityState.Modified;
+                                db.SaveChanges();
+                                LogDataAccess.Instance.WriteLog("Create Bill DA - Movement -> {0}.", Movement.CustomerOrderMovement_Id);
+                                MovementGoodToModify = db.Goods.Find(Movement.Good_Id);
+                                MovementGoodToModify.Billing_Unit_Stocks -= Movement.Unit_Billing;
+                                MovementGoodToModify.Shipping_Unit_Stocks -= Movement.Unit_Shipping;
+                                db.Entry(MovementGoodToModify).State = EntityState.Modified;
+                                db.SaveChanges();
+                                LogDataAccess.Instance.WriteLog("Create Bill DA - MovementGood -> {0}.", MovementGoodToModify.Good_Code);
+                            }
+                            //  Add one register at Historic table for each movement of every Customer Order of the Bill
+                            foreach (HispaniaCompData.HistoCustomer HistoricMovement in HistoricMovementsList)
+                            {
+                                HistoricMovement.Bill_Id = Bill.Bill_Id;
+                                HistoricMovement.Bill_Year = Bill.Year;
+                                HistoricMovement.Bill_Serie_Id = Bill.Serie_Id;
+                                HistoricMovement.Bill_Date = Bill.Date;
+                                db.HistoCustomers.Add(HistoricMovement);
+                                db.SaveChanges();
+                                LogDataAccess.Instance.WriteLog("Create Bill DA - HistoricMovement -> {0}.", HistoricMovement.HistoCustomer_Id);
+                            }
+                            //  Add Receipts Registers
+                            foreach (HispaniaCompData.Receipt Receipt in ReceiptsList)
+                            {
+                                Receipt.Bill_Id = Bill.Bill_Id;
+                                Receipt.Bill_Year = Bill.Year;
+                                Receipt.Bill_Serie_Id = Bill.Serie_Id;
+                                db.Receipts.Add(Receipt);
+                                db.SaveChanges();
+                                LogDataAccess.Instance.WriteLog("Create Bill DA - Receipt -> {0}.", Receipt.Receipt_Id);
+                            }
+                            //  Update Customer Risk and Sales Aggregate
+                            HispaniaCompData.Customer CustomerToModify = db.Customers.Find(Customer.Customer_Id);
+                            ActualizeCustomerAggregate(Bill, TotalAmount, ref CustomerToModify);
+                            CustomerToModify.BillingData_CurrentRisk += TotalAmount;
+                            db.Entry(CustomerToModify).State = EntityState.Modified;
+                            db.SaveChanges();
+                            LogDataAccess.Instance.WriteLog("Create Bill DA - CustomerToModify -> {0}.", CustomerToModify.Customer_Id);
                             //  Update Goods Amount Value     
-                                foreach (KeyValuePair<int, Pair> GoodAmountInfo in GoodsAmountValue)
-                                {
-                                    HispaniaCompData.Good Good = db.Goods.Find(GoodAmountInfo.Key);
-                                    ActualizeGoodAggregate(Bill, GoodAmountInfo.Value.Amount, GoodAmountInfo.Value.AmountCost, ref Good);
-                                    db.Entry(Good).State = EntityState.Modified;
-                                    db.SaveChanges();
-                                    LogDataAccess.Instance.WriteLog("Create Bill DA - Good -> {0}.", Good.Good_Code);
-                                }
+                            foreach (KeyValuePair<int, Pair> GoodAmountInfo in GoodsAmountValue)
+                            {
+                                HispaniaCompData.Good Good = db.Goods.Find(GoodAmountInfo.Key);
+                                ActualizeGoodAggregate(Bill, GoodAmountInfo.Value.Amount, GoodAmountInfo.Value.AmountCost, ref Good);
+                                db.Entry(Good).State = EntityState.Modified;
+                                db.SaveChanges();
+                                LogDataAccess.Instance.WriteLog("Create Bill DA - Good -> {0}.", Good.Good_Code);
+                            }
                             //  Accept the operations realised.
-                                dbTransaction.Commit();
+                            dbTransaction.Commit();
                         }
                         catch (Exception ex)
                         {
                             dbTransaction.Rollback();
-                            ErrMsg = "No es poden associar les factures a les comandes de client seleccionades.\r\n" + 
+                            ErrMsg = "No es poden associar les factures a les comandes de client seleccionades.\r\n" +
                                      "Intentiu de nou, i si el problema persisteix consulti l'administrador";
                             LogDataAccess.Instance.WriteLog("Create Bill DA - Error -> {0}.\r\nDetalls:{1}.", ErrMsg, MsgManager.ExcepMsg(ex));
                             throw new Exception(ErrMsg, ex);
@@ -3474,7 +3479,7 @@ namespace HispaniaCommon.DataAccess
             }
             catch (DataException ex)
             {
-                ErrMsg = "No es poden associar les factures a les comandes de client seleccionades.\r\n" + 
+                ErrMsg = "No es poden associar les factures a les comandes de client seleccionades.\r\n" +
                          "Intentiu de nou, i si el problema persisteix consulti l'administrador";
                 LogDataAccess.Instance.WriteLog("Create Bill DA - Error -> {0}.\r\nDetalls:{1}.", ErrMsg, MsgManager.ExcepMsg(ex));
                 throw new Exception(ErrMsg, ex);
@@ -3484,7 +3489,7 @@ namespace HispaniaCommon.DataAccess
         #endregion
 
         #region RemoveCustomerOrdersFromBill
-        
+
         [OperationContract]
         public void RemoveCustomerOrdersFromBill(HispaniaCompData.Bill Bill, HispaniaCompData.Customer Customer,
                                                  List<HispaniaCompData.CustomerOrder> CustomerOrdersList,
@@ -3503,15 +3508,15 @@ namespace HispaniaCommon.DataAccess
                         try
                         {
                             //  Do the operations in Database
-                                RemoveCustomerOrdersFromBill(db, Bill, Customer, CustomerOrdersList, MovementsList, ReceiptsList,
-                                                             GoodsAmountValue, TotalAmount);
+                            RemoveCustomerOrdersFromBill(db, Bill, Customer, CustomerOrdersList, MovementsList, ReceiptsList,
+                                                         GoodsAmountValue, TotalAmount);
                             //  Accept the operations realised.
-                                dbTransaction.Commit();
+                            dbTransaction.Commit();
                         }
                         catch (Exception ex)
                         {
                             dbTransaction.Rollback();
-                            ErrMsg = "No es poden retirar les comandes de client seleccionades de la factura.\r\n" + 
+                            ErrMsg = "No es poden retirar les comandes de client seleccionades de la factura.\r\n" +
                                      "Intentiu de nou, i si el problema persisteix consulti l'administrador";
                             throw new Exception(ErrMsg, ex);
                         }
@@ -3520,13 +3525,13 @@ namespace HispaniaCommon.DataAccess
             }
             catch (DataException ex)
             {
-                ErrMsg = "No es poden retirar les comandes de client seleccionades de la factura.\r\n" + 
+                ErrMsg = "No es poden retirar les comandes de client seleccionades de la factura.\r\n" +
                          "Intentiu de nou, i si el problema persisteix consulti l'administrador";
                 throw new Exception(ErrMsg, ex);
             }
         }
 
-        private  void RemoveCustomerOrdersFromBill(HispaniaCompData.HispaniaComptabilitatEntities db,
+        private void RemoveCustomerOrdersFromBill(HispaniaCompData.HispaniaComptabilitatEntities db,
                                                    HispaniaCompData.Bill Bill, HispaniaCompData.Customer Customer,
                                                    List<HispaniaCompData.CustomerOrder> CustomerOrdersList,
                                                    List<HispaniaCompData.CustomerOrderMovement> MovementsList,
@@ -3535,73 +3540,73 @@ namespace HispaniaCommon.DataAccess
                                                    decimal TotalAmount)
         {
             //  Update the Bill (usually its not needed but I do for safety)
-                db.Entry(Bill).State = EntityState.Modified;
-                db.SaveChanges();
+            db.Entry(Bill).State = EntityState.Modified;
+            db.SaveChanges();
             //  Unassign Customer Orders selecteds at the new Bill and marks historic flag at false
-                foreach (HispaniaCompData.CustomerOrder customerOrder in CustomerOrdersList)
-                {
-                    customerOrder.Bill_Id = null;
-                    customerOrder.Bill_Year = null;
-                    customerOrder.Bill_Serie_Id = null; // customerOrder.Bill_Serie_Id = 1; // Serie_Id
-                    customerOrder.Bill_Date = null;
-                    customerOrder.Historic = false;
-                    db.Entry(customerOrder).State = EntityState.Modified;
-                    db.SaveChanges();
-                }
+            foreach (HispaniaCompData.CustomerOrder customerOrder in CustomerOrdersList)
+            {
+                customerOrder.Bill_Id = null;
+                customerOrder.Bill_Year = null;
+                customerOrder.Bill_Serie_Id = null; // customerOrder.Bill_Serie_Id = 1; // Serie_Id
+                customerOrder.Bill_Date = null;
+                customerOrder.Historic = false;
+                db.Entry(customerOrder).State = EntityState.Modified;
+                db.SaveChanges();
+            }
             //  Marks the historic flag of the movements at false
-                List<int> MovementsId = new List<int>(MovementsList.Count);
-                HispaniaCompData.Good MovementGood;
-                foreach (HispaniaCompData.CustomerOrderMovement Movement in MovementsList)
+            List<int> MovementsId = new List<int>(MovementsList.Count);
+            HispaniaCompData.Good MovementGood;
+            foreach (HispaniaCompData.CustomerOrderMovement Movement in MovementsList)
+            {
+                MovementsId.Add(Movement.CustomerOrderMovement_Id);
+                Movement.Historic = false;
+                db.Entry(Movement).State = EntityState.Modified;
+                db.SaveChanges();
+                if (Movement.According)
                 {
-                    MovementsId.Add(Movement.CustomerOrderMovement_Id);
-                    Movement.Historic = false;
-                    db.Entry(Movement).State = EntityState.Modified;
+                    MovementGood = db.Goods.Find(Movement.Good_Id);
+                    MovementGood.Billing_Unit_Stocks += Movement.Unit_Billing;
+                    MovementGood.Shipping_Unit_Stocks += Movement.Unit_Shipping;
+                    db.Entry(MovementGood).State = EntityState.Modified;
                     db.SaveChanges();
-                    if (Movement.According)
-                    {
-                        MovementGood = db.Goods.Find(Movement.Good_Id);
-                        MovementGood.Billing_Unit_Stocks += Movement.Unit_Billing;
-                        MovementGood.Shipping_Unit_Stocks += Movement.Unit_Shipping;
-                        db.Entry(MovementGood).State = EntityState.Modified;
-                        db.SaveChanges();
-                    }
                 }
+            }
             //  Remove one register at Historic table for each movement of every Customer Order of the Bill
-                List<HispaniaCompData.HistoCustomer> 
-                        HistoCustomersListToRemove = 
-                                db.HistoCustomers.Where(h => ((h.Bill_Id == Bill.Bill_Id) && 
-                                                              (h.Bill_Year == Bill.Year) &&  
-                                                              (MovementsId.Contains(h.CustomerOrderMovement_Id)))).ToList();
-                db.HistoCustomers.RemoveRange(HistoCustomersListToRemove);
-                db.SaveChanges();
+            List<HispaniaCompData.HistoCustomer>
+                    HistoCustomersListToRemove =
+                            db.HistoCustomers.Where(h => ((h.Bill_Id == Bill.Bill_Id) &&
+                                                          (h.Bill_Year == Bill.Year) &&
+                                                          (MovementsId.Contains(h.CustomerOrderMovement_Id)))).ToList();
+            db.HistoCustomers.RemoveRange(HistoCustomersListToRemove);
+            db.SaveChanges();
             //  Remove Old Receipts
-                List<HispaniaCompData.Receipt> 
-                            ReceiptsListToRemove = db.Receipts.Where(c => ((c.Bill_Id == Bill.Bill_Id) && 
-                                                                            (c.Bill_Year == Bill.Year))).ToList();
-                db.Receipts.RemoveRange(ReceiptsListToRemove);
-                db.SaveChanges();
+            List<HispaniaCompData.Receipt>
+                        ReceiptsListToRemove = db.Receipts.Where(c => ((c.Bill_Id == Bill.Bill_Id) &&
+                                                                        (c.Bill_Year == Bill.Year))).ToList();
+            db.Receipts.RemoveRange(ReceiptsListToRemove);
+            db.SaveChanges();
             //  Add New Receipts Registers
-                foreach (HispaniaCompData.Receipt Receipt in ReceiptsList)
-                {
-                    Receipt.Bill_Id = Bill.Bill_Id;
-                    Receipt.Bill_Year = Bill.Year;
-                    Receipt.Bill_Serie_Id = Bill.Serie_Id;
-                    db.Receipts.Add(Receipt);
-                    db.SaveChanges();
-                }
-            //  Update Customer Risk and Sales Aggregate
-                ActualizeCustomerAggregate(Bill, -TotalAmount, ref Customer);
-                Customer.BillingData_CurrentRisk -= TotalAmount;
-                db.Entry(Customer).State = EntityState.Modified;
+            foreach (HispaniaCompData.Receipt Receipt in ReceiptsList)
+            {
+                Receipt.Bill_Id = Bill.Bill_Id;
+                Receipt.Bill_Year = Bill.Year;
+                Receipt.Bill_Serie_Id = Bill.Serie_Id;
+                db.Receipts.Add(Receipt);
                 db.SaveChanges();
+            }
+            //  Update Customer Risk and Sales Aggregate
+            ActualizeCustomerAggregate(Bill, -TotalAmount, ref Customer);
+            Customer.BillingData_CurrentRisk -= TotalAmount;
+            db.Entry(Customer).State = EntityState.Modified;
+            db.SaveChanges();
             //  Update Goods Amount Value     
-                foreach (KeyValuePair<int, Pair> GoodAmountInfo in GoodsAmountValue)
-                {
-                    HispaniaCompData.Good Good = db.Goods.Find(GoodAmountInfo.Key);
-                    ActualizeGoodAggregate(Bill, -GoodAmountInfo.Value.Amount, -GoodAmountInfo.Value.AmountCost, ref Good);
-                    db.Entry(Good).State = EntityState.Modified;
-                    db.SaveChanges();
-                }
+            foreach (KeyValuePair<int, Pair> GoodAmountInfo in GoodsAmountValue)
+            {
+                HispaniaCompData.Good Good = db.Goods.Find(GoodAmountInfo.Key);
+                ActualizeGoodAggregate(Bill, -GoodAmountInfo.Value.Amount, -GoodAmountInfo.Value.AmountCost, ref Good);
+                db.Entry(Good).State = EntityState.Modified;
+                db.SaveChanges();
+            }
         }
 
         #endregion
@@ -3627,10 +3632,10 @@ namespace HispaniaCommon.DataAccess
                         try
                         {
                             //  Do the operations in Database
-                                AddCustomerOrdersFromBill(db, Bill, Customer, CustomerOrdersList, MovementsList, HistoricMovementsList,
-                                                          ReceiptsList, GoodsAmountValue, TotalAmount);
+                            AddCustomerOrdersFromBill(db, Bill, Customer, CustomerOrdersList, MovementsList, HistoricMovementsList,
+                                                      ReceiptsList, GoodsAmountValue, TotalAmount);
                             //  Accept the operations realised.
-                                dbTransaction.Commit();
+                            dbTransaction.Commit();
                         }
                         catch (Exception ex)
                         {
@@ -3660,73 +3665,73 @@ namespace HispaniaCommon.DataAccess
                                                decimal TotalAmount)
         {
             //  Update the Bill (usually its not needed but I do for safety)
-                db.Entry(Bill).State = EntityState.Modified;
-                db.SaveChanges();
+            db.Entry(Bill).State = EntityState.Modified;
+            db.SaveChanges();
             //  Assign Customer Orders selecteds at the new Bill and marks historic flag at true
-                foreach (HispaniaCompData.CustomerOrder customerOrder in CustomerOrdersList)
-                {
-                    customerOrder.Bill_Id = Bill.Bill_Id;
-                    customerOrder.Bill_Year = Bill.Year;
-                    customerOrder.Bill_Serie_Id = Bill.Serie_Id;
-                    customerOrder.Bill_Date = Bill.Date;
-                    customerOrder.Historic = true;
-                    db.Entry(customerOrder).State = EntityState.Modified;
-                    db.SaveChanges();
-                }
+            foreach (HispaniaCompData.CustomerOrder customerOrder in CustomerOrdersList)
+            {
+                customerOrder.Bill_Id = Bill.Bill_Id;
+                customerOrder.Bill_Year = Bill.Year;
+                customerOrder.Bill_Serie_Id = Bill.Serie_Id;
+                customerOrder.Bill_Date = Bill.Date;
+                customerOrder.Historic = true;
+                db.Entry(customerOrder).State = EntityState.Modified;
+                db.SaveChanges();
+            }
             //  Marks the historic flag of the movements at true
-                HispaniaCompData.Good MovementGood;
-                foreach (HispaniaCompData.CustomerOrderMovement Movement in MovementsList)
+            HispaniaCompData.Good MovementGood;
+            foreach (HispaniaCompData.CustomerOrderMovement Movement in MovementsList)
+            {
+                Movement.Historic = true;
+                db.Entry(Movement).State = EntityState.Modified;
+                db.SaveChanges();
+                if (Movement.According)
                 {
-                    Movement.Historic = true;
-                    db.Entry(Movement).State = EntityState.Modified;
+                    MovementGood = db.Goods.Find(Movement.Good_Id);
+                    MovementGood.Billing_Unit_Stocks -= Movement.Unit_Billing;
+                    MovementGood.Shipping_Unit_Stocks -= Movement.Unit_Shipping;
+                    db.Entry(MovementGood).State = EntityState.Modified;
                     db.SaveChanges();
-                    if (Movement.According)
-                    {
-                        MovementGood = db.Goods.Find(Movement.Good_Id);
-                        MovementGood.Billing_Unit_Stocks -= Movement.Unit_Billing;
-                        MovementGood.Shipping_Unit_Stocks -= Movement.Unit_Shipping;
-                        db.Entry(MovementGood).State = EntityState.Modified;
-                        db.SaveChanges();
-                    }
                 }
+            }
             //  Add one register at Historic table for each movement of every Customer Order of the Bill
-                foreach (HispaniaCompData.HistoCustomer HistoricMovement in HistoricMovementsList)
-                {
-                    HistoricMovement.Bill_Id = Bill.Bill_Id;
-                    HistoricMovement.Bill_Year = Bill.Year;
-                    HistoricMovement.Bill_Serie_Id = Bill.Serie_Id;
-                    HistoricMovement.Bill_Date = Bill.Date;
-                    db.HistoCustomers.Add(HistoricMovement);
-                    db.SaveChanges();
-                }
+            foreach (HispaniaCompData.HistoCustomer HistoricMovement in HistoricMovementsList)
+            {
+                HistoricMovement.Bill_Id = Bill.Bill_Id;
+                HistoricMovement.Bill_Year = Bill.Year;
+                HistoricMovement.Bill_Serie_Id = Bill.Serie_Id;
+                HistoricMovement.Bill_Date = Bill.Date;
+                db.HistoCustomers.Add(HistoricMovement);
+                db.SaveChanges();
+            }
             //  Remove Old Receipts
-                List<HispaniaCompData.Receipt> 
-                            ReceiptsListToRemove = db.Receipts.Where(c => ((c.Bill_Id == Bill.Bill_Id) && 
-                                                                            (c.Bill_Year == Bill.Year))).ToList();
-                db.Receipts.RemoveRange(ReceiptsListToRemove);
-                db.SaveChanges();
+            List<HispaniaCompData.Receipt>
+                        ReceiptsListToRemove = db.Receipts.Where(c => ((c.Bill_Id == Bill.Bill_Id) &&
+                                                                        (c.Bill_Year == Bill.Year))).ToList();
+            db.Receipts.RemoveRange(ReceiptsListToRemove);
+            db.SaveChanges();
             //  Add Receipts Registers
-                foreach (HispaniaCompData.Receipt Receipt in ReceiptsList)
-                {
-                    Receipt.Bill_Id = Bill.Bill_Id;
-                    Receipt.Bill_Year = Bill.Year;
-                    Receipt.Bill_Serie_Id = Bill.Serie_Id;
-                    db.Receipts.Add(Receipt);
-                    db.SaveChanges();
-                }
-            //  Update Customer Risk and Sales Aggregate
-                ActualizeCustomerAggregate(Bill, TotalAmount, ref Customer);
-                Customer.BillingData_CurrentRisk += TotalAmount;
-                db.Entry(Customer).State = EntityState.Modified;
+            foreach (HispaniaCompData.Receipt Receipt in ReceiptsList)
+            {
+                Receipt.Bill_Id = Bill.Bill_Id;
+                Receipt.Bill_Year = Bill.Year;
+                Receipt.Bill_Serie_Id = Bill.Serie_Id;
+                db.Receipts.Add(Receipt);
                 db.SaveChanges();
+            }
+            //  Update Customer Risk and Sales Aggregate
+            ActualizeCustomerAggregate(Bill, TotalAmount, ref Customer);
+            Customer.BillingData_CurrentRisk += TotalAmount;
+            db.Entry(Customer).State = EntityState.Modified;
+            db.SaveChanges();
             //  Update Goods Amount Value     
-                foreach (KeyValuePair<int, Pair> GoodAmountInfo in GoodsAmountValue)
-                {
-                    HispaniaCompData.Good Good = db.Goods.Find(GoodAmountInfo.Key);
-                    ActualizeGoodAggregate(Bill, GoodAmountInfo.Value.Amount, GoodAmountInfo.Value.AmountCost, ref Good);
-                    db.Entry(Good).State = EntityState.Modified;
-                    db.SaveChanges();
-                }
+            foreach (KeyValuePair<int, Pair> GoodAmountInfo in GoodsAmountValue)
+            {
+                HispaniaCompData.Good Good = db.Goods.Find(GoodAmountInfo.Key);
+                ActualizeGoodAggregate(Bill, GoodAmountInfo.Value.Amount, GoodAmountInfo.Value.AmountCost, ref Good);
+                db.Entry(Good).State = EntityState.Modified;
+                db.SaveChanges();
+            }
         }
 
         #endregion
@@ -3738,7 +3743,7 @@ namespace HispaniaCommon.DataAccess
         {
             using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
             {
-                return (db.CustomerOrders.Where(c => c.Customer_Id == Customer_Id && 
+                return (db.CustomerOrders.Where(c => c.Customer_Id == Customer_Id &&
                                                      c.Bill_Id != -1 && c.Bill_Year != -1 &&
                                                      c.DeliveryNote_Id != -1 && c.DeliveryNote_Year != -1).ToList());
             }
@@ -3752,30 +3757,42 @@ namespace HispaniaCommon.DataAccess
         {
             switch (Bill.Date.Value.Month)
             {
-                case 1: Customer.SeveralData_Acum_1 += TotalAmount;
-                        break;
-                case 2: Customer.SeveralData_Acum_2 += TotalAmount;
-                        break;
-                case 3: Customer.SeveralData_Acum_3 += TotalAmount;
-                        break;
-                case 4: Customer.SeveralData_Acum_4 += TotalAmount;
-                        break;
-                case 5: Customer.SeveralData_Acum_5 += TotalAmount;
-                        break;
-                case 6: Customer.SeveralData_Acum_6 += TotalAmount;
-                        break;
-                case 7: Customer.SeveralData_Acum_7 += TotalAmount;
-                        break;
-                case 8: Customer.SeveralData_Acum_8 += TotalAmount;
-                        break;
-                case 9: Customer.SeveralData_Acum_9 += TotalAmount;
-                        break;
-                case 10: Customer.SeveralData_Acum_10 += TotalAmount;
-                         break;
-                case 11: Customer.SeveralData_Acum_11 += TotalAmount;
-                         break;
-                case 12: Customer.SeveralData_Acum_12 += TotalAmount;
-                         break;
+                case 1:
+                    Customer.SeveralData_Acum_1 += TotalAmount;
+                    break;
+                case 2:
+                    Customer.SeveralData_Acum_2 += TotalAmount;
+                    break;
+                case 3:
+                    Customer.SeveralData_Acum_3 += TotalAmount;
+                    break;
+                case 4:
+                    Customer.SeveralData_Acum_4 += TotalAmount;
+                    break;
+                case 5:
+                    Customer.SeveralData_Acum_5 += TotalAmount;
+                    break;
+                case 6:
+                    Customer.SeveralData_Acum_6 += TotalAmount;
+                    break;
+                case 7:
+                    Customer.SeveralData_Acum_7 += TotalAmount;
+                    break;
+                case 8:
+                    Customer.SeveralData_Acum_8 += TotalAmount;
+                    break;
+                case 9:
+                    Customer.SeveralData_Acum_9 += TotalAmount;
+                    break;
+                case 10:
+                    Customer.SeveralData_Acum_10 += TotalAmount;
+                    break;
+                case 11:
+                    Customer.SeveralData_Acum_11 += TotalAmount;
+                    break;
+                case 12:
+                    Customer.SeveralData_Acum_12 += TotalAmount;
+                    break;
             }
         }
 
@@ -3784,42 +3801,54 @@ namespace HispaniaCommon.DataAccess
         {
             switch (Bill.Date.Value.Month)
             {
-                case 1: Good.Cumulative_Sales_Cost_1 += AmountCost;
-                        Good.Cumulative_Sales_Retail_Price_1 += Amount; 
-                        break;
-                case 2: Good.Cumulative_Sales_Cost_2 += AmountCost;
-                        Good.Cumulative_Sales_Retail_Price_2 += Amount;
-                        break;
-                case 3: Good.Cumulative_Sales_Cost_3 += AmountCost;
-                        Good.Cumulative_Sales_Retail_Price_3 += Amount;
-                        break;
-                case 4: Good.Cumulative_Sales_Cost_4 += AmountCost;
-                        Good.Cumulative_Sales_Retail_Price_4 += Amount;
-                        break;
-                case 5: Good.Cumulative_Sales_Cost_5 += AmountCost;
-                        Good.Cumulative_Sales_Retail_Price_5 += Amount;
-                        break;
-                case 6: Good.Cumulative_Sales_Cost_6 += AmountCost;
-                        Good.Cumulative_Sales_Retail_Price_6 += Amount;
-                        break;
-                case 7: Good.Cumulative_Sales_Cost_7 += AmountCost;
-                        Good.Cumulative_Sales_Retail_Price_7 += Amount;
-                        break;
-                case 8: Good.Cumulative_Sales_Cost_8 += AmountCost;
-                        Good.Cumulative_Sales_Retail_Price_8 += Amount;
-                        break;
-                case 9: Good.Cumulative_Sales_Cost_9 += AmountCost;
-                        Good.Cumulative_Sales_Retail_Price_9 += Amount;
-                        break;
-                case 10: Good.Cumulative_Sales_Cost_10 += AmountCost;
-                         Good.Cumulative_Sales_Retail_Price_10 += Amount;
-                         break;
-                case 11: Good.Cumulative_Sales_Cost_11 += AmountCost;
-                         Good.Cumulative_Sales_Retail_Price_11 += Amount;
-                         break;
-                case 12: Good.Cumulative_Sales_Cost_12 += AmountCost;
-                         Good.Cumulative_Sales_Retail_Price_12 += Amount;
-                         break;
+                case 1:
+                    Good.Cumulative_Sales_Cost_1 += AmountCost;
+                    Good.Cumulative_Sales_Retail_Price_1 += Amount;
+                    break;
+                case 2:
+                    Good.Cumulative_Sales_Cost_2 += AmountCost;
+                    Good.Cumulative_Sales_Retail_Price_2 += Amount;
+                    break;
+                case 3:
+                    Good.Cumulative_Sales_Cost_3 += AmountCost;
+                    Good.Cumulative_Sales_Retail_Price_3 += Amount;
+                    break;
+                case 4:
+                    Good.Cumulative_Sales_Cost_4 += AmountCost;
+                    Good.Cumulative_Sales_Retail_Price_4 += Amount;
+                    break;
+                case 5:
+                    Good.Cumulative_Sales_Cost_5 += AmountCost;
+                    Good.Cumulative_Sales_Retail_Price_5 += Amount;
+                    break;
+                case 6:
+                    Good.Cumulative_Sales_Cost_6 += AmountCost;
+                    Good.Cumulative_Sales_Retail_Price_6 += Amount;
+                    break;
+                case 7:
+                    Good.Cumulative_Sales_Cost_7 += AmountCost;
+                    Good.Cumulative_Sales_Retail_Price_7 += Amount;
+                    break;
+                case 8:
+                    Good.Cumulative_Sales_Cost_8 += AmountCost;
+                    Good.Cumulative_Sales_Retail_Price_8 += Amount;
+                    break;
+                case 9:
+                    Good.Cumulative_Sales_Cost_9 += AmountCost;
+                    Good.Cumulative_Sales_Retail_Price_9 += Amount;
+                    break;
+                case 10:
+                    Good.Cumulative_Sales_Cost_10 += AmountCost;
+                    Good.Cumulative_Sales_Retail_Price_10 += Amount;
+                    break;
+                case 11:
+                    Good.Cumulative_Sales_Cost_11 += AmountCost;
+                    Good.Cumulative_Sales_Retail_Price_11 += Amount;
+                    break;
+                case 12:
+                    Good.Cumulative_Sales_Cost_12 += AmountCost;
+                    Good.Cumulative_Sales_Retail_Price_12 += Amount;
+                    break;
             }
         }
 
@@ -3843,7 +3872,7 @@ namespace HispaniaCommon.DataAccess
             }
             catch (DataException ex)
             {
-                string MsgError = string.Format("No es pot guardar el moviment '{0}'  de la nova Comanda de Client.\r\n{1}.", 
+                string MsgError = string.Format("No es pot guardar el moviment '{0}'  de la nova Comanda de Client.\r\n{1}.",
                                                 customerOrderMovement.CustomerOrderMovement_Id,
                                                 "Intentiu de nou, i si el problema persisteix consulti l'administrador");
                 throw new Exception(MsgError, ex);
@@ -3894,7 +3923,7 @@ namespace HispaniaCommon.DataAccess
             {
                 using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
                 {
-                    HispaniaCompData.CustomerOrderMovement CustomerOrderMovementToDelete = 
+                    HispaniaCompData.CustomerOrderMovement CustomerOrderMovementToDelete =
                                      db.CustomerOrderMovements.Find(customerOrderMovement.CustomerOrderMovement_Id);
                     db.CustomerOrderMovements.Remove(CustomerOrderMovementToDelete);
                     db.SaveChanges();
@@ -3902,7 +3931,7 @@ namespace HispaniaCommon.DataAccess
             }
             catch (DataException ex)
             {
-                string MsgError = string.Format("No es pot esborrar el moviment '{0}' de la Comanda de Client.\r\n{1}.", 
+                string MsgError = string.Format("No es pot esborrar el moviment '{0}' de la Comanda de Client.\r\n{1}.",
                                                 customerOrderMovement.CustomerOrderMovement_Id,
                                                 "Intentiu de nou, i si el problema persisteix consulti l'administrador");
                 throw new Exception(MsgError, ex);
@@ -3921,15 +3950,15 @@ namespace HispaniaCommon.DataAccess
             }
             catch (DataException ex)
             {
-                string MsgError = string.Format("No es pot trobar el moviment amb identificador '{0}' de la Comanda de Client.\r\n{1}", 
+                string MsgError = string.Format("No es pot trobar el moviment amb identificador '{0}' de la Comanda de Client.\r\n{1}",
                                                  CustomerOrderMovement_Id,
                                                 "Intentiu de nou, i si el problema persisteix consulti l'administrador");
                 throw new Exception(MsgError, ex);
             }
         }
-                
+
         [OperationContract]
-        public void UpdateMarkedFlagCustomerOrder(int Bill_From_Id, int Bill_Until_Id, DateTime DateToMark, decimal YearQuery) 
+        public void UpdateMarkedFlagCustomerOrder(int Bill_From_Id, int Bill_Until_Id, DateTime DateToMark, decimal YearQuery)
         {
             string ErrMsg;
             try
@@ -3941,17 +3970,17 @@ namespace HispaniaCommon.DataAccess
                         try
                         {
                             //  Save Bill information in Database
-                                List<HispaniaCompData.CustomerOrder> CustomerOrdersToMark =
-                                    db.CustomerOrders.Where(c => ((c.Bill_Id >= Bill_From_Id) && (c.Bill_Id <= Bill_Until_Id) && (c.Bill_Year == YearQuery))).ToList();
-                                foreach (HispaniaCompData.CustomerOrder customerOrdersToMark in CustomerOrdersToMark)
-                                {
-                                    customerOrdersToMark.Daily = true;
-                                    customerOrdersToMark.Daily_Dates = DateToMark;
-                                    db.Entry(customerOrdersToMark).State = EntityState.Modified;
-                                    db.SaveChanges();
-                                }
+                            List<HispaniaCompData.CustomerOrder> CustomerOrdersToMark =
+                                db.CustomerOrders.Where(c => ((c.Bill_Id >= Bill_From_Id) && (c.Bill_Id <= Bill_Until_Id) && (c.Bill_Year == YearQuery))).ToList();
+                            foreach (HispaniaCompData.CustomerOrder customerOrdersToMark in CustomerOrdersToMark)
+                            {
+                                customerOrdersToMark.Daily = true;
+                                customerOrdersToMark.Daily_Dates = DateToMark;
+                                db.Entry(customerOrdersToMark).State = EntityState.Modified;
+                                db.SaveChanges();
+                            }
                             //  Accept the operations realised.
-                                dbTransaction.Commit();
+                            dbTransaction.Commit();
                         }
                         catch (Exception ex)
                         {
@@ -3988,17 +4017,17 @@ namespace HispaniaCommon.DataAccess
                         try
                         {
                             //  Remove the Warehouse Movement selected
-                                HispaniaCompData.WarehouseMovement WarehouseMovementToSave = db.WarehouseMovements.Add(warehouseMovement);
-                                db.SaveChanges();
-                                warehouseMovement.WarehouseMovement_Id = WarehouseMovementToSave.WarehouseMovement_Id;
+                            HispaniaCompData.WarehouseMovement WarehouseMovementToSave = db.WarehouseMovements.Add(warehouseMovement);
+                            db.SaveChanges();
+                            warehouseMovement.WarehouseMovement_Id = WarehouseMovementToSave.WarehouseMovement_Id;
                             //  Update good with the new information if is needed
-                                if (good != null)
-                                {
-                                    db.Entry(good).State = EntityState.Modified;
-                                    db.SaveChanges();
-                                }
+                            if (good != null)
+                            {
+                                db.Entry(good).State = EntityState.Modified;
+                                db.SaveChanges();
+                            }
                             //  Accept the operations realised.
-                                dbTransaction.Commit();
+                            dbTransaction.Commit();
                         }
                         catch (Exception ex)
                         {
@@ -4007,7 +4036,7 @@ namespace HispaniaCommon.DataAccess
                                                           "Intentiu de nou, i si el problema persisteix consulti l'administrador");
                             throw new Exception(ErrMsg, ex);
                         }
-                    } 
+                    }
                 }
             }
             catch (DataException ex)
@@ -4051,22 +4080,22 @@ namespace HispaniaCommon.DataAccess
                         try
                         {
                             //  Remove the Warehouse Movement selected
-                                db.Entry(warehouseMovement).State = EntityState.Modified;
+                            db.Entry(warehouseMovement).State = EntityState.Modified;
+                            db.SaveChanges();
+                            //  Update good with the new information if is needed
+                            if (goodOld != null)
+                            {
+                                db.Entry(goodOld).State = EntityState.Modified;
                                 db.SaveChanges();
+                            }
                             //  Update good with the new information if is needed
-                                if (goodOld != null)
-                                {
-                                    db.Entry(goodOld).State = EntityState.Modified;
-                                    db.SaveChanges();
-                                }
-                            //  Update good with the new information if is needed
-                                if (goodUpdated != null)
-                                {
-                                    db.Entry(goodUpdated).State = EntityState.Modified;
-                                    db.SaveChanges();
-                                }
+                            if (goodUpdated != null)
+                            {
+                                db.Entry(goodUpdated).State = EntityState.Modified;
+                                db.SaveChanges();
+                            }
                             //  Accept the operations realised.
-                                dbTransaction.Commit();
+                            dbTransaction.Commit();
                         }
                         catch (Exception ex)
                         {
@@ -4075,7 +4104,7 @@ namespace HispaniaCommon.DataAccess
                                                           "Intentiu de nou, i si el problema persisteix consulti l'administrador");
                             throw new Exception(ErrMsg, ex);
                         }
-                    } 
+                    }
                 }
             }
             catch (DataException ex)
@@ -4099,18 +4128,18 @@ namespace HispaniaCommon.DataAccess
                         try
                         {
                             //  Update good with the new information if is needed
-                                if (good != null)
-                                {
-                                    db.Entry(good).State = EntityState.Modified;
-                                    db.SaveChanges();
-                                }
-                            //  Remove the Warehouse Movement selected
-                                HispaniaCompData.WarehouseMovement WarehouseMovementToDelete =
-                                                 db.WarehouseMovements.Find(warehouseMovement.WarehouseMovement_Id);
-                                db.WarehouseMovements.Remove(WarehouseMovementToDelete);
+                            if (good != null)
+                            {
+                                db.Entry(good).State = EntityState.Modified;
                                 db.SaveChanges();
+                            }
+                            //  Remove the Warehouse Movement selected
+                            HispaniaCompData.WarehouseMovement WarehouseMovementToDelete =
+                                             db.WarehouseMovements.Find(warehouseMovement.WarehouseMovement_Id);
+                            db.WarehouseMovements.Remove(WarehouseMovementToDelete);
+                            db.SaveChanges();
                             //  Accept the operations realised.
-                                dbTransaction.Commit();
+                            dbTransaction.Commit();
                         }
                         catch (Exception ex)
                         {
@@ -4120,7 +4149,7 @@ namespace HispaniaCommon.DataAccess
                                                           "Intentiu de nou, i si el problema persisteix consulti l'administrador");
                             throw new Exception(ErrMsg, ex);
                         }
-                    } 
+                    }
                 }
             }
             catch (DataException ex)
@@ -4168,7 +4197,7 @@ namespace HispaniaCommon.DataAccess
             }
             catch (DataException ex)
             {
-                string MsgError = string.Format("No es pot guardar la nova relació de Clients '{0}-{1}'\r\n{2}.", 
+                string MsgError = string.Format("No es pot guardar la nova relació de Clients '{0}-{1}'\r\n{2}.",
                                                 relatedCustomer.Customer, relatedCustomer.Customer_Canceled_Id,
                                                 "Intentiu de nou, i si el problema persisteix consulti l'administrador");
                 throw new Exception(MsgError, ex);
@@ -4211,7 +4240,7 @@ namespace HispaniaCommon.DataAccess
             {
                 using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
                 {
-                    HispaniaCompData.RelatedCustomer RelatedCustomerToDelete = 
+                    HispaniaCompData.RelatedCustomer RelatedCustomerToDelete =
                                                         db.RelatedCustomers.Find(new object[] { relatedCustomer.Customer_Id, relatedCustomer.Customer_Canceled_Id });
                     db.RelatedCustomers.Remove(RelatedCustomerToDelete);
                     db.SaveChanges();
@@ -4378,15 +4407,15 @@ namespace HispaniaCommon.DataAccess
                     try
                     {
                         //  Return the number of registers afecteds
-                            int Result = db.SP_HistoricAcumCustomers(Year);
-                            if (Result < 0)
-                            {
-                                dbTransaction.Rollback();
-                                ErrMsg = string.Format("Error, al actualitzar els acumulats de clients.\r\nDetalls:{0}",
-                                                       "No s'ha actualitzat cap registre client.");
-                            }
-                            else dbTransaction.Commit();
-                            return (Result >= 0);
+                        int Result = db.SP_HistoricAcumCustomers(Year);
+                        if (Result < 0)
+                        {
+                            dbTransaction.Rollback();
+                            ErrMsg = string.Format("Error, al actualitzar els acumulats de clients.\r\nDetalls:{0}",
+                                                   "No s'ha actualitzat cap registre client.");
+                        }
+                        else dbTransaction.Commit();
+                        return (Result >= 0);
                     }
                     catch (Exception ex)
                     {
@@ -4414,15 +4443,15 @@ namespace HispaniaCommon.DataAccess
                     try
                     {
                         //  Return the number of registers afecteds
-                            int Result = db.SP_HistoricAcumGoods(Year);
-                            if (Result < 0)
-                            {
-                                dbTransaction.Rollback();
-                                ErrMsg = string.Format("Error, al actualitzar els acumulats d'articles.\r\nDetalls:{0}",
-                                                       "No s'ha actualitzat cap registre client.");
-                            }
-                            else dbTransaction.Commit();
-                            return (Result >= 0);
+                        int Result = db.SP_HistoricAcumGoods(Year);
+                        if (Result < 0)
+                        {
+                            dbTransaction.Rollback();
+                            ErrMsg = string.Format("Error, al actualitzar els acumulats d'articles.\r\nDetalls:{0}",
+                                                   "No s'ha actualitzat cap registre client.");
+                        }
+                        else dbTransaction.Commit();
+                        return (Result >= 0);
                     }
                     catch (Exception ex)
                     {
@@ -4449,12 +4478,12 @@ namespace HispaniaCommon.DataAccess
                 try
                 {
                     //  Return the number of registers afecteds
-                        Result = db.SP_RemoveWarehouseMovements();
-                        if (Result < 0)
-                        {
-                            ErrMsg = string.Format("Error, a l'esborrar els moviments de magatzem.\r\nDetalls:{0}",
-                                                   "No s'han esborrat els moviments de magatzem.");
-                        }
+                    Result = db.SP_RemoveWarehouseMovements();
+                    if (Result < 0)
+                    {
+                        ErrMsg = string.Format("Error, a l'esborrar els moviments de magatzem.\r\nDetalls:{0}",
+                                               "No s'han esborrat els moviments de magatzem.");
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -4466,7 +4495,7 @@ namespace HispaniaCommon.DataAccess
             }
         }
 
-    #endregion
+        #endregion
 
         #region LiniesConformes [EXECUTE]
 
@@ -4513,7 +4542,8 @@ namespace HispaniaCommon.DataAccess
             {
                 using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
                 {
-                    using (SqlConnection conn = new SqlConnection(db.Database.Connection.ConnectionString + ";Password=Phispania2"))
+                    //using (SqlConnection conn = new SqlConnection(db.Database.Connection.ConnectionString + ";Password=Phispania2"))
+                    using (SqlConnection conn = new SqlConnection(db.Database.Connection.ConnectionString))
                     {
                         conn.Open();
                         try
