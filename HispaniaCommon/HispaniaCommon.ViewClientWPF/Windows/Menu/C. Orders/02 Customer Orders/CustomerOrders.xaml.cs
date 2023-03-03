@@ -10,11 +10,14 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Data.Entity.Infrastructure;
 using System.Diagnostics;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
 using System.Windows.Media;
 
 #endregion
@@ -646,6 +649,7 @@ namespace HispaniaCommon.ViewClientWPF.Windows
             //  Define CustomerDataControl events to manage.
                 CustomerOrderDataControl.EvAccept += CustomerOrderDataControl_evAccept;
                 CustomerOrderDataControl.EvCancel += CustomerOrderDataControl_evCancel;
+                btnCreateExcel.Click += BtnCreateExcel_Click;
         }
 
         #region Filter
@@ -1218,6 +1222,48 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                 MsgManager.ShowMessage(sbInfoExecution.ToString(), MsgType.Information);
             }
         }
+
+        #endregion
+
+        #region Create Excel
+
+        /// <summary>
+        /// Manage the Button Mouse Click in the button that creates excel with the query type and params selecteds.
+        /// </summary>
+        /// <param name="sender">Object that sends the event.</param>
+        /// <param name="e">Parameters with the event was sended.</param>
+        private void BtnCreateExcel_Click(object sender, RoutedEventArgs e)
+        {
+            Mouse.OverrideCursor = Cursors.Wait;            
+            try
+            {
+                QueryViewModel.Instance.CreateExcelFromQuery(QueryType.CustomerConformedOrders);
+            }
+            catch (Exception ex)
+            {
+                MsgManager.ShowMessage(string.Format("Error, al crear l'Excel.\r\nDetalls: {0}", MsgManager.ExcepMsg(ex)));
+            }
+            finally
+            {
+                Mouse.OverrideCursor = Cursors.Arrow;               
+            }
+        }
+
+        //private Dictionary<string, object> CreateParams()
+        //{
+        //    Dictionary<string, object> Params = null;         
+            
+        //    List<CustomerOrdersView> Orders = new List<CustomerOrdersView>();
+        //    foreach (CustomerOrdersView CustomerOrder in m_DataList)
+        //    {
+        //        Orders.Add(new CustomerOrdersView(CustomerOrder));
+        //    }
+        //    Params = new Dictionary<string, object>
+        //                 {
+        //                    {"CustomerOrders", Orders}, 
+        //                 };
+        //    return Params;
+        //}
 
         #endregion
 

@@ -26,6 +26,7 @@ namespace HispaniaCommon.ViewModel
         HistoCustomerForData,
         HistoCustomerForDataAndAgent,
         CustomQuery,
+        CustomerConformedOrders
     }
     
     #endregion
@@ -102,6 +103,7 @@ namespace HispaniaCommon.ViewModel
                 case QueryType.Goods:
                 case QueryType.Customers:
                 case QueryType.CustomerOrders:
+                case QueryType.CustomerConformedOrders:
                      CreateExcel(queryType);
                      break;
                 case QueryType.HistoCustomerForData:
@@ -110,7 +112,7 @@ namespace HispaniaCommon.ViewModel
                      break;
                 case QueryType.CustomQuery:
                      CreateExcel(queryType, Params);
-                     break;
+                     break;                
                 case QueryType.None:
                 default:
                      throw new ArgumentException("CreateExcelFromQuery: Query no reconocida.");
