@@ -245,6 +245,7 @@
           <Property Name="Unit_Shipping_Definition" Type="nvarchar" MaxLength="25" />
           <Property Name="Unit_Billing_Definition" Type="nvarchar" MaxLength="25" />
           <Property Name="Internal_Remark" Type="nvarchar(max)" />
+          <Property Name="RowOrder" Type="int" />
         </EntityType>
         <EntityType Name="DeliveryNote">
           <Key>
@@ -534,6 +535,35 @@
           <Property Name="SendType_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Code" Type="nvarchar" MaxLength="2" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'COMPTABILITAT.dbo.TEMP_DIARY_BANDAGE' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="TEMP_DIARY_BANDAGE">
+          <Key>
+            <PropertyRef Name="Bill_Id" />
+            <PropertyRef Name="Bill_Year" />
+          </Key>
+          <Property Name="Bill_Id" Type="int" Nullable="false" />
+          <Property Name="Bill_Year" Type="decimal" Precision="5" Scale="0" Nullable="false" />
+          <Property Name="Bill_Date" Type="datetime" />
+          <Property Name="Customer_Id" Type="int" />
+          <Property Name="Company_Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="GrossAmount" Type="decimal" Precision="19" Scale="4" />
+          <Property Name="EarlyPayementDiscount" Type="decimal" Precision="19" Scale="4" />
+          <Property Name="TaxableBaseAmount" Type="decimal" Precision="19" Scale="4" />
+          <Property Name="IVAAmount" Type="decimal" Precision="19" Scale="4" />
+          <Property Name="SurchargeAmount" Type="decimal" Precision="19" Scale="4" />
+          <Property Name="Total" Type="decimal" Precision="19" Scale="4" />
         </EntityType>
         <EntityType Name="Unit">
           <Key>
@@ -1183,8 +1213,24 @@
           <EntitySet Name="Receipt" EntityType="Self.Receipt" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RelatedCustomer" EntityType="Self.RelatedCustomer" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SendType" EntityType="Self.SendType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Unit" EntityType="Self.Unit" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WarehouseMovement" EntityType="Self.WarehouseMovement" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TEMP_DIARY_BANDAGE" EntityType="Self.TEMP_DIARY_BANDAGE" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [TEMP_DIARY_BANDAGE].[Bill_Id] AS [Bill_Id], 
+    [TEMP_DIARY_BANDAGE].[Bill_Year] AS [Bill_Year], 
+    [TEMP_DIARY_BANDAGE].[Bill_Date] AS [Bill_Date], 
+    [TEMP_DIARY_BANDAGE].[Customer_Id] AS [Customer_Id], 
+    [TEMP_DIARY_BANDAGE].[Company_Name] AS [Company_Name], 
+    [TEMP_DIARY_BANDAGE].[GrossAmount] AS [GrossAmount], 
+    [TEMP_DIARY_BANDAGE].[EarlyPayementDiscount] AS [EarlyPayementDiscount], 
+    [TEMP_DIARY_BANDAGE].[TaxableBaseAmount] AS [TaxableBaseAmount], 
+    [TEMP_DIARY_BANDAGE].[IVAAmount] AS [IVAAmount], 
+    [TEMP_DIARY_BANDAGE].[SurchargeAmount] AS [SurchargeAmount], 
+    [TEMP_DIARY_BANDAGE].[Total] AS [Total]
+    FROM [dbo].[TEMP_DIARY_BANDAGE] AS [TEMP_DIARY_BANDAGE]</DefiningQuery>
+          </EntitySet>
           <AssociationSet Name="FK_AddressStore_Customer" Association="Self.FK_AddressStore_Customer">
             <End Role="Customer" EntitySet="Customer" />
             <End Role="AddressStore" EntitySet="AddressStore" />
@@ -1637,6 +1683,8 @@
             <Parameter Name="Bill_Id_Until" Mode="In" Type="String" />
             <Parameter Name="Year_Query" Mode="In" Type="Decimal" />
           </FunctionImport>
+          <EntitySet Name="sysdiagrams" EntityType="HispaniaComptabilitatModel.sysdiagram" />
+          <EntitySet Name="TEMP_DIARY_BANDAGE" EntityType="HispaniaComptabilitatModel.TEMP_DIARY_BANDAGE" />
           </EntityContainer>
         <EntityType Name="LocalConnection">
           <Key>
@@ -1992,6 +2040,7 @@
           <Property Name="Unit_Billing_Definition" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
           <Property Name="Internal_Remark" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="CustomerOrder" Relationship="HispaniaComptabilitatModel.FK_CustomerOrderMovement_CustomerOrder" FromRole="CustomerOrderMovement" ToRole="CustomerOrder" />
+          <Property Name="RowOrder" Type="Int32" />
         </EntityType>
         <Association Name="FK_CustomerOrderMovement_Good">
           <End Type="HispaniaComptabilitatModel.Good" Role="Good" Multiplicity="0..1" />
@@ -3175,6 +3224,33 @@
           <Property Type="Decimal" Name="Cumulative_Sales_Cost_11" Nullable="true" Precision="19" Scale="4" />
           <Property Type="Decimal" Name="Cumulative_Sales_Cost_12" Nullable="true" Precision="19" Scale="4" />
         </ComplexType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="TEMP_DIARY_BANDAGE">
+          <Key>
+            <PropertyRef Name="Bill_Id" />
+            <PropertyRef Name="Bill_Year" />
+          </Key>
+          <Property Name="Bill_Id" Type="Int32" Nullable="false" />
+          <Property Name="Bill_Year" Type="Decimal" Nullable="false" Precision="5" Scale="0" />
+          <Property Name="Bill_Date" Type="DateTime" Precision="3" />
+          <Property Name="Customer_Id" Type="Int32" />
+          <Property Name="Company_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="GrossAmount" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="EarlyPayementDiscount" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="TaxableBaseAmount" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="IVAAmount" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="SurchargeAmount" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="Total" Type="Decimal" Precision="19" Scale="4" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3423,6 +3499,7 @@
           <EntitySetMapping Name="CustomerOrderMovements">
             <EntityTypeMapping TypeName="HispaniaComptabilitatModel.CustomerOrderMovement">
               <MappingFragment StoreEntitySet="CustomerOrderMovement">
+                <ScalarProperty Name="RowOrder" ColumnName="RowOrder" />
                 <ScalarProperty Name="Internal_Remark" ColumnName="Internal_Remark" />
                 <ScalarProperty Name="Unit_Billing_Definition" ColumnName="Unit_Billing_Definition" />
                 <ScalarProperty Name="Unit_Shipping_Definition" ColumnName="Unit_Shipping_Definition" />
@@ -3971,6 +4048,34 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="HispaniaComptabilitatModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="definition" ColumnName="definition" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TEMP_DIARY_BANDAGE">
+            <EntityTypeMapping TypeName="HispaniaComptabilitatModel.TEMP_DIARY_BANDAGE">
+              <MappingFragment StoreEntitySet="TEMP_DIARY_BANDAGE">
+                <ScalarProperty Name="Total" ColumnName="Total" />
+                <ScalarProperty Name="SurchargeAmount" ColumnName="SurchargeAmount" />
+                <ScalarProperty Name="IVAAmount" ColumnName="IVAAmount" />
+                <ScalarProperty Name="TaxableBaseAmount" ColumnName="TaxableBaseAmount" />
+                <ScalarProperty Name="EarlyPayementDiscount" ColumnName="EarlyPayementDiscount" />
+                <ScalarProperty Name="GrossAmount" ColumnName="GrossAmount" />
+                <ScalarProperty Name="Company_Name" ColumnName="Company_Name" />
+                <ScalarProperty Name="Customer_Id" ColumnName="Customer_Id" />
+                <ScalarProperty Name="Bill_Date" ColumnName="Bill_Date" />
+                <ScalarProperty Name="Bill_Year" ColumnName="Bill_Year" />
+                <ScalarProperty Name="Bill_Id" ColumnName="Bill_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           </EntityContainerMapping>
 </Mapping></edmx:Mappings>
   </edmx:Runtime>

@@ -4,6 +4,7 @@ using HispaniaCommon.DataAccess;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using HispaniaCompData = HispaniaComptabilitat.Data;
 
 #endregion
@@ -52,7 +53,19 @@ namespace HispaniaCommon.ViewModel
             try
             {
                 ObservableCollection<CustomerOrderMovementsView> CustomerOrderMovementsFiltered = new ObservableCollection<CustomerOrderMovementsView>();
-                foreach (HispaniaCompData.CustomerOrderMovement customerOrderMovement in ReadCustomerOrderMovementsInDb(CustomerOrder_Id))
+                var customersOrderMovementsOrdered = ReadCustomerOrderMovementsInDb(CustomerOrder_Id).OrderBy(x => x.RowOrder);
+                if (customersOrderMovementsOrdered.FirstOrDefault().RowOrder==null)
+                {
+                    var i = 0;
+                    foreach (var movement in customersOrderMovementsOrdered)
+                    {
+                        movement.RowOrder = i;
+                        i++;
+                    }
+                   
+                }
+            
+                foreach (HispaniaCompData.CustomerOrderMovement customerOrderMovement in customersOrderMovementsOrdered)
                 {
                     CustomerOrderMovementsView NewCustomerOrderMovementsView = new CustomerOrderMovementsView(customerOrderMovement);
                     CustomerOrderMovementsFiltered.Add(NewCustomerOrderMovementsView);
