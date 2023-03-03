@@ -229,6 +229,7 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
         /// </summary>
         private List<Control> OnlyQueryControls = null;
 
+     
         #region GUI
 
         /// <summary>
@@ -690,8 +691,21 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                 lblSurchargePercent,
                 tbSurchargePercent,
                 lblBillingDataEarlyPaymentDiscount,
-                tbBillingDataEarlyPaymentDiscount
-            };
+                tbBillingDataEarlyPaymentDiscount,
+                tbCustomerId,
+                tbCustomerAliasClient,
+                tbCompanyNameClient,
+                tbCompanyContactPerson,
+                tbCompanyEmail,
+                tbCompanyAddress,                
+                tbCompanyPhone1,
+                tbCompanyPhone2,
+                tbCompanyMobilePhone,
+                tbCompanyFax,
+                tbCompanyTimeTable,
+                tbCompanyNumProvClient,
+                cbCompanyPostalCode
+        };
         }
 
         /// <summary>
@@ -769,7 +783,7 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                 btnUnAccordingMovement,
                 cbFieldItemToSearch,
                 tbItemToSearch,
-                btnAcceptSearch,
+                btnAcceptSearch
             };
         }
 
@@ -855,7 +869,22 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                     tbCustomerAlias.Text = CustomerOrder.Customer.Customer_Alias;
                     tbCompanyName.Text = CustomerOrder.Customer.Company_Name;
                     tbCompanyCif.Text = CustomerOrder.Customer.Company_Cif;
-                    tbCompanyNumProv.Text = CustomerOrder.Customer.Company_NumProv;                      
+                    tbCompanyNumProv.Text = CustomerOrder.Customer.Company_NumProv;
+                    //  Dades de Client Tab Controls
+                    tbCustomerId.Text = CustomerOrder.Customer.Customer_Id.ToString();
+                    tbCustomerAliasClient.Text = CustomerOrder.Customer.Customer_Alias;
+                    tbCompanyNameClient.Text = CustomerOrder.Customer.Company_Name;
+                    tbCompanyContactPerson.Text = CustomerOrder.Customer.Company_ContactPerson;
+                    tbCompanyEmail.Text = CustomerOrder.Customer.Company_EMail;
+                    tbCompanyAddress.Text = CustomerOrder.Customer.Company_Address;
+                    cbCompanyPostalCode.Text = CustomerOrder.Customer.Company_PostalCode_Str;
+                    tbCompanyPhone1.Text = CustomerOrder.Customer.Company_Phone_1;
+                    tbCompanyPhone2.Text = CustomerOrder.Customer.Company_Phone_2;
+                    tbCompanyMobilePhone.Text = CustomerOrder.Customer.Company_MobilePhone;
+                    tbCompanyFax.Text = CustomerOrder.Customer.Company_Fax;
+                    tbCompanyTimeTable.Text = CustomerOrder.Customer.Company_TimeTable;
+                    tbCompanyNumProvClient.Text= CustomerOrder.Customer.Company_NumProv;
+
                     ActualizeCustomerAddressData(CustomerOrder.Customer);
                 }
                 tbIVAPercent.Text = GlobalViewModel.GetStringFromDecimalValue(CustomerOrder.IVAPercent, DecimalType.Percent, true);
