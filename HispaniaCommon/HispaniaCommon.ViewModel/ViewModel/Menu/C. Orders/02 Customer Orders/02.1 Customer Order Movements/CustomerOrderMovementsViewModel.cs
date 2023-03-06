@@ -54,7 +54,7 @@ namespace HispaniaCommon.ViewModel
             {
                 ObservableCollection<CustomerOrderMovementsView> CustomerOrderMovementsFiltered = new ObservableCollection<CustomerOrderMovementsView>();
                 var customersOrderMovementsOrdered = ReadCustomerOrderMovementsInDb(CustomerOrder_Id).OrderBy(x => x.RowOrder);
-                if (customersOrderMovementsOrdered.FirstOrDefault().RowOrder==null)
+                if (customersOrderMovementsOrdered.Any() && customersOrderMovementsOrdered.FirstOrDefault().RowOrder==null)
                 {
                     var i = 0;
                     foreach (var movement in customersOrderMovementsOrdered)
