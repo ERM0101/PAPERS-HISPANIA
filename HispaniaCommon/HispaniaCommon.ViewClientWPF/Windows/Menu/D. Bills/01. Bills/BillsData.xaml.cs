@@ -1009,6 +1009,8 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                 btnHistoric.Click += BtnHistoric_Click;
                 btnViewData.Click += BtnViewData_Click;
                 btnRefreshEffectData.Click += BtnRefreshEffectData_Click;
+                btnChangeDataVenciment.Click += btnChangeDataVenciment_Click;
+                btnSaveDataVenciment.Click += btnSaveDataVenciment_Click;
         }
 
         #region TextBox
@@ -1723,6 +1725,48 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
             tbDataBankIBANAccountNumber.Text = EditedBill.DataBank_IBAN_AccountNumber;
         }
 
+        #endregion
+
+        #region Change Data Venciment
+        private void btnChangeDataVenciment_Click(object sender, RoutedEventArgs e)
+        {
+            if (dtpExpirationDate.Visibility == Visibility.Visible)
+            {
+                GestionarVisibilidadDataVenciment(true);
+            }
+            else
+            {
+                GestionarVisibilidadDataVenciment(false);
+            }
+            
+        }
+
+        private void btnSaveDataVenciment_Click(object sender, RoutedEventArgs e)
+        {            
+            if (dtpExpirationDate.SelectedDate.HasValue)
+            {               
+                ((ReceiptsView)ReceiptsListItems.SelectedItem).Expiration_Date = dtpExpirationDate.SelectedDate.Value; 
+                CollectionViewSource.GetDefaultView(ReceiptsListItems.ItemsSource).Refresh();
+                GestionarVisibilidadDataVenciment(true);
+                ReceiptsView Receipt = (ReceiptsView)ReceiptsListItems.SelectedItem;
+                Receipt.Expiration_Date = dtpExpirationDate.SelectedDate.Value;
+                GlobalViewModel.Instance.HispaniaViewModel.UpdateReceipt(Receipt);
+            }
+        }
+
+        private void GestionarVisibilidadDataVenciment(bool guardado)
+        {
+            if (guardado)
+            {
+                dtpExpirationDate.Visibility = Visibility.Hidden;
+                btnSaveDataVenciment.Visibility = Visibility.Hidden;               
+            }else
+            {
+                dtpExpirationDate.Visibility = Visibility.Visible;
+                btnSaveDataVenciment.Visibility = Visibility.Visible;                
+            }
+            
+        }
         #endregion
     }
 }
