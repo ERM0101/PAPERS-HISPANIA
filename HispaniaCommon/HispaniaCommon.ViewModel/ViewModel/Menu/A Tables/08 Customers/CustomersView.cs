@@ -80,6 +80,7 @@ namespace HispaniaCommon.ViewModel
                     {
                         { "Numero de Client", "Customer_Id" },
                         { "Alias", "Customer_Alias" },
+                        { "NIF", "Company_Cif"},
                         { "Empresa", "Company_Name" },
                         { "Adreça", "Company_Address" },
                         { "CP", "Company_PostalCode_Str" },
