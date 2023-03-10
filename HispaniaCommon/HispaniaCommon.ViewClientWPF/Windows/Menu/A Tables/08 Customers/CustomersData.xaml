@@ -80,6 +80,22 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="90"/>
                             <ColumnDefinition Width="*" MinWidth="340"/>
+                            <ColumnDefinition Width="50"/>
+                            <ColumnDefinition Width="*" MinWidth="340"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" x:Name="lblCompanyEmail2"  Content="EMAIL 2 :" Margin="14,4,0,0" FontWeight="Bold" 
+                               HorizontalAlignment="Center" VerticalAlignment="Center" IsEnabled="False"/>
+                        <TextBox Grid.Column="1" x:Name="tbCompanyEmail2" Height="23" MaxLength="50" HorizontalContentAlignment="Left" 
+                                 HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="0,4,4,0" IsReadOnly="True" GotFocus="TBGotFocus"/>
+                        <Label Grid.Column="2" x:Name="lblCompanyEmail3"  Content="EMAIL 3 :" Margin="4,4,0,0" FontWeight="Bold" HorizontalAlignment="Center" 
+                               VerticalAlignment="Center" IsEnabled="False"/>
+                        <TextBox Grid.Column="3" x:Name="tbCompanyEmail3" Height="23" MaxLength="50" HorizontalContentAlignment="Left" HorizontalAlignment="Stretch" 
+                                 VerticalAlignment="Center" Margin="4,4,4,0" IsReadOnly="True" GotFocus="TBGotFocus"/>
+                    </Grid>
+                    <Grid Grid.Row="4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="90"/>
+                            <ColumnDefinition Width="*" MinWidth="340"/>
                             <ColumnDefinition Width="88"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
@@ -92,7 +108,7 @@
                         <ComboBox Grid.Column="3" x:Name="cbCompanyPostalCode" Height="23" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" 
                                   HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="4,4,4,0" IsEnabled="False"/>
                     </Grid>
-                    <Grid Grid.Row="4">
+                    <Grid Grid.Row="5">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="90"/>
                             <ColumnDefinition Width="130"/>
@@ -121,7 +137,7 @@
                         <TextBox Grid.Column="7" x:Name="tbCompanyFax" Height="23" MaxLength="15" HorizontalAlignment="Stretch" VerticalAlignment="Center" 
                                  HorizontalContentAlignment="Center" Margin="4,4,4,0" IsReadOnly="True"/>
                     </Grid>
-                    <Grid Grid.Row="5">
+                    <Grid Grid.Row="6">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="90"/>
                             <ColumnDefinition Width="2*"/>

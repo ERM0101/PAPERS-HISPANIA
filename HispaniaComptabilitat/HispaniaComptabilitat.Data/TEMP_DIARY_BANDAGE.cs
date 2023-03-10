@@ -10,18 +10,20 @@
 namespace HispaniaComptabilitat.Data
 {
     using System;
+    using System.Collections.Generic;
     
-    public partial class Settlement
+    public partial class TEMP_DIARY_BANDAGE
     {
-        public int Settlement_Id { get; set; }
-        public int Agent_Id { get; set; }
-        public string Agent_Name { get; set; }
-        public Nullable<int> Bill_Id { get; set; }
+        public int Bill_Id { get; set; }
+        public decimal Bill_Year { get; set; }
         public Nullable<System.DateTime> Bill_Date { get; set; }
-        public int Customer_Id { get; set; }
+        public Nullable<int> Customer_Id { get; set; }
         public string Company_Name { get; set; }
-        public Nullable<decimal> Base { get; set; }
-        public Nullable<decimal> ComissionPercent { get; set; }
-        public Nullable<decimal> Comission { get; set; }
+        public Nullable<decimal> GrossAmount { get; set; }
+        public Nullable<decimal> EarlyPayementDiscount { get; set; }
+        public Nullable<decimal> TaxableBaseAmount { get; set; }
+        public Nullable<decimal> IVAAmount { get; set; }
+        public Nullable<decimal> SurchargeAmount { get; set; }
+        public Nullable<decimal> Total { get; set; }
     }
 }
