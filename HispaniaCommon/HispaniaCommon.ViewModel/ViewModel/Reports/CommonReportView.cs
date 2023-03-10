@@ -12,8 +12,10 @@ namespace HispaniaCommon.ViewModel
 {
     public enum CustomerInfoType
     {
-        CustomerOrder,
+        CustomerOrderProforma,
+        CustomerOrderComanda,
         DeliveryNote,
+        
     }
 
     public class CommonReportView
@@ -167,7 +169,7 @@ namespace HispaniaCommon.ViewModel
         #region Customer Info
 
         public static void InsertCustomerInfo(Document doc, CustomersView Customer, bool IsBill = false, 
-                                              CustomerInfoType Type = CustomerInfoType.CustomerOrder)
+                                              CustomerInfoType Type = CustomerInfoType.CustomerOrderProforma)
         {
             List<PdfPCell> CellsDeliveryNote;
             List<Tuple<string, int, PDF_Align>> Columns = null;
@@ -192,7 +194,7 @@ namespace HispaniaCommon.ViewModel
                     }
                 };
             }
-            string AdditionalText = IsBill ? "FACTURA" : Type == CustomerInfoType.CustomerOrder ? "PRO FORMA" : "ALBARÀ";
+            string AdditionalText = IsBill ? "FACTURA" : (Type == CustomerInfoType.CustomerOrderProforma ? "PRO FORMA" : (Type == CustomerInfoType.CustomerOrderComanda ? "COMANDA" : "ALBARÀ"));
             CellsDeliveryNote = NumProvExist ? new List<PdfPCell>(8)
                                                {
                                                     ReportView.CreateEmptyRow(4),

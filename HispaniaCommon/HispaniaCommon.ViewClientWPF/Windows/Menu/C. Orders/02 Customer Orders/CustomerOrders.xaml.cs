@@ -156,6 +156,17 @@ namespace HispaniaCommon.ViewClientWPF.Windows
         /// </summary>
         private GridLength HideComponent = new GridLength(0.0);
 
+
+        /// <summary>
+        /// Show the Print Pannel.
+        /// </summary>
+        private GridLength ViewPrintPannel = new GridLength(30.0);
+
+        /// <summary>
+        /// Hide the PrintPannel.
+        /// </summary>
+        private GridLength HidePrintPannel = new GridLength(0.0);
+
         #endregion
 
         #region Attributes
@@ -546,6 +557,7 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                 rdItemPannel.Height = HideComponent;
                 rdSearchPannel.Height = HideComponent;
                 gsSplitter.IsEnabled = false;
+                HideOrderOrProformaPannel();
         }
 
         /// <summary>
@@ -639,6 +651,8 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                 btnSplitCustomerOrder.Click += BtnSplitCustomerOrder_Click;
                 btnRefresh.Click += BtnRefresh_Click;
                 btnChangeDate.Click += BtnChangeDate_Click;
+                btnProforma.Click += BtnProformaPrint_Click;
+                btnOrder.Click += BtnOrderPrint_Click;
             //  Define ComboBox events to manage.
                 cbFieldItemToSearch.SelectionChanged += CbFieldItemToSearch_SelectionChanged;
             //  DatePiker
@@ -1116,20 +1130,32 @@ namespace HispaniaCommon.ViewClientWPF.Windows
         /// <param name="e">Parameters with the event was sended.</param>
         private void BtnPrint_Click(object sender, RoutedEventArgs e)
         {
+            ShowOrderOrProformaPannel();           
+        }
+
+        /// <summary>
+        /// Manage the creation of the Report of selected Item and Print this Item.
+        /// </summary>
+        /// <param name="sender">Object that sends the event.</param>
+        /// <param name="e">Parameters with the event was sended.</param>
+        private void BtnOrderPrint_Click(object sender, RoutedEventArgs e)
+        {            
             try
             {
+
                 ActualizeCustomerOrdersFromDb();
                 if (PrintCustomerOrder)
                 {
-                    if (ListItems.SelectionMode == SelectionMode.Single) PrintReportOneCustomerOrder();
+                    if (ListItems.SelectionMode == SelectionMode.Single) PrintReportOneCustomerOrder(false);
                     else
                     {
-                        PrintReportCustomerOrder();
+                        PrintReportCustomerOrder(false);
                     }
                 }
                 else PrintReportDeliveryNote();
                 DataList = GlobalViewModel.Instance.HispaniaViewModel.CustomerOrders;
                 ListItems.UpdateLayout();
+                HideOrderOrProformaPannel();
             }
             catch (Exception ex)
             {
@@ -1138,7 +1164,41 @@ namespace HispaniaCommon.ViewClientWPF.Windows
             }
         }
 
-        private void PrintReportOneCustomerOrder()
+        /// <summary>
+        /// Manage the creation of the Report of selected Item and Print this Item.
+        /// </summary>
+        /// <param name="sender">Object that sends the event.</param>
+        /// <param name="e">Parameters with the event was sended.</param>
+        private void BtnProformaPrint_Click(object sender, RoutedEventArgs e)
+        {
+            
+            try
+            {
+
+                ActualizeCustomerOrdersFromDb();
+                if (PrintCustomerOrder)
+                {
+                    if (ListItems.SelectionMode == SelectionMode.Single) PrintReportOneCustomerOrder(true);
+                    else
+                    {
+                        PrintReportCustomerOrder(true);
+                    }
+                }
+                else PrintReportDeliveryNote();
+                DataList = GlobalViewModel.Instance.HispaniaViewModel.CustomerOrders;
+                ListItems.UpdateLayout();
+                HideOrderOrProformaPannel();
+            }
+            catch (Exception ex)
+            {
+                MsgManager.ShowMessage(
+                    string.Format("Error, a l'imprimir el(s) element(s) seleccionat(s).\r\nDetalls: {0}", MsgManager.ExcepMsg(ex)));
+            }
+        }
+
+        
+
+        private void PrintReportOneCustomerOrder(bool isProfoma)
         {
             if (ListItems.SelectedItem != null)
             {
@@ -1146,7 +1206,7 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                 {
                     if (CustomerOrdersReportView.CheckAndContinueIfExistReport(customerOrder, out string PDF_FileName, out string ErrMsg))
                     {
-                        if (CustomerOrdersReportView.CreateReport(customerOrder, PDF_FileName, out ErrMsg))
+                        if (CustomerOrdersReportView.CreateReport(customerOrder, PDF_FileName, out ErrMsg, isProfoma))
                         {
                             if (ReportView.PrintReport(PDF_FileName, string.Format("Comanda de Client '{0}'", customerOrder.CustomerOrder_Id), out ErrMsg))
                             {
@@ -1167,7 +1227,7 @@ namespace HispaniaCommon.ViewClientWPF.Windows
             }
         }
 
-        private void PrintReportCustomerOrder()
+        private void PrintReportCustomerOrder(bool isProforma)
         {
             if (ListItems.SelectedItems != null)
             {
@@ -1176,7 +1236,7 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                 {
                     if (CustomerOrdersReportView.CheckAndContinueIfExistReport(customerOrder, out string PDF_FileName, out string ErrMsg))
                     {
-                        if (CustomerOrdersReportView.CreateReport(customerOrder, PDF_FileName, out ErrMsg))
+                        if (CustomerOrdersReportView.CreateReport(customerOrder, PDF_FileName, out ErrMsg, isProforma))
                         {
                             if (ReportView.PrintReport(PDF_FileName, string.Format("Comanda de Client '{0}'", customerOrder.CustomerOrder_Id), out ErrMsg))
                             {
@@ -1283,10 +1343,10 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                     ActualizeCustomerOrdersFromDb();
                     if (PrintCustomerOrder)
                     {
-                        if (ListItems.SelectionMode == SelectionMode.Single) SendByEmailReportOneCustomerOrder();
+                        if (ListItems.SelectionMode == SelectionMode.Single) SendByEmailReportOneCustomerOrder(true);
                         else
                         {
-                            SendByEmailReportCustomerOrder();
+                            SendByEmailReportCustomerOrder(true);
                         }
                     }
                     else SendByEmailReportDeliveryNote();
@@ -1300,7 +1360,7 @@ namespace HispaniaCommon.ViewClientWPF.Windows
             }
         }
 
-        private void SendByEmailReportOneCustomerOrder()
+        private void SendByEmailReportOneCustomerOrder(bool isProforma)
         {
             if (ListItems.SelectedItem != null)
             {
@@ -1308,7 +1368,7 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                 {
                     if (CustomerOrdersReportView.CheckAndContinueIfExistReport(customerOrder, out string PDF_FileName, out string ErrMsg))
                     {
-                        if (CustomerOrdersReportView.CreateReport(customerOrder, PDF_FileName, out ErrMsg))
+                        if (CustomerOrdersReportView.CreateReport(customerOrder, PDF_FileName, out ErrMsg, isProforma))
                         {
                             if (CustomerOrdersReportView.SendByEMail(customerOrder, PDF_FileName, out ErrMsg))
                             {
@@ -1327,14 +1387,14 @@ namespace HispaniaCommon.ViewClientWPF.Windows
             }
         }
 
-        private void SendByEmailReportCustomerOrder()
+        private void SendByEmailReportCustomerOrder(bool isProforma)
         {
             StringBuilder sbInfoExecution = new StringBuilder(string.Empty);
             foreach (CustomerOrdersView customerOrder in ListItems.SelectedItems)
             {
                 if (CustomerOrdersReportView.CheckAndContinueIfExistReport(customerOrder, out string PDF_FileName, out string ErrMsg))
                 {
-                    if (CustomerOrdersReportView.CreateReport(customerOrder, PDF_FileName, out ErrMsg))
+                    if (CustomerOrdersReportView.CreateReport(customerOrder, PDF_FileName, out ErrMsg, isProforma))
                     {
                         Process.Start(PDF_FileName);
                         if (CustomerOrdersReportView.SendByEMail(customerOrder, PDF_FileName, out ErrMsg))
@@ -1795,6 +1855,29 @@ namespace HispaniaCommon.ViewClientWPF.Windows
             gsSplitter.IsEnabled = true;
             rdItemPannel.Height = ViewItemPannel;
             rdOperationPannel.Height = HideComponent;
+            RefreshButtonBar(true);
+            GridList.IsEnabled = false;
+        }
+
+        /// <summary>
+        /// Method that show the Item Pannel
+        /// </summary>
+        private void HideOrderOrProformaPannel()
+        {
+            rdPrintPannel.Height = HidePrintPannel;            
+            gsSplitter.IsEnabled = false;
+            RefreshButtonBar();
+            GridList.IsEnabled = true;
+        }
+
+
+        /// <summary>
+        /// Method that show the Item Pannel
+        /// </summary>
+        private void ShowOrderOrProformaPannel()
+        {
+            gsSplitter.IsEnabled = true;
+            rdPrintPannel.Height = ViewPrintPannel;           
             RefreshButtonBar(true);
             GridList.IsEnabled = false;
         }
