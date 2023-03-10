@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using HispaniaCompData = HispaniaComptabilitat.Data;
 using System.Text;
+using HispaniaComptabilitat.Data;
 
 #endregion
 
@@ -23,6 +24,8 @@ namespace HispaniaCommon.ViewModel
         Company_Fax,
         Company_MobilePhone,
         Company_EMail,
+        Company_EMail2,
+        Company_EMail3,
         Company_TimeTable,
         Company_NumProv,
         Company_Cif,
@@ -89,7 +92,7 @@ namespace HispaniaCommon.ViewModel
                         { "Telèfon 2", "Company_Phone_2" },
                         { "Fax", "Company_Fax" },
                         { "Mòbil", "Company_MobilePhone" },
-                        { "E-mail", "Company_EMail" },
+                        { "E-mail", "Company_EMail" },                        
                         { "Persona de Contacte", "Company_ContactPerson" },
                         { "Horari", "Company_TimeTable" },
                         { "Num. Proveidor", "Company_NumProv" }
@@ -132,6 +135,8 @@ namespace HispaniaCommon.ViewModel
         public string Company_Fax { get; set; }
         public string Company_MobilePhone { get; set; }
         public string Company_EMail { get; set; }
+        public string Company_EMail2 { get; set; }
+        public string Company_EMail3 { get; set; }
         public string Company_ContactPerson { get; set; }
         public string Company_TimeTable { get; set; }
         public string Company_NumProv { get; set; }
@@ -408,6 +413,8 @@ namespace HispaniaCommon.ViewModel
             Company_Fax = string.Empty;
             Company_MobilePhone = string.Empty;
             Company_EMail = string.Empty;
+            Company_EMail2 = string.Empty;
+            Company_EMail3 = string.Empty;
             Company_ContactPerson = string.Empty;
             Company_TimeTable = string.Empty;
             Company_NumProv = string.Empty;
@@ -471,6 +478,8 @@ namespace HispaniaCommon.ViewModel
             Company_Fax = customer.Company_Fax;
             Company_MobilePhone = customer.Company_MobilePhone;
             Company_EMail = customer.Company_EMail;
+            Company_EMail2 = customer.Company_Email2;
+            Company_EMail3 = customer.Company_Email3;
             Company_ContactPerson = customer.Company_ContactPerson;
             Company_TimeTable = customer.Company_TimeTable;
             Company_NumProv = customer.Company_NumProv;
@@ -535,6 +544,8 @@ namespace HispaniaCommon.ViewModel
             Company_Fax = customer.Company_Fax;
             Company_MobilePhone = customer.Company_MobilePhone;
             Company_EMail = customer.Company_EMail;
+            Company_EMail2 = customer.Company_EMail2;
+            Company_EMail3 = customer.Company_EMail3;
             Company_ContactPerson = customer.Company_ContactPerson;
             Company_TimeTable = customer.Company_TimeTable;
             Company_NumProv = customer.Company_NumProv;
@@ -604,6 +615,8 @@ namespace HispaniaCommon.ViewModel
                 Company_Fax = Company_Fax,
                 Company_MobilePhone = Company_MobilePhone,
                 Company_EMail = Company_EMail,
+                Company_Email2 = Company_EMail2,
+                Company_Email3 = Company_EMail3,
                 Company_ContactPerson = Company_ContactPerson,
                 Company_TimeTable = Company_TimeTable,
                 Company_NumProv = Company_NumProv,
@@ -709,6 +722,16 @@ namespace HispaniaCommon.ViewModel
             if (!GlobalViewModel.IsEmptyOrEmail(Company_EMail))
             {
                 ErrorField = CustomersAttributes.Company_EMail;
+                throw new FormatException(GlobalViewModel.ValidationEmptyOrEmailError);
+            }
+            if (!GlobalViewModel.IsEmptyOrEmail(Company_EMail2))
+            {
+                ErrorField = CustomersAttributes.Company_EMail2;
+                throw new FormatException(GlobalViewModel.ValidationEmptyOrEmailError);
+            }
+            if (!GlobalViewModel.IsEmptyOrEmail(Company_EMail3))
+            {
+                ErrorField = CustomersAttributes.Company_EMail3;
                 throw new FormatException(GlobalViewModel.ValidationEmptyOrEmailError);
             }
             if (!GlobalViewModel.IsEmptyOrTimeTable(Company_TimeTable))
@@ -880,6 +903,8 @@ namespace HispaniaCommon.ViewModel
             Company_Fax = Data.Company_Fax;
             Company_MobilePhone = Data.Company_MobilePhone;
             Company_EMail = Data.Company_EMail;
+            Company_EMail2 = Data.Company_EMail2;
+            Company_EMail3 = Data.Company_EMail3;
             Company_TimeTable = Data.Company_TimeTable;
             //Company_NumProv = Data.Company_NumProv;
             Company_Cif = Data.Company_Cif;
@@ -948,6 +973,12 @@ namespace HispaniaCommon.ViewModel
                 case CustomersAttributes.Company_EMail:
                      Company_EMail = Data.Company_EMail;
                      break;
+                case CustomersAttributes.Company_EMail2:
+                    Company_EMail2 = Data.Company_EMail2;
+                    break;
+                case CustomersAttributes.Company_EMail3:
+                    Company_EMail3 = Data.Company_EMail3;
+                    break;
                 case CustomersAttributes.Company_TimeTable:
                      Company_TimeTable = Data.Company_TimeTable;
                      break;
@@ -1061,7 +1092,8 @@ namespace HispaniaCommon.ViewModel
                        (Company_Name == customer.Company_Name) && (Company_Address == customer.Company_Address) &&
                        (Company_Phone_1 == customer.Company_Phone_1) && (Company_Phone_2 == customer.Company_Phone_2) &&
                        (Company_Fax == customer.Company_Fax) && (Company_MobilePhone == customer.Company_MobilePhone) &&
-                       (Company_EMail == customer.Company_EMail) && (Company_ContactPerson == customer.Company_ContactPerson) &&
+                       (Company_EMail == customer.Company_EMail) && (Company_EMail2 == customer.Company_EMail2) && 
+                       (Company_EMail3 == customer.Company_EMail3) && (Company_ContactPerson == customer.Company_ContactPerson) &&
                        (Company_TimeTable == customer.Company_TimeTable) && (Company_NumProv == customer.Company_NumProv) &&
                        (DataBank_NumEffect == customer.DataBank_NumEffect) &&
                        (DataBank_FirstExpirationData == customer.DataBank_FirstExpirationData) &&
@@ -1123,7 +1155,8 @@ namespace HispaniaCommon.ViewModel
                        (Company_Name == customer.Company_Name) && (Company_Address == customer.Company_Address) &&
                        (Company_Phone_1 == customer.Company_Phone_1) && (Company_Phone_2 == customer.Company_Phone_2) &&
                        (Company_Fax == customer.Company_Fax) && (Company_MobilePhone == customer.Company_MobilePhone) &&
-                       (Company_EMail == customer.Company_EMail) && (Company_ContactPerson == customer.Company_ContactPerson) &&
+                       (Company_EMail == customer.Company_EMail) && (Company_EMail2 == customer.Company_EMail2) && 
+                       (Company_EMail3 == customer.Company_EMail3) && (Company_ContactPerson == customer.Company_ContactPerson) &&
                        (Company_TimeTable == customer.Company_TimeTable) && (Company_NumProv == customer.Company_NumProv) &&
                        (DataBank_NumEffect == customer.DataBank_NumEffect) &&
                        (DataBank_FirstExpirationData == customer.DataBank_FirstExpirationData) &&
@@ -1189,7 +1222,8 @@ namespace HispaniaCommon.ViewModel
                        (customer_1.Company_Name == customer_2.Company_Name) && (customer_1.Company_Address == customer_2.Company_Address) &&
                        (customer_1.Company_Phone_1 == customer_2.Company_Phone_1) && (customer_1.Company_Phone_2 == customer_2.Company_Phone_2) &&
                        (customer_1.Company_Fax == customer_2.Company_Fax) && (customer_1.Company_MobilePhone == customer_2.Company_MobilePhone) &&
-                       (customer_1.Company_EMail == customer_2.Company_EMail) && (customer_1.Company_ContactPerson == customer_2.Company_ContactPerson) &&
+                       (customer_1.Company_EMail == customer_2.Company_EMail) && (customer_1.Company_EMail2 == customer_2.Company_EMail2) && 
+                       (customer_1.Company_EMail3 == customer_2.Company_EMail3) && (customer_1.Company_ContactPerson == customer_2.Company_ContactPerson) &&
                        (customer_1.Company_TimeTable == customer_2.Company_TimeTable) && (customer_1.Company_NumProv == customer_2.Company_NumProv) &&
                        (customer_1.DataBank_NumEffect == customer_2.DataBank_NumEffect) &&
                        (customer_1.DataBank_FirstExpirationData == customer_2.DataBank_FirstExpirationData) &&

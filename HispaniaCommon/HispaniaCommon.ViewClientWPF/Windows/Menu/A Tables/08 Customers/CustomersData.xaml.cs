@@ -680,6 +680,10 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                 tbCompanyFax,
                 lblCompanyEmail,
                 tbCompanyEmail,
+                lblCompanyEmail2,
+                tbCompanyEmail2,
+                lblCompanyEmail3,
+                tbCompanyEmail3,
                 lblCompanyContactPerson,
                 tbCompanyContactPerson,
                 lblCompanyTimeTable,
@@ -799,7 +803,9 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                 tbCompanyFax.Text = customersView.Company_Fax;
                 tbCompanyMobilePhone.Text = customersView.Company_MobilePhone;
                 tbCompanyEmail.Text = customersView.Company_EMail;
-                tbCompanyContactPerson.Text = customersView.Company_ContactPerson;
+                tbCompanyEmail2.Text = customersView.Company_EMail2;
+            tbCompanyEmail3.Text = customersView.Company_EMail3;
+            tbCompanyContactPerson.Text = customersView.Company_ContactPerson;
                 tbCompanyTimeTable.Text = customersView.Company_TimeTable;
                 tbCompanyNumProv.Text = customersView.Company_NumProv;
             //  DataBank Controls
@@ -988,6 +994,10 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                 tbCompanyFax.TextChanged += TBDataChanged;
                 tbCompanyEmail.PreviewTextInput += TBPreviewTextInput;
                 tbCompanyEmail.TextChanged += TBDataChanged;
+                tbCompanyEmail2.PreviewTextInput += TBPreviewTextInput;
+                tbCompanyEmail2.TextChanged += TBDataChanged;
+                tbCompanyEmail3.PreviewTextInput += TBPreviewTextInput;
+                tbCompanyEmail3.TextChanged += TBDataChanged;
                 tbCompanyContactPerson.PreviewTextInput += TBPreviewTextInput;
                 tbCompanyContactPerson.TextChanged += TBDataChanged;
                 tbCompanyTimeTable.PreviewTextInput += TBPreviewTextInput;
@@ -1099,6 +1109,8 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
             }
             else if (sender == tbCompanyMobilePhone) e.Handled = ! GlobalViewModel.IsValidMobilePhoneNumberChar(e.Text);
             else if (sender == tbCompanyEmail) e.Handled = ! GlobalViewModel.IsValidEmailChar(e.Text);
+            else if (sender == tbCompanyEmail2) e.Handled = !GlobalViewModel.IsValidEmailChar(e.Text);
+            else if (sender == tbCompanyEmail3) e.Handled = !GlobalViewModel.IsValidEmailChar(e.Text);
             else if (sender == tbCompanyTimeTable) e.Handled = ! GlobalViewModel.IsValidTimeTableChar(e.Text);
             else if (sender == tbCompanyNumProv) e.Handled = ! GlobalViewModel.IsValidUintChar(e.Text);
             else if (sender == tbCompanyCif) e.Handled = ! GlobalViewModel.IsValidCIFChar(e.Text);
@@ -1145,6 +1157,8 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                     else if (sender == tbCompanyFax) EditedCustomer.Company_Fax = value;
                     else if (sender == tbCompanyMobilePhone) EditedCustomer.Company_MobilePhone = value;
                     else if (sender == tbCompanyEmail) EditedCustomer.Company_EMail = value;
+                    else if (sender == tbCompanyEmail2) EditedCustomer.Company_EMail2 = value;
+                    else if (sender == tbCompanyEmail3) EditedCustomer.Company_EMail3 = value;
                     else if (sender == tbCompanyTimeTable) EditedCustomer.Company_TimeTable = value;
                     else if (sender == tbCompanyNumProv) EditedCustomer.Company_NumProv = value;
                     else if (sender == tbCompanyCif) EditedCustomer.Company_Cif = value;

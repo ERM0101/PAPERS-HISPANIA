@@ -215,6 +215,12 @@
     <Compile Include="StockTaking_Result.cs">
       <DependentUpon>HispaniaComptabilitatModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="sysdiagram.cs">
+      <DependentUpon>HispaniaComptabilitatModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TEMP_DIARY_BANDAGE.cs">
+      <DependentUpon>HispaniaComptabilitatModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Unit.cs">
       <DependentUpon>HispaniaComptabilitatModel.tt</DependentUpon>
     </Compile>
