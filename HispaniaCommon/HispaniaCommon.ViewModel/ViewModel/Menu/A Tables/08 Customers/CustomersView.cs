@@ -251,6 +251,14 @@ namespace HispaniaCommon.ViewModel
             }
         }
 
+        public string Company_Province_Str
+        {
+            get
+            {
+                return (Company_PostalCode == null) ? string.Empty : Company_PostalCode.Province;
+            }
+        }
+
         #endregion
 
         #region EffectTypes
