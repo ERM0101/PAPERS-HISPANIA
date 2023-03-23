@@ -397,7 +397,7 @@ namespace HispaniaCommon.ViewModel
             CustomerOrderMovement_Id = CustomerOrderMovement.CustomerOrderMovement_Id;
             _Good_Id = CustomerOrderMovement.Good.Good_Id;
             Good_Code = CustomerOrderMovement.Good.Good_Code;
-            Good_Description = CustomerOrderMovement.Good.Good_Description;
+            Good_Description = String.IsNullOrEmpty(CustomerOrderMovement.Description) ? CustomerOrderMovement.Good.Good_Description : CustomerOrderMovement.Description;
         }
 
         /// <summary>
