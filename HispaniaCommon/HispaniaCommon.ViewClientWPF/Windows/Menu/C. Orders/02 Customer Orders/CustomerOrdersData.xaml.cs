@@ -1491,7 +1491,9 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
         /// <param name="e">Parameters of the event</param>
         private void GoodsWindow_Closed(object sender, EventArgs e)
         {
+            CheckIfAddingNewArticle();
             ActualizeGoodsData();
+
             GoodsWindow.Closed -= GoodsWindow_Closed;
             GoodsWindow = null;
         }
@@ -2450,6 +2452,36 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                     break;
                 }
             }
+        }
+
+        private void CheckIfAddingNewArticle()
+        {            
+            if ((GoodsWindow.SelectedGoodView!=null))
+            {
+                try
+                {
+                    CustomerOrderMovementsView newMovement = new CustomerOrderMovementsView();
+                    newMovement.Good = GoodsWindow.SelectedGoodView;
+                    newMovement.CustomerOrder = this.CustomerOrder;
+                    newMovement.Description = GoodsWindow.SelectedGoodView.Good_Description;
+                    newMovement.Unit_Billing_Definition = GoodsWindow.SelectedGoodView.Good_Unit.Billing;
+                    newMovement.Unit_Shipping_Definition = GoodsWindow.SelectedGoodView.Good_Unit.Shipping;
+                    //newMovement.ShippingUnitAvailable = good.Shipping_Unit_Available_Str;
+                    //newMovement.BillingUnitAvailable = good.Billing_Unit_Available_Str;
+                    GlobalViewModel.Instance.HispaniaViewModel.CreateItemInDataManaged(DataManagementId, newMovement);
+                    DataList.Add(newMovement);
+                    ActualizeGoodInfo(newMovement, MovementOp.Add);
+                    ListItems.SelectedItem = newMovement;
+                    //ActualizeAmountInfo(EditedCustomerOrder);
+                    AreDataChanged = AreNotEquals(DataList, SourceDataList);
+                }
+                catch (Exception ex)
+                {
+                    MsgManager.ShowMessage(
+                       string.Format("Error, a l'actualitzar les dades de la nova línia de comanda.\r\nDetalls:{0}", MsgManager.ExcepMsg(ex)));
+                }
+            }
+            
         }
 
         #endregion
