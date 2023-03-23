@@ -174,6 +174,8 @@
           <Property Name="QueryData_Active" Type="bit" Nullable="false" />
           <Property Name="QueryData_Print" Type="bit" Nullable="false" />
           <Property Name="Canceled" Type="bit" Nullable="false" />
+          <Property Name="Company_Email2" Type="varchar" MaxLength="50" />
+          <Property Name="Company_Email3" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="CustomerOrder">
           <Key>
@@ -2891,6 +2893,8 @@ advertencia 6002: La tabla o vista 'COMPTABILITAT.dbo.TEMP_DIARY_BANDAGE' no tie
           <NavigationProperty Name="RelatedCustomers" Relationship="HispaniaComptabilitatModel.FK_RelatedCustomer_Customer" FromRole="Customer" ToRole="RelatedCustomer" />
           <NavigationProperty Name="RelatedCustomers1" Relationship="HispaniaComptabilitatModel.FK_RelatedCustomer_Customer1" FromRole="Customer" ToRole="RelatedCustomer" />
           <NavigationProperty Name="CustomerOrders" Relationship="HispaniaComptabilitatModel.FK_CustomerOrder_Customer" FromRole="Customer" ToRole="CustomerOrder" />
+          <Property Name="Company_Email2" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Company_Email3" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="RelatedCustomer">
           <Key>
@@ -3858,6 +3862,8 @@ advertencia 6002: La tabla o vista 'COMPTABILITAT.dbo.TEMP_DIARY_BANDAGE' no tie
           <EntitySetMapping Name="Customers">
             <EntityTypeMapping TypeName="HispaniaComptabilitatModel.Customer">
               <MappingFragment StoreEntitySet="Customer">
+                <ScalarProperty Name="Company_Email3" ColumnName="Company_Email3" />
+                <ScalarProperty Name="Company_Email2" ColumnName="Company_Email2" />
                 <ScalarProperty Name="Canceled" ColumnName="Canceled" />
                 <ScalarProperty Name="QueryData_Print" ColumnName="QueryData_Print" />
                 <ScalarProperty Name="QueryData_Active" ColumnName="QueryData_Active" />

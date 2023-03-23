@@ -85,6 +85,8 @@ namespace HispaniaComptabilitat.Data
         public bool QueryData_Active { get; set; }
         public bool QueryData_Print { get; set; }
         public bool Canceled { get; set; }
+        public string Company_Email2 { get; set; }
+        public string Company_Email3 { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AddressStore> AddressStores { get; set; }

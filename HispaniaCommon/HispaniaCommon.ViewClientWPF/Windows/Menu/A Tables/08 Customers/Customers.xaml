@@ -176,6 +176,26 @@
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
                                 <GridViewColumn Width="Auto">
+                                    <GridViewColumnHeader Content="E-mail2" HorizontalContentAlignment="Left"/>
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Grid Background="Transparent" HorizontalAlignment="Stretch" >
+                                                <TextBlock Text="{Binding Company_EMail2}" TextAlignment="Left" Margin="0,0,2,0"/>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Width="Auto">
+                                    <GridViewColumnHeader Content="E-mail3" HorizontalContentAlignment="Left"/>
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Grid Background="Transparent" HorizontalAlignment="Stretch" >
+                                                <TextBlock Text="{Binding Company_EMail3}" TextAlignment="Left" Margin="0,0,2,0"/>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Width="Auto">
                                     <GridViewColumnHeader Content="Persona de Contacte" HorizontalContentAlignment="Left"/>
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>

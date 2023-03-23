@@ -44,7 +44,7 @@ namespace HispaniaCommon.ViewModel
         /// Create the Report with the information of the Customers selecteds.
         /// </summary>
         /// <param name="customerOrder">Customers selecteds.</param>
-        public static bool CreateReport(CustomerOrdersView customerOrder, string PDF_FileName, out string ErrMsg)
+        public static bool CreateReport(CustomerOrdersView customerOrder, string PDF_FileName, out string ErrMsg, bool IsProforma = true)
         {
             Document doc = null;
             PdfWriter writer = null;
@@ -56,7 +56,15 @@ namespace HispaniaCommon.ViewModel
                 doc.AddCreator("Hispania Papers S.L.");
                 doc.Open();
                 CommonReportView.InsertHispaniaHeader(doc);
-                CommonReportView.InsertCustomerInfo(doc, customerOrder.Customer, false, CustomerInfoType.CustomerOrder);
+                if(IsProforma)
+                {
+                    CommonReportView.InsertCustomerInfo(doc, customerOrder.Customer, false, CustomerInfoType.CustomerOrderProforma);
+                }
+                else
+                {
+                    CommonReportView.InsertCustomerInfo(doc, customerOrder.Customer, false, CustomerInfoType.CustomerOrderComanda);
+                }
+                
                 InsertCustomerOrderHeader(doc, customerOrder);
                 InsertCustomerOrderMovementTable(doc, customerOrder);
                 InsertCustomerOrderAmount(doc, customerOrder);

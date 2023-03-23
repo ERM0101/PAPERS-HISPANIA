@@ -121,6 +121,20 @@ namespace HispaniaCommon.ViewModel
         public string Good_Description { get; set; }
         public string Unit_Shipping_Definition { get; set; }
         public string Unit_Billing_Definition { get; set; }
+        public decimal Total_Price
+        {
+            get
+            {
+                return Retail_Price * Billing_Units;
+            }
+        }
+        public string Total_Price_Str
+        {
+            get
+            {
+                return GlobalViewModel.GetStringFromDecimalValue(Total_Price, DecimalType.Currency, true);
+            }
+        }
 
         #endregion
 
