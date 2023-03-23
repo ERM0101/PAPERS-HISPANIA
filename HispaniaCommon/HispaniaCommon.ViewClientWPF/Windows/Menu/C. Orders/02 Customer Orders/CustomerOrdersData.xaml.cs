@@ -783,7 +783,9 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                 btnUnAccordingMovement,
                 cbFieldItemToSearch,
                 tbItemToSearch,
-                btnAcceptSearch
+                btnAcceptSearch,
+                chkPrevisioLliurament,
+                dtpPrevisioLliurament
             };
         }
 
@@ -846,6 +848,13 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                 tbBillSerieId.Text = CustomerOrder.Bill_Serie_Str;
                 chkbAccording.IsChecked = CustomerOrder.According;
                 chkbValued.IsChecked = CustomerOrder.Valued;
+                chkPrevisioLliurament.IsChecked = CustomerOrder.PrevisioLliurament;
+                dtpPrevisioLliurament.Visibility = Visibility.Hidden;
+                if (CustomerOrder.PrevisioLliurament)
+                {
+                    dtpPrevisioLliurament.Visibility = Visibility.Visible;
+                    dtpPrevisioLliurament.SelectedDate = CustomerOrder.PrevisioLliuramentData;
+                }
             //  Header Data Tab Controls
                 if (CustomerOrder.Customer is null)
                 {
@@ -1057,13 +1066,16 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                 tbItemToSearch.TextChanged += TBItemToSearchDataChanged;
             //  DatePiker
                 dtpDeliveryNoteDate.SelectedDateChanged += DtpDeliveryNoteDate_SelectedDateChanged;
+            dtpPrevisioLliurament.SelectedDateChanged += DtpPrevisioLliurament_SelectedDateChanged;
             //  CheckBox
                 chkbAccording.Checked += ChkbAccording_Checked;
                 chkbAccording.Unchecked += ChkbAccording_Unchecked;
                 chkbValued.Checked += ChkbValued_Checked;
                 chkbValued.Unchecked += ChkbValued_Unchecked;
+            chkPrevisioLliurament.Checked += ChkPrevisioLliurament_Checked;
+            chkPrevisioLliurament.Unchecked += ChkPrevisioLliurament_Unchecked;
             //  ComboBox
-                cbAddressStores.SelectionChanged += CbAddressStores_SelectionChanged;
+            cbAddressStores.SelectionChanged += CbAddressStores_SelectionChanged;
                 cbSendType.SelectionChanged += CbSendType_SelectionChanged;
                 cbEffectType.SelectionChanged += CbEffectType_SelectionChanged;
                 cbBillingDataAgent.SelectionChanged += CbBillingDataAgent_SelectionChanged;
@@ -1087,6 +1099,15 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                 btnAgents.Click += BtnAgents_Click;
                 btnAccept.Click += BtnAccept_Click;
                 btnCancel.Click += BtnCancel_Click;
+        }
+
+        private void DtpPrevisioLliurament_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            AreDataChanged = true;
+            if (((DatePicker)sender).SelectedDate.HasValue)
+            {
+                EditedCustomerOrder.PrevisioLliuramentData = ((DatePicker)sender).SelectedDate.Value;
+            }
         }
 
         #region TextBox
@@ -1936,6 +1957,8 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                 EditedCustomerOrder.According = false;
                 AreDataChanged = (EditedCustomerOrder != CustomerOrder);
             }
+            lblPrevisioLliurament.Visibility = Visibility.Visible;
+            chkPrevisioLliurament.Visibility = Visibility.Visible;
         }
 
         private void ChkbAccording_Checked(object sender, RoutedEventArgs e)
@@ -1945,6 +1968,8 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                 EditedCustomerOrder.According = true;
                 AreDataChanged = (EditedCustomerOrder != CustomerOrder);
             }
+            lblPrevisioLliurament.Visibility = Visibility.Hidden;
+            chkPrevisioLliurament.Visibility = Visibility.Hidden;
         }
 
         private void ChkbValued_Unchecked(object sender, RoutedEventArgs e)
@@ -1963,6 +1988,18 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                 EditedCustomerOrder.Valued = true;
                 AreDataChanged = (EditedCustomerOrder != CustomerOrder);
             }
+        }
+
+        private void ChkPrevisioLliurament_Checked(object sender, RoutedEventArgs e)
+        {
+            this.dtpPrevisioLliurament.Visibility = Visibility.Visible;
+            EditedCustomerOrder.PrevisioLliurament = true;
+        }
+
+        private void ChkPrevisioLliurament_Unchecked(object sender, RoutedEventArgs e)
+        {
+            this.dtpPrevisioLliurament.Visibility = Visibility.Hidden;
+            EditedCustomerOrder.PrevisioLliurament = false;
         }
 
         #endregion

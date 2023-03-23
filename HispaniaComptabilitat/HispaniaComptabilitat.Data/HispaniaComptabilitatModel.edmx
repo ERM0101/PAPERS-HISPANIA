@@ -227,6 +227,8 @@
           <Property Name="SendByEmail_CustomerOrder" Type="bit" Nullable="false" />
           <Property Name="TotalAmount" Type="decimal" Precision="19" Scale="4" Nullable="false" />
           <Property Name="TimeTable" Type="nvarchar" MaxLength="50" />
+          <Property Name="PrevisioLliurament" Type="bit" />
+          <Property Name="PrevisioLliuramentData" Type="date" />
         </EntityType>
         <EntityType Name="CustomerOrderMovement">
           <Key>
@@ -3086,6 +3088,8 @@ advertencia 6002: La tabla o vista 'COMPTABILITAT.dbo.TEMP_DIARY_BANDAGE' no tie
           <NavigationProperty Name="PostalCode" Relationship="HispaniaComptabilitatModel.FK_CustomerOrder_PostalCode" FromRole="CustomerOrder" ToRole="PostalCode" />
           <NavigationProperty Name="SendType" Relationship="HispaniaComptabilitatModel.FK_CustomerOrder_SendType" FromRole="CustomerOrder" ToRole="SendType" />
           <NavigationProperty Name="CustomerOrderMovements" Relationship="HispaniaComptabilitatModel.FK_CustomerOrderMovement_CustomerOrder" FromRole="CustomerOrder" ToRole="CustomerOrderMovement" />
+          <Property Name="PrevisioLliurament" Type="Boolean" />
+          <Property Name="PrevisioLliuramentData" Type="DateTime" Precision="0" />
         </EntityType>
         <Association Name="FK_CustomerOrder_Agent">
           <End Type="HispaniaComptabilitatModel.Agent" Role="Agent" Multiplicity="0..1" />
@@ -3939,6 +3943,8 @@ advertencia 6002: La tabla o vista 'COMPTABILITAT.dbo.TEMP_DIARY_BANDAGE' no tie
           <EntitySetMapping Name="CustomerOrders">
             <EntityTypeMapping TypeName="HispaniaComptabilitatModel.CustomerOrder">
               <MappingFragment StoreEntitySet="CustomerOrder">
+                <ScalarProperty Name="PrevisioLliuramentData" ColumnName="PrevisioLliuramentData" />
+                <ScalarProperty Name="PrevisioLliurament" ColumnName="PrevisioLliurament" />
                 <ScalarProperty Name="TimeTable" ColumnName="TimeTable" />
                 <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
                 <ScalarProperty Name="SendByEmail_CustomerOrder" ColumnName="SendByEmail_CustomerOrder" />
