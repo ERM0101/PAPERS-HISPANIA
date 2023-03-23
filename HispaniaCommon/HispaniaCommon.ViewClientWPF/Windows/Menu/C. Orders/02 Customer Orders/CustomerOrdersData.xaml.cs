@@ -12,6 +12,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Data;
 using System.ComponentModel;
+using System.Linq;
 
 #endregion
 
@@ -308,8 +309,9 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                 SourceDataList = new ObservableCollection<CustomerOrderMovementsView>(m_DataList);
                 ListItems.ItemsSource = m_DataList;
                 ListItems.DataContext = this;
-                CollectionViewSource.GetDefaultView(ListItems.ItemsSource).SortDescriptions.Add(new SortDescription("CustomerOrderMovement_Id_For_Sort", ListSortDirection.Ascending));
-                ActualizeAvalilableUnitInfo();
+                //CollectionViewSource.GetDefaultView(ListItems.ItemsSource).SortDescriptions.Add(new SortDescription("CustomerOrderMovement_Id_For_Sort", ListSortDirection.Ascending));
+                CollectionViewSource.GetDefaultView(ListItems.ItemsSource).SortDescriptions.Add(new SortDescription("CustomerOrderMovement_RowOrder_For_Sort", ListSortDirection.Ascending));
+                 ActualizeAvalilableUnitInfo();
                 ActualizeAmountInfo(EditedCustomerOrder);
             }
         }
@@ -785,7 +787,9 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                 tbItemToSearch,
                 btnAcceptSearch,
                 chkPrevisioLliurament,
-                dtpPrevisioLliurament
+                dtpPrevisioLliurament,
+                btnUp,
+                btnDown
             };
         }
 
@@ -2207,11 +2211,13 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
             {
                 btnEdit.Visibility = btnDelete.Visibility = btnViewData.Visibility = Visibility.Hidden;
                 btnAccordingMovement.Visibility = btnUnAccordingMovement.Visibility = Visibility.Hidden;
+                btnUp.Visibility = btnDown.Visibility = Visibility.Hidden;
             }
             else
             {
                 Visibility VisualStyle = (m_CtrlOperation != Operation.Show) ? Visibility.Visible : Visibility.Hidden;
                 btnEdit.Visibility = btnDelete.Visibility = VisualStyle;
+                btnUp.Visibility = btnDown.Visibility = VisualStyle;
                 btnAccordingMovement.Visibility = btnUnAccordingMovement.Visibility = VisualStyle;
                 if (((CustomerOrderMovementsView)ListItems.SelectedItem).According)
                 {
@@ -2514,5 +2520,43 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
         }
 
         #endregion
+
+        private void btnUp_Click(object sender, RoutedEventArgs e)
+        {  
+            int Index = ListItems.SelectedIndex;
+            
+            if (Index>0)
+            {
+                DataChangedManagerActive = false;
+                CustomerOrderMovementsView currentMovement = (CustomerOrderMovementsView)ListItems.Items[Index];
+                CustomerOrderMovementsView previousMovement = (CustomerOrderMovementsView)ListItems.Items[Index - 1];
+                var ord = currentMovement.RowOrder;
+                currentMovement.RowOrder = previousMovement.RowOrder;
+                previousMovement.RowOrder = ord;
+                DataList = new ObservableCollection<CustomerOrderMovementsView>(DataList.OrderBy(x => x.RowOrder));
+                GlobalViewModel.Instance.HispaniaViewModel.UpdateCustomerOrderMovement(currentMovement);
+                GlobalViewModel.Instance.HispaniaViewModel.UpdateCustomerOrderMovement(previousMovement);
+                //AreDataChanged = true;
+            }
+        }
+
+        private void btnDown_Click(object sender, RoutedEventArgs e)
+        {
+            int Index = ListItems.SelectedIndex;
+
+            if (Index < ListItems.Items.Count-1)
+            {
+                DataChangedManagerActive = false;
+                CustomerOrderMovementsView currentMovement = (CustomerOrderMovementsView)ListItems.Items[Index];
+                CustomerOrderMovementsView nextMovement = (CustomerOrderMovementsView)ListItems.Items[Index + 1];
+                var ord = currentMovement.RowOrder;
+                currentMovement.RowOrder = nextMovement.RowOrder;
+                nextMovement.RowOrder = ord;
+                DataList = new ObservableCollection<CustomerOrderMovementsView>(DataList.OrderBy(x => x.RowOrder));
+               
+                GlobalViewModel.Instance.HispaniaViewModel.UpdateCustomerOrderMovement(currentMovement);
+                GlobalViewModel.Instance.HispaniaViewModel.UpdateCustomerOrderMovement(nextMovement);
+            }
+        }
     }
 }

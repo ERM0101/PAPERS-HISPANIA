@@ -148,6 +148,7 @@ namespace HispaniaCommon.ViewModel
         public string Unit_Shipping_Definition { get; set; }
         public string Unit_Billing_Definition { get; set; }
         public string Internal_Remark { get; set; }
+        public int RowOrder { get; set; }
 
         #endregion
 
@@ -325,6 +326,7 @@ namespace HispaniaCommon.ViewModel
             Unit_Shipping_Definition = customerOrderMovement.Unit_Shipping_Definition;
             Unit_Billing_Definition = customerOrderMovement.Unit_Billing_Definition;
             Internal_Remark = customerOrderMovement.Internal_Remark;
+            RowOrder = Convert.ToInt32(customerOrderMovement.RowOrder);
             _CustomerOrder_Id = GlobalViewModel.GetIntFromIntIdValue(customerOrderMovement.CustomerOrder_Id);
             _Good_Id = GlobalViewModel.GetIntFromIntIdValue(customerOrderMovement.Good_Id);
         }
@@ -374,6 +376,7 @@ namespace HispaniaCommon.ViewModel
                 Historic = Historic,
                 Unit_Shipping_Definition = Unit_Shipping_Definition,
                 Unit_Billing_Definition = Unit_Billing_Definition,
+                RowOrder = RowOrder,
                 Internal_Remark = Internal_Remark,
                 CustomerOrder_Id = _CustomerOrder_Id,
                 Good_Id = _Good_Id,
