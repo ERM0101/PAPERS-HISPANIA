@@ -12,6 +12,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Data;
 using System.ComponentModel;
+using System.Linq;
 
 #endregion
 
@@ -308,8 +309,9 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                 SourceDataList = new ObservableCollection<CustomerOrderMovementsView>(m_DataList);
                 ListItems.ItemsSource = m_DataList;
                 ListItems.DataContext = this;
-                CollectionViewSource.GetDefaultView(ListItems.ItemsSource).SortDescriptions.Add(new SortDescription("CustomerOrderMovement_Id_For_Sort", ListSortDirection.Ascending));
-                ActualizeAvalilableUnitInfo();
+                //CollectionViewSource.GetDefaultView(ListItems.ItemsSource).SortDescriptions.Add(new SortDescription("CustomerOrderMovement_Id_For_Sort", ListSortDirection.Ascending));
+                CollectionViewSource.GetDefaultView(ListItems.ItemsSource).SortDescriptions.Add(new SortDescription("CustomerOrderMovement_RowOrder_For_Sort", ListSortDirection.Ascending));
+                 ActualizeAvalilableUnitInfo();
                 ActualizeAmountInfo(EditedCustomerOrder);
             }
         }
@@ -783,7 +785,11 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                 btnUnAccordingMovement,
                 cbFieldItemToSearch,
                 tbItemToSearch,
-                btnAcceptSearch
+                btnAcceptSearch,
+                chkPrevisioLliurament,
+                dtpPrevisioLliurament,
+                btnUp,
+                btnDown
             };
         }
 
@@ -846,6 +852,13 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                 tbBillSerieId.Text = CustomerOrder.Bill_Serie_Str;
                 chkbAccording.IsChecked = CustomerOrder.According;
                 chkbValued.IsChecked = CustomerOrder.Valued;
+                chkPrevisioLliurament.IsChecked = CustomerOrder.PrevisioLliurament;
+                dtpPrevisioLliurament.Visibility = Visibility.Hidden;
+                if (CustomerOrder.PrevisioLliurament)
+                {
+                    dtpPrevisioLliurament.Visibility = Visibility.Visible;
+                    dtpPrevisioLliurament.SelectedDate = CustomerOrder.PrevisioLliuramentData;
+                }
             //  Header Data Tab Controls
                 if (CustomerOrder.Customer is null)
                 {
@@ -1057,13 +1070,16 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                 tbItemToSearch.TextChanged += TBItemToSearchDataChanged;
             //  DatePiker
                 dtpDeliveryNoteDate.SelectedDateChanged += DtpDeliveryNoteDate_SelectedDateChanged;
+            dtpPrevisioLliurament.SelectedDateChanged += DtpPrevisioLliurament_SelectedDateChanged;
             //  CheckBox
                 chkbAccording.Checked += ChkbAccording_Checked;
                 chkbAccording.Unchecked += ChkbAccording_Unchecked;
                 chkbValued.Checked += ChkbValued_Checked;
                 chkbValued.Unchecked += ChkbValued_Unchecked;
+            chkPrevisioLliurament.Checked += ChkPrevisioLliurament_Checked;
+            chkPrevisioLliurament.Unchecked += ChkPrevisioLliurament_Unchecked;
             //  ComboBox
-                cbAddressStores.SelectionChanged += CbAddressStores_SelectionChanged;
+            cbAddressStores.SelectionChanged += CbAddressStores_SelectionChanged;
                 cbSendType.SelectionChanged += CbSendType_SelectionChanged;
                 cbEffectType.SelectionChanged += CbEffectType_SelectionChanged;
                 cbBillingDataAgent.SelectionChanged += CbBillingDataAgent_SelectionChanged;
@@ -1087,6 +1103,15 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                 btnAgents.Click += BtnAgents_Click;
                 btnAccept.Click += BtnAccept_Click;
                 btnCancel.Click += BtnCancel_Click;
+        }
+
+        private void DtpPrevisioLliurament_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            AreDataChanged = true;
+            if (((DatePicker)sender).SelectedDate.HasValue)
+            {
+                EditedCustomerOrder.PrevisioLliuramentData = ((DatePicker)sender).SelectedDate.Value;
+            }
         }
 
         #region TextBox
@@ -1470,7 +1495,9 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
         /// <param name="e">Parameters of the event</param>
         private void GoodsWindow_Closed(object sender, EventArgs e)
         {
+            CheckIfAddingNewArticle();
             ActualizeGoodsData();
+
             GoodsWindow.Closed -= GoodsWindow_Closed;
             GoodsWindow = null;
         }
@@ -1936,6 +1963,8 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                 EditedCustomerOrder.According = false;
                 AreDataChanged = (EditedCustomerOrder != CustomerOrder);
             }
+            lblPrevisioLliurament.Visibility = Visibility.Visible;
+            chkPrevisioLliurament.Visibility = Visibility.Visible;
         }
 
         private void ChkbAccording_Checked(object sender, RoutedEventArgs e)
@@ -1945,6 +1974,8 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                 EditedCustomerOrder.According = true;
                 AreDataChanged = (EditedCustomerOrder != CustomerOrder);
             }
+            lblPrevisioLliurament.Visibility = Visibility.Hidden;
+            chkPrevisioLliurament.Visibility = Visibility.Hidden;
         }
 
         private void ChkbValued_Unchecked(object sender, RoutedEventArgs e)
@@ -1963,6 +1994,18 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                 EditedCustomerOrder.Valued = true;
                 AreDataChanged = (EditedCustomerOrder != CustomerOrder);
             }
+        }
+
+        private void ChkPrevisioLliurament_Checked(object sender, RoutedEventArgs e)
+        {
+            this.dtpPrevisioLliurament.Visibility = Visibility.Visible;
+            EditedCustomerOrder.PrevisioLliurament = true;
+        }
+
+        private void ChkPrevisioLliurament_Unchecked(object sender, RoutedEventArgs e)
+        {
+            this.dtpPrevisioLliurament.Visibility = Visibility.Hidden;
+            EditedCustomerOrder.PrevisioLliurament = false;
         }
 
         #endregion
@@ -2168,11 +2211,13 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
             {
                 btnEdit.Visibility = btnDelete.Visibility = btnViewData.Visibility = Visibility.Hidden;
                 btnAccordingMovement.Visibility = btnUnAccordingMovement.Visibility = Visibility.Hidden;
+                btnUp.Visibility = btnDown.Visibility = Visibility.Hidden;
             }
             else
             {
                 Visibility VisualStyle = (m_CtrlOperation != Operation.Show) ? Visibility.Visible : Visibility.Hidden;
                 btnEdit.Visibility = btnDelete.Visibility = VisualStyle;
+                btnUp.Visibility = btnDown.Visibility = VisualStyle;
                 btnAccordingMovement.Visibility = btnUnAccordingMovement.Visibility = VisualStyle;
                 if (((CustomerOrderMovementsView)ListItems.SelectedItem).According)
                 {
@@ -2415,6 +2460,36 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
             }
         }
 
+        private void CheckIfAddingNewArticle()
+        {            
+            if ((GoodsWindow.SelectedGoodView!=null))
+            {
+                try
+                {
+                    CustomerOrderMovementsView newMovement = new CustomerOrderMovementsView();
+                    newMovement.Good = GoodsWindow.SelectedGoodView;
+                    newMovement.CustomerOrder = this.CustomerOrder;
+                    newMovement.Description = GoodsWindow.SelectedGoodView.Good_Description;
+                    newMovement.Unit_Billing_Definition = GoodsWindow.SelectedGoodView.Good_Unit.Billing;
+                    newMovement.Unit_Shipping_Definition = GoodsWindow.SelectedGoodView.Good_Unit.Shipping;
+                    //newMovement.ShippingUnitAvailable = good.Shipping_Unit_Available_Str;
+                    //newMovement.BillingUnitAvailable = good.Billing_Unit_Available_Str;
+                    GlobalViewModel.Instance.HispaniaViewModel.CreateItemInDataManaged(DataManagementId, newMovement);
+                    DataList.Add(newMovement);
+                    ActualizeGoodInfo(newMovement, MovementOp.Add);
+                    ListItems.SelectedItem = newMovement;
+                    //ActualizeAmountInfo(EditedCustomerOrder);
+                    AreDataChanged = AreNotEquals(DataList, SourceDataList);
+                }
+                catch (Exception ex)
+                {
+                    MsgManager.ShowMessage(
+                       string.Format("Error, a l'actualitzar les dades de la nova línia de comanda.\r\nDetalls:{0}", MsgManager.ExcepMsg(ex)));
+                }
+            }
+            
+        }
+
         #endregion
 
         #region Helper Functions
@@ -2445,5 +2520,43 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
         }
 
         #endregion
+
+        private void btnUp_Click(object sender, RoutedEventArgs e)
+        {  
+            int Index = ListItems.SelectedIndex;
+            
+            if (Index>0)
+            {
+                DataChangedManagerActive = false;
+                CustomerOrderMovementsView currentMovement = (CustomerOrderMovementsView)ListItems.Items[Index];
+                CustomerOrderMovementsView previousMovement = (CustomerOrderMovementsView)ListItems.Items[Index - 1];
+                var ord = currentMovement.RowOrder;
+                currentMovement.RowOrder = previousMovement.RowOrder;
+                previousMovement.RowOrder = ord;
+                DataList = new ObservableCollection<CustomerOrderMovementsView>(DataList.OrderBy(x => x.RowOrder));
+                GlobalViewModel.Instance.HispaniaViewModel.UpdateCustomerOrderMovement(currentMovement);
+                GlobalViewModel.Instance.HispaniaViewModel.UpdateCustomerOrderMovement(previousMovement);
+                //AreDataChanged = true;
+            }
+        }
+
+        private void btnDown_Click(object sender, RoutedEventArgs e)
+        {
+            int Index = ListItems.SelectedIndex;
+
+            if (Index < ListItems.Items.Count-1)
+            {
+                DataChangedManagerActive = false;
+                CustomerOrderMovementsView currentMovement = (CustomerOrderMovementsView)ListItems.Items[Index];
+                CustomerOrderMovementsView nextMovement = (CustomerOrderMovementsView)ListItems.Items[Index + 1];
+                var ord = currentMovement.RowOrder;
+                currentMovement.RowOrder = nextMovement.RowOrder;
+                nextMovement.RowOrder = ord;
+                DataList = new ObservableCollection<CustomerOrderMovementsView>(DataList.OrderBy(x => x.RowOrder));
+               
+                GlobalViewModel.Instance.HispaniaViewModel.UpdateCustomerOrderMovement(currentMovement);
+                GlobalViewModel.Instance.HispaniaViewModel.UpdateCustomerOrderMovement(nextMovement);
+            }
+        }
     }
 }

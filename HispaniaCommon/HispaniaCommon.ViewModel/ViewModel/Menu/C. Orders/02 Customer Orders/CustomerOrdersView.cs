@@ -206,7 +206,7 @@ namespace HispaniaCommon.ViewModel
         {
             get
             {
-                return (According == true)? "Material lliurat" : "Lliurament pendent";
+                return (According == true)? "Material lliurat" : ((PrevisioLliurament==true) ? "previsio: " + PrevisioLliurament_Str : "Lliurament pendent");
             }
         }
         public bool Valued { get; set; }
@@ -217,6 +217,18 @@ namespace HispaniaCommon.ViewModel
                 return (Valued == true) ? "Valorat" : "No Valorat";
             }
         }
+
+        public bool PrevisioLliurament { get; set; }
+        public string PrevisioLliurament_Str
+        {
+            get
+            {
+                return (PrevisioLliurament == true) ? PrevisioLliuramentData.ToShortDateString() : "";
+            }
+        }
+
+        public DateTime PrevisioLliuramentData { get; set; }
+
         public bool Transfer { get; set; }
         public bool Print { get; set; }
         public string Print_Str
@@ -772,6 +784,8 @@ namespace HispaniaCommon.ViewModel
             SurchargePercent = GlobalViewModel.GetDecimalValue(customerOrder.SurchargePercent);
             _Bill_Serie_Id = GlobalViewModel.GetIntFromIntIdValue(customerOrder.Bill_Serie_Id);
             _BillingData_Agent_Id = GlobalViewModel.GetIntFromIntIdValue(customerOrder.BillingData_Agent_Id);
+            PrevisioLliurament = customerOrder.PrevisioLliurament.HasValue ? customerOrder.PrevisioLliurament.Value : false ;
+            PrevisioLliuramentData = customerOrder.PrevisioLliuramentData.HasValue ? customerOrder.PrevisioLliuramentData.Value : DateTime.MinValue;
         }
 
         /// <summary>
@@ -825,6 +839,8 @@ namespace HispaniaCommon.ViewModel
             SurchargePercent = customerOrder.SurchargePercent;
             Bill_Serie = customerOrder.Bill_Serie;
             BillingData_Agent = customerOrder.BillingData_Agent;
+            PrevisioLliurament = customerOrder.PrevisioLliurament;
+            PrevisioLliuramentData = customerOrder.PrevisioLliuramentData;
         }
 
         #endregion
@@ -883,7 +899,9 @@ namespace HispaniaCommon.ViewModel
                 SendType_Id = _SendType_Id,
                 EffectType_Id = _EffectType_Id,
                 IVAPercent = IVAPercent,
-                SurchargePercent = SurchargePercent
+                SurchargePercent = SurchargePercent,
+                PrevisioLliurament = PrevisioLliurament,
+                PrevisioLliuramentData = PrevisioLliuramentData
             };
             return (CustomerOrder);
         }
@@ -1051,6 +1069,8 @@ namespace HispaniaCommon.ViewModel
             SendType = Data.SendType;
             EffectType = Data.EffectType;
             BillingData_Agent = Data.BillingData_Agent;
+            PrevisioLliurament = Data.PrevisioLliurament;
+            PrevisioLliuramentData = Data.PrevisioLliuramentData;
         }
 
         /// <summary>
@@ -1207,7 +1227,9 @@ namespace HispaniaCommon.ViewModel
                        (Select_Bill == customerOrder.Select_Bill) &&
                        (Expiration == customerOrder.Expiration) &&
                        (TotalAmount == customerOrder.TotalAmount) &&
-                       (Daily == customerOrder.Daily);
+                       (Daily == customerOrder.Daily) &&
+                       (PrevisioLliurament == customerOrder.PrevisioLliurament) &&
+                       (PrevisioLliuramentData == customerOrder.PrevisioLliuramentData);
         }
 
         /// <summary>
@@ -1262,7 +1284,9 @@ namespace HispaniaCommon.ViewModel
                        (Historic == customerOrder.Historic) &&
                        (Select_Bill == customerOrder.Select_Bill) &&
                        (Expiration == customerOrder.Expiration) &&
-                       (Daily == customerOrder.Daily);
+                       (Daily == customerOrder.Daily) &&
+                       (PrevisioLliurament == customerOrder.PrevisioLliurament) &&
+                       (PrevisioLliuramentData == customerOrder.PrevisioLliuramentData);
         }
 
         /// <summary>
@@ -1324,7 +1348,9 @@ namespace HispaniaCommon.ViewModel
                        (customerOrder_1.Historic == customerOrder_2.Historic) &&
                        (customerOrder_1.Select_Bill == customerOrder_2.Select_Bill) &&
                        (customerOrder_1.Expiration == customerOrder_2.Expiration) &&
-                       (customerOrder_1.Daily == customerOrder_2.Daily);
+                       (customerOrder_1.Daily == customerOrder_2.Daily)&&
+                       (customerOrder_1.PrevisioLliurament == customerOrder_2.PrevisioLliurament) &&
+                       (customerOrder_1.PrevisioLliuramentData == customerOrder_2.PrevisioLliuramentData);
         }
 
         /// <summary>

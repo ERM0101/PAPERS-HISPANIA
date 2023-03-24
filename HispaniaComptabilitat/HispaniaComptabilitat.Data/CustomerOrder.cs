@@ -66,6 +66,8 @@ namespace HispaniaComptabilitat.Data
         public bool SendByEmail_CustomerOrder { get; set; }
         public decimal TotalAmount { get; set; }
         public string TimeTable { get; set; }
+        public Nullable<bool> PrevisioLliurament { get; set; }
+        public Nullable<System.DateTime> PrevisioLliuramentData { get; set; }
     
         public virtual Agent Agent { get; set; }
         public virtual Bill Bill { get; set; }

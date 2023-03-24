@@ -748,6 +748,12 @@
     <Resource Include="Recursos\Imagenes\Select.png" />
     <Resource Include="Recursos\Imagenes\Unselect.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Recursos\Imagenes\Down.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Recursos\Imagenes\Up.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

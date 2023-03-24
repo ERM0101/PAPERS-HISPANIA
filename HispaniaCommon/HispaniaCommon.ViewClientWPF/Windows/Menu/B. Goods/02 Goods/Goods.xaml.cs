@@ -124,6 +124,12 @@ namespace HispaniaCommon.ViewClientWPF.Windows
             }
         }
 
+        //get or set the selected good
+        public GoodsView SelectedGoodView
+        {
+            get; set;
+        }
+
         /// <summary>
         /// Get or Set if the manager of the data change for the Customer has active.
         /// </summary>
@@ -217,7 +223,7 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                 rdItemPannel.Height = HideComponent;
                 rdSearchPannel.Height = HideComponent;
                 gsSplitter.IsEnabled = false;
-                btnEdit.Visibility = btnDelete.Visibility = btnViewData.Visibility = Visibility.Hidden;
+                btnEdit.Visibility = btnDelete.Visibility = btnViewData.Visibility = btnAddNewLine.Visibility =  Visibility.Hidden;
         }
 
         /// <summary>
@@ -290,6 +296,7 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                 btnDelete.Click += BtnDelete_Click;
                 btnViewData.Click += BtnViewData_Click;
                 btnRefresh.Click += BtnRefresh_Click;
+                btnAddNewLine.Click += BtnAddNewLine_Click;
             //  CheckBox
                 chkbCanceled.Checked += ChkbCanceled_Checked;
                 chkbCanceled.Unchecked += ChkbCanceled_Unchecked;
@@ -362,6 +369,32 @@ namespace HispaniaCommon.ViewClientWPF.Windows
         #endregion
 
         #region Editing Good
+
+
+        /// <summary>
+        /// Manage the Button Mouse Click in one of the items of the List to add new line with the article.
+        /// </summary>
+        /// <param name="sender">Object that sends the event.</param>
+        /// <param name="e">Parameters with the event was sended.</param>
+        private void BtnAddNewLine_Click(object sender, RoutedEventArgs e)
+        {
+            if (ListItems.SelectedItem != null)
+            {
+                try
+                {
+                    //TODO
+                    //añadir articulo en una nueva linea de la comanda.
+                    GoodsView SelectedItem = (GoodsView)ListItems.SelectedItem;
+                    GoodsView ItemInDb = GlobalViewModel.Instance.HispaniaViewModel.GetGoodFromDb(SelectedItem);
+                    this.SelectedGoodView = ItemInDb;
+                    this.Close();
+                }
+                catch (Exception ex)
+                {
+                    MsgManager.ShowMessage(string.Format("Error, al afegir l'Artícle.\r\nDetalls: {0}", MsgManager.ExcepMsg(ex)));
+                }
+            }
+        }
 
         /// <summary>
         /// Manage the Button Mouse Click in one of the items of the List to show its data in User Control.
@@ -707,9 +740,9 @@ namespace HispaniaCommon.ViewClientWPF.Windows
         {
             if (ListItems.SelectedItem != null)
             {
-                btnEdit.Visibility = btnDelete.Visibility = btnViewData.Visibility = Visibility.Visible;
+                btnEdit.Visibility = btnDelete.Visibility = btnViewData.Visibility = btnAddNewLine.Visibility = Visibility.Visible;
             }
-            else btnEdit.Visibility = btnDelete.Visibility = btnViewData.Visibility = Visibility.Hidden;
+            else btnEdit.Visibility = btnDelete.Visibility = btnViewData.Visibility = btnAddNewLine.Visibility = Visibility.Hidden;
         }
 
         #endregion
