@@ -1222,7 +1222,7 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                 #endregion
                 #region MENU QUERIES
                 else if (sender == lblConsultaArticles) ManageGestioConsultes(QueryType.Goods);
-                else if (sender == lblConsultaClients) ManageGestioConsultes(QueryType.Customers);
+                else if (sender == lblConsultaClients) ManageGestioConsultes(QueryType.Customers_Full);
                 else if (sender == lblConsultaComandesClient) ManageGestioConsultes(QueryType.CustomerOrders);
                 else if (sender == lblConsultaHistoCliData) ManageGestioConsultes(QueryType.HistoCustomerForData);
                 else if (sender == lblConsultaHistoCliDataAgent) ManageGestioConsultes(QueryType.HistoCustomerForDataAndAgent);

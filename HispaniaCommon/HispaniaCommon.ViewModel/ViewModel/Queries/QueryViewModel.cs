@@ -26,7 +26,8 @@ namespace HispaniaCommon.ViewModel
         HistoCustomerForData,
         HistoCustomerForDataAndAgent,
         CustomQuery,
-        CustomerConformedOrders
+        CustomerConformedOrders,
+        Customers_Full
     }
     
     #endregion
@@ -102,6 +103,7 @@ namespace HispaniaCommon.ViewModel
             {
                 case QueryType.Goods:
                 case QueryType.Customers:
+                case QueryType.Customers_Full:
                 case QueryType.CustomerOrders:
                 case QueryType.CustomerConformedOrders:
                      CreateExcel(queryType);
