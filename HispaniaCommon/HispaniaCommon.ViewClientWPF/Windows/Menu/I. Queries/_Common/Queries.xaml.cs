@@ -515,6 +515,7 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                      cdOperationsBBDD.Width = HideComponent;
                      break;
                 case QueryType.Customers:
+                case QueryType.Customers_Full:
                      QueryInfo = "CLIENTS";
                      rdParamsPanel.Height = HideComponent;
                      rdSQLPanel.Height = HideHeaderPanel;
