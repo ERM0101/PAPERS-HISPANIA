@@ -108,6 +108,11 @@
     <Compile Include="ViewModel\Menu\A Tables\08 Customers\RelatedCustomersView.cs" />
     <Compile Include="ViewModel\Menu\A Tables\08 Customers\RelatedCustomersViewModel.cs" />
     <Compile Include="ViewModel\Menu\C. Orders\02 Customer Orders\DataForBill.cs" />
+    <Compile Include="ViewModel\Menu\C. Orders\03 Provider Orders\03.1 Provider Order Movements\ProviderOrderMovementsView.cs" />
+    <Compile Include="ViewModel\Menu\C. Orders\03 Provider Orders\03.1 Provider Order Movements\ProviderOrderMovementsViewModel.cs" />
+    <Compile Include="ViewModel\Menu\C. Orders\03 Provider Orders\DataForBill.cs" />
+    <Compile Include="ViewModel\Menu\C. Orders\03 Provider Orders\ProviderOrdersView.cs" />
+    <Compile Include="ViewModel\Menu\C. Orders\03 Provider Orders\ProviderOrdersViewModel.cs" />
     <Compile Include="ViewModel\Menu\D. Bills\04. BadDebts\BadDebtMovementsView.cs" />
     <Compile Include="ViewModel\Menu\D. Bills\04. BadDebts\BadDebtsView.cs" />
     <Compile Include="ViewModel\Menu\D. Bills\04. BadDebts\BadDebtMovementsViewModel.cs" />

@@ -4002,6 +4002,1219 @@ namespace HispaniaCommon.DataAccess
 
         #endregion
 
+        #region ProviderOrders [CRUD]
+
+        #region CreateProviderOrder
+
+        [OperationContract]
+        public void CreateProviderOrder(HispaniaCompData.ProviderOrder providerOrder,
+                                        Dictionary<DataBaseOp, List<HispaniaCompData.ProviderOrderMovement>> movements)
+        {
+            string ErrMsg;
+            try
+            {
+                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                {
+                    using (var dbTransaction = db.Database.BeginTransaction())
+                    {
+                        try
+                        {
+                            //  Create the register for the new Provider Order
+                            HispaniaCompData.ProviderOrder ProviderOrderToSave = db.ProviderOrders.Add(providerOrder);
+                            db.SaveChanges();
+                            providerOrder.ProviderOrder_Id = ProviderOrderToSave.ProviderOrder_Id;
+                            //  In this case it's only possible creation movements (DatabaseOp = CREATE)
+                            HispaniaCompData.Good MovementGood;
+                            foreach (HispaniaCompData.ProviderOrderMovement movement in movements[DataBaseOp.CREATE])
+                            {
+                                movement.ProviderOrder_Id = providerOrder.ProviderOrder_Id;
+                                db.ProviderOrderMovements.Add(movement);
+                                db.SaveChanges();
+                                if (movement.According)
+                                {
+                                    MovementGood = db.Goods.Find(movement.Good_Id);
+                                    MovementGood.Billing_Unit_Available -= movement.Unit_Billing;
+                                    MovementGood.Shipping_Unit_Available -= movement.Unit_Shipping;
+                                    MovementGood.Billing_Unit_Departure += movement.Unit_Billing;
+                                    MovementGood.Shipping_Unit_Departure += movement.Unit_Shipping;
+                                    db.Entry(MovementGood).State = EntityState.Modified;
+                                    db.SaveChanges();
+                                }
+                            }
+                            //  Accept the operations realised.
+                            dbTransaction.Commit();
+                        }
+                        catch (Exception ex)
+                        {
+                            dbTransaction.Rollback();
+                            ErrMsg = "No es pot guardar la nova Comanda de Proveidor\r\n" +
+                                     "Intentiu de nou, i si el problema persisteix consulti l'administrador";
+                            throw new Exception(ErrMsg, ex);
+                        }
+                    }
+                }
+            }
+            catch (DataException ex)
+            {
+                ErrMsg = "No es pot guardar la nova Comanda de Proveidor" +
+                         "Intentiu de nou, i si el problema persisteix consulti l'administrador";
+                throw new Exception(ErrMsg, ex);
+            }
+        }
+
+        #endregion
+
+        #region ReadProviderOrders
+
+        [OperationContract]
+        public List<HispaniaCompData.ProviderOrder> ReadProviderOrders(bool HistoricData = false)
+        {
+            using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+            {
+                if (HistoricData)
+                {
+                    return db.ProviderOrders.ToList();
+                }
+                else
+                {
+                    return (db.ProviderOrders.Where(c => c.Date.Value.Year >= DateTime.Now.Year - 1).ToList());
+                }
+            }
+        }
+
+        #endregion
+
+        #region SplitProviderOrder
+
+        [OperationContract]
+        public bool SplitProviderOrder(HispaniaCompData.ProviderOrder ProviderOrder,
+                                       HispaniaCompData.ProviderOrder NewProviderOrder,
+                                       List<HispaniaCompData.ProviderOrderMovement> movements_non_acoording,
+                                       out string ErrMsg)
+        {
+            try
+            {
+                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                {
+                    using (var dbTransaction = db.Database.BeginTransaction())
+                    {
+                        try
+                        {
+                            //  Update The source Provider Order data.
+                            db.Entry(ProviderOrder).State = EntityState.Modified;
+                            db.SaveChanges();
+                            //  Remove movements non according from the original ProviderOrder.
+                            HispaniaCompData.ProviderOrderMovement movementToDelete;
+                            foreach (HispaniaCompData.ProviderOrderMovement movement in movements_non_acoording)
+                            {
+                                movementToDelete = db.ProviderOrderMovements.Find(movement.ProviderOrderMovement_Id);
+                                db.ProviderOrderMovements.Remove(movementToDelete);
+                                db.SaveChanges();
+                            }
+                            //  Create the register for the new Provider Order
+                            HispaniaCompData.ProviderOrder ProviderOrderToSave = db.ProviderOrders.Add(NewProviderOrder);
+                            db.SaveChanges();
+                            NewProviderOrder.ProviderOrder_Id = ProviderOrderToSave.ProviderOrder_Id;
+                            //  In this case it's only possible creation movements (DatabaseOp = CREATE)
+                            foreach (HispaniaCompData.ProviderOrderMovement movement in movements_non_acoording)
+                            {
+                                movement.ProviderOrder_Id = NewProviderOrder.ProviderOrder_Id;
+                                db.ProviderOrderMovements.Add(movement);
+                                db.SaveChanges();
+                            }
+                            //  Accept the operations realised.
+                            dbTransaction.Commit();
+                            //  Indicate correct ends of the operation.
+                            ErrMsg = string.Empty;
+                            return true;
+                        }
+                        catch (Exception ex)
+                        {
+                            dbTransaction.Rollback();
+                            ErrMsg = string.Format("No es pot prepar la Comanda de Proveidor '{0}' per  l'Albarà.\r\n{1}.", ProviderOrder.ProviderOrder_Id,
+                                                   "Intentiu de nou, i si el problema persisteix consulti l'administrador");
+                            throw new Exception(ErrMsg, ex);
+                        }
+                    }
+                }
+            }
+            catch (DataException ex)
+            {
+                ErrMsg = string.Format("No es pot prepar la Comanda de Proveidor '{0}' per  l'Albarà.\r\n{1}.", ProviderOrder.ProviderOrder_Id,
+                                       "Intentiu de nou, i si el problema persisteix consulti l'administrador");
+                throw new Exception(ErrMsg, ex);
+            }
+        }
+
+
+        #endregion
+
+        #region UpdateProviderOrder
+
+        [OperationContract]
+        public void UpdateProviderOrder(HispaniaCompData.ProviderOrder providerOrder)
+        {
+            try
+            {
+                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                {
+                    db.Entry(providerOrder).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+            }
+            catch (DataException ex)
+            {
+                string ErrMsg = string.Format("No es poden guardar els canvis a la Comanda de Proveidor '{0}'\r\nDetalls: {1}.", providerOrder.ProviderOrder_Id,
+                                              "Intentiu de nou, i si el problema persisteix consulti l'administrador");
+                throw new Exception(ErrMsg, ex);
+            }
+        }
+
+        [OperationContract]
+        public void UpdateProviderOrder(HispaniaCompData.ProviderOrder providerOrder, DateTime newDeliveryNoteDate)
+        {
+            string ErrMsg;
+            try
+            {
+                //  Exit from this function if Provider Order does not have associated a Delivery Note.
+                if ((providerOrder.DeliveryNote_Id is null) || (providerOrder.DeliveryNote_Year is null)) // Delivery Note exist.
+                {
+                    throw new Exception("Error, no hi ha cap Albarà associat a la Comanda de Proveidor número: {0}.");
+                }
+                //  Manage Provider Order information if Delivery Note is defined.
+                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                {
+                    using (var dbTransaction = db.Database.BeginTransaction())
+                    {
+                        try
+                        {
+                            //  Variables
+                            int CO_DeliveryNote_Id = (int)providerOrder.DeliveryNote_Id;
+                            decimal CO_DeliveryNote_Year = (decimal)providerOrder.DeliveryNote_Year;
+                            //  Get Delivery Note for Update
+                            HispaniaCompData.DeliveryNote DeliveryNote = db.DeliveryNotes.Find(new object[] { CO_DeliveryNote_Id, CO_DeliveryNote_Year });
+                            //  Step 1 : Determine if Date was changed of year
+                            if (DeliveryNote.Year == newDeliveryNoteDate.Year)
+                            {
+                                //  Step 1.1 : Update DeliveryNote Date in Provider Order.
+                                providerOrder.DeliveryNote_Date = newDeliveryNoteDate;
+                                UpdateProviderOrder(db, providerOrder);
+                                //  Step 1.2 : Update DeliveryNote Date.
+                                DeliveryNote.Date = newDeliveryNoteDate;
+                                UpdateDeliveryNote(db, DeliveryNote);
+                            }
+                            else
+                            {
+                                //  Step 1.1 : Create a new Delivery Note.
+                                //using (SqlConnection conn = new SqlConnection(db.Database.Connection.ConnectionString + ";Password=Phispania2"))
+                                using (SqlConnection conn = new SqlConnection(db.Database.Connection.ConnectionString))
+                                {
+                                    conn.Open();
+                                    try
+                                    {
+                                        string Command = string.Format("INSERT INTO [COMPTABILITAT].[dbo].[DeliveryNote] (DeliveryNote_Id, [Year], [Date], FileNamePDF) " +
+                                                                        "VALUES ({0}, '{1}', '{2}', '{3}')",
+                                                                        CO_DeliveryNote_Id, newDeliveryNoteDate.Year, newDeliveryNoteDate, DeliveryNote.FileNamePDF);
+                                        SqlCommand command_0 = new SqlCommand("SET DATEFORMAT dmy", conn);
+                                        command_0.ExecuteNonQuery();
+                                        SqlCommand command_1 = new SqlCommand("SET IDENTITY_INSERT [COMPTABILITAT].[dbo].[DeliveryNote] ON", conn);
+                                        command_1.ExecuteNonQuery();
+                                        SqlCommand command_2 = new SqlCommand(Command, conn);
+                                        command_2.ExecuteNonQuery();
+                                        SqlCommand command_3 = new SqlCommand("SET IDENTITY_INSERT [COMPTABILITAT].[dbo].[DeliveryNote] OFF", conn);
+                                        command_3.ExecuteNonQuery();
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        conn.Close();
+                                        throw new Exception(MsgManager.ExcepMsg(ex));
+                                    }
+                                }
+                                //  Step 1.2 : Update DeliveryNote Information in Provider Order.
+                                providerOrder.DeliveryNote_Id = CO_DeliveryNote_Id;
+                                providerOrder.DeliveryNote_Year = newDeliveryNoteDate.Year;
+                                providerOrder.DeliveryNote_Date = newDeliveryNoteDate;
+                                UpdateProviderOrder(db, providerOrder);
+                                //  Step 1.3 : Remove old delivery Note.
+                                db.DeliveryNotes.Remove(DeliveryNote);
+                                db.SaveChanges();
+                            }
+                            //  Accept the operations realised.
+                            dbTransaction.Commit();
+                        }
+                        catch (Exception ex)
+                        {
+                            dbTransaction.Rollback();
+                            ErrMsg = string.Format("Error, no es pot canviar la data de l'Albarà número '{0}'\r\n{1}.", providerOrder.ProviderOrder_Id,
+                                                   "Intentiu de nou, i si el problema persisteix consulti l'administrador");
+                            throw new Exception(ErrMsg, ex);
+                        }
+                    }
+                }
+            }
+            catch (DataException ex)
+            {
+                ErrMsg = string.Format("No es poden guardar els canvis a l'Albarà número '{0}'\r\n{1}.", providerOrder.ProviderOrder_Id,
+                                       "Intentiu de nou, i si el problema persisteix consulti l'administrador");
+                throw new Exception(ErrMsg, ex);
+            }
+        }
+
+        [OperationContract]
+        private void UpdateProviderOrder(HispaniaCompData.HispaniaComptabilitatEntities db, HispaniaCompData.ProviderOrder providerOrder)
+        {
+            db.Entry(providerOrder).State = EntityState.Modified;
+            db.SaveChanges();
+        }
+
+        [OperationContract]
+        public void UpdateProviderOrder(HispaniaCompData.ProviderOrder providerOrder, Dictionary<DataBaseOp, List<HispaniaCompData.ProviderOrderMovement>> movements)
+        {
+            string ErrMsg;
+            try
+            {
+                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                {
+                    using (var dbTransaction = db.Database.BeginTransaction())
+                    {
+                        try
+                        {
+                            //  Variables.
+                            int? DeliveryNote_Id = providerOrder.DeliveryNote_Id;
+                            decimal? DeliveryNote_Year = providerOrder.DeliveryNote_Year;
+                            //  Manage Provider Order information if Delivery Note is defined.
+                            if ((DeliveryNote_Id != null) && (DeliveryNote_Year != null)) // Delivery Note exist.
+                            {
+                                //  Get Delivery Note for Update
+                                HispaniaCompData.DeliveryNote DeliveryNote = db.DeliveryNotes.Find(new object[] { DeliveryNote_Id, DeliveryNote_Year });
+                                //  Step 1 : Determine if Date was changed of year
+                                if (((DateTime)DeliveryNote.Date).Year != ((DateTime)providerOrder.DeliveryNote_Date).Year)
+                                {
+                                    //  Step 1.1 : Create a new Delivery Note.
+                                    int NewDeliveryNote_Year = ((DateTime)providerOrder.DeliveryNote_Date).Year;
+                                    //using (SqlConnection conn = new SqlConnection(db.Database.Connection.ConnectionString + ";Password=Phispania2"))
+                                    using (SqlConnection conn = new SqlConnection(db.Database.Connection.ConnectionString))
+                                    {
+                                        conn.Open();
+                                        try
+                                        {
+                                            string Command = string.Format("INSERT INTO [COMPTABILITAT].[dbo].[DeliveryNote] " +
+                                                                           "(DeliveryNote_Id, [Year], [Date], FileNamePDF) " +
+                                                                           "VALUES ({0}, '{1}', '{2}', '{3}')",
+                                                                           providerOrder.DeliveryNote_Id, NewDeliveryNote_Year,
+                                                                           providerOrder.DeliveryNote_Date, DeliveryNote.FileNamePDF);
+                                            SqlCommand command_0 = new SqlCommand("SET DATEFORMAT dmy", conn);
+                                            command_0.ExecuteNonQuery();
+                                            SqlCommand command_1 = new SqlCommand("SET IDENTITY_INSERT [COMPTABILITAT].[dbo].[DeliveryNote] ON", conn);
+                                            command_1.ExecuteNonQuery();
+                                            SqlCommand command_2 = new SqlCommand(Command, conn);
+                                            command_2.ExecuteNonQuery();
+                                            SqlCommand command_3 = new SqlCommand("SET IDENTITY_INSERT [COMPTABILITAT].[dbo].[DeliveryNote] OFF", conn);
+                                            command_3.ExecuteNonQuery();
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            conn.Close();
+                                            throw new Exception(MsgManager.ExcepMsg(ex));
+                                        }
+                                    }
+                                    //  Step 1.2 : Update Delivery Note Year of Provider Order.
+                                    providerOrder.DeliveryNote_Year = NewDeliveryNote_Year;
+                                    //  Step 1.3 : Call at the update method.
+                                    UpdateProviderOrder(db, providerOrder, movements);
+                                    //  Step 1.4 : Remove old delivery Note.
+                                    db.DeliveryNotes.Remove(DeliveryNote);
+                                    db.SaveChanges();
+                                }
+                                else
+                                {
+                                    //  Step 1.5 : Call at the update method.
+                                    UpdateProviderOrder(db, providerOrder, movements);
+                                    //  Step 1.6 : Set new Date to Delivery Note.
+                                    DeliveryNote.Date = providerOrder.DeliveryNote_Date;
+                                    //  Step 1.7 : Update Delivery Note.
+                                    db.Entry(DeliveryNote).State = EntityState.Modified;
+                                    db.SaveChanges();
+                                }
+                            }
+                            else // Delivery Note don't exist.
+                            {
+                                //  Call at the update method.
+                                UpdateProviderOrder(db, providerOrder, movements);
+                            }
+                            //  Accept the operations realised.
+                            dbTransaction.Commit();
+                        }
+                        catch (Exception ex)
+                        {
+                            dbTransaction.Rollback();
+                            ErrMsg = string.Format("No es poden guardar els canvis a la Comanda de Proveidor '{0}'\r\n{1}.", providerOrder.ProviderOrder_Id,
+                                                   "Intentiu de nou, i si el problema persisteix consulti l'administrador");
+                            throw new Exception(ErrMsg, ex);
+                        }
+                    }
+                }
+            }
+            catch (DataException ex)
+            {
+                ErrMsg = string.Format("No es poden guardar els canvis a la Comanda de Proveidor '{0}'\r\n{1}.", providerOrder.ProviderOrder_Id,
+                                       "Intentiu de nou, i si el problema persisteix consulti l'administrador");
+                throw new Exception(ErrMsg, ex);
+            }
+        }
+
+        [OperationContract]
+        private void UpdateProviderOrder(HispaniaCompData.HispaniaComptabilitatEntities db,
+                                         HispaniaCompData.ProviderOrder providerOrder,
+                                         Dictionary<DataBaseOp, List<HispaniaCompData.ProviderOrderMovement>> movements)
+        {
+            //  Create the register for the new Provider Order
+            db.Entry(providerOrder).State = EntityState.Modified;
+            db.SaveChanges();
+            //  Create list of movements to update
+            List<int> MovementsToUpdate = new List<int>();
+            foreach (HispaniaCompData.ProviderOrderMovement movementDELETE in movements[DataBaseOp.DELETE])
+            {
+                foreach (HispaniaCompData.ProviderOrderMovement movementCREATE in movements[DataBaseOp.CREATE])
+                {
+                    if (movementDELETE.ProviderOrderMovement_Id == movementCREATE.ProviderOrderMovement_Id)
+                    {
+                        MovementsToUpdate.Add(movementCREATE.ProviderOrderMovement_Id);
+                    }
+                }
+            }
+            //  First execute DELETE queries
+            HispaniaCompData.Good MovementGood;
+            HispaniaCompData.ProviderOrderMovement movementToDelete;
+            foreach (HispaniaCompData.ProviderOrderMovement movement in movements[DataBaseOp.DELETE])
+            {
+                if (!MovementsToUpdate.Contains(movement.ProviderOrderMovement_Id))
+                {
+                    movementToDelete = db.ProviderOrderMovements.Find(movement.ProviderOrderMovement_Id);
+                    db.ProviderOrderMovements.Remove(movementToDelete);
+                    db.SaveChanges();
+                }
+                if (movement.According)
+                {
+                    MovementGood = db.Goods.Find(movement.Good_Id);
+                    MovementGood.Billing_Unit_Available += movement.Unit_Billing;
+                    MovementGood.Shipping_Unit_Available += movement.Unit_Shipping;
+                    MovementGood.Billing_Unit_Departure -= movement.Unit_Billing;
+                    MovementGood.Shipping_Unit_Departure -= movement.Unit_Shipping;
+                    db.Entry(MovementGood).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+            }
+            //  Second execute CREATE queries
+            //foreach (HispaniaCompData.ProviderOrderMovement movement in movements[DataBaseOp.CREATE].OrderBy(m => m.ProviderOrderMovement_Id))
+            foreach (HispaniaCompData.ProviderOrderMovement movement in movements[DataBaseOp.CREATE])
+            {
+                if (!MovementsToUpdate.Contains(movement.ProviderOrderMovement_Id)) // CREATE
+                {
+                    db.ProviderOrderMovements.Add(movement);
+                    db.SaveChanges();
+                }
+                else // UPDATE
+                {
+                    db.Entry(movement).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+                if (movement.According)
+                {
+                    MovementGood = db.Goods.Find(movement.Good_Id);
+                    MovementGood.Billing_Unit_Available -= movement.Unit_Billing;
+                    MovementGood.Shipping_Unit_Available -= movement.Unit_Shipping;
+                    MovementGood.Billing_Unit_Departure += movement.Unit_Billing;
+                    MovementGood.Shipping_Unit_Departure += movement.Unit_Shipping;
+                    db.Entry(MovementGood).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+            }
+        }
+
+        #endregion
+
+        #region DeleteProviderOrder
+
+        [OperationContract]
+        public void DeleteProviderOrder(HispaniaCompData.ProviderOrder providerOrder)
+        {
+            string ErrMsg;
+            try
+            {
+                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                {
+                    using (var dbTransaction = db.Database.BeginTransaction())
+                    {
+                        try
+                        {
+                            //  First execute DELETE queries for movements.
+                            HispaniaCompData.Good MovementGood;
+                            HispaniaCompData.ProviderOrderMovement movementToDelete;
+                            foreach (HispaniaCompData.ProviderOrderMovement movement in ReadProviderOrderMovements(providerOrder.ProviderOrder_Id))
+                            {
+                                movementToDelete = db.ProviderOrderMovements.Find(movement.ProviderOrderMovement_Id);
+                                db.ProviderOrderMovements.Remove(movementToDelete);
+                                if (movement.According)
+                                {
+                                    MovementGood = db.Goods.Find(movement.Good_Id);
+                                    MovementGood.Billing_Unit_Available += movement.Unit_Billing;
+                                    MovementGood.Shipping_Unit_Available += movement.Unit_Shipping;
+                                    db.Entry(MovementGood).State = EntityState.Modified;
+                                    db.SaveChanges();
+                                }
+                            }
+                            //  Second execute DELETE query for the Provider Order.
+                            HispaniaCompData.ProviderOrder ProviderOrderToDelete = db.ProviderOrders.Find(providerOrder.ProviderOrder_Id);
+                            db.ProviderOrders.Remove(ProviderOrderToDelete);
+                            db.SaveChanges();
+                            //  Accept the operations realised.
+                            dbTransaction.Commit();
+                        }
+                        catch (Exception ex)
+                        {
+                            dbTransaction.Rollback();
+                            ErrMsg = string.Format("No es pot esborrar la Comanda de Proveidor '{0}'\r\n{1}.", providerOrder.ProviderOrder_Id,
+                                                   "Intentiu de nou, i si el problema persisteix consulti l'administrador");
+                            throw new Exception(ErrMsg, ex);
+                        }
+                    }
+                }
+            }
+            catch (DataException ex)
+            {
+                ErrMsg = string.Format("No es pot esborrar la Comanda de Proveidor '{0}'\r\n{1}.", providerOrder.ProviderOrder_Id,
+                                       "Intentiu de nou, i si el problema persisteix consulti l'administrador");
+                throw new Exception(ErrMsg, ex);
+            }
+        }
+
+        #endregion
+
+        #region GetProviderOrder
+
+        [OperationContract]
+        public HispaniaCompData.ProviderOrder GetProviderOrder(int ProviderOrder_Id)
+        {
+            try
+            {
+                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                {
+                    return (db.ProviderOrders.Find(ProviderOrder_Id));
+                }
+            }
+            catch (DataException ex)
+            {
+                string MsgError = string.Format("No es pot trobar la Comanda de Proveidor amb identificador '{0}'.\r\n{1}.", ProviderOrder_Id,
+                                                "Intentiu de nou, i si el problema persisteix consulti l'administrador");
+                throw new Exception(MsgError, ex);
+            }
+        }
+
+        #endregion
+
+        #region GetProviderOrdersFromBill
+
+        [OperationContract]
+        public List<HispaniaCompData.ProviderOrder> GetProviderOrdersFromBill(int Bill_Id, decimal Bill_Year)
+        {
+            try
+            {
+                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                {
+                    return (db.ProviderOrders.Where(c => c.Bill_Id == Bill_Id && c.Bill_Year == Bill_Year).ToList());
+                }
+            }
+            catch (DataException ex)
+            {
+                string MsgError = string.Format("No es pot trobar les Comandes de Proveidor de la factura amb identificador '{0}'.\r\n{1}.", Bill_Id,
+                                                "Intentiu de nou, i si el problema persisteix consulti l'administrador");
+                throw new Exception(MsgError, ex);
+            }
+        }
+
+        #endregion
+
+        #region CreateDeliveryNoteForProviderOrder
+
+        [OperationContract]
+        public void CreateDeliveryNoteForProviderOrder(HispaniaCompData.ProviderOrder providerOrder,
+                                                       HispaniaCompData.DeliveryNote deliveryNote)
+        {
+            string ErrMsg;
+            try
+            {
+                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                {
+                    using (var dbTransaction = db.Database.BeginTransaction())
+                    {
+                        try
+                        {
+                            //  Create a new DeliveryNote
+                            HispaniaCompData.DeliveryNote DeliveryNoteToSave = db.DeliveryNotes.Add(deliveryNote);
+                            db.SaveChanges();
+                            providerOrder.DeliveryNote_Id = DeliveryNoteToSave.DeliveryNote_Id;
+                            providerOrder.DeliveryNote_Year = DeliveryNoteToSave.Year;
+                            providerOrder.DeliveryNote_Date = DeliveryNoteToSave.Date;
+                            //  Create the register for the new Provider Order
+                            db.Entry(providerOrder).State = EntityState.Modified;
+                            db.SaveChanges();
+                            //  Accept the operations realised.
+                            dbTransaction.Commit();
+                        }
+                        catch (Exception ex)
+                        {
+                            dbTransaction.Rollback();
+                            ErrMsg = string.Format("No es pot crear l'albarà de la Comanda de Client '{0}'\r\n{1}.",
+                                                   providerOrder.ProviderOrder_Id,
+                                                   "Intentiu de nou, i si el problema persisteix consulti l'administrador");
+                            throw new Exception(ErrMsg, ex);
+                        }
+                    }
+                }
+            }
+            catch (DataException ex)
+            {
+                ErrMsg = string.Format("No es pot crear l'albarà de la Comanda de Client '{0}'\r\n{1}.",
+                                        providerOrder.ProviderOrder_Id,
+                                       "Intentiu de nou, i si el problema persisteix consulti l'administrador");
+                throw new Exception(ErrMsg, ex);
+            }
+        }
+
+        #endregion
+
+        #region CreateBillForProviderOrders
+
+        [OperationContract]
+        public void CreateBillForProviderOrders(HispaniaCompData.Bill Bill, HispaniaCompData.Provider Provider,
+                                                List<HispaniaCompData.ProviderOrder> ProviderOrdersList,
+                                                List<HispaniaCompData.ProviderOrderMovement> MovementsList,
+                                                List<HispaniaCompData.HistoProvider> HistoricMovementsList,
+                                                List<HispaniaCompData.Receipt> ReceiptsList,
+                                                Dictionary<int, Pair> GoodsAmountValue,
+                                                decimal TotalAmount)
+        {
+            string ErrMsg;
+            try
+            {
+                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                {
+                    using (var dbTransaction = db.Database.BeginTransaction())
+                    {
+                        try
+                        {
+                            //  Create a new Bill
+                            HispaniaCompData.Bill BillToSave = db.Bills.Add(Bill);
+                            db.SaveChanges();
+                            Bill.Bill_Id = BillToSave.Bill_Id;
+                            LogDataAccess.Instance.WriteLog("Create Bill DA - Create Bill -> {0}.", Bill.Bill_Id);
+                            //  Assign Provider Orders selecteds at the new Bill and marks historic flag at true
+                            HispaniaCompData.ProviderOrder ProviderOrderToModify;
+                            foreach (HispaniaCompData.ProviderOrder providerOrder in ProviderOrdersList)
+                            {
+                                ProviderOrderToModify = db.ProviderOrders.Find(providerOrder.ProviderOrder_Id);
+                                ProviderOrderToModify.Bill_Id = Bill.Bill_Id;
+                                ProviderOrderToModify.Bill_Year = Bill.Year;
+                                ProviderOrderToModify.Bill_Serie_Id = Bill.Serie_Id;
+                                ProviderOrderToModify.Bill_Date = Bill.Date;
+                                ProviderOrderToModify.Historic = true;
+                                db.Entry(ProviderOrderToModify).State = EntityState.Modified;
+                                db.SaveChanges();
+                                LogDataAccess.Instance.WriteLog("Create Bill DA - Update Provider Order -> {0}.", providerOrder.ProviderOrder_Id);
+                            }
+                            //  Marks the historic flag of the movements at true
+                            HispaniaCompData.Good MovementGoodToModify;
+                            foreach (HispaniaCompData.ProviderOrderMovement Movement in MovementsList)
+                            {
+                                HispaniaCompData.ProviderOrderMovement MovementToModify = db.ProviderOrderMovements.Find(Movement.ProviderOrderMovement_Id);
+                                MovementToModify.Historic = true;
+                                db.Entry(MovementToModify).State = EntityState.Modified;
+                                db.SaveChanges();
+                                LogDataAccess.Instance.WriteLog("Create Bill DA - Movement -> {0}.", Movement.ProviderOrderMovement_Id);
+                                MovementGoodToModify = db.Goods.Find(Movement.Good_Id);
+                                MovementGoodToModify.Billing_Unit_Stocks -= Movement.Unit_Billing;
+                                MovementGoodToModify.Shipping_Unit_Stocks -= Movement.Unit_Shipping;
+                                db.Entry(MovementGoodToModify).State = EntityState.Modified;
+                                db.SaveChanges();
+                                LogDataAccess.Instance.WriteLog("Create Bill DA - MovementGood -> {0}.", MovementGoodToModify.Good_Code);
+                            }
+                            //  Add one register at Historic table for each movement of every Provider Order of the Bill
+                            foreach (HispaniaCompData.HistoProvider HistoricMovement in HistoricMovementsList)
+                            {
+                                HistoricMovement.Bill_Id = Bill.Bill_Id;
+                                HistoricMovement.Bill_Year = Bill.Year;
+                                HistoricMovement.Bill_Serie_Id = Bill.Serie_Id;
+                                HistoricMovement.Bill_Date = Bill.Date;
+                                db.HistoProviders.Add(HistoricMovement);
+                                db.SaveChanges();
+                                LogDataAccess.Instance.WriteLog("Create Bill DA - HistoricMovement -> {0}.", HistoricMovement.HistoProvider_Id);
+                            }
+                            //  Add Receipts Registers
+                            foreach (HispaniaCompData.Receipt Receipt in ReceiptsList)
+                            {
+                                Receipt.Bill_Id = Bill.Bill_Id;
+                                Receipt.Bill_Year = Bill.Year;
+                                Receipt.Bill_Serie_Id = Bill.Serie_Id;
+                                db.Receipts.Add(Receipt);
+                                db.SaveChanges();
+                                LogDataAccess.Instance.WriteLog("Create Bill DA - Receipt -> {0}.", Receipt.Receipt_Id);
+                            }
+                            //  Update Provider Risk and Sales Aggregate
+                            HispaniaCompData.Provider ProviderToModify = db.Providers.Find(Provider.Provider_Id);
+                            ActualizeProviderAggregate(Bill, TotalAmount, ref ProviderToModify);
+                            ProviderToModify.BillingData_CurrentRisk += TotalAmount;
+                            db.Entry(ProviderToModify).State = EntityState.Modified;
+                            db.SaveChanges();
+                            LogDataAccess.Instance.WriteLog("Create Bill DA - ProviderToModify -> {0}.", ProviderToModify.Provider_Id);
+                            //  Update Goods Amount Value     
+                            foreach (KeyValuePair<int, Pair> GoodAmountInfo in GoodsAmountValue)
+                            {
+                                HispaniaCompData.Good Good = db.Goods.Find(GoodAmountInfo.Key);
+                                ActualizeGoodAggregate(Bill, GoodAmountInfo.Value.Amount, GoodAmountInfo.Value.AmountCost, ref Good);
+                                db.Entry(Good).State = EntityState.Modified;
+                                db.SaveChanges();
+                                LogDataAccess.Instance.WriteLog("Create Bill DA - Good -> {0}.", Good.Good_Code);
+                            }
+                            //  Accept the operations realised.
+                            dbTransaction.Commit();
+                        }
+                        catch (Exception ex)
+                        {
+                            dbTransaction.Rollback();
+                            ErrMsg = "No es poden associar les factures a les comandes de proveidor seleccionades.\r\n" +
+                                     "Intentiu de nou, i si el problema persisteix consulti l'administrador";
+                            LogDataAccess.Instance.WriteLog("Create Bill DA - Error -> {0}.\r\nDetalls:{1}.", ErrMsg, MsgManager.ExcepMsg(ex));
+                            throw new Exception(ErrMsg, ex);
+                        }
+                    }
+                }
+            }
+            catch (DataException ex)
+            {
+                ErrMsg = "No es poden associar les factures a les comandes de proveidor seleccionades.\r\n" +
+                         "Intentiu de nou, i si el problema persisteix consulti l'administrador";
+                LogDataAccess.Instance.WriteLog("Create Bill DA - Error -> {0}.\r\nDetalls:{1}.", ErrMsg, MsgManager.ExcepMsg(ex));
+                throw new Exception(ErrMsg, ex);
+            }
+        }
+
+        #endregion
+
+        #region RemoveProviderOrdersFromBill
+
+        [OperationContract]
+        public void RemoveProviderOrdersFromBill(HispaniaCompData.Bill Bill, HispaniaCompData.Provider Provider,
+                                                 List<HispaniaCompData.ProviderOrder> ProviderOrdersList,
+                                                 List<HispaniaCompData.ProviderOrderMovement> MovementsList,
+                                                 List<HispaniaCompData.Receipt> ReceiptsList,
+                                                 Dictionary<int, Pair> GoodsAmountValue,
+                                                 decimal TotalAmount)
+        {
+            string ErrMsg;
+            try
+            {
+                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                {
+                    using (var dbTransaction = db.Database.BeginTransaction())
+                    {
+                        try
+                        {
+                            //  Do the operations in Database
+                            RemoveProviderOrdersFromBill(db, Bill, Provider, ProviderOrdersList, MovementsList, ReceiptsList,
+                                                         GoodsAmountValue, TotalAmount);
+                            //  Accept the operations realised.
+                            dbTransaction.Commit();
+                        }
+                        catch (Exception ex)
+                        {
+                            dbTransaction.Rollback();
+                            ErrMsg = "No es poden retirar les comandes de proveidor seleccionades de la factura.\r\n" +
+                                     "Intentiu de nou, i si el problema persisteix consulti l'administrador";
+                            throw new Exception(ErrMsg, ex);
+                        }
+                    }
+                }
+            }
+            catch (DataException ex)
+            {
+                ErrMsg = "No es poden retirar les comandes de proveidor seleccionades de la factura.\r\n" +
+                         "Intentiu de nou, i si el problema persisteix consulti l'administrador";
+                throw new Exception(ErrMsg, ex);
+            }
+        }
+
+        private void RemoveProviderOrdersFromBill(HispaniaCompData.HispaniaComptabilitatEntities db,
+                                                   HispaniaCompData.Bill Bill, HispaniaCompData.Provider Provider,
+                                                   List<HispaniaCompData.ProviderOrder> ProviderOrdersList,
+                                                   List<HispaniaCompData.ProviderOrderMovement> MovementsList,
+                                                   List<HispaniaCompData.Receipt> ReceiptsList,
+                                                   Dictionary<int, Pair> GoodsAmountValue,
+                                                   decimal TotalAmount)
+        {
+            //  Update the Bill (usually its not needed but I do for safety)
+            db.Entry(Bill).State = EntityState.Modified;
+            db.SaveChanges();
+            //  Unassign Provider Orders selecteds at the new Bill and marks historic flag at false
+            foreach (HispaniaCompData.ProviderOrder providerOrder in ProviderOrdersList)
+            {
+                providerOrder.Bill_Id = null;
+                providerOrder.Bill_Year = null;
+                providerOrder.Bill_Serie_Id = null; // providerOrder.Bill_Serie_Id = 1; // Serie_Id
+                providerOrder.Bill_Date = null;
+                providerOrder.Historic = false;
+                db.Entry(providerOrder).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+            //  Marks the historic flag of the movements at false
+            List<int> MovementsId = new List<int>(MovementsList.Count);
+            HispaniaCompData.Good MovementGood;
+            foreach (HispaniaCompData.ProviderOrderMovement Movement in MovementsList)
+            {
+                MovementsId.Add(Movement.ProviderOrderMovement_Id);
+                Movement.Historic = false;
+                db.Entry(Movement).State = EntityState.Modified;
+                db.SaveChanges();
+                if (Movement.According)
+                {
+                    MovementGood = db.Goods.Find(Movement.Good_Id);
+                    MovementGood.Billing_Unit_Stocks += Movement.Unit_Billing;
+                    MovementGood.Shipping_Unit_Stocks += Movement.Unit_Shipping;
+                    db.Entry(MovementGood).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+            }
+            //  Remove one register at Historic table for each movement of every Provider Order of the Bill
+            List<HispaniaCompData.HistoProvider>
+                    HistoProvidersListToRemove =
+                            db.HistoProviders.Where(h => ((h.Bill_Id == Bill.Bill_Id) &&
+                                                          (h.Bill_Year == Bill.Year) &&
+                                                          (MovementsId.Contains(h.ProviderOrderMovement_Id)))).ToList();
+            db.HistoProviders.RemoveRange(HistoProvidersListToRemove);
+            db.SaveChanges();
+            //  Remove Old Receipts
+            List<HispaniaCompData.Receipt>
+                        ReceiptsListToRemove = db.Receipts.Where(c => ((c.Bill_Id == Bill.Bill_Id) &&
+                                                                        (c.Bill_Year == Bill.Year))).ToList();
+            db.Receipts.RemoveRange(ReceiptsListToRemove);
+            db.SaveChanges();
+            //  Add New Receipts Registers
+            foreach (HispaniaCompData.Receipt Receipt in ReceiptsList)
+            {
+                Receipt.Bill_Id = Bill.Bill_Id;
+                Receipt.Bill_Year = Bill.Year;
+                Receipt.Bill_Serie_Id = Bill.Serie_Id;
+                db.Receipts.Add(Receipt);
+                db.SaveChanges();
+            }
+            //  Update Provider Risk and Sales Aggregate
+            ActualizeProviderAggregate(Bill, -TotalAmount, ref Provider);
+            Provider.BillingData_CurrentRisk -= TotalAmount;
+            db.Entry(Provider).State = EntityState.Modified;
+            db.SaveChanges();
+            //  Update Goods Amount Value     
+            foreach (KeyValuePair<int, Pair> GoodAmountInfo in GoodsAmountValue)
+            {
+                HispaniaCompData.Good Good = db.Goods.Find(GoodAmountInfo.Key);
+                ActualizeGoodAggregate(Bill, -GoodAmountInfo.Value.Amount, -GoodAmountInfo.Value.AmountCost, ref Good);
+                db.Entry(Good).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+        }
+
+        #endregion
+
+        #region AddProviderOrdersFromBill
+
+        [OperationContract]
+        public void AddProviderOrdersFromBill(HispaniaCompData.Bill Bill, HispaniaCompData.Provider Provider,
+                                              List<HispaniaCompData.ProviderOrder> ProviderOrdersList,
+                                              List<HispaniaCompData.ProviderOrderMovement> MovementsList,
+                                              List<HispaniaCompData.HistoProvider> HistoricMovementsList,
+                                              List<HispaniaCompData.Receipt> ReceiptsList,
+                                              Dictionary<int, Pair> GoodsAmountValue,
+                                              decimal TotalAmount)
+        {
+            string ErrMsg;
+            try
+            {
+                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                {
+                    using (var dbTransaction = db.Database.BeginTransaction())
+                    {
+                        try
+                        {
+                            //  Do the operations in Database
+                            AddProviderOrdersFromBill(db, Bill, Provider, ProviderOrdersList, MovementsList, HistoricMovementsList,
+                                                      ReceiptsList, GoodsAmountValue, TotalAmount);
+                            //  Accept the operations realised.
+                            dbTransaction.Commit();
+                        }
+                        catch (Exception ex)
+                        {
+                            dbTransaction.Rollback();
+                            ErrMsg = "No es poden associar les comandes de proveidor seleccionades a la factura.\r\n" +
+                                     "Intentiu de nou, i si el problema persisteix consulti l'administrador";
+                            throw new Exception(ErrMsg, ex);
+                        }
+                    }
+                }
+            }
+            catch (DataException ex)
+            {
+                ErrMsg = "No es poden associar les comandes de proveidor seleccionades a la factura.\r\n" +
+                         "Intentiu de nou, i si el problema persisteix consulti l'administrador";
+                throw new Exception(ErrMsg, ex);
+            }
+        }
+
+        private void AddProviderOrdersFromBill(HispaniaCompData.HispaniaComptabilitatEntities db,
+                                               HispaniaCompData.Bill Bill, HispaniaCompData.Provider Provider,
+                                               List<HispaniaCompData.ProviderOrder> ProviderOrdersList,
+                                               List<HispaniaCompData.ProviderOrderMovement> MovementsList,
+                                               List<HispaniaCompData.HistoProvider> HistoricMovementsList,
+                                               List<HispaniaCompData.Receipt> ReceiptsList,
+                                               Dictionary<int, Pair> GoodsAmountValue,
+                                               decimal TotalAmount)
+        {
+            //  Update the Bill (usually its not needed but I do for safety)
+            db.Entry(Bill).State = EntityState.Modified;
+            db.SaveChanges();
+            //  Assign Provider Orders selecteds at the new Bill and marks historic flag at true
+            foreach (HispaniaCompData.ProviderOrder providerOrder in ProviderOrdersList)
+            {
+                providerOrder.Bill_Id = Bill.Bill_Id;
+                providerOrder.Bill_Year = Bill.Year;
+                providerOrder.Bill_Serie_Id = Bill.Serie_Id;
+                providerOrder.Bill_Date = Bill.Date;
+                providerOrder.Historic = true;
+                db.Entry(providerOrder).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+            //  Marks the historic flag of the movements at true
+            HispaniaCompData.Good MovementGood;
+            foreach (HispaniaCompData.ProviderOrderMovement Movement in MovementsList)
+            {
+                Movement.Historic = true;
+                db.Entry(Movement).State = EntityState.Modified;
+                db.SaveChanges();
+                if (Movement.According)
+                {
+                    MovementGood = db.Goods.Find(Movement.Good_Id);
+                    MovementGood.Billing_Unit_Stocks -= Movement.Unit_Billing;
+                    MovementGood.Shipping_Unit_Stocks -= Movement.Unit_Shipping;
+                    db.Entry(MovementGood).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+            }
+            //  Add one register at Historic table for each movement of every Provider Order of the Bill
+            foreach (HispaniaCompData.HistoProvider HistoricMovement in HistoricMovementsList)
+            {
+                HistoricMovement.Bill_Id = Bill.Bill_Id;
+                HistoricMovement.Bill_Year = Bill.Year;
+                HistoricMovement.Bill_Serie_Id = Bill.Serie_Id;
+                HistoricMovement.Bill_Date = Bill.Date;
+                db.HistoProviders.Add(HistoricMovement);
+                db.SaveChanges();
+            }
+            //  Remove Old Receipts
+            List<HispaniaCompData.Receipt>
+                        ReceiptsListToRemove = db.Receipts.Where(c => ((c.Bill_Id == Bill.Bill_Id) &&
+                                                                        (c.Bill_Year == Bill.Year))).ToList();
+            db.Receipts.RemoveRange(ReceiptsListToRemove);
+            db.SaveChanges();
+            //  Add Receipts Registers
+            foreach (HispaniaCompData.Receipt Receipt in ReceiptsList)
+            {
+                Receipt.Bill_Id = Bill.Bill_Id;
+                Receipt.Bill_Year = Bill.Year;
+                Receipt.Bill_Serie_Id = Bill.Serie_Id;
+                db.Receipts.Add(Receipt);
+                db.SaveChanges();
+            }
+            //  Update Provider Risk and Sales Aggregate
+            ActualizeProviderAggregate(Bill, TotalAmount, ref Provider);
+            Provider.BillingData_CurrentRisk += TotalAmount;
+            db.Entry(Provider).State = EntityState.Modified;
+            db.SaveChanges();
+            //  Update Goods Amount Value     
+            foreach (KeyValuePair<int, Pair> GoodAmountInfo in GoodsAmountValue)
+            {
+                HispaniaCompData.Good Good = db.Goods.Find(GoodAmountInfo.Key);
+                ActualizeGoodAggregate(Bill, GoodAmountInfo.Value.Amount, GoodAmountInfo.Value.AmountCost, ref Good);
+                db.Entry(Good).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+        }
+
+        #endregion
+
+        #region GetProviderOrdersFilteredByCustormerId
+
+        [OperationContract]
+        public List<HispaniaCompData.ProviderOrder> GetProviderOrdersFilteredByCustormerId(int Provider_Id)
+        {
+            using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+            {
+                return (db.ProviderOrders.Where(c => c.Provider_Id == Provider_Id &&
+                                                     c.Bill_Id != -1 && c.Bill_Year != -1 &&
+                                                     c.DeliveryNote_Id != -1 && c.DeliveryNote_Year != -1).ToList());
+            }
+        }
+
+        #endregion
+
+        #region Common Functions
+
+        private void ActualizeProviderAggregate(HispaniaCompData.Bill Bill, decimal TotalAmount, ref HispaniaCompData.Provider Provider)
+        {
+            switch (Bill.Date.Value.Month)
+            {
+                case 1:
+                    Provider.SeveralData_Acum_1 += TotalAmount;
+                    break;
+                case 2:
+                    Provider.SeveralData_Acum_2 += TotalAmount;
+                    break;
+                case 3:
+                    Provider.SeveralData_Acum_3 += TotalAmount;
+                    break;
+                case 4:
+                    Provider.SeveralData_Acum_4 += TotalAmount;
+                    break;
+                case 5:
+                    Provider.SeveralData_Acum_5 += TotalAmount;
+                    break;
+                case 6:
+                    Provider.SeveralData_Acum_6 += TotalAmount;
+                    break;
+                case 7:
+                    Provider.SeveralData_Acum_7 += TotalAmount;
+                    break;
+                case 8:
+                    Provider.SeveralData_Acum_8 += TotalAmount;
+                    break;
+                case 9:
+                    Provider.SeveralData_Acum_9 += TotalAmount;
+                    break;
+                case 10:
+                    Provider.SeveralData_Acum_10 += TotalAmount;
+                    break;
+                case 11:
+                    Provider.SeveralData_Acum_11 += TotalAmount;
+                    break;
+                case 12:
+                    Provider.SeveralData_Acum_12 += TotalAmount;
+                    break;
+            }
+        }
+
+
+        private void ActualizeGoodAggregate(HispaniaCompData.Bill Bill, decimal Amount, decimal AmountCost, ref HispaniaCompData.Good Good)
+        {
+            switch (Bill.Date.Value.Month)
+            {
+                case 1:
+                    Good.Cumulative_Sales_Cost_1 += AmountCost;
+                    Good.Cumulative_Sales_Retail_Price_1 += Amount;
+                    break;
+                case 2:
+                    Good.Cumulative_Sales_Cost_2 += AmountCost;
+                    Good.Cumulative_Sales_Retail_Price_2 += Amount;
+                    break;
+                case 3:
+                    Good.Cumulative_Sales_Cost_3 += AmountCost;
+                    Good.Cumulative_Sales_Retail_Price_3 += Amount;
+                    break;
+                case 4:
+                    Good.Cumulative_Sales_Cost_4 += AmountCost;
+                    Good.Cumulative_Sales_Retail_Price_4 += Amount;
+                    break;
+                case 5:
+                    Good.Cumulative_Sales_Cost_5 += AmountCost;
+                    Good.Cumulative_Sales_Retail_Price_5 += Amount;
+                    break;
+                case 6:
+                    Good.Cumulative_Sales_Cost_6 += AmountCost;
+                    Good.Cumulative_Sales_Retail_Price_6 += Amount;
+                    break;
+                case 7:
+                    Good.Cumulative_Sales_Cost_7 += AmountCost;
+                    Good.Cumulative_Sales_Retail_Price_7 += Amount;
+                    break;
+                case 8:
+                    Good.Cumulative_Sales_Cost_8 += AmountCost;
+                    Good.Cumulative_Sales_Retail_Price_8 += Amount;
+                    break;
+                case 9:
+                    Good.Cumulative_Sales_Cost_9 += AmountCost;
+                    Good.Cumulative_Sales_Retail_Price_9 += Amount;
+                    break;
+                case 10:
+                    Good.Cumulative_Sales_Cost_10 += AmountCost;
+                    Good.Cumulative_Sales_Retail_Price_10 += Amount;
+                    break;
+                case 11:
+                    Good.Cumulative_Sales_Cost_11 += AmountCost;
+                    Good.Cumulative_Sales_Retail_Price_11 += Amount;
+                    break;
+                case 12:
+                    Good.Cumulative_Sales_Cost_12 += AmountCost;
+                    Good.Cumulative_Sales_Retail_Price_12 += Amount;
+                    break;
+            }
+        }
+
+        #endregion
+
+        #endregion
+
+        #region ProviderOrderMovements [CRUD]
+
+        [OperationContract]
+        public void CreateProviderOrderMovement(HispaniaCompData.ProviderOrderMovement providerOrderMovement)
+        {
+            try
+            {
+                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                {
+                    HispaniaCompData.ProviderOrderMovement ProviderOrderMovementToSave = db.ProviderOrderMovements.Add(providerOrderMovement);
+                    db.SaveChanges();
+                    providerOrderMovement.ProviderOrderMovement_Id = ProviderOrderMovementToSave.ProviderOrderMovement_Id;
+                }
+            }
+            catch (DataException ex)
+            {
+                string MsgError = string.Format("No es pot guardar el moviment '{0}'  de la nova Comanda de Proveidor.\r\n{1}.",
+                                                providerOrderMovement.ProviderOrderMovement_Id,
+                                                "Intentiu de nou, i si el problema persisteix consulti l'administrador");
+                throw new Exception(MsgError, ex);
+            }
+        }
+
+        [OperationContract]
+        public List<HispaniaCompData.ProviderOrderMovement> ReadProviderOrderMovements()
+        {
+            using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+            {
+                return db.ProviderOrderMovements.ToList();
+            }
+        }
+
+        [OperationContract]
+        public List<HispaniaCompData.ProviderOrderMovement> ReadProviderOrderMovements(int ProviderOrder_Id)
+        {
+            using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+            {
+                return db.ProviderOrderMovements.Where(p => p.ProviderOrder_Id == ProviderOrder_Id).ToList();
+            }
+        }
+
+        [OperationContract]
+        public void UpdateProviderOrderMovement(HispaniaCompData.ProviderOrderMovement providerOrderMovement)
+        {
+            try
+            {
+                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                {
+                    db.Entry(providerOrderMovement).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+            }
+            catch (DataException ex)
+            {
+                string MsgError = "No es poden guardar els canvis fets al moviment de la Comanda de Proveidor.\r\n" +
+                                  "Intentiu de nou, i si el problema persisteix consulti l'administrador";
+                throw new Exception(MsgError, ex);
+            }
+        }
+
+        [OperationContract]
+        public void DeleteProviderOrderMovement(HispaniaCompData.ProviderOrderMovement providerOrderMovement)
+        {
+            try
+            {
+                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                {
+                    HispaniaCompData.ProviderOrderMovement ProviderOrderMovementToDelete =
+                                     db.ProviderOrderMovements.Find(providerOrderMovement.ProviderOrderMovement_Id);
+                    db.ProviderOrderMovements.Remove(ProviderOrderMovementToDelete);
+                    db.SaveChanges();
+                }
+            }
+            catch (DataException ex)
+            {
+                string MsgError = string.Format("No es pot esborrar el moviment '{0}' de la Comanda de Proveidor.\r\n{1}.",
+                                                providerOrderMovement.ProviderOrderMovement_Id,
+                                                "Intentiu de nou, i si el problema persisteix consulti l'administrador");
+                throw new Exception(MsgError, ex);
+            }
+        }
+
+        [OperationContract]
+        public HispaniaCompData.ProviderOrderMovement GetProviderOrderMovement(int ProviderOrderMovement_Id)
+        {
+            try
+            {
+                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                {
+                    return (db.ProviderOrderMovements.Find(ProviderOrderMovement_Id));
+                }
+            }
+            catch (DataException ex)
+            {
+                string MsgError = string.Format("No es pot trobar el moviment amb identificador '{0}' de la Comanda de Proveidor.\r\n{1}",
+                                                 ProviderOrderMovement_Id,
+                                                "Intentiu de nou, i si el problema persisteix consulti l'administrador");
+                throw new Exception(MsgError, ex);
+            }
+        }
+
+        [OperationContract]
+        public void UpdateMarkedFlagProviderOrder(int Bill_From_Id, int Bill_Until_Id, DateTime DateToMark, decimal YearQuery)
+        {
+            string ErrMsg;
+            try
+            {
+                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                {
+                    using (var dbTransaction = db.Database.BeginTransaction())
+                    {
+                        try
+                        {
+                            //  Save Bill information in Database
+                            List<HispaniaCompData.ProviderOrder> ProviderOrdersToMark =
+                                db.ProviderOrders.Where(c => ((c.Bill_Id >= Bill_From_Id) && (c.Bill_Id <= Bill_Until_Id) && (c.Bill_Year == YearQuery))).ToList();
+                            foreach (HispaniaCompData.ProviderOrder providerOrdersToMark in ProviderOrdersToMark)
+                            {
+                                providerOrdersToMark.Daily = true;
+                                providerOrdersToMark.Daily_Dates = DateToMark;
+                                db.Entry(providerOrdersToMark).State = EntityState.Modified;
+                                db.SaveChanges();
+                            }
+                            //  Accept the operations realised.
+                            dbTransaction.Commit();
+                        }
+                        catch (Exception ex)
+                        {
+                            dbTransaction.Rollback();
+                            ErrMsg = "No es poden guardar els canvis fets a la comanda de proveidor.\r\n" +
+                                     "Intentiu de nou, i si el problema persisteix consulti l'administrador";
+                            throw new Exception(ErrMsg, ex);
+                        }
+                    }
+                }
+            }
+            catch (DataException ex)
+            {
+                ErrMsg = "No es poden guardar els canvis fets a la Factura.\r\n" +
+                         "Intentiu de nou, i si el problema persisteix consulti l'administrador";
+                throw new Exception(ErrMsg, ex);
+            }
+        }
+
+        #endregion
+
         #region WarehouseMovements [CRUD]
 
         [OperationContract]

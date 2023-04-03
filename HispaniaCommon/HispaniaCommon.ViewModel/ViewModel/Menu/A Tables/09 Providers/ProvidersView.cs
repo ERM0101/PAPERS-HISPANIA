@@ -40,12 +40,12 @@ namespace HispaniaCommon.ViewModel
         #region Fields for Filter
 
         /// <summary>
-        /// Store the list of fields that compose the Customer class
+        /// Store the list of fields that compose the Provider class
         /// </summary>
         private static Dictionary<string, string> m_Fields = null;
 
         /// <summary>
-        /// Get the list of fields that compose the Customer class
+        /// Get the list of fields that compose the Provider class
         /// </summary>
         public static Dictionary<string, string> Fields
         {
@@ -321,7 +321,7 @@ namespace HispaniaCommon.ViewModel
 
         #endregion
 
-        #region GetCustomer
+        #region GetProvider
 
         /// <summary>
         /// Builder by default of the class.

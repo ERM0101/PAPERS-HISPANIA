@@ -196,7 +196,7 @@ namespace HispaniaCommon.ViewClientWPF.Windows
         /// <summary>
         /// Store the Issuance Supplier Orders Window Type Active.
         /// </summary>
-        //private IssuanceSupplierOrders IssuanceSupplierOrdersWindow = null;
+        private SupplierOrders SupplierOrdersManagementWindow = null;
 
         /// <summary>
         /// Store the Issuance Supplier Orders Window Type Active.
@@ -1203,11 +1203,11 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                 else if (sender == lblActualitzarEstocInicial) ManageActualitzarEstocInicial();
                 #endregion
                 #region MENU ORDERS
-                else if ((sender == lblGestioComandesProveidors) || (sender == lblCompararComandes))
-                {
-                    MsgManager.ShowMessage("Avís, opció encara pendent de definició.", MsgType.Information);
-                }
-                //else if (sender == lblGestioComandesProveidors) ManageGestioComandesProveidors();
+                //else if ((sender == lblGestioComandesProveidors) || (sender == lblCompararComandes))
+                //{
+                //    MsgManager.ShowMessage("Avís, opció encara pendent de definició.", MsgType.Information);
+                //}
+                else if (sender == lblGestioComandesProveidors) ManageGestioComandesProveidors();
                 //else if (sender == lblCompararComandes) ManageCompararComandes();
                 else if (sender == lblGestioComandesClients) ManageGestioComandesClients();
                 else if (sender == lblGestioAlbarans) ManageGestioAlbarans();
@@ -2002,19 +2002,38 @@ namespace HispaniaCommon.ViewClientWPF.Windows
         /// </summary>
         private void ManageGestioComandesProveidors()
         {
-            //if (IssuanceSupplierOrdersWindow == null)
-            //{
-            //    IssuanceSupplierOrdersWindow = new IssuanceSupplierOrders(AppType);
-            //    GlobalViewModel.Instance.HispaniaViewModel.RefreshIssuanceSupplierOrders();
-            //    IssuanceSupplierOrdersWindow.DataList = GlobalViewModel.Instance.HispaniaViewModel.IssuanceSupplierOrders;
-            //    GlobalViewModel.Instance.HispaniaViewModel.RefreshProviders();
-            //    IssuanceSupplierOrdersWindow.Providers = GlobalViewModel.Instance.HispaniaViewModel.ProvidersDict;
-            //    GlobalViewModel.Instance.HispaniaViewModel.RefreshMovementsOrdersSuppliersGestioComandesProveidors();
-            //    IssuanceSupplierOrdersWindow.MovementsOrdersSuppliers = GlobalViewModel.Instance.HispaniaViewModel.MovementsOrdersSuppliersGestioComandesProveidors;
-            //    IssuanceSupplierOrdersWindow.Closed += IssuanceSupplierOrdersWindow_Closed;
-            //    IssuanceSupplierOrdersWindow.Show();
-            //}
-            //else UnitsWindow.Activate();
+            Mouse.OverrideCursor = Cursors.Wait;
+            if (SupplierOrdersManagementWindow == null)
+            {
+                try
+                {
+                    RefreshDataViewModel.Instance.RefreshData(WindowToRefresh.SupplierOrdersWindow);
+                    SupplierOrdersManagementWindow = new SupplierOrders(AppType, false, true, false)
+                    {
+                        Suppliers = GlobalViewModel.Instance.HispaniaViewModel.SuppliersActiveDict,
+                        SendTypes = GlobalViewModel.Instance.HispaniaViewModel.SendTypesDict,
+                        EffectTypes = GlobalViewModel.Instance.HispaniaViewModel.EffectTypesDict,
+                        Agents = GlobalViewModel.Instance.HispaniaViewModel.AgentsDict,
+                        Parameters = GlobalViewModel.Instance.HispaniaViewModel.Parameters,
+                        DataList = GlobalViewModel.Instance.HispaniaViewModelSupplierOrders
+                    };
+                    SupplierOrdersManagementWindow.Closed += CustomerOrdersWindow_Closed;
+                    SupplierOrdersManagementWindow.Show();
+                    Active_Windows.Add(SupplierOrdersManagementWindow);
+                }
+                catch (Exception ex)
+                {
+                    MsgManager.ShowMessage(
+                       string.Format("Error, a l'obrir el formulari de Gestió de Comandes de Proveidors.\r\nDetalls: {0}", MsgManager.ExcepMsg(ex)));
+                }
+            }
+            else
+            {
+                if (SupplierOrdersManagementWindow.WindowState == WindowState.Minimized)SupplierOrdersManagementWindow.WindowState = WindowState.Normal;
+                SupplierOrdersManagementWindow.Activate();
+            }
+            Mouse.OverrideCursor = Cursors.Arrow;
+
         }
 
         /// <summary>
@@ -2024,8 +2043,8 @@ namespace HispaniaCommon.ViewClientWPF.Windows
         /// <param name="e">Parameters of the event</param>
         private void IssuanceSupplierOrdersWindow_Closed(object sender, EventArgs e)
         {
-            //IssuanceSupplierOrdersWindow.Closed -= IssuanceSupplierOrdersWindow_Closed;
-            //IssuanceSupplierOrdersWindow = null;
+            SupplierOrdersManagementWindow.Closed -= SupplierOrdersManagementWindow_Closed;
+            SupplierOrdersManagementWindow = null;
         }
 
         #endregion
