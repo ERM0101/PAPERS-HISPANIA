@@ -41,6 +41,19 @@ namespace HispaniaComptabilitat.Data
         public Nullable<decimal> AdditionalDiscount { get; set; }
         public Nullable<int> Agent_Id { get; set; }
         public bool Canceled { get; set; }
+        public Nullable<decimal> SeveralData_Acum_1 { get; set; }
+        public Nullable<decimal> SeveralData_Acum_2 { get; set; }
+        public Nullable<decimal> SeveralData_Acum_3 { get; set; }
+        public Nullable<decimal> SeveralData_Acum_4 { get; set; }
+        public Nullable<decimal> SeveralData_Acum_5 { get; set; }
+        public Nullable<decimal> SeveralData_Acum_6 { get; set; }
+        public Nullable<decimal> SeveralData_Acum_7 { get; set; }
+        public Nullable<decimal> SeveralData_Acum_8 { get; set; }
+        public Nullable<decimal> SeveralData_Acum_9 { get; set; }
+        public Nullable<decimal> SeveralData_Acum_10 { get; set; }
+        public Nullable<decimal> SeveralData_Acum_11 { get; set; }
+        public Nullable<decimal> SeveralData_Acum_12 { get; set; }
+        public Nullable<decimal> BillingData_CurrentRisk { get; set; }
     
         public virtual PostalCode PostalCode { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
