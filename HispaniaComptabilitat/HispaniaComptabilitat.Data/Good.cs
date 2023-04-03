@@ -22,6 +22,8 @@ namespace HispaniaComptabilitat.Data
             this.CustomerOrderMovements = new HashSet<CustomerOrderMovement>();
             this.WarehouseMovements = new HashSet<WarehouseMovement>();
             this.HistoCustomers = new HashSet<HistoCustomer>();
+            this.HistoProviders = new HashSet<HistoProvider>();
+            this.ProviderOrderMovements = new HashSet<ProviderOrderMovement>();
         }
     
         public int Good_Id { get; set; }
@@ -87,5 +89,9 @@ namespace HispaniaComptabilitat.Data
         public virtual ICollection<WarehouseMovement> WarehouseMovements { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<HistoCustomer> HistoCustomers { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<HistoProvider> HistoProviders { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ProviderOrderMovement> ProviderOrderMovements { get; set; }
     }
 }

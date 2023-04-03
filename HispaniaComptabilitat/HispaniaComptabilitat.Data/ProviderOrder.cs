@@ -12,17 +12,10 @@ namespace HispaniaComptabilitat.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class CustomerOrder
+    public partial class ProviderOrder
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public CustomerOrder()
-        {
-            this.CustomerOrderMovements = new HashSet<CustomerOrderMovement>();
-            this.ProviderOrderMovements = new HashSet<ProviderOrderMovement>();
-        }
-    
-        public int CustomerOrder_Id { get; set; }
-        public int Customer_Id { get; set; }
+        public int ProviderOrder_Id { get; set; }
+        public int Provider_Id { get; set; }
         public Nullable<System.DateTime> Date { get; set; }
         public Nullable<int> PostalCode_Id { get; set; }
         public Nullable<int> SendType_Id { get; set; }
@@ -63,8 +56,8 @@ namespace HispaniaComptabilitat.Data
         public bool Expiration { get; set; }
         public bool Daily { get; set; }
         public Nullable<System.DateTime> Daily_Dates { get; set; }
-        public bool Print_CustomerOrder { get; set; }
-        public bool SendByEmail_CustomerOrder { get; set; }
+        public bool Print_ProviderOrder { get; set; }
+        public bool SendByEmail_ProviderOrder { get; set; }
         public decimal TotalAmount { get; set; }
         public string TimeTable { get; set; }
         public Nullable<bool> PrevisioLliurament { get; set; }
@@ -73,14 +66,10 @@ namespace HispaniaComptabilitat.Data
         public virtual Agent Agent { get; set; }
         public virtual Bill Bill { get; set; }
         public virtual BillingSerie BillingSerie { get; set; }
-        public virtual Customer Customer { get; set; }
         public virtual DeliveryNote DeliveryNote { get; set; }
         public virtual EffectType EffectType { get; set; }
         public virtual PostalCode PostalCode { get; set; }
+        public virtual Provider Provider { get; set; }
         public virtual SendType SendType { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CustomerOrderMovement> CustomerOrderMovements { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ProviderOrderMovement> ProviderOrderMovements { get; set; }
     }
 }

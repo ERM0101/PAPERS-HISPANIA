@@ -57,6 +57,9 @@ namespace HispaniaComptabilitat.Data
         public virtual DbSet<CustomerOrder> CustomerOrders { get; set; }
         public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<TEMP_DIARY_BANDAGE> TEMP_DIARY_BANDAGE { get; set; }
+        public virtual DbSet<HistoProvider> HistoProviders { get; set; }
+        public virtual DbSet<ProviderOrder> ProviderOrders { get; set; }
+        public virtual DbSet<ProviderOrderMovement> ProviderOrderMovements { get; set; }
     
         public virtual ObjectResult<Revisio> SP_Revisions(Nullable<int> operation_Type)
         {

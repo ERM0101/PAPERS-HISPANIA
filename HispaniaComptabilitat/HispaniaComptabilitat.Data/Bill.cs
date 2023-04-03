@@ -21,6 +21,8 @@ namespace HispaniaComptabilitat.Data
             this.HistoCustomers = new HashSet<HistoCustomer>();
             this.Receipts = new HashSet<Receipt>();
             this.CustomerOrders = new HashSet<CustomerOrder>();
+            this.HistoProviders = new HashSet<HistoProvider>();
+            this.ProviderOrders = new HashSet<ProviderOrder>();
         }
     
         public int Bill_Id { get; set; }
@@ -73,5 +75,9 @@ namespace HispaniaComptabilitat.Data
         public virtual Agent Agent { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CustomerOrder> CustomerOrders { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<HistoProvider> HistoProviders { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ProviderOrder> ProviderOrders { get; set; }
     }
 }
