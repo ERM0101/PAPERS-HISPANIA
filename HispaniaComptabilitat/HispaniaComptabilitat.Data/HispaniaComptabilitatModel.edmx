@@ -643,6 +643,15 @@
           <Property Name="Customer_Canceled_Id" Type="int" Nullable="false" />
           <Property Name="Remarks" Type="nvarchar(max)" />
         </EntityType>
+        <EntityType Name="RelatedProvider">
+          <Key>
+            <PropertyRef Name="Provider_Id" />
+            <PropertyRef Name="Provider_Canceled_Id" />
+          </Key>
+          <Property Name="Provider_Id" Type="int" Nullable="false" />
+          <Property Name="Provider_Canceled_Id" Type="int" Nullable="false" />
+          <Property Name="Remarks" Type="nvarchar(max)" />
+        </EntityType>
         <EntityType Name="SendType">
           <Key>
             <PropertyRef Name="SendType_Id" />
@@ -1419,6 +1428,30 @@ advertencia 6002: La tabla o vista 'COMPTABILITAT.dbo.TEMP_DIARY_BANDAGE' no tie
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_RelatedProvider_Provider">
+          <End Role="Provider" Type="Self.Provider" Multiplicity="1" />
+          <End Role="RelatedProvider" Type="Self.RelatedProvider" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Provider">
+              <PropertyRef Name="Provider_Id" />
+            </Principal>
+            <Dependent Role="RelatedProvider">
+              <PropertyRef Name="Provider_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RelatedProvider_Provider1">
+          <End Role="Provider" Type="Self.Provider" Multiplicity="1" />
+          <End Role="RelatedProvider" Type="Self.RelatedProvider" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Provider">
+              <PropertyRef Name="Provider_Id" />
+            </Principal>
+            <Dependent Role="RelatedProvider">
+              <PropertyRef Name="Provider_Canceled_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_WarehouseMovement_Good">
           <End Role="Good" Type="Self.Good" Multiplicity="1" />
           <End Role="WarehouseMovement" Type="Self.WarehouseMovement" Multiplicity="*" />
@@ -1518,6 +1551,7 @@ advertencia 6002: La tabla o vista 'COMPTABILITAT.dbo.TEMP_DIARY_BANDAGE' no tie
           <EntitySet Name="QueryCustom" EntityType="Self.QueryCustom" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Receipt" EntityType="Self.Receipt" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RelatedCustomer" EntityType="Self.RelatedCustomer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RelatedProvider" EntityType="Self.RelatedProvider" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SendType" EntityType="Self.SendType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Unit" EntityType="Self.Unit" Schema="dbo" store:Type="Tables" />
@@ -1768,6 +1802,14 @@ advertencia 6002: La tabla o vista 'COMPTABILITAT.dbo.TEMP_DIARY_BANDAGE' no tie
           <AssociationSet Name="FK_RelatedCustomer_Customer1" Association="Self.FK_RelatedCustomer_Customer1">
             <End Role="Customer" EntitySet="Customer" />
             <End Role="RelatedCustomer" EntitySet="RelatedCustomer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RelatedProvider_Provider" Association="Self.FK_RelatedProvider_Provider">
+            <End Role="Provider" EntitySet="Provider" />
+            <End Role="RelatedProvider" EntitySet="RelatedProvider" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RelatedProvider_Provider1" Association="Self.FK_RelatedProvider_Provider1">
+            <End Role="Provider" EntitySet="Provider" />
+            <End Role="RelatedProvider" EntitySet="RelatedProvider" />
           </AssociationSet>
           <AssociationSet Name="FK_WarehouseMovement_Good" Association="Self.FK_WarehouseMovement_Good">
             <End Role="Good" EntitySet="Good" />
@@ -2054,6 +2096,7 @@ advertencia 6002: La tabla o vista 'COMPTABILITAT.dbo.TEMP_DIARY_BANDAGE' no tie
           <EntitySet Name="HistoProviders" EntityType="HispaniaComptabilitatModel.HistoProvider" />
           <EntitySet Name="ProviderOrders" EntityType="HispaniaComptabilitatModel.ProviderOrder" />
           <EntitySet Name="ProviderOrderMovements" EntityType="HispaniaComptabilitatModel.ProviderOrderMovement" />
+          <EntitySet Name="RelatedProviders" EntityType="HispaniaComptabilitatModel.RelatedProvider" />
           <AssociationSet Name="FK_ProviderOrder_Agent" Association="HispaniaComptabilitatModel.FK_ProviderOrder_Agent">
             <End Role="Agent" EntitySet="Agents" />
             <End Role="ProviderOrder" EntitySet="ProviderOrders" />
@@ -2109,6 +2152,14 @@ advertencia 6002: La tabla o vista 'COMPTABILITAT.dbo.TEMP_DIARY_BANDAGE' no tie
           <AssociationSet Name="FK_ProviderOrder_Provider" Association="HispaniaComptabilitatModel.FK_ProviderOrder_Provider">
             <End Role="Provider" EntitySet="Providers" />
             <End Role="ProviderOrder" EntitySet="ProviderOrders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RelatedProvider_Provider" Association="HispaniaComptabilitatModel.FK_RelatedProvider_Provider">
+            <End Role="Provider" EntitySet="Providers" />
+            <End Role="RelatedProvider" EntitySet="RelatedProviders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RelatedProvider_Provider1" Association="HispaniaComptabilitatModel.FK_RelatedProvider_Provider1">
+            <End Role="Provider" EntitySet="Providers" />
+            <End Role="RelatedProvider" EntitySet="RelatedProviders" />
           </AssociationSet>
           <AssociationSet Name="FK_ProviderOrder_SendType" Association="HispaniaComptabilitatModel.FK_ProviderOrder_SendType">
             <End Role="SendType" EntitySet="SendTypes" />
@@ -3174,8 +3225,6 @@ advertencia 6002: La tabla o vista 'COMPTABILITAT.dbo.TEMP_DIARY_BANDAGE' no tie
           <NavigationProperty Name="PostalCode" Relationship="HispaniaComptabilitatModel.FK_Provider_PostalCode" FromRole="Provider" ToRole="PostalCode" />
           <NavigationProperty Name="WarehouseMovements" Relationship="HispaniaComptabilitatModel.FK_WarehouseMovement_Provider" FromRole="Provider" ToRole="WarehouseMovement" />
           <NavigationProperty Name="Agent" Relationship="HispaniaComptabilitatModel.FK_Provider_Agent" FromRole="Provider" ToRole="Agent" />
-          <NavigationProperty Name="HistoProviders" Relationship="HispaniaComptabilitatModel.FK_HistoProvider_Provider" FromRole="Provider" ToRole="HistoProvider" />
-          <NavigationProperty Name="ProviderOrders" Relationship="HispaniaComptabilitatModel.FK_ProviderOrder_Provider" FromRole="Provider" ToRole="ProviderOrder" />
           <Property Name="SeveralData_Acum_1" Type="Decimal" Precision="19" Scale="4" />
           <Property Name="SeveralData_Acum_2" Type="Decimal" Precision="19" Scale="4" />
           <Property Name="SeveralData_Acum_3" Type="Decimal" Precision="19" Scale="4" />
@@ -3189,6 +3238,10 @@ advertencia 6002: La tabla o vista 'COMPTABILITAT.dbo.TEMP_DIARY_BANDAGE' no tie
           <Property Name="SeveralData_Acum_11" Type="Decimal" Precision="19" Scale="4" />
           <Property Name="SeveralData_Acum_12" Type="Decimal" Precision="19" Scale="4" />
           <Property Name="BillingData_CurrentRisk" Type="Decimal" Precision="19" Scale="4" />
+          <NavigationProperty Name="HistoProviders" Relationship="HispaniaComptabilitatModel.FK_HistoProvider_Provider" FromRole="Provider" ToRole="HistoProvider" />
+          <NavigationProperty Name="ProviderOrders" Relationship="HispaniaComptabilitatModel.FK_ProviderOrder_Provider" FromRole="Provider" ToRole="ProviderOrder" />
+          <NavigationProperty Name="RelatedProviders" Relationship="HispaniaComptabilitatModel.FK_RelatedProvider_Provider" FromRole="Provider" ToRole="RelatedProvider" />
+          <NavigationProperty Name="RelatedProviders1" Relationship="HispaniaComptabilitatModel.FK_RelatedProvider_Provider1" FromRole="Provider" ToRole="RelatedProvider" />
         </EntityType>
         <Association Name="FK_Provider_PostalCode">
           <End Type="HispaniaComptabilitatModel.PostalCode" Role="PostalCode" Multiplicity="0..1" />
@@ -3825,6 +3878,17 @@ advertencia 6002: La tabla o vista 'COMPTABILITAT.dbo.TEMP_DIARY_BANDAGE' no tie
           <NavigationProperty Name="CustomerOrder" Relationship="HispaniaComptabilitatModel.FK_ProviderOrderMovement_ProviderOrder" FromRole="ProviderOrderMovement" ToRole="CustomerOrder" />
           <NavigationProperty Name="Good" Relationship="HispaniaComptabilitatModel.FK_ProviderOrderMovement_Good" FromRole="ProviderOrderMovement" ToRole="Good" />
         </EntityType>
+        <EntityType Name="RelatedProvider">
+          <Key>
+            <PropertyRef Name="Provider_Id" />
+            <PropertyRef Name="Provider_Canceled_Id" />
+          </Key>
+          <Property Name="Provider_Id" Type="Int32" Nullable="false" />
+          <Property Name="Provider_Canceled_Id" Type="Int32" Nullable="false" />
+          <Property Name="Remarks" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Provider" Relationship="HispaniaComptabilitatModel.FK_RelatedProvider_Provider" FromRole="RelatedProvider" ToRole="Provider" />
+          <NavigationProperty Name="Provider1" Relationship="HispaniaComptabilitatModel.FK_RelatedProvider_Provider1" FromRole="RelatedProvider" ToRole="Provider" />
+        </EntityType>
         <Association Name="FK_ProviderOrder_Agent">
           <End Type="HispaniaComptabilitatModel.Agent" Role="Agent" Multiplicity="0..1" />
           <End Type="HispaniaComptabilitatModel.ProviderOrder" Role="ProviderOrder" Multiplicity="*" />
@@ -3998,6 +4062,30 @@ advertencia 6002: La tabla o vista 'COMPTABILITAT.dbo.TEMP_DIARY_BANDAGE' no tie
             </Principal>
             <Dependent Role="ProviderOrder">
               <PropertyRef Name="Provider_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RelatedProvider_Provider">
+          <End Type="HispaniaComptabilitatModel.Provider" Role="Provider" Multiplicity="1" />
+          <End Type="HispaniaComptabilitatModel.RelatedProvider" Role="RelatedProvider" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Provider">
+              <PropertyRef Name="Provider_Id" />
+            </Principal>
+            <Dependent Role="RelatedProvider">
+              <PropertyRef Name="Provider_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RelatedProvider_Provider1">
+          <End Type="HispaniaComptabilitatModel.Provider" Role="Provider" Multiplicity="1" />
+          <End Type="HispaniaComptabilitatModel.RelatedProvider" Role="RelatedProvider" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Provider">
+              <PropertyRef Name="Provider_Id" />
+            </Principal>
+            <Dependent Role="RelatedProvider">
+              <PropertyRef Name="Provider_Canceled_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -4953,6 +5041,15 @@ advertencia 6002: La tabla o vista 'COMPTABILITAT.dbo.TEMP_DIARY_BANDAGE' no tie
                 <ScalarProperty Name="Good_Id" ColumnName="Good_Id" />
                 <ScalarProperty Name="ProviderOrder_Id" ColumnName="ProviderOrder_Id" />
                 <ScalarProperty Name="ProviderOrderMovement_Id" ColumnName="ProviderOrderMovement_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RelatedProviders">
+            <EntityTypeMapping TypeName="HispaniaComptabilitatModel.RelatedProvider">
+              <MappingFragment StoreEntitySet="RelatedProvider">
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="Provider_Canceled_Id" ColumnName="Provider_Canceled_Id" />
+                <ScalarProperty Name="Provider_Id" ColumnName="Provider_Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

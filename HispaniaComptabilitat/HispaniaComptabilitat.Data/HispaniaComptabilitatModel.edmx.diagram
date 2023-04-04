@@ -80,9 +80,10 @@
         <AssociationConnector Association="HispaniaComptabilitatModel.FK_CustomerOrderMovement_CustomerOrder" />
         <EntityTypeShape EntityType="HispaniaComptabilitatModel.sysdiagram" Width="1.5" PointX="9.375" PointY="3.75" />
         <EntityTypeShape EntityType="HispaniaComptabilitatModel.TEMP_DIARY_BANDAGE" Width="1.5" PointX="9.375" PointY="6.75" />
-        <EntityTypeShape EntityType="HispaniaComptabilitatModel.HistoProvider" Width="1.5" PointX="27.875" PointY="0.875" />
-        <EntityTypeShape EntityType="HispaniaComptabilitatModel.ProviderOrder" Width="1.5" PointX="30.875" PointY="9.125" />
-        <EntityTypeShape EntityType="HispaniaComptabilitatModel.ProviderOrderMovement" Width="1.5" PointX="33.375" PointY="8.125" />
+        <EntityTypeShape EntityType="HispaniaComptabilitatModel.HistoProvider" Width="1.5" PointX="30.875" PointY="12.25" />
+        <EntityTypeShape EntityType="HispaniaComptabilitatModel.ProviderOrder" Width="1.5" PointX="30.875" PointY="19.5" />
+        <EntityTypeShape EntityType="HispaniaComptabilitatModel.ProviderOrderMovement" Width="1.5" PointX="30.375" PointY="6.125" />
+        <EntityTypeShape EntityType="HispaniaComptabilitatModel.RelatedProvider" Width="1.5" PointX="19.875" PointY="23.375" />
         <AssociationConnector Association="HispaniaComptabilitatModel.FK_ProviderOrder_Agent" />
         <AssociationConnector Association="HispaniaComptabilitatModel.FK_HistoProvider_Bill" />
         <AssociationConnector Association="HispaniaComptabilitatModel.FK_ProviderOrder_Bill" />
@@ -97,6 +98,8 @@
         <AssociationConnector Association="HispaniaComptabilitatModel.FK_HistoProvider_Provider" />
         <AssociationConnector Association="HispaniaComptabilitatModel.FK_ProviderOrder_PostalCode" />
         <AssociationConnector Association="HispaniaComptabilitatModel.FK_ProviderOrder_Provider" />
+        <AssociationConnector Association="HispaniaComptabilitatModel.FK_RelatedProvider_Provider" />
+        <AssociationConnector Association="HispaniaComptabilitatModel.FK_RelatedProvider_Provider1" />
         <AssociationConnector Association="HispaniaComptabilitatModel.FK_ProviderOrder_SendType" />
         </Diagram>
     </edmx:Diagrams>
