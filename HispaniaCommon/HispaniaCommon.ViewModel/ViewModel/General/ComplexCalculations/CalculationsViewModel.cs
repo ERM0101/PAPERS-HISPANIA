@@ -129,7 +129,7 @@ namespace HispaniaCommon.ViewModel
             {
                 foreach (ProviderOrdersView providerOrder in ProviderOrders)
                 {
-                    foreach (ProviderOrderMovementsView Movement in GetProviderOrderMovements(providerOrder.CustomerOrder_Id))
+                    foreach (ProviderOrderMovementsView Movement in GetProviderOrderMovements(providerOrder.ProviderOrder_Id))
                     {
                         Movements.Add(Movement);
                     }
@@ -295,6 +295,42 @@ namespace HispaniaCommon.ViewModel
                         SurchargeAmount = GlobalViewModel.GetValueDecimalForCalculations(TaxableBaseAmount * (SurchargePercent / 100), DecimalType.Currency);
                 }
                 TotalAmount = GlobalViewModel.GetValueDecimalForCalculations(TaxableBaseAmount + IVAAmount + SurchargeAmount, DecimalType.Currency);
+        }
+
+        public void CalculateAmountInfo(ObservableCollection<ProviderOrderMovementsView> Movements,
+                                        decimal EarlyPaymentDiscountPrecent, decimal IVAPercent, decimal SurchargePercent,
+                                        out decimal GrossAmount, out decimal EarlyPayementDiscountAmount, out decimal TaxableBaseAmount,
+                                        out decimal IVAAmount, out decimal SurchargeAmount, out decimal TotalAmount)
+        {
+            //  Calculate GrossAmount amount value.
+            GrossAmount = 0;
+            foreach (ProviderOrderMovementsView movement in Movements)
+            {
+                GrossAmount += movement.Amount;
+            }
+            //  Calculate Early Payement Discount amount value.
+            EarlyPayementDiscountAmount = 0;
+            if (EarlyPaymentDiscountPrecent > 0)
+            {
+                EarlyPayementDiscountAmount = GlobalViewModel.GetValueDecimalForCalculations(GrossAmount * (EarlyPaymentDiscountPrecent / 100), DecimalType.Currency);
+            }
+            //  Calculate Taxable Base
+            TaxableBaseAmount = GlobalViewModel.GetValueDecimalForCalculations(GrossAmount - EarlyPayementDiscountAmount, DecimalType.Currency);
+            //  Calculate IVA amount value.
+            IVAAmount = 0;
+            if (IVAPercent > 0)
+            {
+                //  We use the TaxableBaseAmount to apply the Early Payement Discount
+                IVAAmount = GlobalViewModel.GetValueDecimalForCalculations(TaxableBaseAmount * (IVAPercent / 100), DecimalType.Currency);
+            }
+            //  Calculate Surcharge amount value.
+            SurchargeAmount = 0;
+            if (SurchargePercent > 0)
+            {
+                //  We use the TaxableBaseAmount to apply the Early Payement Discount
+                SurchargeAmount = GlobalViewModel.GetValueDecimalForCalculations(TaxableBaseAmount * (SurchargePercent / 100), DecimalType.Currency);
+            }
+            TotalAmount = GlobalViewModel.GetValueDecimalForCalculations(TaxableBaseAmount + IVAAmount + SurchargeAmount, DecimalType.Currency);
         }
 
         #endregion

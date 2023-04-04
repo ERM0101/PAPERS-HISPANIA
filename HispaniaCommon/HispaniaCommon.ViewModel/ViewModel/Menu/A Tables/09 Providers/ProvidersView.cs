@@ -1,5 +1,6 @@
 ﻿#region Libraries used for the class
 
+using HispaniaComptabilitat.Data;
 using System;
 using System.Collections.Generic;
 using HispaniaCompData = HispaniaComptabilitat.Data;
@@ -29,6 +30,9 @@ namespace HispaniaCommon.ViewModel
         Comment,
         PostalCode,
         Data_Agent,
+        BillingData_Agent,
+        BillingData_IVAType,
+        BillingData_SendType,
         None,
     }
 
@@ -239,6 +243,270 @@ namespace HispaniaCommon.ViewModel
 
         #endregion
 
+        #region Diversos
+        public string Several_Remarks { get; set; }
+        public decimal SeveralData_Acum_1 { get; set; }
+        public decimal SeveralData_Acum_2 { get; set; }
+        public decimal SeveralData_Acum_3 { get; set; }
+        public decimal SeveralData_Acum_4 { get; set; }
+        public decimal SeveralData_Acum_5 { get; set; }
+        public decimal SeveralData_Acum_6 { get; set; }
+        public decimal SeveralData_Acum_7 { get; set; }
+        public decimal SeveralData_Acum_8 { get; set; }
+        public decimal SeveralData_Acum_9 { get; set; }
+        public decimal SeveralData_Acum_10 { get; set; }
+        public decimal SeveralData_Acum_11 { get; set; }
+        public decimal SeveralData_Acum_12 { get; set; }
+        #endregion
+
+        #region Company
+
+        public string Company_Name { get; set; }
+        public string Company_Address { get; set; }
+        public string Company_Phone_1 { get; set; }
+        public string Company_Phone_2 { get; set; }
+        public string Company_Fax { get; set; }
+        public string Company_MobilePhone { get; set; }
+        public string Company_EMail { get; set; }
+        public string Company_EMail2 { get; set; }
+        public string Company_EMail3 { get; set; }
+        public string Company_ContactPerson { get; set; }
+        public string Company_TimeTable { get; set; }
+        public string Company_NumProv { get; set; }
+        public string Company_Cif { get; set; }
+
+        #endregion
+
+        #region Bank Data (Bancarios)
+
+        public decimal DataBank_NumEffect { get; set; }
+        public decimal DataBank_FirstExpirationData { get; set; }
+        public decimal DataBank_ExpirationInterval { get; set; }
+        public decimal DataBank_Payday_1 { get; set; }
+        public decimal DataBank_Payday_2 { get; set; }
+        public decimal DataBank_Payday_3 { get; set; }
+        public string DataBank_Bank { get; set; }
+        public string DataBank_BankAddress { get; set; }
+        public string DataBank_IBAN_CountryCode { get; set; }
+        public string DataBank_IBAN_BankCode { get; set; }
+        public string DataBank_IBAN_OfficeCode { get; set; }
+        public string DataBank_IBAN_CheckDigits { get; set; }
+        public string DataBank_IBAN_AccountNumber { get; set; }
+
+        #endregion
+
+        #region Postal Codes
+
+        private int? _Company_PostalCode_Id { get; set; }
+
+        private PostalCodesView _Company_PostalCode;
+
+        public PostalCodesView Company_PostalCode
+        {
+            get
+            {
+                if ((_Company_PostalCode == null) && (_Company_PostalCode_Id != GlobalViewModel.IntIdInitValue) &&
+                    (_Company_PostalCode_Id != null))
+                {
+                    _Company_PostalCode = new PostalCodesView(GlobalViewModel.Instance.HispaniaViewModel.GetPostalCode((int)_Company_PostalCode_Id));
+                }
+                return (_Company_PostalCode);
+            }
+            set
+            {
+                if (value != null)
+                {
+                    _Company_PostalCode = new PostalCodesView(value);
+                    if (_Company_PostalCode == null) _Company_PostalCode_Id = GlobalViewModel.IntIdInitValue;
+                    else _Company_PostalCode_Id = _Company_PostalCode.PostalCode_Id;
+                }
+                else
+                {
+                    _Company_PostalCode = null;
+                    _Company_PostalCode_Id = GlobalViewModel.IntIdInitValue;
+                }
+            }
+        }
+
+        public string Company_PostalCode_Str
+        {
+            get
+            {
+                return (Company_PostalCode == null) ? string.Empty : Company_PostalCode.Postal_Code;
+            }
+        }
+
+        public string Company_City_Str
+        {
+            get
+            {
+                return (Company_PostalCode == null) ? string.Empty : Company_PostalCode.City;
+            }
+        }
+
+        public string Company_Province_Str
+        {
+            get
+            {
+                return (Company_PostalCode == null) ? string.Empty : Company_PostalCode.Province;
+            }
+        }
+
+        #endregion
+
+        #region IVATypes
+
+        private int? _BillingData_IVAType_Id;
+
+        private IVATypesView _BillingData_IVAType;
+
+        public IVATypesView BillingData_IVAType
+        {
+            get
+            {
+                if ((_BillingData_IVAType == null) && (_BillingData_IVAType_Id != GlobalViewModel.IntIdInitValue) &&
+                    (_BillingData_IVAType_Id != null))
+                {
+                    _BillingData_IVAType = new IVATypesView(GlobalViewModel.Instance.HispaniaViewModel.GetIVAType((int)_BillingData_IVAType_Id));
+                }
+                return (_BillingData_IVAType);
+            }
+            set
+            {
+                if (value != null)
+                {
+                    _BillingData_IVAType = new IVATypesView(value);
+                    if (_BillingData_IVAType == null) _BillingData_IVAType_Id = GlobalViewModel.IntIdInitValue;
+                    else _BillingData_IVAType_Id = _BillingData_IVAType.IVAType_Id;
+                }
+                else
+                {
+                    _BillingData_IVAType = null;
+                    _BillingData_IVAType_Id = GlobalViewModel.IntIdInitValue;
+                }
+            }
+        }
+
+        #endregion
+
+        #region SendTypes
+
+        private int? _BillingData_SendType_Id;
+
+        private SendTypesView _BillingData_SendType;
+
+        public SendTypesView BillingData_SendType
+        {
+            get
+            {
+                if ((_BillingData_SendType == null) && (_BillingData_SendType_Id != GlobalViewModel.IntIdInitValue) &&
+                    (_BillingData_SendType_Id != null))
+                {
+                    _BillingData_SendType = new SendTypesView(GlobalViewModel.Instance.HispaniaViewModel.GetSendType((int)_BillingData_SendType_Id));
+                }
+                return (_BillingData_SendType);
+            }
+            set
+            {
+                if (value != null)
+                {
+                    _BillingData_SendType = new SendTypesView(value);
+                    if (_BillingData_SendType == null) _BillingData_SendType_Id = GlobalViewModel.IntIdInitValue;
+                    else _BillingData_SendType_Id = _BillingData_SendType.SendType_Id;
+                }
+                else
+                {
+                    _BillingData_SendType = null;
+                    _BillingData_SendType_Id = GlobalViewModel.IntIdInitValue;
+                }
+            }
+        }
+
+        #endregion
+
+        #region EffectTypes
+
+        private int? _DataBank_EffectType_Id;
+
+        public EffectTypesView _DataBank_EffectType;
+
+        public EffectTypesView DataBank_EffectType
+        {
+            get
+            {
+                if ((_DataBank_EffectType == null) && (_DataBank_EffectType_Id != GlobalViewModel.IntIdInitValue) &&
+                    (_DataBank_EffectType_Id != null))
+                {
+                    _DataBank_EffectType = new EffectTypesView(GlobalViewModel.Instance.HispaniaViewModel.GetEffectType((int)_DataBank_EffectType_Id));
+                }
+                return (_DataBank_EffectType);
+            }
+            set
+            {
+                if (value != null)
+                {
+                    _DataBank_EffectType = new EffectTypesView(value);
+                    if (_DataBank_EffectType == null) _DataBank_EffectType_Id = GlobalViewModel.IntIdInitValue;
+                    else _DataBank_EffectType_Id = _DataBank_EffectType.EffectType_Id;
+                }
+                else
+                {
+                    _DataBank_EffectType = null;
+                    _DataBank_EffectType_Id = GlobalViewModel.IntIdInitValue;
+                }
+            }
+        }
+
+        #endregion
+
+        #region Agents
+
+        private int? _BillingData_Agent_Id;
+
+        private AgentsView _BillingData_Agent;
+
+        public AgentsView BillingData_Agent
+        {
+            get
+            {
+                if ((_BillingData_Agent == null) && (_BillingData_Agent_Id != GlobalViewModel.IntIdInitValue) &&
+                    (_BillingData_Agent_Id != null))
+                {
+                    _BillingData_Agent = new AgentsView(GlobalViewModel.Instance.HispaniaViewModel.GetAgent((int)_BillingData_Agent_Id));
+                }
+                return (_BillingData_Agent);
+            }
+            set
+            {
+                if (value != null)
+                {
+                    _BillingData_Agent = new AgentsView(value);
+                    if (_BillingData_Agent == null) _BillingData_Agent_Id = GlobalViewModel.IntIdInitValue;
+                    else _BillingData_Agent_Id = _BillingData_Agent.Agent_Id;
+                }
+                else
+                {
+                    _BillingData_Agent = null;
+                    _BillingData_Agent_Id = GlobalViewModel.IntIdInitValue;
+                }
+            }
+        }
+
+        #endregion
+
+        #region Billing Data (Facturación)
+        public string BillingData_BillingType { get; set; }
+        public decimal BillingData_Duplicate { get; set; }
+        public decimal BillingData_EarlyPaymentDiscount { get; set; }
+        public bool BillingData_Valued { get; set; }
+        public decimal BillingData_RiskGranted { get; set; }
+        public decimal BillingData_CurrentRisk { get; set; }
+        public decimal BillingData_Unpaid { get; set; }
+        public decimal BillingData_NumUnpaid { get; set; }
+        public DateTime BillingData_Register { get; set; }
+
+        #endregion
+
         #endregion
 
         #region Builders
@@ -266,6 +534,20 @@ namespace HispaniaCommon.ViewModel
             Canceled = false;
             PostalCode = null;
             Data_Agent = null;
+            BillingData_EarlyPaymentDiscount = GlobalViewModel.DecimalInitValue;
+            SeveralData_Acum_1 = GlobalViewModel.DecimalInitValue;
+            SeveralData_Acum_2 = GlobalViewModel.DecimalInitValue;
+            SeveralData_Acum_3 = GlobalViewModel.DecimalInitValue;
+            SeveralData_Acum_4 = GlobalViewModel.DecimalInitValue;
+            SeveralData_Acum_5 = GlobalViewModel.DecimalInitValue;
+            SeveralData_Acum_6 = GlobalViewModel.DecimalInitValue;
+            SeveralData_Acum_7 = GlobalViewModel.DecimalInitValue;
+            SeveralData_Acum_8 = GlobalViewModel.DecimalInitValue;
+            SeveralData_Acum_9 = GlobalViewModel.DecimalInitValue;
+            SeveralData_Acum_10 = GlobalViewModel.DecimalInitValue;
+            SeveralData_Acum_11 = GlobalViewModel.DecimalInitValue;
+            SeveralData_Acum_12 = GlobalViewModel.DecimalInitValue;
+            BillingData_IVAType = null;           
         }
 
         /// <summary>

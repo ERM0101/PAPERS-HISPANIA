@@ -110,6 +110,11 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
         private CustomersView m_Data = null;
 
         /// <summary>
+        /// Store the data to show in List of Items.
+        /// </summary>
+        private ProvidersView m_DataProv = null;
+
+        /// <summary>
         /// Store the type of Application with the user want open.
         /// </summary>
         private ApplicationType m_AppType;
@@ -206,6 +211,22 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
             set
             {
                 if (value != null) m_Data = value;
+                else throw new ArgumentNullException("Error, no s'ha trobat l'Article a carregar.");
+            }
+        }
+
+        /// <summary>
+        /// Store the data to show in List of Items.
+        /// </summary>
+        public ProvidersView DataProv
+        {
+            get
+            {
+                return (m_DataProv);
+            }
+            set
+            {
+                if (value != null) m_DataProv = value;
                 else throw new ArgumentNullException("Error, no s'ha trobat l'Article a carregar.");
             }
         }

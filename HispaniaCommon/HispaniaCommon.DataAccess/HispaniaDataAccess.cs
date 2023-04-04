@@ -4002,6 +4002,123 @@ namespace HispaniaCommon.DataAccess
 
         #endregion
 
+        #region HistoProviders [CRUD]
+
+        [OperationContract]
+        public void CreateHistoProvider(HispaniaCompData.HistoProvider histoProvider)
+        {
+            try
+            {
+                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                {
+                    HispaniaCompData.HistoProvider HistoProviderToSave = db.HistoProviders.Add(histoProvider);
+                    db.SaveChanges();
+                    histoProvider.HistoProvider_Id = HistoProviderToSave.HistoProvider_Id;
+                }
+            }
+            catch (DataException ex)
+            {
+                string MsgError = string.Format("No es pot guardar el nou històric de proveidor '{0}' del Proveidor '{1}'\r\n{2}.",
+                                                histoProvider.HistoProvider_Id, histoProvider.Provider_Id,
+                                                "Intentiu de nou, i si el problema persisteix consulti l'administrador");
+                throw new Exception(MsgError, ex);
+            }
+        }
+
+        [OperationContract]
+        public List<HispaniaCompData.HistoProvider> ReadHistoProviders()
+        {
+            using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+            {
+                return db.HistoProviders.ToList();
+            }
+        }
+
+        [OperationContract]
+        public List<HispaniaCompData.HistoProvider> ReadHistoProviders(int Provider_Id, bool WithChilds)
+        {
+            using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+            {
+                if (WithChilds)
+                {
+                    List<int> RelatedProviders = new List<int>();
+                    RelatedProviders.Add(Provider_Id);
+                    RelatedProviders.AddRange(db.RelatedProviders.Where(x => (x.Provider_Id == Provider_Id)).Select(x => (x.Provider_Canceled_Id)).ToList());
+                    return db.HistoProviders.Where(p => RelatedProviders.Contains(p.Provider_Id)).OrderByDescending(p => p.Bill_Date)
+                                                                                                 .ThenByDescending(p => p.DeliveryNote_Date)
+                                                                                                 .ThenByDescending(p => p.DeliveryNote_Id)
+                                                                                                 .ThenBy(p => p.ProviderOrderMovement_Id).ToList();
+                }
+                else
+                {
+                    return db.HistoProviders.Where(p => p.Provider_Id == Provider_Id).OrderByDescending(p => p.Bill_Date)
+                                                                                     .ThenByDescending(p => p.DeliveryNote_Date)
+                                                                                     .ThenByDescending(p => p.DeliveryNote_Id)
+                                                                                     .ThenBy(p => p.ProviderOrderMovement_Id).ToList();
+                }
+            }
+        }
+
+        [OperationContract]
+        public void UpdateHistoProvider(HispaniaCompData.HistoProvider histoProvider)
+        {
+            try
+            {
+                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                {
+                    db.Entry(histoProvider).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+            }
+            catch (DataException ex)
+            {
+                string MsgError = "No es poden guardar els canvis fets a l'històric de client.\r\n" +
+                                  "Intentiu de nou, i si el problema persisteix consulti l'administrador";
+                throw new Exception(MsgError, ex);
+            }
+        }
+
+        [OperationContract]
+        public void DeleteHistoProvider(HispaniaCompData.HistoProvider histoProvider)
+        {
+            try
+            {
+                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                {
+                    HispaniaCompData.HistoProvider HistoProviderToDelete = db.HistoProviders.Find(histoProvider.HistoProvider_Id);
+                    db.HistoProviders.Remove(HistoProviderToDelete);
+                    db.SaveChanges();
+                }
+            }
+            catch (DataException ex)
+            {
+                string MsgError = string.Format("No es pot esborrar l'historic de client '{0}' del client '{1}'\r\n{2}.",
+                                                histoProvider.HistoProvider_Id, histoProvider.Provider_Id,
+                                                "Intentiu de nou, i si el problema persisteix consulti l'administrador");
+                throw new Exception(MsgError, ex);
+            }
+        }
+
+        [OperationContract]
+        public HispaniaCompData.HistoProvider GetHistoProvider(int HistoProvider_Id)
+        {
+            try
+            {
+                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                {
+                    return (db.HistoProviders.Find(HistoProvider_Id));
+                }
+            }
+            catch (DataException ex)
+            {
+                string MsgError = string.Format("No es pot trobar l'històric de client amb identificador '{0}'.\r\n{1}.", HistoProvider_Id,
+                                                "Intentiu de nou, i si el problema persisteix consulti l'administrador");
+                throw new Exception(MsgError, ex);
+            }
+        }
+
+        #endregion
+
         #region ProviderOrders [CRUD]
 
         #region CreateProviderOrder
