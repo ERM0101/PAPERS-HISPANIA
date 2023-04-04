@@ -132,6 +132,16 @@ namespace HispaniaCommon.DataAccess
                         case SystemTables.Bill:
                             IsEmpty = (db.Bills.Count() == 0);
                             break;
+                        case SystemTables.Provider:
+                            IsEmpty = (db.Providers.Count() == 0);
+                            break;
+                        case SystemTables.ProviderOrder:
+                            IsEmpty = (db.ProviderOrders.Count() == 0);
+                            break;
+                        case SystemTables.ProviderOrderMovement:
+                            IsEmpty = (db.CustomerOrderMovements.Count() == 0);
+                            break;
+                        
                         //case SystemTables.IssuanceSupplierOrder: // ToDo: Activate when IssuanceSupplierOrders will be implemented.
                         //     IsEmpty = (db.IssuanceSupplierOrders.Count() == 0);
                         //     break;
@@ -5822,6 +5832,19 @@ namespace HispaniaCommon.DataAccess
             using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
             {
                 return db.SP_CustomerOrderMovementsComments(CustomerOrder_Id).ToList();
+            }
+        }
+
+        #endregion
+
+        #region ProviderOrderMovementsComments [EXECUTE]
+
+        [OperationContract]
+        public List<HispaniaCompData.ProviderOrderMovementComments> ProviderOrderMovementsComments(int ProviderOrder_Id)
+        {
+            using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+            {
+                return db.ProviderOrderMovementsComments(ProviderOrder_Id).ToList();
             }
         }
 

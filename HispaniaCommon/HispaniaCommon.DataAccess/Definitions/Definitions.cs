@@ -26,7 +26,9 @@
         CustomerOrder,
         CustomerOrderMovement,
         Bill,
-        IssuanceSupplierOrder,
+        Provider,
+        ProviderOrder,
+        ProviderOrderMovement
     }
 
     #endregion

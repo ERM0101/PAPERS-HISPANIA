@@ -2175,7 +2175,7 @@ advertencia 6002: La tabla o vista 'COMPTABILITAT.dbo.TEMP_DIARY_BANDAGE' no tie
           <Parameter Name="ProviderOrder_Id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="ProviderOrderMovementsComments" ReturnType="Collection(String)">
-            <Parameter Name="ProviderOrder_Id" Mode="In" Type="Int32" />
+          <Parameter Name="ProviderOrder_Id" Mode="In" Type="Int32" />
           </FunctionImport>
           </EntityContainer>
         <EntityType Name="LocalConnection">
