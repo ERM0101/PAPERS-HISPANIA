@@ -5800,7 +5800,7 @@ namespace HispaniaCommon.DataAccess
         {
             using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
             {
-                List<HispaniaCompData.LiniesConforme> LiniesConformes = db.LiniesProveidorConformes(ProviderOrder_Id).ToList();
+                List<HispaniaCompData.LiniesProveidorConformes_Result> LiniesConformes = db.LiniesProveidorConformes(ProviderOrder_Id).ToList();
                 if (LiniesConformes.Count == 1)
                 {
                     return LiniesConformes[0].LiniesConformes == 0 ? false : true;
