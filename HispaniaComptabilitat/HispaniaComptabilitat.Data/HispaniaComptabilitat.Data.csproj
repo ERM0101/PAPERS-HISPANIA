@@ -188,6 +188,9 @@
     <Compile Include="ProviderOrderMovement.cs">
       <DependentUpon>HispaniaComptabilitatModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="ProviderOrderMovementsComments.cs">
+      <DependentUpon>HispaniaComptabilitatModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="QueryCustom.cs">
       <DependentUpon>HispaniaComptabilitatModel.tt</DependentUpon>
     </Compile>

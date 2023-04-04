@@ -2177,6 +2177,9 @@ advertencia 6002: La tabla o vista 'COMPTABILITAT.dbo.TEMP_DIARY_BANDAGE' no tie
           <FunctionImport Name="ProviderOrderMovementsComments" ReturnType="Collection(String)">
           <Parameter Name="ProviderOrder_Id" Mode="In" Type="Int32" />
           </FunctionImport>
+          <FunctionImport Name="SP_ProviderOrderMovementsComments" ReturnType="Collection(HispaniaComptabilitatModel.ProviderOrderMovementsComments)">
+            <Parameter Name="ProviderOrder_Id" Mode="In" Type="Int32" />
+          </FunctionImport>
           </EntityContainer>
         <EntityType Name="LocalConnection">
           <Key>
@@ -4117,6 +4120,9 @@ advertencia 6002: La tabla o vista 'COMPTABILITAT.dbo.TEMP_DIARY_BANDAGE' no tie
           <Property Type="Int32" Name="Column1" Nullable="true" />
           <Property Type="Int32" Name="LiniesConformes" Nullable="false" />
         </ComplexType>
+        <ComplexType Name="ProviderOrderMovementsComments">
+          <Property Type="String" Name="Comentari" Nullable="false" />
+        </ComplexType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -5078,6 +5084,13 @@ advertencia 6002: La tabla o vista 'COMPTABILITAT.dbo.TEMP_DIARY_BANDAGE' no tie
             </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="ProviderOrderMovementsComments" FunctionName="Store.ProviderOrderMovementsComments" />
+          <FunctionImportMapping FunctionImportName="SP_ProviderOrderMovementsComments" FunctionName="Store.ProviderOrderMovementsComments">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="HispaniaComptabilitatModel.ProviderOrderMovementsComments">
+                <ScalarProperty Name="Comentari" ColumnName="Comentari" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           </EntityContainerMapping>
 </Mapping></edmx:Mappings>
   </edmx:Runtime>
