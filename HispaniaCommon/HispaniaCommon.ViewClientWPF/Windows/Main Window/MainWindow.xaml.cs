@@ -196,7 +196,7 @@ namespace HispaniaCommon.ViewClientWPF.Windows
         /// <summary>
         /// Store the Issuance Supplier Orders Window Type Active.
         /// </summary>
-        private SupplierOrders SupplierOrdersManagementWindow = null;
+        private ProviderOrders ProviderOrdersManagementWindow = null;
 
         /// <summary>
         /// Store the Issuance Supplier Orders Window Type Active.
@@ -2003,23 +2003,23 @@ namespace HispaniaCommon.ViewClientWPF.Windows
         private void ManageGestioComandesProveidors()
         {
             Mouse.OverrideCursor = Cursors.Wait;
-            if (SupplierOrdersManagementWindow == null)
+            if (ProviderOrdersManagementWindow == null)
             {
                 try
                 {
                     RefreshDataViewModel.Instance.RefreshData(WindowToRefresh.SupplierOrdersWindow);
-                    SupplierOrdersManagementWindow = new SupplierOrders(AppType, false, true, false)
+                    ProviderOrdersManagementWindow = new ProviderOrders(AppType, false, true, false)
                     {
-                        Suppliers = GlobalViewModel.Instance.HispaniaViewModel.SuppliersActiveDict,
+                        Providers = GlobalViewModel.Instance.HispaniaViewModel.ProvidersActiveDict,
                         SendTypes = GlobalViewModel.Instance.HispaniaViewModel.SendTypesDict,
                         EffectTypes = GlobalViewModel.Instance.HispaniaViewModel.EffectTypesDict,
                         Agents = GlobalViewModel.Instance.HispaniaViewModel.AgentsDict,
                         Parameters = GlobalViewModel.Instance.HispaniaViewModel.Parameters,
-                        DataList = GlobalViewModel.Instance.HispaniaViewModelSupplierOrders
+                        DataList = GlobalViewModel.Instance.HispaniaViewModel.ProviderOrders
                     };
-                    SupplierOrdersManagementWindow.Closed += CustomerOrdersWindow_Closed;
-                    SupplierOrdersManagementWindow.Show();
-                    Active_Windows.Add(SupplierOrdersManagementWindow);
+                    ProviderOrdersManagementWindow.Closed += CustomerOrdersWindow_Closed;
+                    ProviderOrdersManagementWindow.Show();
+                    Active_Windows.Add(ProviderOrdersManagementWindow);
                 }
                 catch (Exception ex)
                 {
@@ -2029,8 +2029,8 @@ namespace HispaniaCommon.ViewClientWPF.Windows
             }
             else
             {
-                if (SupplierOrdersManagementWindow.WindowState == WindowState.Minimized)SupplierOrdersManagementWindow.WindowState = WindowState.Normal;
-                SupplierOrdersManagementWindow.Activate();
+                if (ProviderOrdersManagementWindow.WindowState == WindowState.Minimized)ProviderOrdersManagementWindow.WindowState = WindowState.Normal;
+                ProviderOrdersManagementWindow.Activate();
             }
             Mouse.OverrideCursor = Cursors.Arrow;
 
@@ -2041,10 +2041,10 @@ namespace HispaniaCommon.ViewClientWPF.Windows
         /// </summary>
         /// <param name="sender">Label that prodece the event</param>
         /// <param name="e">Parameters of the event</param>
-        private void IssuanceSupplierOrdersWindow_Closed(object sender, EventArgs e)
+        private void ProviderOrdersManagementWindow_Closed(object sender, EventArgs e)
         {
-            SupplierOrdersManagementWindow.Closed -= SupplierOrdersManagementWindow_Closed;
-            SupplierOrdersManagementWindow = null;
+            ProviderOrdersManagementWindow.Closed -= ProviderOrdersManagementWindow_Closed;
+            ProviderOrdersManagementWindow = null;
         }
 
         #endregion

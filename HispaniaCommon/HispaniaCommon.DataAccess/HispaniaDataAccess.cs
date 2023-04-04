@@ -5127,61 +5127,6 @@ namespace HispaniaCommon.DataAccess
         }
 
 
-        private void ActualizeGoodAggregate(HispaniaCompData.Bill Bill, decimal Amount, decimal AmountCost, ref HispaniaCompData.Good Good)
-        {
-            switch (Bill.Date.Value.Month)
-            {
-                case 1:
-                    Good.Cumulative_Sales_Cost_1 += AmountCost;
-                    Good.Cumulative_Sales_Retail_Price_1 += Amount;
-                    break;
-                case 2:
-                    Good.Cumulative_Sales_Cost_2 += AmountCost;
-                    Good.Cumulative_Sales_Retail_Price_2 += Amount;
-                    break;
-                case 3:
-                    Good.Cumulative_Sales_Cost_3 += AmountCost;
-                    Good.Cumulative_Sales_Retail_Price_3 += Amount;
-                    break;
-                case 4:
-                    Good.Cumulative_Sales_Cost_4 += AmountCost;
-                    Good.Cumulative_Sales_Retail_Price_4 += Amount;
-                    break;
-                case 5:
-                    Good.Cumulative_Sales_Cost_5 += AmountCost;
-                    Good.Cumulative_Sales_Retail_Price_5 += Amount;
-                    break;
-                case 6:
-                    Good.Cumulative_Sales_Cost_6 += AmountCost;
-                    Good.Cumulative_Sales_Retail_Price_6 += Amount;
-                    break;
-                case 7:
-                    Good.Cumulative_Sales_Cost_7 += AmountCost;
-                    Good.Cumulative_Sales_Retail_Price_7 += Amount;
-                    break;
-                case 8:
-                    Good.Cumulative_Sales_Cost_8 += AmountCost;
-                    Good.Cumulative_Sales_Retail_Price_8 += Amount;
-                    break;
-                case 9:
-                    Good.Cumulative_Sales_Cost_9 += AmountCost;
-                    Good.Cumulative_Sales_Retail_Price_9 += Amount;
-                    break;
-                case 10:
-                    Good.Cumulative_Sales_Cost_10 += AmountCost;
-                    Good.Cumulative_Sales_Retail_Price_10 += Amount;
-                    break;
-                case 11:
-                    Good.Cumulative_Sales_Cost_11 += AmountCost;
-                    Good.Cumulative_Sales_Retail_Price_11 += Amount;
-                    break;
-                case 12:
-                    Good.Cumulative_Sales_Cost_12 += AmountCost;
-                    Good.Cumulative_Sales_Retail_Price_12 += Amount;
-                    break;
-            }
-        }
-
         #endregion
 
         #endregion

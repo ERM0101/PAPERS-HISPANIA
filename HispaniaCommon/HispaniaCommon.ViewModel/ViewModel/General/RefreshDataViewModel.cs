@@ -33,7 +33,7 @@ namespace HispaniaCommon.ViewModel
         CustomerOrdersWindow,
         DeliveryNotesWindow,
         DeliveryNotesPrintWindow,
-        SupplierOrdersWindow,
+        ProviderOrdersWindow,
         #endregion
         #region Menu Bills
         BillsWindow,
@@ -148,7 +148,7 @@ namespace HispaniaCommon.ViewModel
                     case WindowToRefresh.DeliveryNotesPrintWindow:
                          RefreshCustomerOrdersData();
                          break;
-                    case WindowToRefresh.SupplierOrdersWindow:
+                    case WindowToRefresh.ProviderOrdersWindow:
                          RefreshSupplierOrdersData();
                          break;
                     #endregion

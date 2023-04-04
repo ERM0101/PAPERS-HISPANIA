@@ -436,6 +436,24 @@ namespace HispaniaCommon.ViewModel
 
         #endregion
 
+        #region ProviderOrders
+
+        private ObservableCollection<ProviderOrdersView> _ProviderOrders;
+
+        public ObservableCollection<ProviderOrdersView> ProviderOrders
+        {
+            get
+            {
+                if (_ProviderOrders == null)
+                {
+                    _ProviderOrders = GlobalViewModel.Instance.HispaniaViewModel.GetProviderOrdersFromBill(Bill_Id, Year);
+                }
+                return (_ProviderOrders);
+            }
+        }
+
+        #endregion
+
         #endregion
 
         #region Information

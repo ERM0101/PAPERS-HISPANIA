@@ -1463,7 +1463,7 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                         bool ProviderOrderWithBill = false;
                         LogViewModel.Instance.WriteLog("Create Bill - ActualizeProviderOrdersFromDb().");
                         ActualizeProviderOrdersFromDb();
-                        SortedDictionary<int, DataForBill> SourceProviderOrders = new SortedDictionary<int, DataForBill>();
+                        SortedDictionary<int, DataForProviderBill> SourceProviderOrders = new SortedDictionary<int, DataForProviderBill>();
                         foreach (ProviderOrdersView providerOrder in ListItems.SelectedItems)
                         {
                             if (!GlobalViewModel.Instance.HispaniaViewModel.LockRegister(providerOrder, out string ErrMsg))
@@ -1493,7 +1493,7 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                             if (!SourceProviderOrders.ContainsKey(providerOrder.Provider.Provider_Id))
                             {
                                 List<ProviderOrdersView> ListProviderOrders = new List<ProviderOrdersView> { providerOrder };
-                                SourceProviderOrders.Add(Provider.Provider_Id, new DataForBill(DeliveryNoteDate, Provider, ListProviderOrders));
+                                SourceProviderOrders.Add(Provider.Provider_Id, new DataForProviderBill(DeliveryNoteDate, Provider, ListProviderOrders));
                             }
                             else
                             {
@@ -1522,7 +1522,7 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                             LogViewModel.Instance.WriteLog("Create Bill - FilterDataListObjects().");
                             FilterDataListObjects();
                         }
-                        foreach (DataForBill ProviderOrders in SourceProviderOrders.Values)
+                        foreach (DataForProviderBill ProviderOrders in SourceProviderOrders.Values)
                         {
                             foreach (ProviderOrdersView providerOrder in ProviderOrders.Movements)
                             {
