@@ -219,40 +219,6 @@ namespace HispaniaCommon.ViewModel
                                     out GrossAmount, out EarlyPayementDiscountAmount, out TaxableBaseAmount,
                                     out IVAAmount, out SurchargeAmount, out TotalAmount);
             }
-            else
-            {
-                GrossAmount = 0;
-                EarlyPayementDiscountAmount = 0;
-                TaxableBaseAmount = 0;
-                IVAAmount = 0;
-                SurchargeAmount = 0;
-                TotalAmount = 0;
-            }
-        }
-
-        public void CalculateAmountInfo(BillsView Bill,
-                                        out decimal GrossAmount, out decimal EarlyPayementDiscountAmount, out decimal TaxableBaseAmount,
-                                        out decimal IVAAmount, out decimal SurchargeAmount, out decimal TotalAmount)
-        {
-            if (!(Bill.CustomerOrders is null) && (Bill.CustomerOrders.Count > 0))
-            {
-                ObservableCollection<CustomerOrderMovementsView> Movements = new ObservableCollection<CustomerOrderMovementsView>();
-                foreach (CustomerOrdersView customerOrder in Bill.CustomerOrders)
-                {
-                    foreach (CustomerOrderMovementsView Movement in GetCustomerOrderMovements(customerOrder.CustomerOrder_Id))
-                    {
-                        Movements.Add(Movement);
-                    }
-                }
-                CustomersView Customer = Bill.Customer;
-                IVATypesView IVAType = Customer.BillingData_IVAType;
-                decimal EarlyPaymentDiscountPrecent = Customer.BillingData_EarlyPaymentDiscount;
-                decimal IVAPercent = (IVAType is null) ? 0 : IVAType.IVAPercent;
-                decimal SurchargePercent = (IVAType is null) ? 0 : IVAType.SurchargePercent;
-                CalculateAmountInfo(Movements, EarlyPaymentDiscountPrecent, IVAPercent, SurchargePercent,
-                                    out GrossAmount, out EarlyPayementDiscountAmount, out TaxableBaseAmount,
-                                    out IVAAmount, out SurchargeAmount, out TotalAmount);
-            }
             else if (!(Bill.ProviderOrders is null) && (Bill.ProviderOrders.Count > 0))
             {
                 ObservableCollection<ProviderOrderMovementsView> Movements = new ObservableCollection<ProviderOrderMovementsView>();
@@ -423,6 +389,19 @@ namespace HispaniaCommon.ViewModel
                 decimal Payday_3 = Customer.DataBank_Payday_3;
             //  Return the list of receipts calculated
                 return CalculateReceipts(Bill_Date, NumEffects, FirstExpirationData, ExpirationInterval, Payday_1, Payday_2, Payday_3, BillAmount);
+        }
+
+        public List<HispaniaCompData.Receipt> CalculateReceipts(ProvidersView Provider, decimal BillAmount, DateTime Bill_Date)
+        {
+            //  Load the information needed to calculate the receipts
+            decimal NumEffects = Provider.DataBank_NumEffect;
+            decimal FirstExpirationData = Provider.DataBank_FirstExpirationData;
+            decimal ExpirationInterval = Provider.DataBank_ExpirationInterval;
+            decimal Payday_1 = Provider.DataBank_Payday_1;
+            decimal Payday_2 = Provider.DataBank_Payday_2;
+            decimal Payday_3 = Provider.DataBank_Payday_3;
+            //  Return the list of receipts calculated
+            return CalculateReceipts(Bill_Date, NumEffects, FirstExpirationData, ExpirationInterval, Payday_1, Payday_2, Payday_3, BillAmount);
         }
 
         public List<HispaniaCompData.Receipt> CalculateReceipts(BillsView Bill)
@@ -625,6 +604,24 @@ namespace HispaniaCommon.ViewModel
         {
             Dictionary<int, Pair> GoodsAmountValue = new Dictionary<int, Pair>();
             foreach (CustomerOrderMovementsView Movement in Movements)
+            {
+                if (!GoodsAmountValue.ContainsKey(Movement.Good.Good_Id))
+                {
+                    GoodsAmountValue.Add(Movement.Good.Good_Id, new Pair(Movement.Amount, Movement.AmountCost));
+                }
+                else
+                {
+                    GoodsAmountValue[Movement.Good.Good_Id].Amount += Movement.Amount;
+                    GoodsAmountValue[Movement.Good.Good_Id].AmountCost += Movement.AmountCost;
+                }
+            }
+            return (GoodsAmountValue);
+        }
+
+        public Dictionary<int, Pair> CalculateGoodsAmountValue(ObservableCollection<ProviderOrderMovementsView> Movements)
+        {
+            Dictionary<int, Pair> GoodsAmountValue = new Dictionary<int, Pair>();
+            foreach (ProviderOrderMovementsView Movement in Movements)
             {
                 if (!GoodsAmountValue.ContainsKey(Movement.Good.Good_Id))
                 {

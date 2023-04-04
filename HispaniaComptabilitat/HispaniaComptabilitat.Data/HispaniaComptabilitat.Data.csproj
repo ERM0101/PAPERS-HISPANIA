@@ -160,6 +160,9 @@
     <Compile Include="LiniesConformes_Result1.cs">
       <DependentUpon>HispaniaComptabilitatModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="LiniesProveidorConformes_Result.cs">
+      <DependentUpon>HispaniaComptabilitatModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="LocalConnection.cs">
       <DependentUpon>HispaniaComptabilitatModel.tt</DependentUpon>
     </Compile>

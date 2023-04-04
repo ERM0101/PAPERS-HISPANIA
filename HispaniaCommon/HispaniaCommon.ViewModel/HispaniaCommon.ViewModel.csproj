@@ -115,6 +115,8 @@
     <Compile Include="ViewModel\Menu\C. Orders\03 Provider Orders\DataForProviderBill.cs" />
     <Compile Include="ViewModel\Menu\C. Orders\03 Provider Orders\ProviderOrdersView.cs" />
     <Compile Include="ViewModel\Menu\C. Orders\03 Provider Orders\ProviderOrdersViewModel.cs" />
+    <Compile Include="ViewModel\Menu\C. Orders\_Provider Orders\ProviderOrderMovementsCommentsViewModel.cs" />
+    <Compile Include="ViewModel\Menu\C. Orders\_Provider Orders\LiniesConformesViewModel.cs" />
     <Compile Include="ViewModel\Menu\D. Bills\04. BadDebts\BadDebtMovementsView.cs" />
     <Compile Include="ViewModel\Menu\D. Bills\04. BadDebts\BadDebtsView.cs" />
     <Compile Include="ViewModel\Menu\D. Bills\04. BadDebts\BadDebtMovementsViewModel.cs" />

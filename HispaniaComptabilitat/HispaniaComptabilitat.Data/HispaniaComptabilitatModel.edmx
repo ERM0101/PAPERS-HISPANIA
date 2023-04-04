@@ -1501,6 +1501,12 @@ advertencia 6002: La tabla o vista 'COMPTABILITAT.dbo.TEMP_DIARY_BANDAGE' no tie
         <Function Name="LiniesConformes" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CustomerOrder_Id" Type="int" Mode="In" />
         </Function>
+        <Function Name="LiniesProveidorConformes" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ProviderOrder_Id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="ProviderOrderMovementsComments" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ProviderOrder_Id" Type="int" Mode="In" />
+        </Function>
         <Function Name="Ranges" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Good_Id_From" Type="nvarchar" Mode="In" />
           <Parameter Name="Good_Id_Until" Type="nvarchar" Mode="In" />
@@ -2165,6 +2171,12 @@ advertencia 6002: La tabla o vista 'COMPTABILITAT.dbo.TEMP_DIARY_BANDAGE' no tie
             <End Role="SendType" EntitySet="SendTypes" />
             <End Role="ProviderOrder" EntitySet="ProviderOrders" />
           </AssociationSet>
+          <FunctionImport Name="LiniesProveidorConformes" ReturnType="Collection(HispaniaComptabilitatModel.LiniesProveidorConformes_Result)">
+          <Parameter Name="ProviderOrder_Id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="ProviderOrderMovementsComments" ReturnType="Collection(String)">
+            <Parameter Name="ProviderOrder_Id" Mode="In" Type="Int32" />
+          </FunctionImport>
           </EntityContainer>
         <EntityType Name="LocalConnection">
           <Key>
@@ -4101,6 +4113,10 @@ advertencia 6002: La tabla o vista 'COMPTABILITAT.dbo.TEMP_DIARY_BANDAGE' no tie
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <ComplexType Name="LiniesProveidorConformes_Result">
+          <Property Type="Int32" Name="Column1" Nullable="true" />
+          <Property Type="Int32" Name="LiniesConformes" Nullable="false" />
+        </ComplexType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -5053,6 +5069,15 @@ advertencia 6002: La tabla o vista 'COMPTABILITAT.dbo.TEMP_DIARY_BANDAGE' no tie
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="LiniesProveidorConformes" FunctionName="Store.LiniesProveidorConformes">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="HispaniaComptabilitatModel.LiniesProveidorConformes_Result">
+                <ScalarProperty Name="Column1" ColumnName="Column1" />
+                <ScalarProperty Name="LiniesConformes" ColumnName="LiniesConformes" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="ProviderOrderMovementsComments" FunctionName="Store.ProviderOrderMovementsComments" />
           </EntityContainerMapping>
 </Mapping></edmx:Mappings>
   </edmx:Runtime>

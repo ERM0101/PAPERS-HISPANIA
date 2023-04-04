@@ -257,5 +257,23 @@ namespace HispaniaComptabilitat.Data
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Range>("SP_Ranges", good_Id_FromParameter, good_Id_UntilParameter, bill_Id_FromParameter, bill_Id_UntilParameter, year_QueryParameter);
         }
+    
+        public virtual ObjectResult<LiniesProveidorConformes_Result> LiniesProveidorConformes(Nullable<int> providerOrder_Id)
+        {
+            var providerOrder_IdParameter = providerOrder_Id.HasValue ?
+                new ObjectParameter("ProviderOrder_Id", providerOrder_Id) :
+                new ObjectParameter("ProviderOrder_Id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<LiniesProveidorConformes_Result>("LiniesProveidorConformes", providerOrder_IdParameter);
+        }
+    
+        public virtual ObjectResult<string> ProviderOrderMovementsComments(Nullable<int> providerOrder_Id)
+        {
+            var providerOrder_IdParameter = providerOrder_Id.HasValue ?
+                new ObjectParameter("ProviderOrder_Id", providerOrder_Id) :
+                new ObjectParameter("ProviderOrder_Id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("ProviderOrderMovementsComments", providerOrder_IdParameter);
+        }
     }
 }

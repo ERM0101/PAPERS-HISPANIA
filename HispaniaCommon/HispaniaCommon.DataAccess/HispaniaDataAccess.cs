@@ -5793,6 +5793,27 @@ namespace HispaniaCommon.DataAccess
 
         #endregion
 
+        #region LiniesProveidorConformes [EXECUTE]
+
+        [OperationContract]
+        public bool? LiniesProveidorConformes(int ProviderOrder_Id)
+        {
+            using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+            {
+                List<HispaniaCompData.LiniesConforme> LiniesConformes = db.LiniesProveidorConformes(ProviderOrder_Id).ToList();
+                if (LiniesConformes.Count == 1)
+                {
+                    return LiniesConformes[0].LiniesConformes == 0 ? false : true;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
+
+        #endregion
+
         #region CustomerOrderMovementsComments [EXECUTE]
 
         [OperationContract]
