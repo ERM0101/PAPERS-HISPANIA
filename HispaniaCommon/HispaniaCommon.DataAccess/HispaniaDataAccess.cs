@@ -1,5 +1,6 @@
 ﻿#region Librerias usadas por la clase
 
+using HispaniaComptabilitat.Data;
 using MBCode.Framework.Managers.Messages;
 using System;
 using System.Collections.Generic;
@@ -2198,19 +2199,39 @@ namespace HispaniaCommon.DataAccess
         }
 
         [OperationContract]
-        public void UpdateProvider(HispaniaCompData.Provider Provider)
+        public void UpdateProvider(HispaniaCompData.Provider provider, List<HispaniaCompData.RelatedProvider> relatedProviders)
         {
             try
             {
                 using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
                 {
-                    db.Entry(Provider).State = EntityState.Modified;
-                    db.SaveChanges();
+                    using (var dbTransaction = db.Database.BeginTransaction())
+                    {
+                        try
+                        {
+                            //  Save Provider information in Database
+                            db.Entry(provider).State = EntityState.Modified;
+                            db.SaveChanges();
+                            //  Remove Old Related Providers
+                            db.RelatedProviders.RemoveRange(db.RelatedProviders.Where(d => (d.Provider_Id == provider.Provider_Id)).ToList());
+                            db.SaveChanges();
+                            //  Save Related Providers information in Database
+                            db.RelatedProviders.AddRange(relatedProviders);
+                            db.SaveChanges();
+                            //  Accept the operations realised.
+                            dbTransaction.Commit();
+                        }
+                        catch (Exception ex)
+                        {
+                            dbTransaction.Rollback();
+                            throw new Exception("No es poden guardar els canvis fets al Proveidor.\r\nIntentiu de nou, i si el problema persisteix consulti l'administrador", ex);
+                        }
+                    }
                 }
             }
             catch (DataException ex)
             {
-                string MsgError = "No es poden guardar els canvis fets al Proveïdor.\r\n" +
+                string MsgError = "No es poden guardar els canvis fets al Proveidor.\r\n" +
                                   "Intentiu de nou, i si el problema persisteix consulti l'administrador";
                 throw new Exception(MsgError, ex);
             }
@@ -4129,6 +4150,107 @@ namespace HispaniaCommon.DataAccess
 
         #endregion
 
+        #region HistoCumulativeProvider [CRUD]
+
+        [OperationContract]
+        public void CreateHistoCumulativeProvider(HispaniaCompData.HistoCumulativeProvider histoCumulativeProvider)
+        {
+            try
+            {
+                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                {
+                    HispaniaCompData.HistoCumulativeProvider HistoCumulativeProviderToSave = db.HistoCumulativeProviders.Add(histoCumulativeProvider);
+                    db.SaveChanges();
+                    histoCumulativeProvider.Histo_Id = HistoCumulativeProviderToSave.Histo_Id;
+                }
+            }
+            catch (DataException ex)
+            {
+                string MsgError = string.Format("No es pot guardar el nou històric d'acumulats de proveidor '{0}' del proveidor '{1}'\r\n{2}.",
+                                                histoCumulativeProvider.Histo_Id, histoCumulativeProvider.Provider_Id,
+                                                "Intentiu de nou, i si el problema persisteix consulti l'administrador");
+                throw new Exception(MsgError, ex);
+            }
+        }
+
+        [OperationContract]
+        public List<HispaniaCompData.HistoCumulativeProvider> ReadHistoCumulativeProviders()
+        {
+            using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+            {
+                return db.HistoCumulativeProviders.ToList();
+            }
+        }
+
+        [OperationContract]
+        public List<HispaniaCompData.HistoCumulativeProvider> ReadHistoCumulativeProvider(int Provider_Id)
+        {
+            using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+            {
+                return db.HistoCumulativeProviders.Where(p => p.Provider_Id == Provider_Id).ToList();
+            }
+        }
+
+        [OperationContract]
+        public void UpdateHistoCumulativeProvider(HispaniaCompData.HistoCumulativeProvider histoCumulativeProvider)
+        {
+            try
+            {
+                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                {
+                    db.Entry(histoCumulativeProvider).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+            }
+            catch (DataException ex)
+            {
+                string MsgError = "No es poden guardar els canvis fets a l'històric d'acumulats de proveidor.\r\n" +
+                                  "Intentiu de nou, i si el problema persisteix consulti l'administrador";
+                throw new Exception(MsgError, ex);
+            }
+        }
+
+        [OperationContract]
+        public void DeleteHistoCumulativeProvider(HispaniaCompData.HistoCumulativeProvider histoCumulativeProvider)
+        {
+            try
+            {
+                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                {
+                    HispaniaCompData.HistoCumulativeProvider HistoCumulativeProviderToDelete = db.HistoCumulativeProviders.Find(histoCumulativeProvider.Histo_Id);
+                    db.HistoCumulativeProviders.Remove(HistoCumulativeProviderToDelete);
+                    db.SaveChanges();
+                }
+            }
+            catch (DataException ex)
+            {
+                string MsgError = string.Format("No es pot esborrar l'historic d'acumulats de proveidor '{0}' del proveidor '{1}'\r\n{2}.",
+                                                histoCumulativeProvider.Histo_Id, histoCumulativeProvider.Provider_Id,
+                                                "Intentiu de nou, i si el problema persisteix consulti l'administrador");
+                throw new Exception(MsgError, ex);
+            }
+        }
+
+        [OperationContract]
+        public HispaniaCompData.HistoCumulativeProvider GetHistoCumulativeProvider(int HistoCumulativeProvider_Id)
+        {
+            try
+            {
+                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                {
+                    return (db.HistoCumulativeProviders.Find(HistoCumulativeProvider_Id));
+                }
+            }
+            catch (DataException ex)
+            {
+                string MsgError = string.Format("No es pot trobar l'històric d'acumulats de proveidor amb identificador '{0}'.\r\n{1}.", HistoCumulativeProvider_Id,
+                                                "Intentiu de nou, i si el problema persisteix consulti l'administrador");
+                throw new Exception(MsgError, ex);
+            }
+        }
+
+        #endregion
+
         #region ProviderOrders [CRUD]
 
         #region CreateProviderOrder
@@ -5287,6 +5409,99 @@ namespace HispaniaCommon.DataAccess
 
         #endregion
 
+        #region RelatedProviders [CRUD]
+
+        [OperationContract]
+        public void CreateRelatedProvider(HispaniaCompData.RelatedProvider relatedProvider)
+        {
+            try
+            {
+                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                {
+                    db.RelatedProviders.Add(relatedProvider);
+                    db.SaveChanges();
+                }
+            }
+            catch (DataException ex)
+            {
+                string MsgError = string.Format("No es pot guardar la nova relació de Proveidors '{0}-{1}'\r\n{2}.",
+                                                relatedProvider.Provider, relatedProvider.Provider_Canceled_Id,
+                                                "Intentiu de nou, i si el problema persisteix consulti l'administrador");
+                throw new Exception(MsgError, ex);
+            }
+        }
+
+        [OperationContract]
+        public List<HispaniaCompData.RelatedProvider> ReadRelatedProviders(int Provider_Id)
+        {
+            using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+            {
+                return db.RelatedProviders.Where(d => (d.Provider_Id == Provider_Id)).ToList();
+            }
+        }
+
+        [OperationContract]
+        public void UpdateRelatedProvider(HispaniaCompData.RelatedProvider relatedProvider)
+        {
+            try
+            {
+                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                {
+                    db.Entry(relatedProvider).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+            }
+            catch (DataException ex)
+            {
+                string MsgError = string.Format("No es poden guardar els canvis fets a la relació de Proveidors '{0}-{1}'\r\n{2}.",
+                                                relatedProvider.Provider, relatedProvider.Provider_Canceled_Id,
+                                                "Intentiu de nou, i si el problema persisteix consulti l'administrador");
+                throw new Exception(MsgError, ex);
+            }
+        }
+
+        [OperationContract]
+        public void DeleteRelatedProvider(HispaniaCompData.RelatedProvider relatedProvider)
+        {
+            try
+            {
+                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                {
+                    HispaniaCompData.RelatedProvider RelatedProviderToDelete =
+                                                        db.RelatedProviders.Find(new object[] { relatedProvider.Provider_Id, relatedProvider.Provider_Canceled_Id });
+                    db.RelatedProviders.Remove(RelatedProviderToDelete);
+                    db.SaveChanges();
+                }
+            }
+            catch (DataException ex)
+            {
+                string MsgError = string.Format("No es pot esborrar la relació de Proveidors '{0}-{1}'\r\n{2}.",
+                                                relatedProvider.Provider, relatedProvider.Provider_Canceled_Id,
+                                                "Intentiu de nou, i si el problema persisteix consulti l'administrador");
+                throw new Exception(MsgError, ex);
+            }
+        }
+
+        [OperationContract]
+        public HispaniaCompData.RelatedProvider GetRelatedProvider(int Provider_Id, int Provider_Canceled_Id)
+        {
+            try
+            {
+                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                {
+                    return (db.RelatedProviders.Find(new object[] { Provider_Id, Provider_Canceled_Id }));
+                }
+            }
+            catch (DataException ex)
+            {
+                string MsgError = string.Format("No es pot trobar la relació de Proveidors '{0}-{1}'\r\n{2}.", Provider_Id, Provider_Canceled_Id,
+                                                "Intentiu de nou, i si el problema persisteix consulti l'administrador");
+                throw new Exception(MsgError, ex);
+            }
+        }
+
+        #endregion
+
         #region WarehouseMovements [CRUD]
 
         [OperationContract]
@@ -5559,6 +5774,7 @@ namespace HispaniaCommon.DataAccess
         }
 
         #endregion
+
 
         #endregion
 
@@ -5840,11 +6056,11 @@ namespace HispaniaCommon.DataAccess
         #region ProviderOrderMovementsComments [EXECUTE]
 
         [OperationContract]
-        public List<HispaniaCompData.ProviderOrderMovementComments> ProviderOrderMovementsComments(int ProviderOrder_Id)
+        public List<HispaniaCompData.ProviderOrderMovementsComments> ProviderOrderMovementsComments(int ProviderOrder_Id)
         {
             using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
             {
-                return db.ProviderOrderMovementsComments(ProviderOrder_Id).ToList();
+                return db.SP_ProviderOrderMovementsComments(ProviderOrder_Id).ToList();
             }
         }
 

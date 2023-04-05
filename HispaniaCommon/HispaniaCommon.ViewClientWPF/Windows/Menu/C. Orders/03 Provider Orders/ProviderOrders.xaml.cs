@@ -543,9 +543,9 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                 }
                 else
                 {
-                    Title = m_CanChangeDate ? "Canvi de Data de les Comandes de Client" : "Gestió de Comandes de Client";
-                    OpText.Text = "Comandes de Client";
-                    DataListText.Text = "Comandes de Client";
+                    Title = m_CanChangeDate ? "Canvi de Data de les Comandes de Proveidor" : "Gestió de Comandes de Proveidor";
+                    OpText.Text = "Comandes de Proveidor";
+                    DataListText.Text = "Comandes de Proveidor";
                     ListItems.View = (GridView)FindResource("GridViewForProviderOrders");
                     cbFieldItemToSearch.ItemsSource = ProviderOrdersView.Fields;
                     ProviderOrderDataControl.rdDeliveryNote.Height = HideComponent;

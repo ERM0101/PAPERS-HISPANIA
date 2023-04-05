@@ -27,7 +27,8 @@ namespace HispaniaCommon.ViewModel
         HistoCustomerForDataAndAgent,
         CustomQuery,
         CustomerConformedOrders,
-        Customers_Full
+        Customers_Full,
+        ProviderConformedOrders
     }
     
     #endregion

@@ -203,6 +203,33 @@ namespace HispaniaCommon.ViewModel
             return (ErrMsg == string.Empty);
         }
 
+        public static bool UpdateDeliveryNoteFlag(ProviderOrdersView providerOrder, DeliveryNoteFlag FlagToUpdate, object newFlagValue, out string ErrMsg)
+        {
+            ErrMsg = string.Empty;
+            try
+            {
+                ProviderOrdersView providerOrderForUpdate = new ProviderOrdersView(providerOrder);
+                switch (FlagToUpdate)
+                {
+                    case DeliveryNoteFlag.Print:
+                        providerOrderForUpdate.Print = (bool)newFlagValue;
+                        break;
+                    case DeliveryNoteFlag.SendByEMail:
+                        providerOrderForUpdate.SendByEMail = (bool)newFlagValue;
+                        break;
+                    default:
+                        throw new ArgumentException(string.Format("Flag {0} no rerconegut.", FlagToUpdate));
+                }
+                GlobalViewModel.Instance.HispaniaViewModel.UpdateProviderOrder(providerOrderForUpdate);
+            }
+            catch (Exception ex)
+            {
+                ErrMsg = string.Format("Error, al actualitzar el flag '{0}' per l'albarà número '{1}' a la Base de Dades.\r\nDetalls: {2}",
+                                       FlagToUpdate, providerOrder.DeliveryNote_Id, MsgManager.ExcepMsg(ex));
+            }
+            return (ErrMsg == string.Empty);
+        }
+
         public static bool GetFileNameInDeliveryNote(CustomerOrdersView customerOrder, out string PDF_FileName, out string ErrMsg)
         {
             try
@@ -642,6 +669,24 @@ namespace HispaniaCommon.ViewModel
             doc.Add(new Paragraph(Environment.NewLine));
         }
 
+        private static void InsertDeliveryNoteCommentFoot(Document doc, ProviderOrdersView providerOrder)
+        {
+            List<PdfPCell> CellsDeliveryNoteFoot = new List<PdfPCell>()
+            {
+                ReportView.CreateEmptyRow(1),
+                ReportView.CreateRow(providerOrder.Remarks, 9, ForeFontDataTable, BaseColor.WHITE, BaseColor.WHITE, PDF_Align.Left),
+                ReportView.CreateEmptyRow(1),
+            };
+            List<PdfPCell> Cells = new List<PdfPCell>(3)
+            {
+                ReportView.CreateEmptyRow(1),
+                ReportView.CreateNestedTable(CellsDeliveryNoteFoot, BaseColor.WHITE, BaseColor.WHITE, 8, 10),
+                ReportView.CreateEmptyRow(1),
+            };
+            doc.Add(ReportView.CreateTable(Cells, 10));
+            doc.Add(new Paragraph(Environment.NewLine));
+        }
+
         #endregion
 
         #region Delivery Note Foot
@@ -649,6 +694,31 @@ namespace HispaniaCommon.ViewModel
         public static void InsertDeliveryNoteFoot(Document doc, CustomerOrdersView customerOrder)
         {
             GetDeliveryNoteFootInfo(customerOrder, out string AgentInfo, out string EffectInfo, out string PayDaysInfo, out string BankInfo, out string IBANInfo);
+            List<PdfPCell> CellsDeliveryNoteFoot = new List<PdfPCell>()
+            {
+                ReportView.CreateEmptyRow(1),
+                ReportView.CreateRow(AgentInfo, 9, ForeFontDataTable, BaseColor.WHITE, BaseColor.WHITE, PDF_Align.Left),
+                ReportView.CreateEmptyRow(1),
+                ReportView.CreateRow(EffectInfo, 9, ForeFontDataTable, BaseColor.WHITE, BaseColor.WHITE, PDF_Align.Left),
+                ReportView.CreateEmptyRow(1),
+                ReportView.CreateRow(PayDaysInfo, 9, ForeFontDataTable, BaseColor.WHITE, BaseColor.WHITE, PDF_Align.Left),
+                ReportView.CreateEmptyRow(1),
+                ReportView.CreateRow(BankInfo, 9, ForeFontDataTable, BaseColor.WHITE, BaseColor.WHITE, PDF_Align.Left),
+                ReportView.CreateEmptyRow(1),
+                ReportView.CreateRow(IBANInfo, 9, ForeFontDataTable, BaseColor.WHITE, BaseColor.WHITE, PDF_Align.Left),
+            };
+            List<PdfPCell> Cells = new List<PdfPCell>(3)
+            {
+                ReportView.CreateEmptyRow(1),
+                ReportView.CreateNestedTable(CellsDeliveryNoteFoot, BaseColor.WHITE, BaseColor.WHITE, 8, 10),
+                ReportView.CreateEmptyRow(1),
+            };
+            doc.Add(ReportView.CreateTable(Cells, 10));
+        }
+
+        public static void InsertDeliveryNoteFoot(Document doc, ProviderOrdersView providerOrder)
+        {
+            GetDeliveryNoteFootInfo(providerOrder, out string AgentInfo, out string EffectInfo, out string PayDaysInfo, out string BankInfo, out string IBANInfo);
             List<PdfPCell> CellsDeliveryNoteFoot = new List<PdfPCell>()
             {
                 ReportView.CreateEmptyRow(1),
@@ -707,6 +777,47 @@ namespace HispaniaCommon.ViewModel
             {
                 BankInfo = string.IsNullOrEmpty(customerOrder.DataBank_Bank) ? "No Informat" : string.Format("BANC o CAIXA : {0}", customerOrder.DataBank_Bank);
                 string IBANFromCustomerOrder = customerOrder.GetStringIBANFromCustomerOrder();
+                IBANInfo = string.Format("IBAN : {0}", string.IsNullOrEmpty(IBANFromCustomerOrder) ? "No Informat" : IBANFromCustomerOrder.Trim());
+            }
+            else BankInfo = IBANInfo = string.Empty;
+        }
+
+        private static void GetDeliveryNoteFootInfo(ProviderOrdersView providerOrder, out string AgentInfo, out string EffectInfo,
+                                                  out string PayDaysInfo, out string BankInfo, out string IBANInfo)
+        {
+            // Complete AgentInfo thats include text 'REPRESENTANT' and the Name of the name of the Agent. The customer has indicated that this
+            // informations ara not needed for him.
+            //AgentInfo = (customerOrder.BillingData_Agent != null) ?
+            //            string.Format("REPRESENTAT ({0}) : {1}", customerOrder.BillingData_Agent.Agent_Id, customerOrder.BillingData_Agent.Name) :
+            //            string.Empty;
+            AgentInfo = (providerOrder.BillingData_Agent != null) ? string.Format("({0})", providerOrder.BillingData_Agent.Agent_Id) : string.Empty;
+            string ExpirationDays = GlobalViewModel.GetStringFromDecimalValue(providerOrder.DataBank_ExpirationDays, DecimalType.WithoutDecimals);
+            string ExpirationDays_2 = string.Format(" , {0} + {1}",
+                                                    GlobalViewModel.GetStringFromDecimalValue(providerOrder.DataBank_ExpirationDays, DecimalType.WithoutDecimals),
+                                                    GlobalViewModel.GetStringFromDecimalValue(providerOrder.DataBank_ExpirationInterval, DecimalType.WithoutDecimals));
+            string ExpirationDays_3 = string.Format(" , {0} + {1} + {2}",
+                                                    GlobalViewModel.GetStringFromDecimalValue(providerOrder.DataBank_ExpirationDays, DecimalType.WithoutDecimals),
+                                                    GlobalViewModel.GetStringFromDecimalValue(providerOrder.DataBank_ExpirationInterval, DecimalType.WithoutDecimals),
+                                                    GlobalViewModel.GetStringFromDecimalValue(providerOrder.DataBank_ExpirationInterval, DecimalType.WithoutDecimals));
+            EffectInfo = string.Format("{0} {1} A : {2} {3} {4} DIES.",
+                                       providerOrder.DataBank_NumEffect,
+                                       (providerOrder.EffectType != null) ? providerOrder.EffectType.Description : string.Empty,
+                                       ((providerOrder.DataBank_NumEffect >= 1) && (providerOrder.DataBank_NumEffect <= 3)) ? ExpirationDays : string.Empty,
+                                       ((providerOrder.DataBank_NumEffect >= 2) && (providerOrder.DataBank_NumEffect <= 3)) ? ExpirationDays_2 : string.Empty,
+                                       ((providerOrder.DataBank_NumEffect == 3)) ? ExpirationDays_3 : string.Empty);
+            string PayDay_1 = GlobalViewModel.GetStringFromDecimalValue(providerOrder.DataBank_Payday_1, DecimalType.WithoutDecimals);
+            string PayDay_2 = GlobalViewModel.GetStringFromDecimalValue(providerOrder.DataBank_Payday_2, DecimalType.WithoutDecimals);
+            string PayDay_3 = GlobalViewModel.GetStringFromDecimalValue(providerOrder.DataBank_Payday_3, DecimalType.WithoutDecimals);
+            PayDaysInfo = ((providerOrder.DataBank_Payday_1 <= 0) && (providerOrder.DataBank_Payday_2 <= 0) && (providerOrder.DataBank_Payday_3 <= 0)) ?
+                          string.Empty :
+                          string.Format("DIA(ES) FIXE(ES) DE PAGAMENT : {0} {1} {2} DE CADA MES",
+                                        (providerOrder.DataBank_Payday_1 > 0) ? PayDay_1 : string.Empty,
+                                        (providerOrder.DataBank_Payday_2 > 0) ? string.Format(" - {0}", PayDay_2) : string.Empty,
+                                        (providerOrder.DataBank_Payday_3 > 0) ? string.Format(" - {0}", PayDay_3) : string.Empty);
+            if ((providerOrder.EffectType != null) && (providerOrder.EffectType.EffectType_Id == 6))
+            {
+                BankInfo = string.IsNullOrEmpty(providerOrder.DataBank_Bank) ? "No Informat" : string.Format("BANC o CAIXA : {0}", providerOrder.DataBank_Bank);
+                string IBANFromCustomerOrder = providerOrder.GetStringIBANFromProviderOrder();
                 IBANInfo = string.Format("IBAN : {0}", string.IsNullOrEmpty(IBANFromCustomerOrder) ? "No Informat" : IBANFromCustomerOrder.Trim());
             }
             else BankInfo = IBANInfo = string.Empty;

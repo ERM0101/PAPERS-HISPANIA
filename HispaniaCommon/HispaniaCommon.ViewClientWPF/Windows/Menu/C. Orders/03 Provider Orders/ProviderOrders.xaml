@@ -251,7 +251,7 @@
                             <BulletDecorator.Bullet>
                                 <Image Width="16" Source="{DynamicResource Hispania}"/>
                             </BulletDecorator.Bullet>
-                            <TextBlock Margin="10,0"><Run Text="Dades del Client"/></TextBlock>
+                            <TextBlock Margin="10,0"><Run Text="Dades del Proveidor"/></TextBlock>
                         </BulletDecorator>
                     </GroupBox.Header>
                     <Grid>
@@ -430,7 +430,7 @@
                             <BulletDecorator.Bullet>
                                 <Image x:Name="OpImage" Width="16" Source="{DynamicResource ModifyItem}"/>
                             </BulletDecorator.Bullet>
-                            <TextBlock x:Name="OpText" Margin="10,0"><Run Text="Comanda de Client"/></TextBlock>
+                            <TextBlock x:Name="OpText" Margin="10,0"><Run Text="Comanda de Proveidor"/></TextBlock>
                         </BulletDecorator>
                     </GroupBox.Header>
                     <UserControls:ProviderOrdersData x:Name="ProviderOrderDataControl" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>

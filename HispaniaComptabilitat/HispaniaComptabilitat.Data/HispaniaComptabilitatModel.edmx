@@ -345,6 +345,26 @@
           <Property Name="Cumulative_Sales_11" Type="decimal" Precision="19" Scale="4" />
           <Property Name="Cumulative_Sales_12" Type="decimal" Precision="19" Scale="4" />
         </EntityType>
+        <EntityType Name="HistoCumulativeProvider">
+          <Key>
+            <PropertyRef Name="Histo_Id" />
+          </Key>
+          <Property Name="Histo_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Provider_Id" Type="int" Nullable="false" />
+          <Property Name="Data_Year" Type="decimal" Precision="5" Scale="0" />
+          <Property Name="Cumulative_Sales_1" Type="decimal" Precision="19" Scale="4" />
+          <Property Name="Cumulative_Sales_2" Type="decimal" Precision="19" Scale="4" />
+          <Property Name="Cumulative_Sales_3" Type="decimal" Precision="19" Scale="4" />
+          <Property Name="Cumulative_Sales_4" Type="decimal" Precision="19" Scale="4" />
+          <Property Name="Cumulative_Sales_5" Type="decimal" Precision="19" Scale="4" />
+          <Property Name="Cumulative_Sales_6" Type="decimal" Precision="19" Scale="4" />
+          <Property Name="Cumulative_Sales_7" Type="decimal" Precision="19" Scale="4" />
+          <Property Name="Cumulative_Sales_8" Type="decimal" Precision="19" Scale="4" />
+          <Property Name="Cumulative_Sales_9" Type="decimal" Precision="19" Scale="4" />
+          <Property Name="Cumulative_Sales_10" Type="decimal" Precision="19" Scale="4" />
+          <Property Name="Cumulative_Sales_11" Type="decimal" Precision="19" Scale="4" />
+          <Property Name="Cumulative_Sales_12" Type="decimal" Precision="19" Scale="4" />
+        </EntityType>
         <EntityType Name="HistoCustomer">
           <Key>
             <PropertyRef Name="HistoCustomer_Id" />
@@ -534,6 +554,43 @@
           <Property Name="SeveralData_Acum_11" Type="decimal" Precision="19" Scale="4" />
           <Property Name="SeveralData_Acum_12" Type="decimal" Precision="19" Scale="4" />
           <Property Name="BillingData_CurrentRisk" Type="decimal" Precision="19" Scale="4" />
+          <Property Name="Company_ContactPerson" Type="nvarchar" MaxLength="50" />
+          <Property Name="Company_TimeTable" Type="nvarchar" MaxLength="50" />
+          <Property Name="Company_NumProv" Type="nvarchar" MaxLength="10" />
+          <Property Name="DataBank_EffectType_Id" Type="int" />
+          <Property Name="DataBank_NumEffect" Type="decimal" Precision="3" Scale="0" Nullable="false" />
+          <Property Name="DataBank_FirstExpirationData" Type="decimal" Precision="3" Scale="0" Nullable="false" />
+          <Property Name="DataBank_ExpirationInterval" Type="decimal" Precision="3" Scale="0" Nullable="false" />
+          <Property Name="DataBank_Payday_1" Type="decimal" Precision="3" Scale="0" Nullable="false" />
+          <Property Name="DataBank_Payday_2" Type="decimal" Precision="3" Scale="0" Nullable="false" />
+          <Property Name="DataBank_Payday_3" Type="decimal" Precision="3" Scale="0" Nullable="false" />
+          <Property Name="DataBank_Bank" Type="nvarchar" MaxLength="50" />
+          <Property Name="DataBank_BankAddress" Type="nvarchar" MaxLength="50" />
+          <Property Name="DataBank_IBAN_CountryCode" Type="nvarchar" MaxLength="4" />
+          <Property Name="DataBank_IBAN_BankCode" Type="nvarchar" MaxLength="4" />
+          <Property Name="DataBank_IBAN_OfficeCode" Type="nvarchar" MaxLength="4" />
+          <Property Name="DataBank_SerieCode" Type="nvarchar" MaxLength="2" />
+          <Property Name="DataBank_IBAN_CheckDigits" Type="nvarchar" MaxLength="2" />
+          <Property Name="DataBank_IBAN_AccountNumber" Type="nvarchar" MaxLength="10" />
+          <Property Name="DataBank_SubAccount" Type="nvarchar" MaxLength="4" />
+          <Property Name="BillingData_BillingType" Type="nvarchar" MaxLength="1" />
+          <Property Name="BillingData_Duplicate" Type="decimal" Precision="3" Scale="0" />
+          <Property Name="BillingData_COMDiscount" Type="decimal" Precision="6" Scale="3" />
+          <Property Name="BillingData_EarlyPaymentDiscount" Type="decimal" Precision="6" Scale="3" />
+          <Property Name="BillingData_ArtiDiscount" Type="decimal" Precision="6" Scale="3" />
+          <Property Name="BillingData_RiskGranted" Type="decimal" Precision="19" Scale="4" />
+          <Property Name="BillingData_Unpaid" Type="decimal" Precision="19" Scale="4" />
+          <Property Name="BillingData_NumUnpaid" Type="decimal" Precision="3" Scale="0" />
+          <Property Name="BillingData_Agent_Id" Type="int" />
+          <Property Name="BillingData_IVAType_Id" Type="int" />
+          <Property Name="BillingData_Register" Type="datetime" />
+          <Property Name="Several_Remarks" Type="nvarchar(max)" />
+          <Property Name="BillingData_Valued" Type="bit" Nullable="false" />
+          <Property Name="BillingData_SendType_Id" Type="int" />
+          <Property Name="QueryData_Active" Type="bit" Nullable="false" />
+          <Property Name="QueryData_Print" Type="bit" Nullable="false" />
+          <Property Name="Company_Email2" Type="varchar" MaxLength="50" />
+          <Property Name="Company_Email3" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="ProviderOrder">
           <Key>
@@ -1066,6 +1123,18 @@ advertencia 6002: La tabla o vista 'COMPTABILITAT.dbo.TEMP_DIARY_BANDAGE' no tie
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_HistoCumulativeProvider_Provider">
+          <End Role="Provider" Type="Self.Provider" Multiplicity="1" />
+          <End Role="HistoCumulativeProvider" Type="Self.HistoCumulativeProvider" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Provider">
+              <PropertyRef Name="Provider_Id" />
+            </Principal>
+            <Dependent Role="HistoCumulativeProvider">
+              <PropertyRef Name="Provider_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_HistoCustomer_Bill">
           <End Role="Bill" Type="Self.Bill" Multiplicity="0..1" />
           <End Role="HistoCustomer" Type="Self.HistoCustomer" Multiplicity="*" />
@@ -1242,6 +1311,30 @@ advertencia 6002: La tabla o vista 'COMPTABILITAT.dbo.TEMP_DIARY_BANDAGE' no tie
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Provider_EffectType">
+          <End Role="EffectType" Type="Self.EffectType" Multiplicity="0..1" />
+          <End Role="Provider" Type="Self.Provider" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EffectType">
+              <PropertyRef Name="EffectType_Id" />
+            </Principal>
+            <Dependent Role="Provider">
+              <PropertyRef Name="DataBank_EffectType_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Provider_IVAType">
+          <End Role="IVAType" Type="Self.IVAType" Multiplicity="0..1" />
+          <End Role="Provider" Type="Self.Provider" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="IVAType">
+              <PropertyRef Name="IVAType_Id" />
+            </Principal>
+            <Dependent Role="Provider">
+              <PropertyRef Name="BillingData_IVAType_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Provider_PostalCode">
           <End Role="PostalCode" Type="Self.PostalCode" Multiplicity="0..1" />
           <End Role="Provider" Type="Self.Provider" Multiplicity="*" />
@@ -1251,6 +1344,18 @@ advertencia 6002: La tabla o vista 'COMPTABILITAT.dbo.TEMP_DIARY_BANDAGE' no tie
             </Principal>
             <Dependent Role="Provider">
               <PropertyRef Name="PostalCode_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Provider_SendType">
+          <End Role="SendType" Type="Self.SendType" Multiplicity="0..1" />
+          <End Role="Provider" Type="Self.Provider" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SendType">
+              <PropertyRef Name="SendType_Id" />
+            </Principal>
+            <Dependent Role="Provider">
+              <PropertyRef Name="BillingData_SendType_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1542,6 +1647,7 @@ advertencia 6002: La tabla o vista 'COMPTABILITAT.dbo.TEMP_DIARY_BANDAGE' no tie
           <EntitySet Name="EffectType" EntityType="Self.EffectType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Good" EntityType="Self.Good" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="HistoCumulativeCustomer" EntityType="Self.HistoCumulativeCustomer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="HistoCumulativeProvider" EntityType="Self.HistoCumulativeProvider" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="HistoCustomer" EntityType="Self.HistoCustomer" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="HistoGood" EntityType="Self.HistoGood" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="HistoProvider" EntityType="Self.HistoProvider" Schema="dbo" store:Type="Tables" />
@@ -1693,6 +1799,10 @@ advertencia 6002: La tabla o vista 'COMPTABILITAT.dbo.TEMP_DIARY_BANDAGE' no tie
             <End Role="Customer" EntitySet="Customer" />
             <End Role="HistoCumulativeCustomer" EntitySet="HistoCumulativeCustomer" />
           </AssociationSet>
+          <AssociationSet Name="FK_HistoCumulativeProvider_Provider" Association="Self.FK_HistoCumulativeProvider_Provider">
+            <End Role="Provider" EntitySet="Provider" />
+            <End Role="HistoCumulativeProvider" EntitySet="HistoCumulativeProvider" />
+          </AssociationSet>
           <AssociationSet Name="FK_HistoCustomer_Bill" Association="Self.FK_HistoCustomer_Bill">
             <End Role="Bill" EntitySet="Bill" />
             <End Role="HistoCustomer" EntitySet="HistoCustomer" />
@@ -1749,8 +1859,20 @@ advertencia 6002: La tabla o vista 'COMPTABILITAT.dbo.TEMP_DIARY_BANDAGE' no tie
             <End Role="Agent" EntitySet="Agent" />
             <End Role="Provider" EntitySet="Provider" />
           </AssociationSet>
+          <AssociationSet Name="FK_Provider_EffectType" Association="Self.FK_Provider_EffectType">
+            <End Role="EffectType" EntitySet="EffectType" />
+            <End Role="Provider" EntitySet="Provider" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Provider_IVAType" Association="Self.FK_Provider_IVAType">
+            <End Role="IVAType" EntitySet="IVAType" />
+            <End Role="Provider" EntitySet="Provider" />
+          </AssociationSet>
           <AssociationSet Name="FK_Provider_PostalCode" Association="Self.FK_Provider_PostalCode">
             <End Role="PostalCode" EntitySet="PostalCode" />
+            <End Role="Provider" EntitySet="Provider" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Provider_SendType" Association="Self.FK_Provider_SendType">
+            <End Role="SendType" EntitySet="SendType" />
             <End Role="Provider" EntitySet="Provider" />
           </AssociationSet>
           <AssociationSet Name="FK_ProviderOrder_Agent" Association="Self.FK_ProviderOrder_Agent">
@@ -2178,8 +2300,25 @@ advertencia 6002: La tabla o vista 'COMPTABILITAT.dbo.TEMP_DIARY_BANDAGE' no tie
           <Parameter Name="ProviderOrder_Id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_ProviderOrderMovementsComments" ReturnType="Collection(HispaniaComptabilitatModel.ProviderOrderMovementsComments)">
-            <Parameter Name="ProviderOrder_Id" Mode="In" Type="Int32" />
+          <Parameter Name="ProviderOrder_Id" Mode="In" Type="Int32" />
           </FunctionImport>
+          <AssociationSet Name="FK_Provider_EffectType" Association="HispaniaComptabilitatModel.FK_Provider_EffectType">
+            <End Role="EffectType" EntitySet="EffectTypes" />
+            <End Role="Provider" EntitySet="Providers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Provider_IVAType" Association="HispaniaComptabilitatModel.FK_Provider_IVAType">
+            <End Role="IVAType" EntitySet="IVATypes" />
+            <End Role="Provider" EntitySet="Providers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Provider_SendType" Association="HispaniaComptabilitatModel.FK_Provider_SendType">
+            <End Role="SendType" EntitySet="SendTypes" />
+            <End Role="Provider" EntitySet="Providers" />
+          </AssociationSet>
+          <EntitySet Name="HistoCumulativeProviders" EntityType="HispaniaComptabilitatModel.HistoCumulativeProvider" />
+          <AssociationSet Name="FK_HistoCumulativeProvider_Provider" Association="HispaniaComptabilitatModel.FK_HistoCumulativeProvider_Provider">
+            <End Role="Provider" EntitySet="Providers" />
+            <End Role="HistoCumulativeProvider" EntitySet="HistoCumulativeProviders" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="LocalConnection">
           <Key>
@@ -2253,6 +2392,7 @@ advertencia 6002: La tabla o vista 'COMPTABILITAT.dbo.TEMP_DIARY_BANDAGE' no tie
           <NavigationProperty Name="Customers" Relationship="HispaniaComptabilitatModel.FK_Customer_SendType" FromRole="SendType" ToRole="Customer" />
           <NavigationProperty Name="CustomerOrders" Relationship="HispaniaComptabilitatModel.FK_CustomerOrder_SendType" FromRole="SendType" ToRole="CustomerOrder" />
           <NavigationProperty Name="ProviderOrders" Relationship="HispaniaComptabilitatModel.FK_ProviderOrder_SendType" FromRole="SendType" ToRole="ProviderOrder" />
+          <NavigationProperty Name="Providers" Relationship="HispaniaComptabilitatModel.FK_Provider_SendType" FromRole="SendType" ToRole="Provider" />
         </EntityType>
         <EntityType Name="EffectType">
           <Key>
@@ -2265,6 +2405,7 @@ advertencia 6002: La tabla o vista 'COMPTABILITAT.dbo.TEMP_DIARY_BANDAGE' no tie
           <NavigationProperty Name="Customers" Relationship="HispaniaComptabilitatModel.FK_Customer_EffectType" FromRole="EffectType" ToRole="Customer" />
           <NavigationProperty Name="CustomerOrders" Relationship="HispaniaComptabilitatModel.FK_CustomerOrder_EffectType" FromRole="EffectType" ToRole="CustomerOrder" />
           <NavigationProperty Name="ProviderOrders" Relationship="HispaniaComptabilitatModel.FK_ProviderOrder_EffectType" FromRole="EffectType" ToRole="ProviderOrder" />
+          <NavigationProperty Name="Providers" Relationship="HispaniaComptabilitatModel.FK_Provider_EffectType" FromRole="EffectType" ToRole="Provider" />
         </EntityType>
         <EntityType Name="AddressStore">
           <Key>
@@ -2918,6 +3059,7 @@ advertencia 6002: La tabla o vista 'COMPTABILITAT.dbo.TEMP_DIARY_BANDAGE' no tie
           <Property Name="IVAEndValidityData" Type="DateTime" Precision="3" />
           <Property Name="SurchargePercent" Type="Decimal" Nullable="false" Precision="6" Scale="3" />
           <NavigationProperty Name="Customers" Relationship="HispaniaComptabilitatModel.FK_Customer_IVAType" FromRole="IVAType" ToRole="Customer" />
+          <NavigationProperty Name="Providers" Relationship="HispaniaComptabilitatModel.FK_Provider_IVAType" FromRole="IVAType" ToRole="Provider" />
         </EntityType>
         <EntityType Name="BadDebtMovement">
           <Key>
@@ -3257,6 +3399,47 @@ advertencia 6002: La tabla o vista 'COMPTABILITAT.dbo.TEMP_DIARY_BANDAGE' no tie
           <NavigationProperty Name="ProviderOrders" Relationship="HispaniaComptabilitatModel.FK_ProviderOrder_Provider" FromRole="Provider" ToRole="ProviderOrder" />
           <NavigationProperty Name="RelatedProviders" Relationship="HispaniaComptabilitatModel.FK_RelatedProvider_Provider" FromRole="Provider" ToRole="RelatedProvider" />
           <NavigationProperty Name="RelatedProviders1" Relationship="HispaniaComptabilitatModel.FK_RelatedProvider_Provider1" FromRole="Provider" ToRole="RelatedProvider" />
+          <Property Name="Company_ContactPerson" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Company_TimeTable" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Company_NumProv" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="DataBank_EffectType_Id" Type="Int32" />
+          <Property Name="DataBank_NumEffect" Type="Decimal" Nullable="false" Precision="3" Scale="0" />
+          <Property Name="DataBank_FirstExpirationData" Type="Decimal" Nullable="false" Precision="3" Scale="0" />
+          <Property Name="DataBank_ExpirationInterval" Type="Decimal" Nullable="false" Precision="3" Scale="0" />
+          <Property Name="DataBank_Payday_1" Type="Decimal" Nullable="false" Precision="3" Scale="0" />
+          <Property Name="DataBank_Payday_2" Type="Decimal" Nullable="false" Precision="3" Scale="0" />
+          <Property Name="DataBank_Payday_3" Type="Decimal" Nullable="false" Precision="3" Scale="0" />
+          <Property Name="DataBank_Bank" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DataBank_BankAddress" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DataBank_IBAN_CountryCode" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="DataBank_IBAN_BankCode" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="DataBank_IBAN_OfficeCode" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="DataBank_SerieCode" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Name="DataBank_IBAN_CheckDigits" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Name="DataBank_IBAN_AccountNumber" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="DataBank_SubAccount" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="BillingData_BillingType" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="BillingData_Duplicate" Type="Decimal" Precision="3" Scale="0" />
+          <Property Name="BillingData_COMDiscount" Type="Decimal" Precision="6" Scale="3" />
+          <Property Name="BillingData_EarlyPaymentDiscount" Type="Decimal" Precision="6" Scale="3" />
+          <Property Name="BillingData_ArtiDiscount" Type="Decimal" Precision="6" Scale="3" />
+          <Property Name="BillingData_RiskGranted" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="BillingData_Unpaid" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="BillingData_NumUnpaid" Type="Decimal" Precision="3" Scale="0" />
+          <Property Name="BillingData_Agent_Id" Type="Int32" />
+          <Property Name="BillingData_IVAType_Id" Type="Int32" />
+          <Property Name="BillingData_Register" Type="DateTime" Precision="3" />
+          <Property Name="Several_Remarks" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="BillingData_Valued" Type="Boolean" Nullable="false" />
+          <Property Name="BillingData_SendType_Id" Type="Int32" />
+          <Property Name="QueryData_Active" Type="Boolean" Nullable="false" />
+          <Property Name="QueryData_Print" Type="Boolean" Nullable="false" />
+          <Property Name="Company_Email2" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Company_Email3" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="EffectType" Relationship="HispaniaComptabilitatModel.FK_Provider_EffectType" FromRole="Provider" ToRole="EffectType" />
+          <NavigationProperty Name="IVAType" Relationship="HispaniaComptabilitatModel.FK_Provider_IVAType" FromRole="Provider" ToRole="IVAType" />
+          <NavigationProperty Name="SendType" Relationship="HispaniaComptabilitatModel.FK_Provider_SendType" FromRole="Provider" ToRole="SendType" />
+          <NavigationProperty Name="HistoCumulativeProviders" Relationship="HispaniaComptabilitatModel.FK_HistoCumulativeProvider_Provider" FromRole="Provider" ToRole="HistoCumulativeProvider" />
         </EntityType>
         <Association Name="FK_Provider_PostalCode">
           <End Type="HispaniaComptabilitatModel.PostalCode" Role="PostalCode" Multiplicity="0..1" />
@@ -4123,6 +4306,75 @@ advertencia 6002: La tabla o vista 'COMPTABILITAT.dbo.TEMP_DIARY_BANDAGE' no tie
         <ComplexType Name="ProviderOrderMovementsComments">
           <Property Type="String" Name="Comentari" Nullable="false" />
         </ComplexType>
+        <Association Name="FK_Provider_EffectType">
+          <End Type="HispaniaComptabilitatModel.EffectType" Role="EffectType" Multiplicity="0..1" />
+          <End Type="HispaniaComptabilitatModel.Provider" Role="Provider" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EffectType">
+              <PropertyRef Name="EffectType_Id" />
+            </Principal>
+            <Dependent Role="Provider">
+              <PropertyRef Name="DataBank_EffectType_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Provider_IVAType">
+          <End Type="HispaniaComptabilitatModel.IVAType" Role="IVAType" Multiplicity="0..1" />
+          <End Type="HispaniaComptabilitatModel.Provider" Role="Provider" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="IVAType">
+              <PropertyRef Name="IVAType_Id" />
+            </Principal>
+            <Dependent Role="Provider">
+              <PropertyRef Name="BillingData_IVAType_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Provider_SendType">
+          <End Type="HispaniaComptabilitatModel.SendType" Role="SendType" Multiplicity="0..1" />
+          <End Type="HispaniaComptabilitatModel.Provider" Role="Provider" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SendType">
+              <PropertyRef Name="SendType_Id" />
+            </Principal>
+            <Dependent Role="Provider">
+              <PropertyRef Name="BillingData_SendType_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="HistoCumulativeProvider">
+          <Key>
+            <PropertyRef Name="Histo_Id" />
+          </Key>
+          <Property Name="Histo_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Provider_Id" Type="Int32" Nullable="false" />
+          <Property Name="Data_Year" Type="Decimal" Precision="5" Scale="0" />
+          <Property Name="Cumulative_Sales_1" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="Cumulative_Sales_2" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="Cumulative_Sales_3" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="Cumulative_Sales_4" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="Cumulative_Sales_5" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="Cumulative_Sales_6" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="Cumulative_Sales_7" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="Cumulative_Sales_8" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="Cumulative_Sales_9" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="Cumulative_Sales_10" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="Cumulative_Sales_11" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="Cumulative_Sales_12" Type="Decimal" Precision="19" Scale="4" />
+          <NavigationProperty Name="Provider" Relationship="HispaniaComptabilitatModel.FK_HistoCumulativeProvider_Provider" FromRole="HistoCumulativeProvider" ToRole="Provider" />
+        </EntityType>
+        <Association Name="FK_HistoCumulativeProvider_Provider">
+          <End Type="HispaniaComptabilitatModel.Provider" Role="Provider" Multiplicity="1" />
+          <End Type="HispaniaComptabilitatModel.HistoCumulativeProvider" Role="HistoCumulativeProvider" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Provider">
+              <PropertyRef Name="Provider_Id" />
+            </Principal>
+            <Dependent Role="HistoCumulativeProvider">
+              <PropertyRef Name="Provider_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -4688,6 +4940,43 @@ advertencia 6002: La tabla o vista 'COMPTABILITAT.dbo.TEMP_DIARY_BANDAGE' no tie
           <EntitySetMapping Name="Providers">
             <EntityTypeMapping TypeName="HispaniaComptabilitatModel.Provider">
               <MappingFragment StoreEntitySet="Provider">
+                <ScalarProperty Name="Company_Email3" ColumnName="Company_Email3" />
+                <ScalarProperty Name="Company_Email2" ColumnName="Company_Email2" />
+                <ScalarProperty Name="QueryData_Print" ColumnName="QueryData_Print" />
+                <ScalarProperty Name="QueryData_Active" ColumnName="QueryData_Active" />
+                <ScalarProperty Name="BillingData_SendType_Id" ColumnName="BillingData_SendType_Id" />
+                <ScalarProperty Name="BillingData_Valued" ColumnName="BillingData_Valued" />
+                <ScalarProperty Name="Several_Remarks" ColumnName="Several_Remarks" />
+                <ScalarProperty Name="BillingData_Register" ColumnName="BillingData_Register" />
+                <ScalarProperty Name="BillingData_IVAType_Id" ColumnName="BillingData_IVAType_Id" />
+                <ScalarProperty Name="BillingData_Agent_Id" ColumnName="BillingData_Agent_Id" />
+                <ScalarProperty Name="BillingData_NumUnpaid" ColumnName="BillingData_NumUnpaid" />
+                <ScalarProperty Name="BillingData_Unpaid" ColumnName="BillingData_Unpaid" />
+                <ScalarProperty Name="BillingData_RiskGranted" ColumnName="BillingData_RiskGranted" />
+                <ScalarProperty Name="BillingData_ArtiDiscount" ColumnName="BillingData_ArtiDiscount" />
+                <ScalarProperty Name="BillingData_EarlyPaymentDiscount" ColumnName="BillingData_EarlyPaymentDiscount" />
+                <ScalarProperty Name="BillingData_COMDiscount" ColumnName="BillingData_COMDiscount" />
+                <ScalarProperty Name="BillingData_Duplicate" ColumnName="BillingData_Duplicate" />
+                <ScalarProperty Name="BillingData_BillingType" ColumnName="BillingData_BillingType" />
+                <ScalarProperty Name="DataBank_SubAccount" ColumnName="DataBank_SubAccount" />
+                <ScalarProperty Name="DataBank_IBAN_AccountNumber" ColumnName="DataBank_IBAN_AccountNumber" />
+                <ScalarProperty Name="DataBank_IBAN_CheckDigits" ColumnName="DataBank_IBAN_CheckDigits" />
+                <ScalarProperty Name="DataBank_SerieCode" ColumnName="DataBank_SerieCode" />
+                <ScalarProperty Name="DataBank_IBAN_OfficeCode" ColumnName="DataBank_IBAN_OfficeCode" />
+                <ScalarProperty Name="DataBank_IBAN_BankCode" ColumnName="DataBank_IBAN_BankCode" />
+                <ScalarProperty Name="DataBank_IBAN_CountryCode" ColumnName="DataBank_IBAN_CountryCode" />
+                <ScalarProperty Name="DataBank_BankAddress" ColumnName="DataBank_BankAddress" />
+                <ScalarProperty Name="DataBank_Bank" ColumnName="DataBank_Bank" />
+                <ScalarProperty Name="DataBank_Payday_3" ColumnName="DataBank_Payday_3" />
+                <ScalarProperty Name="DataBank_Payday_2" ColumnName="DataBank_Payday_2" />
+                <ScalarProperty Name="DataBank_Payday_1" ColumnName="DataBank_Payday_1" />
+                <ScalarProperty Name="DataBank_ExpirationInterval" ColumnName="DataBank_ExpirationInterval" />
+                <ScalarProperty Name="DataBank_FirstExpirationData" ColumnName="DataBank_FirstExpirationData" />
+                <ScalarProperty Name="DataBank_NumEffect" ColumnName="DataBank_NumEffect" />
+                <ScalarProperty Name="DataBank_EffectType_Id" ColumnName="DataBank_EffectType_Id" />
+                <ScalarProperty Name="Company_NumProv" ColumnName="Company_NumProv" />
+                <ScalarProperty Name="Company_TimeTable" ColumnName="Company_TimeTable" />
+                <ScalarProperty Name="Company_ContactPerson" ColumnName="Company_ContactPerson" />
                 <ScalarProperty Name="BillingData_CurrentRisk" ColumnName="BillingData_CurrentRisk" />
                 <ScalarProperty Name="SeveralData_Acum_12" ColumnName="SeveralData_Acum_12" />
                 <ScalarProperty Name="SeveralData_Acum_11" ColumnName="SeveralData_Acum_11" />
@@ -5091,6 +5380,27 @@ advertencia 6002: La tabla o vista 'COMPTABILITAT.dbo.TEMP_DIARY_BANDAGE' no tie
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <EntitySetMapping Name="HistoCumulativeProviders">
+            <EntityTypeMapping TypeName="HispaniaComptabilitatModel.HistoCumulativeProvider">
+              <MappingFragment StoreEntitySet="HistoCumulativeProvider">
+                <ScalarProperty Name="Cumulative_Sales_12" ColumnName="Cumulative_Sales_12" />
+                <ScalarProperty Name="Cumulative_Sales_11" ColumnName="Cumulative_Sales_11" />
+                <ScalarProperty Name="Cumulative_Sales_10" ColumnName="Cumulative_Sales_10" />
+                <ScalarProperty Name="Cumulative_Sales_9" ColumnName="Cumulative_Sales_9" />
+                <ScalarProperty Name="Cumulative_Sales_8" ColumnName="Cumulative_Sales_8" />
+                <ScalarProperty Name="Cumulative_Sales_7" ColumnName="Cumulative_Sales_7" />
+                <ScalarProperty Name="Cumulative_Sales_6" ColumnName="Cumulative_Sales_6" />
+                <ScalarProperty Name="Cumulative_Sales_5" ColumnName="Cumulative_Sales_5" />
+                <ScalarProperty Name="Cumulative_Sales_4" ColumnName="Cumulative_Sales_4" />
+                <ScalarProperty Name="Cumulative_Sales_3" ColumnName="Cumulative_Sales_3" />
+                <ScalarProperty Name="Cumulative_Sales_2" ColumnName="Cumulative_Sales_2" />
+                <ScalarProperty Name="Cumulative_Sales_1" ColumnName="Cumulative_Sales_1" />
+                <ScalarProperty Name="Data_Year" ColumnName="Data_Year" />
+                <ScalarProperty Name="Provider_Id" ColumnName="Provider_Id" />
+                <ScalarProperty Name="Histo_Id" ColumnName="Histo_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           </EntityContainerMapping>
 </Mapping></edmx:Mappings>
   </edmx:Runtime>

@@ -347,8 +347,8 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                 chkbCanceled.Checked += ChkbCanceled_Checked;
                 chkbCanceled.Unchecked += ChkbCanceled_Unchecked;
             //  Define ListView events to manage.
-                ListItems.SelectionChanged += ListItems_SelectionChanged;   
-            //  Define CustomerDataControl events to manage.
+                ListItems.SelectionChanged += ListItems_SelectionChanged;
+            //  Define CustomerDataControl events to manage.            
                 ProviderDataControl.EvAccept += ProviderDataControl_evAccept;
                 ProviderDataControl.EvCancel += ProviderDataControl_evCancel;
         }
@@ -567,7 +567,7 @@ namespace HispaniaCommon.ViewClientWPF.Windows
         /// </summary>
         /// <param name="sender">Object that sends the event.</param>
         /// <param name="e">Parameters with the event was sended.</param>
-        private void ProviderDataControl_evAccept(ProvidersView NewOrEditedProvider)
+        private void ProviderDataControl_evAccept(ProvidersView NewOrEditedProvider, List<RelatedProvidersView> NewOrEditedRelatedProviders)
         {
             try
             {
@@ -588,7 +588,7 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                          break;
                     case Operation.Edit:
                          ValidateProvidersInList(NewProvider);
-                         GlobalViewModel.Instance.HispaniaViewModel.UpdateProvider(NewProvider);
+                         GlobalViewModel.Instance.HispaniaViewModel.UpdateProvider(NewProvider, NewOrEditedRelatedProviders);
                          if (!GlobalViewModel.Instance.HispaniaViewModel.UnlockRegister(ProviderDataControl.Provider, out string ErrMsg))
                          {
                              MsgManager.ShowMessage(ErrMsg);

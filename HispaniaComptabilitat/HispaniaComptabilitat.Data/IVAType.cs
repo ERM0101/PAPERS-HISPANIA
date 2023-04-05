@@ -18,6 +18,7 @@ namespace HispaniaComptabilitat.Data
         public IVAType()
         {
             this.Customers = new HashSet<Customer>();
+            this.Providers = new HashSet<Provider>();
         }
     
         public int IVAType_Id { get; set; }
@@ -29,5 +30,7 @@ namespace HispaniaComptabilitat.Data
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Customer> Customers { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Provider> Providers { get; set; }
     }
 }

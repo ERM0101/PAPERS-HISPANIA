@@ -133,6 +133,9 @@
     <Compile Include="HistoCumulativeCustomer.cs">
       <DependentUpon>HispaniaComptabilitatModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="HistoCumulativeProvider.cs">
+      <DependentUpon>HispaniaComptabilitatModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="HistoCustomer.cs">
       <DependentUpon>HispaniaComptabilitatModel.tt</DependentUpon>
     </Compile>

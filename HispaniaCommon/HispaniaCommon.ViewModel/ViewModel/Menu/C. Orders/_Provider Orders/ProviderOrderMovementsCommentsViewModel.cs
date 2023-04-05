@@ -20,7 +20,7 @@ namespace HispaniaCommon.ViewModel
         public string ProviderOrderMovementsComments(int ProviderOrder_Id)
         {
             StringBuilder sbComment = new StringBuilder(string.Empty);
-            foreach (HispaniaCompData.ProviderOrderMovementsComment comment in ProviderOrderMovementsCommentsInDb(ProviderOrder_Id))
+            foreach (HispaniaCompData.ProviderOrderMovementsComments comment in ProviderOrderMovementsCommentsInDb(ProviderOrder_Id))
             {
                 sbComment.AppendLine(comment.Comentari.Trim());
             }
@@ -32,7 +32,7 @@ namespace HispaniaCommon.ViewModel
 
         #region DataBase [CRUD]
 
-        private List<HispaniaCompData.ProviderOrderMovementsComment> ProviderOrderMovementsCommentsInDb(int ProviderOrder_Id)
+        private List<HispaniaCompData.ProviderOrderMovementsComments> ProviderOrderMovementsCommentsInDb(int ProviderOrder_Id)
         {
             return (HispaniaDataAccess.Instance.ProviderOrderMovementsComments(ProviderOrder_Id));
         }

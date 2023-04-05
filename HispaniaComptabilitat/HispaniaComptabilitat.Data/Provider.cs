@@ -22,6 +22,7 @@ namespace HispaniaComptabilitat.Data
             this.ProviderOrders = new HashSet<ProviderOrder>();
             this.RelatedProviders = new HashSet<RelatedProvider>();
             this.RelatedProviders1 = new HashSet<RelatedProvider>();
+            this.HistoCumulativeProviders = new HashSet<HistoCumulativeProvider>();
         }
     
         public int Provider_Id { get; set; }
@@ -56,6 +57,43 @@ namespace HispaniaComptabilitat.Data
         public Nullable<decimal> SeveralData_Acum_11 { get; set; }
         public Nullable<decimal> SeveralData_Acum_12 { get; set; }
         public Nullable<decimal> BillingData_CurrentRisk { get; set; }
+        public string Company_ContactPerson { get; set; }
+        public string Company_TimeTable { get; set; }
+        public string Company_NumProv { get; set; }
+        public Nullable<int> DataBank_EffectType_Id { get; set; }
+        public decimal DataBank_NumEffect { get; set; }
+        public decimal DataBank_FirstExpirationData { get; set; }
+        public decimal DataBank_ExpirationInterval { get; set; }
+        public decimal DataBank_Payday_1 { get; set; }
+        public decimal DataBank_Payday_2 { get; set; }
+        public decimal DataBank_Payday_3 { get; set; }
+        public string DataBank_Bank { get; set; }
+        public string DataBank_BankAddress { get; set; }
+        public string DataBank_IBAN_CountryCode { get; set; }
+        public string DataBank_IBAN_BankCode { get; set; }
+        public string DataBank_IBAN_OfficeCode { get; set; }
+        public string DataBank_SerieCode { get; set; }
+        public string DataBank_IBAN_CheckDigits { get; set; }
+        public string DataBank_IBAN_AccountNumber { get; set; }
+        public string DataBank_SubAccount { get; set; }
+        public string BillingData_BillingType { get; set; }
+        public Nullable<decimal> BillingData_Duplicate { get; set; }
+        public Nullable<decimal> BillingData_COMDiscount { get; set; }
+        public Nullable<decimal> BillingData_EarlyPaymentDiscount { get; set; }
+        public Nullable<decimal> BillingData_ArtiDiscount { get; set; }
+        public Nullable<decimal> BillingData_RiskGranted { get; set; }
+        public Nullable<decimal> BillingData_Unpaid { get; set; }
+        public Nullable<decimal> BillingData_NumUnpaid { get; set; }
+        public Nullable<int> BillingData_Agent_Id { get; set; }
+        public Nullable<int> BillingData_IVAType_Id { get; set; }
+        public Nullable<System.DateTime> BillingData_Register { get; set; }
+        public string Several_Remarks { get; set; }
+        public bool BillingData_Valued { get; set; }
+        public Nullable<int> BillingData_SendType_Id { get; set; }
+        public bool QueryData_Active { get; set; }
+        public bool QueryData_Print { get; set; }
+        public string Company_Email2 { get; set; }
+        public string Company_Email3 { get; set; }
     
         public virtual PostalCode PostalCode { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -69,5 +107,10 @@ namespace HispaniaComptabilitat.Data
         public virtual ICollection<RelatedProvider> RelatedProviders { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RelatedProvider> RelatedProviders1 { get; set; }
+        public virtual EffectType EffectType { get; set; }
+        public virtual IVAType IVAType { get; set; }
+        public virtual SendType SendType { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<HistoCumulativeProvider> HistoCumulativeProviders { get; set; }
     }
 }

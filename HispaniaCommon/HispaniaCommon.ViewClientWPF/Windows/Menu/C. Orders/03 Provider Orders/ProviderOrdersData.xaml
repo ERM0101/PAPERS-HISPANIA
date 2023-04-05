@@ -117,23 +117,23 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="200"/>
                             <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="90"/>
-                            <ColumnDefinition Width="*" MinWidth="250"/>
-                            <ColumnDefinition Width="150"/>
+                            <ColumnDefinition Width="120"/>
+                            <ColumnDefinition Width="*" MinWidth="100"/>
+                            <ColumnDefinition Width="170"/>
                         </Grid.ColumnDefinitions>
                         <ComboBox Grid.Column="0" x:Name="cbFieldItemToSearch" HorizontalAlignment="Stretch" VerticalAlignment="Center" 
                                   HorizontalContentAlignment="Left" Margin="4,4,4,0" Height="23" IsEnabled="False"/>
                         <TextBox Grid.Column="1" x:Name="tbItemToSearch" HorizontalAlignment="Stretch" VerticalAlignment="Center" 
                                  HorizontalContentAlignment="Left" Margin="4,4,4,0" Height="23" IsReadOnly="True" GotFocus="TBGotFocus"/>
-                        <Label Grid.Column="2" x:Name="lblProvider"  Content="NUM. CLIENT :" Margin="0,4,4,0" FontWeight="Bold" HorizontalAlignment="Center" 
+                        <Label Grid.Column="2" x:Name="lblProvider"  Content="NUM. PROVEIDOR :" Margin="0,4,4,0" FontWeight="Bold" HorizontalAlignment="Center" 
                                VerticalAlignment="Center" IsEnabled="False"/>
                         <ComboBox Grid.Column="3" x:Name="cbProvider" Height="23" HorizontalAlignment="Stretch" VerticalAlignment="Center"  Margin="0,4,4,0"
                                   HorizontalContentAlignment="Left" IsEnabled="False"/>
-                        <Button Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="btnAcceptSearch" Width="140" 
+                        <Button Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="btnAcceptSearch" Width="160"
                                     Height="23" Margin="4,4,4,0" IsEnabled="False">
                             <StackPanel x:Name="spAcceptSearch"  Margin="2" Orientation="Horizontal">
                                 <Image Height="16" Margin="0,0,10,0" Source="{DynamicResource Search}" Width="16" />
-                                <TextBlock x:Name="tbAcceptSearch" Text="Seleccionar Client" />
+                                <TextBlock x:Name="tbAcceptSearch" Text="Seleccionar Proveidor" />
                             </StackPanel>
                         </Button>
                     </Grid>
@@ -164,10 +164,10 @@
                                VerticalAlignment="Center" IsEnabled="False"/>
                         <TextBox Grid.Column="1" x:Name="tbCompanyCif" Height="23" Margin="0,4,4,0" HorizontalAlignment="Stretch" VerticalAlignment="Center" 
                                  HorizontalContentAlignment="Center" MaxLength="20" IsReadOnly="True" IsTabStop="False"/>
-                        <!--<Label Grid.Column="2" x:Name="lblCompanyNumProv"  Content="NUMERO PROVEÏDOR ASSIGNAT PEL CLIENT :" Margin="4,4,0,0" FontWeight="Bold" HorizontalAlignment="Center" 
+                        <Label Grid.Column="2" x:Name="lblCompanyNumProv"  Content="NUMERO PROVEÏDOR ASSIGNAT PEL CLIENT :" Margin="4,4,0,0" FontWeight="Bold" HorizontalAlignment="Center" 
                                VerticalAlignment="Center" IsEnabled="False"/>
                         <TextBox Grid.Column="3" x:Name="tbCompanyNumProv" Height="23" MaxLength="10" HorizontalAlignment="Stretch" VerticalAlignment="Center" 
-                                 HorizontalContentAlignment="Center" Margin="4,4,4,0" IsReadOnly="True" IsTabStop="False"/>-->
+                                 HorizontalContentAlignment="Center" Margin="4,4,4,0" IsReadOnly="True" IsTabStop="False"/>
                     </Grid>
                     <Grid Grid.Row="4">
                         <Grid.ColumnDefinitions>
@@ -774,7 +774,7 @@
                             <ColumnDefinition Width="135"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Label Grid.Column="0" x:Name="lblProviderRemarks"  Content="COMENTARI CLIENT :" Margin="8,8,4,0" FontWeight="Bold" HorizontalAlignment="Center" 
+                        <Label Grid.Column="0" x:Name="lblProviderRemarks"  Content="COMENTARI PROVEIDOR :" Margin="8,8,4,0" FontWeight="Bold" HorizontalAlignment="Center" 
                                VerticalAlignment="Top" IsEnabled="False"/>
                         <TextBox Grid.Column="1" x:Name="tbProviderRemarks" TextWrapping="Wrap" AcceptsReturn="True" Margin="0,8,4,8" 
                                  HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
@@ -782,7 +782,7 @@
                     </Grid>
                 </Grid>
             </TabItem>
-            <TabItem Header="Dades de Client" Name="tiGeneral"  Style="{DynamicResource NonEditableTabItem}">
+            <TabItem Header="Dades de Proveidor" Name="tiGeneral"  Style="{DynamicResource NonEditableTabItem}">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="3*"/>
@@ -804,17 +804,17 @@
                             <ColumnDefinition Width="75"/>
                             <ColumnDefinition Width="20"/>
                         </Grid.ColumnDefinitions>
-                        <Label Grid.Column="0" x:Name="lblProviderId"  Content="NUM. CLIENT :" Margin="0,4,4,0" FontWeight="Bold" HorizontalAlignment="Center" 
+                        <Label Grid.Column="0" x:Name="lblProviderId"  Content="NUM. PROVEIDOR :" Margin="0,4,4,0" FontWeight="Bold" HorizontalAlignment="Center" 
                                VerticalAlignment="Center" IsEnabled="False"/>
                         <TextBox Grid.Column="1" x:Name="tbProviderId" Height="23" HorizontalAlignment="Stretch" VerticalAlignment="Center"  Margin="0,4,4,0"
                                  HorizontalContentAlignment="Center" MaxLength="4" IsEnabled="False" IsTabStop="False"/>
-                        <Label Grid.Column="2" x:Name="lblProviderAliasClient" Content="ALIAS :" Margin="0,4,0,0" FontWeight="Bold" HorizontalAlignment="Center" 
+                        <Label Grid.Column="2" x:Name="lblProviderAliasProveidor" Content="ALIAS :" Margin="0,4,0,0" FontWeight="Bold" HorizontalAlignment="Center" 
                                VerticalAlignment="Center" IsEnabled="False"/>
-                        <TextBox Grid.Column="3" x:Name="tbProviderAliasClient" Height="23" MaxLength="50" HorizontalContentAlignment="Left" HorizontalAlignment="Stretch" 
+                        <TextBox Grid.Column="3" x:Name="tbProviderAliasProveidor" Height="23" MaxLength="50" HorizontalContentAlignment="Left" HorizontalAlignment="Stretch" 
                                  VerticalAlignment="Center" Margin="0,4,4,0" IsReadOnly="True" GotFocus="TBGotFocus"/>
-                        <Label Grid.Column="4" x:Name="lblCompanyNameClient"  Content="NOM :" Margin="0,4,0,0" FontWeight="Bold" HorizontalAlignment="Center" 
+                        <Label Grid.Column="4" x:Name="lblCompanyNameProveidor"  Content="NOM :" Margin="0,4,0,0" FontWeight="Bold" HorizontalAlignment="Center" 
                                VerticalAlignment="Center" IsEnabled="False"/>
-                        <TextBox Grid.Column="5" x:Name="tbCompanyNameClient" Height="23" MaxLength="50" HorizontalContentAlignment="Left" HorizontalAlignment="Stretch" 
+                        <TextBox Grid.Column="5" x:Name="tbCompanyNameProveidor" Height="23" MaxLength="50" HorizontalContentAlignment="Left" HorizontalAlignment="Stretch" 
                                  VerticalAlignment="Center" Margin="0,4,4,0" IsReadOnly="True" GotFocus="TBGotFocus"/>
                         <Label Grid.Column="6" x:Name="lblCanceled" Content="ANUL·LAT :" Margin="4,4,4,0" FontWeight="Bold" HorizontalAlignment="Center" 
                                VerticalAlignment="Center" IsEnabled="False"/>

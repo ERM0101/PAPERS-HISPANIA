@@ -61,6 +61,7 @@ namespace HispaniaComptabilitat.Data
         public virtual DbSet<ProviderOrder> ProviderOrders { get; set; }
         public virtual DbSet<ProviderOrderMovement> ProviderOrderMovements { get; set; }
         public virtual DbSet<RelatedProvider> RelatedProviders { get; set; }
+        public virtual DbSet<HistoCumulativeProvider> HistoCumulativeProviders { get; set; }
     
         public virtual ObjectResult<Revisio> SP_Revisions(Nullable<int> operation_Type)
         {

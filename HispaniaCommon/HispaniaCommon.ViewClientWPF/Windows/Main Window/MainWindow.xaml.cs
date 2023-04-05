@@ -2007,7 +2007,7 @@ namespace HispaniaCommon.ViewClientWPF.Windows
             {
                 try
                 {
-                    RefreshDataViewModel.Instance.RefreshData(WindowToRefresh.SupplierOrdersWindow);
+                    RefreshDataViewModel.Instance.RefreshData(WindowToRefresh.ProviderOrdersWindow);
                     ProviderOrdersManagementWindow = new ProviderOrders(AppType, false, true, false)
                     {
                         Providers = GlobalViewModel.Instance.HispaniaViewModel.ProvidersActiveDict,
@@ -2017,7 +2017,7 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                         Parameters = GlobalViewModel.Instance.HispaniaViewModel.Parameters,
                         DataList = GlobalViewModel.Instance.HispaniaViewModel.ProviderOrders
                     };
-                    ProviderOrdersManagementWindow.Closed += CustomerOrdersWindow_Closed;
+                    ProviderOrdersManagementWindow.Closed += ProviderOrdersManagementWindow_Closed;
                     ProviderOrdersManagementWindow.Show();
                     Active_Windows.Add(ProviderOrdersManagementWindow);
                 }

@@ -149,7 +149,7 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                 if (value != null)
                 {
                     m_DataProv = value;
-                    AddressStoreDataControl.Data = value;
+                    AddressStoreDataControl.DataProv = value;
                 }
                 else throw new ArgumentNullException("Error, no s'ha trobat l'Article a carregar.");
             }

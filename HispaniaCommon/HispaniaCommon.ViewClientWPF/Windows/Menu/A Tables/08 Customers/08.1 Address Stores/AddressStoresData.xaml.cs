@@ -250,7 +250,15 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                          tbCancel.Text = "Tornar";
                          break;
                     case Operation.Add:
-                         AddressStore = new AddressStoresView(Data.Customer_Id);
+                        if (DataProv!=null)
+                        {
+                            AddressStore = new AddressStoresView(DataProv.Provider_Id);
+                        }
+                        else
+                        {
+                            AddressStore = new AddressStoresView(Data.Customer_Id);
+                        }
+                         
                          tbCancel.Text = "Cancel·lar";
                          break;
                     case Operation.Edit:

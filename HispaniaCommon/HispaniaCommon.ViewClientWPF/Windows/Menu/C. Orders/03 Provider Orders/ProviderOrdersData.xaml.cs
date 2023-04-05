@@ -695,8 +695,8 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                 lblBillingDataEarlyPaymentDiscount,
                 tbBillingDataEarlyPaymentDiscount,
                 tbProviderId,
-                tbProviderAliasClient,
-                tbCompanyNameClient,
+                tbProviderAliasProveidor,
+                tbCompanyNameProveidor,
                 tbCompanyContactPerson,
                 tbCompanyEmail,
                 tbCompanyAddress,                
@@ -883,10 +883,10 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                     tbCompanyName.Text = ProviderOrder.Provider.Company_Name;
                     tbCompanyCif.Text = ProviderOrder.Provider.Company_Cif;
                     //tbCompanyNumProv.Text = ProviderOrder.Provider.Company_NumProv;
-                    //  Dades de Client Tab Controls
+                    //  Dades de Proveidor Tab Controls
                     tbProviderId.Text = ProviderOrder.Provider.Provider_Id.ToString();
-                    tbProviderAliasClient.Text = ProviderOrder.Provider.Alias;
-                    tbCompanyNameClient.Text = ProviderOrder.Provider.Company_Name;
+                    tbProviderAliasProveidor.Text = ProviderOrder.Provider.Alias;
+                    tbCompanyNameProveidor.Text = ProviderOrder.Provider.Company_Name;
                     tbCompanyContactPerson.Text = ProviderOrder.Provider.Company_ContactPerson;
                     tbCompanyEmail.Text = ProviderOrder.Provider.Company_EMail;
                     tbCompanyAddress.Text = ProviderOrder.Provider.Company_Address;

@@ -101,6 +101,11 @@
         <AssociationConnector Association="HispaniaComptabilitatModel.FK_RelatedProvider_Provider" />
         <AssociationConnector Association="HispaniaComptabilitatModel.FK_RelatedProvider_Provider1" />
         <AssociationConnector Association="HispaniaComptabilitatModel.FK_ProviderOrder_SendType" />
+        <AssociationConnector Association="HispaniaComptabilitatModel.FK_Provider_EffectType" />
+        <AssociationConnector Association="HispaniaComptabilitatModel.FK_Provider_IVAType" />
+        <AssociationConnector Association="HispaniaComptabilitatModel.FK_Provider_SendType" />
+        <EntityTypeShape EntityType="HispaniaComptabilitatModel.HistoCumulativeProvider" Width="1.5" PointX="19.875" PointY="26.25" />
+        <AssociationConnector Association="HispaniaComptabilitatModel.FK_HistoCumulativeProvider_Provider" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

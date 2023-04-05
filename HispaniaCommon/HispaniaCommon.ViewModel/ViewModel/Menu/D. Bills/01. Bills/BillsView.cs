@@ -139,6 +139,52 @@ namespace HispaniaCommon.ViewModel
 
         #endregion
 
+        #region Provider 
+        public string Provider_Alias { get; set; }
+        public string Provider_Company_Name { get; set; }
+        public string Provider_Company_Cif { get; set; }
+        public string Provider_Company_Address { get; set; }
+        public string Provider_Company_NumProv { get; set; }
+        public int Provider_Id { get; set; }
+
+        private ProvidersView _Provider;
+
+        public ProvidersView Provider
+        {
+            get
+            {
+                if ((_Provider == null) && (Provider_Id != GlobalViewModel.IntIdInitValue))
+                {
+                    _Provider = new ProvidersView(GlobalViewModel.Instance.HispaniaViewModel.GetProvider((int)Provider_Id));
+                }
+                return (_Provider);
+            }
+            set
+            {
+                if (value != null)
+                {
+                    _Provider = new ProvidersView(value);
+                    if (_Provider == null) Provider_Id = GlobalViewModel.IntIdInitValue;
+                    else Provider_Id = _Provider.Provider_Id;
+                }
+                else
+                {
+                    _Provider = null;
+                    Provider_Id = GlobalViewModel.IntIdInitValue;
+                }
+            }
+        }
+
+        public string Provider_Id_Str
+        {
+            get
+            {
+                return GlobalViewModel.GetStringFromIntIdValue(Provider_Id);
+            }
+        }
+
+        #endregion
+
         #region Bank Data (Bancarios)
 
         public string DataBank_Bank { get; set; }
@@ -689,6 +735,49 @@ namespace HispaniaCommon.ViewModel
             BillingData_Agent = customer.BillingData_Agent;
         }
 
+        /// <summary>
+        /// Builder by default of the class.
+        /// </summary>
+        public BillsView(ProvidersView provider)
+        {
+            Bill_Id = -1;         //  Aquest camp tindrà valor al crear l'Item a la Base de Dades
+            Date = DateTime.Now;  //  Aquest camp tindrà valor al crear l'Item a la Base de Dades
+            Year = Date.Year;     //  Aquest camp tindrà valor al crear l'Item a la Base de Dades
+            _BillingSerie_Id = 1; //  Aquest camp tindrà valor al crear l'Item a la Base de Dades Sèrie de Facturació A (Factures normals (valor > 0)).
+            Provider_Id = provider.Provider_Id;
+            Provider_Alias = provider.Alias;
+            Company_Name = provider.Company_Name;
+            Company_Cif = provider.Company_Cif;
+            Company_Address = provider.Company_Address;
+            Company_NumProv = provider.Company_NumProv;
+            DataBank_Bank = provider.DataBank_Bank;
+            DataBank_BankAddress = provider.DataBank_BankAddress;
+            DataBank_NumEffect = provider.DataBank_NumEffect;
+            DataBank_FirstExpirationData = provider.DataBank_FirstExpirationData;
+            DataBank_ExpirationInterval = provider.DataBank_ExpirationInterval;
+            DataBank_Payday_1 = provider.DataBank_Payday_1;
+            DataBank_Payday_2 = provider.DataBank_Payday_2;
+            DataBank_Payday_3 = provider.DataBank_Payday_3;
+            DataBank_IBAN_CountryCode = provider.DataBank_IBAN_CountryCode;
+            DataBank_IBAN_BankCode = provider.DataBank_IBAN_BankCode;
+            DataBank_IBAN_OfficeCode = provider.DataBank_IBAN_OfficeCode;
+            DataBank_IBAN_CheckDigits = provider.DataBank_IBAN_CheckDigits;
+            DataBank_IBAN_AccountNumber = provider.DataBank_IBAN_AccountNumber;
+            BillingData_EarlyPaymentDiscount = provider.BillingData_EarlyPaymentDiscount;
+            BillingData_NumUnpaid = provider.BillingData_NumUnpaid;
+            Customer_Remarks = provider.Several_Remarks;
+            Remarks = string.Empty;
+            Print = false;
+            SendByEMail = false;
+            FileNamePDF = string.Empty;
+            ExpirationDate = string.Empty;
+            TotalAmount = GlobalViewModel.DecimalInitValue;
+            Company_PostalCode = provider.Company_PostalCode;
+            DataBank_EffectType = provider.DataBank_EffectType;
+            IVAPercent = provider.BillingData_IVAType.IVAPercent;
+            SurchargePercent = provider.BillingData_IVAType.SurchargePercent;
+            BillingData_Agent = provider.BillingData_Agent;
+        }
         #endregion
 
         #region GetBill

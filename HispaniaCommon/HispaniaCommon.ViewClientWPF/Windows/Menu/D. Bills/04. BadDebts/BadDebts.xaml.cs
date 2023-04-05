@@ -102,6 +102,11 @@ namespace HispaniaCommon.ViewClientWPF.Windows
         /// <summary>
         /// Store the data to show in List of Items.
         /// </summary>
+        private ProvidersView m_DataProv = null;
+
+        /// <summary>
+        /// Store the data to show in List of Items.
+        /// </summary>
         private ObservableCollection<BadDebtsView> m_DataList = new ObservableCollection<BadDebtsView>();
 
         /// <summary>
@@ -144,6 +149,22 @@ namespace HispaniaCommon.ViewClientWPF.Windows
             {
                 m_Data = value;
                 LoadDataInWindow(m_Data);
+            }
+        }
+
+        /// <summary>
+        /// Store the data to show in List of Items.
+        /// </summary>
+        public ProvidersView DataProv
+        {
+            get
+            {
+                return (m_DataProv);
+            }
+            set
+            {
+                m_DataProv = value;
+                LoadDataInWindow(m_DataProv);
             }
         }
 
@@ -319,6 +340,20 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                 tbCustomerDescription.Text = customerView.Company_Name;
             }
             rdCustomerPannel.Height = customerView is null ? HideComponent : ViewCustomerPanel;
+        }
+
+
+        /// <summary>
+        /// Load the data of the Company into the Window
+        /// </summary>
+        private void LoadDataInWindow(ProvidersView providerView)
+        {
+            if (providerView != null)
+            {
+                tbCustomerCode.Text = GlobalViewModel.GetStringFromIntIdValue(providerView.Provider_Id);
+                tbCustomerDescription.Text = providerView.Name;
+            }
+            rdCustomerPannel.Height = providerView is null ? HideComponent : ViewCustomerPanel;
         }
 
         /// <summary>

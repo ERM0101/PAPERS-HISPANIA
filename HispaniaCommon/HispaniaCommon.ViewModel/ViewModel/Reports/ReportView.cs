@@ -20,6 +20,7 @@ namespace HispaniaCommon.ViewModel
         Customer,
         Provider,
         CustomerOrder,
+        ProviderOrder,
         DeliveryNote,
         Bill,
         Revision,

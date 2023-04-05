@@ -1,6 +1,7 @@
 ﻿#region Librerias usadas por la clase
 
 using HispaniaCommon.DataAccess;
+using HispaniaComptabilitat.Data;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -93,10 +94,21 @@ namespace HispaniaCommon.ViewModel
             return string.Format("{0:00000} | {1}", Provider_Number, Provider_Name);
         }
 
-        public void UpdateProvider(ProvidersView ProvidersView)
+        public void UpdateProvider(ProvidersView ProvidersView, List<RelatedProvidersView> NewOrEditedRelatedProviders)
         {
-            UpdateProviderInDb(ProvidersView.GetProvider());
+            UpdateProviderInDb(ProvidersView.GetProvider(), GetRelatedProvidersForDb(NewOrEditedRelatedProviders));
         }
+
+        private List<HispaniaCompData.RelatedProvider> GetRelatedProvidersForDb(List<RelatedProvidersView> RelatedProviders)
+        {
+            List<HispaniaCompData.RelatedProvider> RelatedProvidersForDb = new List<HispaniaCompData.RelatedProvider>();
+            foreach (RelatedProvidersView relatedCutomer in RelatedProviders)
+            {
+                RelatedProvidersForDb.Add(relatedCutomer.GetRelatedProvider());
+            }
+            return RelatedProvidersForDb;
+        }
+
         public void DeleteProvider(ProvidersView ProvidersView)
         {
             DeleteProviderInDb(ProvidersView.GetProvider());
@@ -135,9 +147,9 @@ namespace HispaniaCommon.ViewModel
             }
         }
 
-        private void UpdateProviderInDb(HispaniaCompData.Provider Provider)
+        private void UpdateProviderInDb(HispaniaCompData.Provider Provider, List<HispaniaCompData.RelatedProvider> relatedProviders)
         {
-            HispaniaDataAccess.Instance.UpdateProvider(Provider);
+            HispaniaDataAccess.Instance.UpdateProvider(Provider, relatedProviders);
         }
 
         private void DeleteProviderInDb(HispaniaCompData.Provider Provider)

@@ -280,6 +280,37 @@ namespace HispaniaCommon.ViewModel
             }
         }
 
+        public void CalculateAmountInfo(ProviderOrdersView ProviderOrder,
+                                       out decimal GrossAmount, out decimal EarlyPayementDiscountAmount, out decimal TaxableBaseAmount,
+                                       out decimal IVAAmount, out decimal SurchargeAmount, out decimal TotalAmount)
+        {
+            if (!(ProviderOrder is null))
+            {
+                ObservableCollection<ProviderOrderMovementsView> Movements = new ObservableCollection<ProviderOrderMovementsView>();
+                foreach (ProviderOrderMovementsView Movement in GetProviderOrderMovements(ProviderOrder.ProviderOrder_Id))
+                {
+                    Movements.Add(Movement);
+                }
+                ProvidersView Provider = ProviderOrder.Provider;
+                IVATypesView IVAType = Provider.BillingData_IVAType;
+                decimal EarlyPaymentDiscountPrecent = Provider.BillingData_EarlyPaymentDiscount;
+                decimal IVAPercent = (IVAType is null) ? 0 : IVAType.IVAPercent;
+                decimal SurchargePercent = (IVAType is null) ? 0 : IVAType.SurchargePercent;
+                CalculateAmountInfo(Movements, EarlyPaymentDiscountPrecent, IVAPercent, SurchargePercent,
+                                    out GrossAmount, out EarlyPayementDiscountAmount, out TaxableBaseAmount,
+                                    out IVAAmount, out SurchargeAmount, out TotalAmount);
+            }
+            else
+            {
+                GrossAmount = 0;
+                EarlyPayementDiscountAmount = 0;
+                TaxableBaseAmount = 0;
+                IVAAmount = 0;
+                SurchargeAmount = 0;
+                TotalAmount = 0;
+            }
+        }
+
         public void CalculateAmountInfo(ObservableCollection<CustomerOrderMovementsView> Movements, 
                                         decimal EarlyPaymentDiscountPrecent, decimal IVAPercent, decimal SurchargePercent,
                                         out decimal GrossAmount, out decimal EarlyPayementDiscountAmount, out decimal TaxableBaseAmount,

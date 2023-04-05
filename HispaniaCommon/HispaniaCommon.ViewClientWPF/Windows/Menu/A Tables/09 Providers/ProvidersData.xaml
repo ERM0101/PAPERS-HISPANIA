@@ -4,6 +4,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:Culture="clr-namespace:MBCode.Framework.Managers.Culture;assembly=MBCode.Framework"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"             
              mc:Ignorable="d" 
              d:DesignHeight="350" d:DesignWidth="1000">
     <UserControl.Resources>
@@ -19,166 +20,863 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="30" Name="cdButtons"/>
         </Grid.RowDefinitions>
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="80"/>
-                <RowDefinition Height="2*"/>
-            </Grid.RowDefinitions>
-            <Grid Grid.Row="0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="120"/>
-                    <ColumnDefinition Width="100"/>
-                    <ColumnDefinition Width="50"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="50"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="75"/>
-                    <ColumnDefinition Width="20"/>
-                </Grid.ColumnDefinitions>
-                <Label Grid.Column="0" x:Name="lblProviderNumber"  Content="NUM. PROVEÏDOR :" Margin="4,4,4,0" FontWeight="Bold" HorizontalAlignment="Center" 
+        <TabControl Grid.Row="0" Margin="15,15,15,8" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <TabItem Header="General" Name="tiGeneral" Style="{DynamicResource NonEditableTabItem}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="80"/>
+                        <RowDefinition Height="2*"/>
+                        <RowDefinition Height="*"/>
+                        
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="120"/>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="50"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="50"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="75"/>
+                            <ColumnDefinition Width="20"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" x:Name="lblProviderNumber"  Content="NUM. PROVEÏDOR :" Margin="4,4,4,0" FontWeight="Bold" HorizontalAlignment="Center" 
                        VerticalAlignment="Center" IsEnabled="False"/>
-                <TextBox Grid.Column="1" x:Name="tbProviderNumber" Height="23" HorizontalAlignment="Stretch" VerticalAlignment="Center"  Margin="0,4,4,0"
+                        <TextBox Grid.Column="1" x:Name="tbProviderNumber" Height="23" HorizontalAlignment="Stretch" VerticalAlignment="Center"  Margin="0,4,4,0"
                          HorizontalContentAlignment="Center" MaxLength="4" IsReadOnly="True" GotFocus="TBGotFocus"/>
-                <Label Grid.Column="2" x:Name="lblProviderName" Content="NOM :" Margin="4,4,0,0" FontWeight="Bold" HorizontalAlignment="Center" 
+                        <Label Grid.Column="2" x:Name="lblProviderName" Content="NOM :" Margin="4,4,0,0" FontWeight="Bold" HorizontalAlignment="Center" 
                        VerticalAlignment="Center" IsEnabled="False"/>
-                <TextBox Grid.Column="3" x:Name="tbProviderName" Height="23" MaxLength="50" HorizontalContentAlignment="Left" HorizontalAlignment="Stretch" 
+                        <TextBox Grid.Column="3" x:Name="tbProviderName" Height="23" MaxLength="50" HorizontalContentAlignment="Left" HorizontalAlignment="Stretch" 
                          VerticalAlignment="Center" Margin="0,4,4,0" IsReadOnly="True" GotFocus="TBGotFocus"/>
-                <Label Grid.Column="4" x:Name="lblProviderAlias"  Content="ALIAS :" Margin="4,4,0,0" FontWeight="Bold" HorizontalAlignment="Center" 
+                        <Label Grid.Column="4" x:Name="lblProviderAlias"  Content="ALIAS :" Margin="4,4,0,0" FontWeight="Bold" HorizontalAlignment="Center" 
                        VerticalAlignment="Center" IsEnabled="False"/>
-                <TextBox Grid.Column="5" x:Name="tbProviderAlias" Height="23" MaxLength="50" HorizontalContentAlignment="Left" HorizontalAlignment="Stretch" 
+                        <TextBox Grid.Column="5" x:Name="tbProviderAlias" Height="23" MaxLength="50" HorizontalContentAlignment="Left" HorizontalAlignment="Stretch" 
                          VerticalAlignment="Center" Margin="0,4,4,0" IsReadOnly="True" GotFocus="TBGotFocus"/>
-                <Label Grid.Column="6" x:Name="lblCanceled" Content="ANUL·LAT :" Margin="4,4,4,0" FontWeight="Bold" HorizontalAlignment="Center" 
+                        <Label Grid.Column="6" x:Name="lblCanceled" Content="ANUL·LAT :" Margin="4,4,4,0" FontWeight="Bold" HorizontalAlignment="Center" 
                        VerticalAlignment="Center" IsEnabled="False"/>
-                <CheckBox Grid.Column="7" x:Name="chkbCanceled" Height="23" HorizontalAlignment="Stretch" VerticalAlignment="Center" 
+                        <CheckBox Grid.Column="7" x:Name="chkbCanceled" Height="23" HorizontalAlignment="Stretch" VerticalAlignment="Center" 
                           Margin="0,13,4,0" IsEnabled="False"/>
-            </Grid>
-            <Grid Grid.Row="1">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="35"/>
-                    <ColumnDefinition Width="165"/>
-                    <ColumnDefinition Width="65"/>
-                    <ColumnDefinition Width="3*"/>
-                    <ColumnDefinition Width="88"/>
-                    <ColumnDefinition Width="2*"/>
-                </Grid.ColumnDefinitions>
-                <Label Grid.Column="0" x:Name="lblProviderNIF"  Content="NIF :" Margin="0,4,0,0" FontWeight="Bold" HorizontalAlignment="Center" 
+                    </Grid>
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="35"/>
+                            <ColumnDefinition Width="165"/>
+                            <ColumnDefinition Width="65"/>
+                            <ColumnDefinition Width="3*"/>
+                            <ColumnDefinition Width="88"/>
+                            <ColumnDefinition Width="2*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" x:Name="lblProviderNIF"  Content="NIF :" Margin="0,4,0,0" FontWeight="Bold" HorizontalAlignment="Center" 
                        VerticalAlignment="Center" IsEnabled="False"/>
-                <TextBox Grid.Column="1" x:Name="tbProviderNIF" Height="23" MaxLength="20" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" 
+                        <TextBox Grid.Column="1" x:Name="tbProviderNIF" Height="23" MaxLength="20" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" 
                          VerticalAlignment="Center" Margin="0,4,4,0" IsReadOnly="True" GotFocus="TBGotFocus"/>
-                <Label Grid.Column="2" x:Name="lblProviderAddress" Content="ADREÇA :" Margin="4,4,4,0" FontWeight="Bold" HorizontalAlignment="Center" 
+                        <Label Grid.Column="2" x:Name="lblProviderAddress" Content="ADREÇA :" Margin="4,4,4,0" FontWeight="Bold" HorizontalAlignment="Center" 
                        VerticalAlignment="Center" IsEnabled="False"/>
-                <TextBox Grid.Column="3" x:Name="tbProviderAddress" Height="23" MaxLength="50" HorizontalContentAlignment="Left" HorizontalAlignment="Stretch" 
+                        <TextBox Grid.Column="3" x:Name="tbProviderAddress" Height="23" MaxLength="50" HorizontalContentAlignment="Left" HorizontalAlignment="Stretch" 
                          VerticalAlignment="Center" Margin="0,4,4,0" IsReadOnly="True" GotFocus="TBGotFocus"/>
-                <Label Grid.Column="4" x:Name="lblProviderPostalCode" Content="CODI POSTAL :" Margin="4,4,0,0" FontWeight="Bold" HorizontalAlignment="Center" 
+                        <Label Grid.Column="4" x:Name="lblProviderPostalCode" Content="CODI POSTAL :" Margin="4,4,0,0" FontWeight="Bold" HorizontalAlignment="Center" 
                        VerticalAlignment="Center" IsEnabled="False"/>
-                <ComboBox Grid.Column="5" x:Name="cbProviderPostalCode" Height="23" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" FontWeight="Bold"
+                        <ComboBox Grid.Column="5" x:Name="cbProviderPostalCode" Height="23" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" FontWeight="Bold"
                             HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="4,4,4,0" IsEnabled="False"/>
-            </Grid>
-            <Grid Grid.Row="2">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="65"/>
-                    <ColumnDefinition Width="155"/>
-                    <ColumnDefinition Width="55"/>
-                    <ColumnDefinition Width="155"/>
-                    <ColumnDefinition Width="40"/>
-                    <ColumnDefinition Width="155"/>
-                    <ColumnDefinition Width="50"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Label Grid.Column="0" x:Name="lblProviderPhone" Content="TELÈFON :" Margin="2
+                    </Grid>
+                    <Grid Grid.Row="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="65"/>
+                            <ColumnDefinition Width="155"/>
+                            <ColumnDefinition Width="55"/>
+                            <ColumnDefinition Width="155"/>
+                            <ColumnDefinition Width="40"/>
+                            <ColumnDefinition Width="155"/>
+                            <ColumnDefinition Width="50"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" x:Name="lblProviderPhone" Content="TELÈFON :" Margin="2
                        ,4,0,0" FontWeight="Bold" HorizontalAlignment="Center" 
                        VerticalAlignment="Center" IsEnabled="False"/>
-                <TextBox Grid.Column="1" x:Name="tbProviderPhone" Height="23" MaxLength="35" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" 
+                        <TextBox Grid.Column="1" x:Name="tbProviderPhone" Height="23" MaxLength="35" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" 
                          VerticalAlignment="Center" Margin="0,4,4,0" IsReadOnly="True" GotFocus="TBGotFocus"/>
-                <Label Grid.Column="2" x:Name="lblProviderMobilePhone" Content="MÒBIL :" Margin="4,4,0,0" FontWeight="Bold" HorizontalAlignment="Center" 
+                        <Label Grid.Column="2" x:Name="lblProviderMobilePhone" Content="MÒBIL :" Margin="4,4,0,0" FontWeight="Bold" HorizontalAlignment="Center" 
                        VerticalAlignment="Center" IsEnabled="False"/>
-                <TextBox Grid.Column="3" x:Name="tbProviderMobilePhone" Height="23" MaxLength="35" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" 
+                        <TextBox Grid.Column="3" x:Name="tbProviderMobilePhone" Height="23" MaxLength="35" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" 
                          VerticalAlignment="Center" Margin="4,4,4,0" IsReadOnly="True" GotFocus="TBGotFocus"/>
-                <Label Grid.Column="4" x:Name="lblProviderFax" Content="FAX :" Margin="4,4,0,0" FontWeight="Bold" HorizontalAlignment="Center" 
+                        <Label Grid.Column="4" x:Name="lblProviderFax" Content="FAX :" Margin="4,4,0,0" FontWeight="Bold" HorizontalAlignment="Center" 
                        VerticalAlignment="Center" IsEnabled="False"/>
-                <TextBox Grid.Column="5" x:Name="tbProviderFax" Height="23" MaxLength="35" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" 
+                        <TextBox Grid.Column="5" x:Name="tbProviderFax" Height="23" MaxLength="35" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" 
                          VerticalAlignment="Center" Margin="4,4,4,0" IsReadOnly="True" GotFocus="TBGotFocus"/>
-                <Label Grid.Column="6" x:Name="lblProviderEmail" Content="EMAIL :" Margin="4,4,0,0" FontWeight="Bold" HorizontalAlignment="Center" 
+                        <Label Grid.Column="6" x:Name="lblProviderEmail" Content="EMAIL :" Margin="4,4,0,0" FontWeight="Bold" HorizontalAlignment="Center" 
                        VerticalAlignment="Center" IsEnabled="False"/>
-                <TextBox Grid.Column="7" x:Name="tbProviderEmail" Height="23" MaxLength="50" HorizontalContentAlignment="Left" HorizontalAlignment="Stretch" 
+                        <TextBox Grid.Column="7" x:Name="tbProviderEmail" Height="23" MaxLength="50" HorizontalContentAlignment="Left" HorizontalAlignment="Stretch" 
                          VerticalAlignment="Center" Margin="4,4,4,0" IsReadOnly="True" GotFocus="TBGotFocus"/>
-            </Grid>
-            <Grid Grid.Row="3">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="145"/>
-                    <ColumnDefinition Width="65"/>
-                    <ColumnDefinition Width="200"/>
-                    <ColumnDefinition Width="65"/>
-                    <ColumnDefinition Width="225"/>
-                    <ColumnDefinition Width="65"/>
-                    <ColumnDefinition Width="165"/>
-                    <ColumnDefinition Width="65"/>
-                </Grid.ColumnDefinitions>
-                <Label Grid.Column="0" x:Name="lblProviderAcountAcounting" Content="COMPTE COMPTABLE :" Margin="0
+                    </Grid>
+                    <Grid Grid.Row="3">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="90"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="70"/>
+                            <ColumnDefinition Width="*" MinWidth="240"/>
+                            <ColumnDefinition Width="60"/>
+                            <ColumnDefinition Width="*" MinWidth="240"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" x:Name="lblCompanyContactPerson"  Content="CONTACTE :" Margin="14,4,0,0" FontWeight="Bold" 
+                               HorizontalAlignment="Center" VerticalAlignment="Center" IsEnabled="False"/>
+                        <TextBox Grid.Column="1" x:Name="tbCompanyContactPerson" Height="23" MaxLength="50" HorizontalContentAlignment="Left" 
+                                 HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="0,4,4,0" IsReadOnly="True" GotFocus="TBGotFocus"/>
+                        <Label Grid.Column="2" x:Name="lblCompanyEmail2"  Content="EMAIL 2 :" Margin="14,4,0,0" FontWeight="Bold" 
+                               HorizontalAlignment="Center" VerticalAlignment="Center" IsEnabled="False"/>
+                        <TextBox Grid.Column="3" x:Name="tbCompanyEmail2" Height="23" MaxLength="50" HorizontalContentAlignment="Left" 
+                                 HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="0,4,4,0" IsReadOnly="True" GotFocus="TBGotFocus"/>
+                        <Label Grid.Column="4" x:Name="lblCompanyEmail3"  Content="EMAIL 3 :" Margin="4,4,0,0" FontWeight="Bold" HorizontalAlignment="Center" 
+                               VerticalAlignment="Center" IsEnabled="False"/>
+                        <TextBox Grid.Column="5" x:Name="tbCompanyEmail3" Height="23" MaxLength="50" HorizontalContentAlignment="Left" HorizontalAlignment="Stretch" 
+                                 VerticalAlignment="Center" Margin="4,4,4,0" IsReadOnly="True" GotFocus="TBGotFocus"/>
+                    </Grid>
+                    <Grid Grid.Row="4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="145"/>
+                            <ColumnDefinition Width="65"/>
+                            <ColumnDefinition Width="200"/>
+                            <ColumnDefinition Width="65"/>
+                            <ColumnDefinition Width="225"/>
+                            <ColumnDefinition Width="65"/>
+                            <ColumnDefinition Width="165"/>
+                            <ColumnDefinition Width="65"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" x:Name="lblProviderAcountAcounting" Content="COMPTE COMPTABLE :" Margin="0
                        ,4,0,0" FontWeight="Bold" HorizontalAlignment="Center" 
                        VerticalAlignment="Center" IsEnabled="False"/>
-                <TextBox Grid.Column="1" x:Name="tbProviderAcountAcounting" Height="23" MaxLength="4" HorizontalAlignment="Stretch" VerticalAlignment="Center" 
+                        <TextBox Grid.Column="1" x:Name="tbProviderAcountAcounting" Height="23" MaxLength="4" HorizontalAlignment="Stretch" VerticalAlignment="Center" 
                          HorizontalContentAlignment="Center" Margin="0,4,4,0" IsReadOnly="True" GotFocus="TBGotFocus"/>
-                <Label Grid.Column="2" x:Name="lblProviderTransferPercent" Content="PERCENTATGE TRANSFERÈNCIA :" Margin="2,4,0,0" FontWeight="Bold" HorizontalAlignment="Center" 
+                        <Label Grid.Column="2" x:Name="lblProviderTransferPercent" Content="PERCENTATGE TRANSFERÈNCIA :" Margin="2,4,0,0" FontWeight="Bold" HorizontalAlignment="Center" 
                        VerticalAlignment="Center" IsEnabled="False"/>
-                <TextBox Grid.Column="3" x:Name="tbProviderTransferPercent" Height="23" MaxLength="6" HorizontalAlignment="Stretch" VerticalAlignment="Center" 
+                        <TextBox Grid.Column="3" x:Name="tbProviderTransferPercent" Height="23" MaxLength="6" HorizontalAlignment="Stretch" VerticalAlignment="Center" 
                          HorizontalContentAlignment="Center" Margin="0,4,4,0" IsReadOnly="True" GotFocus="TBGotFocus"/>
-                <Label Grid.Column="4" x:Name="lblProviderPromptPaymentDiscount" Content="DESCOMPTE PAGAMENT IMMEDIAT :" Margin="2,4,0,0" FontWeight="Bold" 
+                        <Label Grid.Column="4" x:Name="lblProviderPromptPaymentDiscount" Content="DESCOMPTE PAGAMENT IMMEDIAT :" Margin="2,4,0,0" FontWeight="Bold" 
                        HorizontalAlignment="Center" VerticalAlignment="Center" IsEnabled="False" GotFocus="TBGotFocus"/>
-                <TextBox Grid.Column="5" x:Name="tbProviderPromptPaymentDiscount" Height="23" MaxLength="6" HorizontalAlignment="Stretch" VerticalAlignment="Center" 
+                        <TextBox Grid.Column="5" x:Name="tbProviderPromptPaymentDiscount" Height="23" MaxLength="6" HorizontalAlignment="Stretch" VerticalAlignment="Center" 
                          HorizontalContentAlignment="Center" Margin="0,4,4,0" IsReadOnly="True" GotFocus="TBGotFocus"/>
-                <Label Grid.Column="6" x:Name="lblProviderAdditionalDiscount" Content="DESCOMPTE ADDICIONAL :" Margin="2,4,0,0" FontWeight="Bold" HorizontalAlignment="Center" 
+                        <Label Grid.Column="6" x:Name="lblProviderAdditionalDiscount" Content="DESCOMPTE ADDICIONAL :" Margin="2,4,0,0" FontWeight="Bold" HorizontalAlignment="Center" 
                        VerticalAlignment="Center" IsEnabled="False"/>
-                <TextBox Grid.Column="7" x:Name="tbProviderAdditionalDiscount" Height="23" MaxLength="6" HorizontalAlignment="Stretch" VerticalAlignment="Center" 
+                        <TextBox Grid.Column="7" x:Name="tbProviderAdditionalDiscount" Height="23" MaxLength="6" HorizontalAlignment="Stretch" VerticalAlignment="Center" 
                          HorizontalContentAlignment="Center" Margin="0,4,4,0" IsReadOnly="True"/>
-            </Grid>
-            <GroupBox Grid.Row="4" Margin="5" Name="gbAgent" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{DynamicResource NonEditableGroupBox}">
-                <GroupBox.Header>
-                    <BulletDecorator>
-                        <BulletDecorator.Bullet>
-                            <Image Width="16" Source="{DynamicResource Agent}"/>
-                        </BulletDecorator.Bullet>
-                        <TextBlock Margin="10,0"><Run Text="Representant"/></TextBlock>
-                    </BulletDecorator>
-                </GroupBox.Header>
+                    </Grid>
+                    <GroupBox Grid.Row="5" Margin="5" Name="gbAgent" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{DynamicResource NonEditableGroupBox}">
+                        <GroupBox.Header>
+                            <BulletDecorator>
+                                <BulletDecorator.Bullet>
+                                    <Image Width="16" Source="{DynamicResource Agent}"/>
+                                </BulletDecorator.Bullet>
+                                <TextBlock Margin="10,0"><Run Text="Representant"/></TextBlock>
+                            </BulletDecorator>
+                        </GroupBox.Header>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="110"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="70"/>
+                                <ColumnDefinition Width="125"/>
+                                <ColumnDefinition Width="40"/>
+                                <ColumnDefinition Width="125"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Column="0" x:Name="lblProviderAgent" Content="REPRESENTANT :" Margin="0,0,0,0" FontWeight="Bold" HorizontalAlignment="Center" 
+                           VerticalAlignment="Center" IsEnabled="False"/>
+                            <ComboBox Grid.Column="1" x:Name="cbProviderDataAgent" Height="23" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" 
+                              FontWeight="Bold" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="0,0,4,0" IsEnabled="False"/>
+                            <Label Grid.Column="2" x:Name="lblProviderAgentPhone" Content="TELÈFON :" Margin="0,0,0,0" FontWeight="Bold" HorizontalAlignment="Center" 
+                           VerticalAlignment="Center" IsEnabled="False"/>
+                            <TextBox Grid.Column="3" x:Name="tbProviderAgentPhone" Height="23" HorizontalAlignment="Stretch" VerticalAlignment="Center" 
+                             HorizontalContentAlignment="Center" Margin="0,0,4,0" IsReadOnly="True" GotFocus="TBGotFocus"/>
+                            <Label Grid.Column="4" x:Name="lblProviderAgentFax" Content="FAX :" Margin="0,0,0,0" FontWeight="Bold" HorizontalAlignment="Center" 
+                           VerticalAlignment="Center" IsEnabled="False"/>
+                            <TextBox Grid.Column="5" x:Name="tbProviderAgentFax" Height="23" HorizontalAlignment="Stretch" VerticalAlignment="Center" 
+                             HorizontalContentAlignment="Center" Margin="4,0,4,0" IsReadOnly="True" GotFocus="TBGotFocus"/>
+                        </Grid>
+                    </GroupBox>
+                    <Grid Grid.Row="6">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="85"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" x:Name="lblProviderComment" Content="COMENTARI :" Margin="2,8,4,0" FontWeight="Bold" HorizontalAlignment="Center" 
+                       VerticalAlignment="Top" IsEnabled="False"/>
+                        <TextBox Grid.Column="1" x:Name="tbProviderComment" TextWrapping="Wrap" AcceptsReturn="True" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+                         Margin="0,4,4,4" IsReadOnly="True"/>
+                    </Grid>
+                    <Grid Grid.Row="7">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="90"/>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="280"/>
+                            <ColumnDefinition Width="100"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" x:Name="lblCompanyTimeTable"  Content="HORARI :" Margin="31,4,4,0" FontWeight="Bold" HorizontalAlignment="Center" 
+                               VerticalAlignment="Center" IsEnabled="False"/>
+                        <TextBox Grid.Column="1" x:Name="tbCompanyTimeTable" Height="23" MaxLength="50" HorizontalContentAlignment="Left" HorizontalAlignment="Stretch" 
+                                 VerticalAlignment="Center" Margin="0,4,4,0" IsReadOnly="True" GotFocus="TBGotFocus"/>
+                        <Label Grid.Column="2" x:Name="lblCompanyNumProv"  Content="NUMERO PROVEÏDOR ASSIGNAT PEL CLIENT :" Margin="4,4,0,0" FontWeight="Bold" 
+                               HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Left" IsEnabled="False" GotFocus="TBGotFocus"/>
+                        <TextBox Grid.Column="3" x:Name="tbCompanyNumProv" Height="23" MaxLength="10" HorizontalAlignment="Stretch" VerticalAlignment="Center" 
+                                 HorizontalContentAlignment="Center" Margin="4,4,4,0" IsReadOnly="True" GotFocus="TBGotFocus"/>
+                    </Grid>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Dades Bancaries" Name="tiBankData" Style="{DynamicResource NonEditableTabItem}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="3*"/>
+                        <RowDefinition Height="5.25*"/>
+                        <RowDefinition Height="5.25*"/>
+                        <RowDefinition Height="5.25*"/>
+                        <RowDefinition Height="5.25*"/>
+                        <RowDefinition Height="9*" MinHeight="90"/>
+                        <RowDefinition Height="3*"/>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="75"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="135"/>
+                            <ColumnDefinition Width="45"/>
+                            <ColumnDefinition Width="175"/>
+                            <ColumnDefinition Width="45"/>
+                            <ColumnDefinition Width="175"/>
+                            <ColumnDefinition Width="45"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" x:Name="lblDataBankEffect"  Content="EFECTES :" Margin="4,4,0,0" FontWeight="Bold" HorizontalAlignment="Center" 
+                               VerticalAlignment="Center" IsEnabled="False"/>
+                        <ComboBox Grid.Column="1" x:Name="cbDataBankEffect" Height="23" HorizontalContentAlignment="Left" VerticalContentAlignment="Center"
+                                  HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="4,4,4,0" IsEnabled="False"/>
+                        <Label Grid.Column="2" x:Name="lblDataBankNumEffect"  Content="NUMERO EFECTES :" Margin="0,4,4,0" FontWeight="Bold" HorizontalAlignment="Center" 
+                               VerticalAlignment="Center" IsEnabled="False"/>
+                        <TextBox Grid.Column="3" x:Name="tbDataBankNumEffect" Height="23" MaxLength="3" HorizontalAlignment="Stretch" VerticalAlignment="Center" 
+                                 HorizontalContentAlignment="Center" Margin="0,4,4,0" IsReadOnly="True" GotFocus="TBGotFocus"/>
+                        <Label Grid.Column="4" x:Name="lblDataBankFirstExpirationData" Content="DIES PRIMER VENCIMENT :" Margin="0,4,4,0" FontWeight="Bold"
+                               HorizontalAlignment="Center" VerticalAlignment="Center" IsEnabled="False"/>
+                        <TextBox Grid.Column="5" x:Name="tbDataBankFirstExpirationData" Height="23" MaxLength="3" HorizontalAlignment="Stretch" VerticalAlignment="Center" 
+                                 HorizontalContentAlignment="Center" Margin="0,4,4,0" IsReadOnly="True" GotFocus="TBGotFocus"/>
+                        <Label Grid.Column="6" x:Name="lblDataBankExpirationInterval"  Content="INTERVAL DE VENCIMENT :" Margin="0,4,4,0" FontWeight="Bold" 
+                               HorizontalAlignment="Center" VerticalAlignment="Center" IsEnabled="False"/>
+                        <TextBox Grid.Column="7" x:Name="tbDataBankExpirationInterval" Height="23" MaxLength="3" HorizontalAlignment="Stretch" VerticalAlignment="Center" 
+                                 HorizontalContentAlignment="Center" Margin="0,4,4,0" IsReadOnly="True" GotFocus="TBGotFocus"/>
+                    </Grid>
+                    <Grid Grid.Row="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="190"/>
+                            <ColumnDefinition Width="40"/>
+                            <ColumnDefinition Width="190"/>
+                            <ColumnDefinition Width="40"/>
+                            <ColumnDefinition Width="190"/>
+                            <ColumnDefinition Width="40"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" x:Name="lblDataBankPayday_1"  Content="PRIMER DIA DE PAGAMENT :" Margin="4,4,4,0" FontWeight="Bold" HorizontalAlignment="Center" 
+                               VerticalAlignment="Center" IsEnabled="False"/>
+                        <TextBox Grid.Column="1" x:Name="tbDataBankPayday_1" Height="23" MaxLength="3" HorizontalAlignment="Stretch" VerticalAlignment="Center" 
+                                 HorizontalContentAlignment="Center" Margin="0,4,4,0" IsReadOnly="True" GotFocus="TBGotFocus"/>
+                        <Label Grid.Column="2" x:Name="lblDataBankPayday_2"  Content="SEGON DIA DE PAGAMENT :" Margin="0,4,4,0" FontWeight="Bold" HorizontalAlignment="Center" 
+                               VerticalAlignment="Center" IsEnabled="False"/>
+                        <TextBox Grid.Column="3" x:Name="tbDataBankPayday_2" Height="23" MaxLength="3" HorizontalAlignment="Stretch" VerticalAlignment="Center" 
+                                 HorizontalContentAlignment="Center" Margin="0,4,4,0" IsReadOnly="True" GotFocus="TBGotFocus"/>
+                        <Label Grid.Column="4" x:Name="lblDataBankPayday_3"  Content="TERCER DIA DE PAGAMENT :" Margin="0,4,4,0" FontWeight="Bold" HorizontalAlignment="Center" 
+                               VerticalAlignment="Center" IsEnabled="False"/>
+                        <TextBox Grid.Column="5" x:Name="tbDataBankPayday_3" Height="23" MaxLength="3" HorizontalAlignment="Stretch" VerticalAlignment="Center" 
+                                 HorizontalContentAlignment="Center" Margin="0,4,4,0" IsReadOnly="False" GotFocus="TBGotFocus"/>
+                    </Grid>
+                    <Grid Grid.Row="3">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="65"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" x:Name="lblDataBankBank"  Content="BANC :" Margin="4,4,4,0" FontWeight="Bold" HorizontalAlignment="Center" 
+                               VerticalAlignment="Center" IsEnabled="False"/>
+                        <TextBox Grid.Column="1" x:Name="tbDataBankBank" Height="23" MaxLength="50" HorizontalContentAlignment="Left" HorizontalAlignment="Stretch" 
+                                 VerticalAlignment="Center"  Margin="0,4,4,0" IsReadOnly="True" GotFocus="TBGotFocus"/>
+                    </Grid>
+                    <Grid Grid.Row="4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="135"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" x:Name="lblDataBankBankAddress"  Content="ADREÇA DEL BANC :" Margin="4,4,4,0" FontWeight="Bold" HorizontalAlignment="Center" 
+                               VerticalAlignment="Center" IsEnabled="False"/>
+                        <TextBox Grid.Column="1" x:Name="tbDataBankBankAddress" Height="23" MaxLength="50" HorizontalContentAlignment="Left" HorizontalAlignment="Stretch" 
+                                 VerticalAlignment="Center" Margin="0,4,4,0" IsReadOnly="True" GotFocus="TBGotFocus"/>
+                    </Grid>
+                    <GroupBox Grid.Row="5" Margin="5" Name="gbIBAN" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource NonEditableGroupBox}">
+                        <GroupBox.Header>
+                            <BulletDecorator>
+                                <BulletDecorator.Bullet>
+                                    <Image Width="16" Source="{DynamicResource Coin}"/>
+                                </BulletDecorator.Bullet>
+                                <TextBlock Margin="10,0"><Run Text="Dades de l'IBAN"/></TextBlock>
+                            </BulletDecorator>
+                        </GroupBox.Header>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="75"/>
+                                <ColumnDefinition Width="60"/>
+                                <ColumnDefinition Width="80"/>
+                                <ColumnDefinition Width="60"/>
+                                <ColumnDefinition Width="65"/>
+                                <ColumnDefinition Width="60"/>
+                                <ColumnDefinition Width="115"/>
+                                <ColumnDefinition Width="40"/>
+                                <ColumnDefinition Width="140"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Column="0" x:Name="lblDataBankIBANCountryCode" Content="CODI PAIS :" Margin="0,4,4,0" FontWeight="Bold" HorizontalAlignment="Center" 
+                                   VerticalAlignment="Center" IsEnabled="False"/>
+                            <TextBox Grid.Column="1" x:Name="tbDataBankIBANCountryCode" Height="23" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="0,4,4,0"
+                                     HorizontalContentAlignment="Center" MaxLength="4" IsReadOnly="True" GotFocus="TBGotFocus">
+                                <TextBox.ContextMenu>
+                                    <ContextMenu Name="ctxmnuIBAN">
+                                        <MenuItem Header="Calcular" Name="ctxmnuItemCalculateIBAN">
+                                            <MenuItem.Icon>
+                                                <Image Source="{DynamicResource CalculateIBAN}" />
+                                            </MenuItem.Icon>
+                                        </MenuItem>
+                                        <MenuItem Header="Validar" Name="ctxmnuItemValidateIBAN">
+                                            <MenuItem.Icon>
+                                                <Image Source="{DynamicResource Accept}" />
+                                            </MenuItem.Icon>
+                                        </MenuItem>
+                                    </ContextMenu>
+                                </TextBox.ContextMenu>
+                            </TextBox>
+                            <Label Grid.Column="2" x:Name="lblDataBankIBANBankCode" Content="CODI BANC :" Margin="0,4,4,0" FontWeight="Bold" HorizontalAlignment="Center" 
+                                   VerticalAlignment="Center" IsEnabled="False"/>
+                            <TextBox Grid.Column="3" x:Name="tbDataBankIBANBankCode" Height="23" HorizontalAlignment="Stretch" VerticalAlignment="Center"  Margin="0,4,4,0"
+                                     HorizontalContentAlignment="Center" MaxLength="4" IsReadOnly="True" GotFocus="TBGotFocus"/>
+                            <Label Grid.Column="4" x:Name="lblDataBankIBANOfficeCode" Content="OFICINA :" Margin="0,4,4,0" FontWeight="Bold" HorizontalAlignment="Center" 
+                                   VerticalAlignment="Center" IsEnabled="False"/>
+                            <TextBox Grid.Column="5" x:Name="tbDataBankIBANOfficeCode" Height="23" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="0,4,4,0"
+                                     HorizontalContentAlignment="Center" MaxLength="4" IsReadOnly="True" GotFocus="TBGotFocus"/>
+                            <Label Grid.Column="6" x:Name="lblDataBankIBANCheckDigits" Content="DIGITS CONTROL :" Margin="0,4,4,0" FontWeight="Bold" HorizontalAlignment="Center" 
+                                   VerticalAlignment="Center" IsEnabled="False"/>
+                            <TextBox Grid.Column="7" x:Name="tbDataBankIBANCheckDigits" Height="23" HorizontalAlignment="Stretch" VerticalAlignment="Center"  Margin="0,4,4,0"
+                                     HorizontalContentAlignment="Center" MaxLength="2" IsReadOnly="True" GotFocus="TBGotFocus"/>
+                            <Label Grid.Column="8" x:Name="lblDataBankIBANAccountNumber"  Content="NUMERO DE COMPTE :" Margin="0,4,4,0" FontWeight="Bold" HorizontalAlignment="Center" 
+                                   VerticalAlignment="Center" IsEnabled="False"/>
+                            <TextBox Grid.Column="9" x:Name="tbDataBankIBANAccountNumber" Height="23" HorizontalAlignment="Stretch" VerticalAlignment="Center"  Margin="0,4,4,0"
+                                     HorizontalContentAlignment="Left" MaxLength="10" IsReadOnly="True" GotFocus="TBGotFocus"/>
+                        </Grid>
+                    </GroupBox>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Dades de Facturació" Name="tiBillingData" Style="{DynamicResource NonEditableTabItem}">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="110"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="70"/>
-                        <ColumnDefinition Width="125"/>
-                        <ColumnDefinition Width="40"/>
-                        <ColumnDefinition Width="125"/>
+                        <ColumnDefinition Width="83*"/>
+                        <ColumnDefinition Width="1002*"/>
                     </Grid.ColumnDefinitions>
-                    <Label Grid.Column="0" x:Name="lblProviderAgent" Content="REPRESENTANT :" Margin="0,0,0,0" FontWeight="Bold" HorizontalAlignment="Center" 
-                           VerticalAlignment="Center" IsEnabled="False"/>
-                    <ComboBox Grid.Column="1" x:Name="cbProviderDataAgent" Height="23" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" 
-                              FontWeight="Bold" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="0,0,4,0" IsEnabled="False"/>
-                    <Label Grid.Column="2" x:Name="lblProviderAgentPhone" Content="TELÈFON :" Margin="0,0,0,0" FontWeight="Bold" HorizontalAlignment="Center" 
-                           VerticalAlignment="Center" IsEnabled="False"/>
-                    <TextBox Grid.Column="3" x:Name="tbProviderAgentPhone" Height="23" HorizontalAlignment="Stretch" VerticalAlignment="Center" 
-                             HorizontalContentAlignment="Center" Margin="0,0,4,0" IsReadOnly="True" GotFocus="TBGotFocus"/>
-                    <Label Grid.Column="4" x:Name="lblProviderAgentFax" Content="FAX :" Margin="0,0,0,0" FontWeight="Bold" HorizontalAlignment="Center" 
-                           VerticalAlignment="Center" IsEnabled="False"/>
-                    <TextBox Grid.Column="5" x:Name="tbProviderAgentFax" Height="23" HorizontalAlignment="Stretch" VerticalAlignment="Center" 
-                             HorizontalContentAlignment="Center" Margin="4,0,4,0" IsReadOnly="True" GotFocus="TBGotFocus"/>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="3*"/>
+                        <RowDefinition Height="6*"/>
+                        <RowDefinition Height="6*"/>
+                        <RowDefinition Height="6*"/>
+                        <RowDefinition Height="6*"/>
+                        <RowDefinition Height="6*"/>
+                        <RowDefinition Height="3*"/>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="1" Grid.ColumnSpan="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="150"/>
+                            <ColumnDefinition Width="165"/>
+                            <ColumnDefinition Width="150"/>
+                            <ColumnDefinition Width="300"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" x:Name="lblCompanyCif"  Content="DNI/CIF :" Margin="84,4,4,0" FontWeight="Bold" HorizontalAlignment="Center" 
+                               VerticalAlignment="Center" IsEnabled="False"/>
+                        <TextBox Grid.Column="1" x:Name="tbCompanyCif" Height="23" Margin="0,4,4,0" HorizontalAlignment="Stretch" VerticalAlignment="Center" 
+                                 HorizontalContentAlignment="Center" MaxLength="20" IsReadOnly="True"/>
+                        <Label Grid.Column="2" x:Name="lblBillingDataSendByType"  Content="TIPUS D'ENVIAMENT :" Margin="4,4,0,0" FontWeight="Bold" 
+                               HorizontalAlignment="Center" VerticalAlignment="Center" IsEnabled="False"/>
+                        <ComboBox Grid.Column="3" x:Name="cbBillingDataSendByType" Height="23" HorizontalContentAlignment="Left" VerticalContentAlignment="Center"
+                                  HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="4,4,4,0" IsEnabled="False"/>
+                    </Grid>
+                    <Grid Grid.Row="2" Grid.ColumnSpan="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="150"/>
+                            <ColumnDefinition Width="40"/>
+                            <ColumnDefinition Width="220"/>
+                            <ColumnDefinition Width="60"/>
+                            <ColumnDefinition Width="235"/>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="75"/>
+                            <ColumnDefinition Width="30"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" x:Name="lblBillingDataBillingType" Content="TIPUS DE FACTURACIÓ :" Margin="4,4,4,0" FontWeight="Bold" HorizontalAlignment="Center" 
+                               VerticalAlignment="Center" IsEnabled="False"/>
+                        <TextBox Grid.Column="1" x:Name="tbBillingDataBillingType" Height="23" MaxLength="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" 
+                                 HorizontalContentAlignment="Center" Margin="0,4,4,0" IsReadOnly="True"/>
+                        <Label Grid.Column="2" x:Name="lblBillingDataDuplicate" Content="NUMERO FACTURES DUPLICADES :" Margin="0,4,4,0" FontWeight="Bold" HorizontalAlignment="Center" 
+                               VerticalAlignment="Center" IsEnabled="False"/>
+                        <TextBox Grid.Column="3" x:Name="tbBillingDataDuplicate" Height="23" MaxLength="3" HorizontalAlignment="Stretch" VerticalAlignment="Center" 
+                                 HorizontalContentAlignment="Center" Margin="0,4,4,0" IsReadOnly="True"/>
+                        <Label Grid.Column="4" x:Name="lblBillingDataEarlyPaymentDiscount" Content="DESCOMPTE PAGAMENT IMMEDIAT :" Margin="0,4,4,0" FontWeight="Bold" 
+                               HorizontalAlignment="Center" VerticalAlignment="Center" IsEnabled="False"/>
+                        <TextBox Grid.Column="5" x:Name="tbBillingDataEarlyPaymentDiscount" Height="23" MaxLength="10" HorizontalAlignment="Stretch" VerticalAlignment="Center" 
+                                 HorizontalContentAlignment="Center" Margin="0,4,4,0" IsReadOnly="True"/>
+                        <Label Grid.Column="6" x:Name="lblBillingDataValued"  Content="VALORAT :" Margin="0,24,9,21" FontWeight="Bold" HorizontalAlignment="Right" 
+                               VerticalAlignment="Center" IsEnabled="False"/>
+                        <CheckBox Grid.Column="7" x:Name="chkbBillingDataValued" Height="23" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="0,12,4,0" IsEnabled="False"/>
+                    </Grid>
+                    <Grid Grid.Row="3" Grid.ColumnSpan="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="105" Name="cbLblGuarantedRisk"/>
+                            <ColumnDefinition Width="150" Name="cbGuarantedRisk"/>
+                            <ColumnDefinition Width="90"  Name="cbLblCurrentRisk"/>
+                            <ColumnDefinition Width="150" Name="cbCurrentRisk"/>
+                            <ColumnDefinition Width="125"/>
+                            <ColumnDefinition Width="150"/>
+                            <ColumnDefinition Width="140"/>
+                            <ColumnDefinition Width="50"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" x:Name="lblBillingDataRiskGranted" Content="RISC CONCEDIT :" Margin="0,4,2,0" FontWeight="Bold" HorizontalAlignment="Center" 
+                               VerticalAlignment="Center" IsEnabled="False"/>
+                        <TextBox Grid.Column="1" x:Name="tbBillingDataRiskGranted" Height="23" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="0,4,2,0" 
+                                 MaxLength="20" HorizontalContentAlignment="Center" IsReadOnly="True" IsTabStop="False"/>
+                        <Label Grid.Column="2" x:Name="lblBillingDataCurrentRisk" Content="RISC ACTUAL :" Margin="4,4,4,0" FontWeight="Bold" HorizontalAlignment="Center" 
+                               VerticalAlignment="Center" IsEnabled="False"/>
+                        <TextBox Grid.Column="3" x:Name="tbBillingDataCurrentRisk" Height="23" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="0,4,4,0" 
+                                 MaxLength="20" HorizontalContentAlignment="Center" IsReadOnly="True" IsTabStop="False"/>
+                        <Label Grid.Column="4" x:Name="lblBillingDataUnpaid" Content="IMPORT IMPAGAT :" Margin="4,4,4,0" FontWeight="Bold" HorizontalAlignment="Center" 
+                               VerticalAlignment="Center" IsEnabled="False"/>
+                        <TextBox Grid.Column="5" x:Name="tbBillingDataUnpaid" Height="23" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="0,4,4,0" 
+                                 MaxLength="20" HorizontalContentAlignment="Center" IsReadOnly="True" GotFocus="TBGotFocus"/>
+                        <Label Grid.Column="6" x:Name="lblBillingDataNumUnpaid" Content="NUMERO IMPAGATS :" Margin="4,4,4,0" FontWeight="Bold" HorizontalAlignment="Center" 
+                               VerticalAlignment="Center" IsEnabled="False"/>
+                        <TextBox Grid.Column="7" x:Name="tbBillingDataNumUnpaid" Height="23" HorizontalAlignment="Stretch" VerticalAlignment="Center"  Margin="0,4,4,0" 
+                                 MaxLength="3" HorizontalContentAlignment="Center" IsReadOnly="True" GotFocus="TBGotFocus"/>
+                    </Grid>
+                    <Grid Grid.Row="4" Grid.ColumnSpan="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="150"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="150"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" x:Name="lblBillingDataAgent"  Content="REPRESENTANT :" Margin="34,4,0,0" FontWeight="Bold" HorizontalAlignment="Center" 
+                               VerticalAlignment="Center" IsEnabled="False"/>
+                        <ComboBox Grid.Column="1" x:Name="cbBillingDataAgent" Height="23" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" FontWeight="Bold"
+                                  HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="0,4,4,0" IsEnabled="False"/>
+                        <Button Grid.Column="2" x:Name="btnAddAgent" Width="115" Height="23" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,2,0,0" IsEnabled="False">
+                            <StackPanel x:Name="spAdd" Margin="2" Orientation="Horizontal">
+                                <Image Height="16" Margin="0,0,10,0" Source="{DynamicResource Add}" Width="16"/>
+                                <TextBlock x:Name="tbAdd" Text="Donar d'alta" />
+                            </StackPanel>
+                        </Button>
+                    </Grid>
+                    <Grid Grid.Row="5" Grid.ColumnSpan="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="150"/>
+                            <ColumnDefinition Width="*" MinWidth="300"/>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="30"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" x:Name="lblBillingDataIVAType"  Content="TIPUS D'IVA :" Margin="54,4,0,0" FontWeight="Bold" HorizontalAlignment="Center" 
+                               VerticalAlignment="Center" IsEnabled="False"/>
+                        <ComboBox Grid.Column="1" x:Name="cbBillingDataIVAType" Height="23" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" 
+                                  FontWeight="Bold" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="0,4,4,0" IsEnabled="False"/>
+                        <Label Grid.Column="2" x:Name="lblBillingDataRegister"  Content="DATA D'ALTA :" Margin="4,4,0,0" FontWeight="Bold" HorizontalAlignment="Center" 
+                               VerticalAlignment="Center" IsEnabled="False"/>
+                        <TextBox Grid.Column="3" x:Name="tbBillingDataRegister" Height="23" IsReadOnly="True" HorizontalAlignment="Stretch" VerticalAlignment="Center"  
+                                 Margin="0,4,0,0" HorizontalContentAlignment="Center" FontWeight="Bold" IsTabStop="False"/>
+                        <DatePicker Grid.Column="4" Name="dtpBillingDataRegister" SelectedDateFormat="Long" BorderBrush="#FF9B211D" DisplayDateStart="{x:Static sys:DateTime.Now}"
+                                    HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="0,6,0,0" IsEnabled="False"/>
+                    </Grid>
                 </Grid>
-            </GroupBox>
-            <Grid Grid.Row="5">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="85"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Label Grid.Column="0" x:Name="lblProviderComment" Content="COMENTARI :" Margin="2,8,4,0" FontWeight="Bold" HorizontalAlignment="Center" 
-                       VerticalAlignment="Top" IsEnabled="False"/>
-                <TextBox Grid.Column="1" x:Name="tbProviderComment" TextWrapping="Wrap" AcceptsReturn="True" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
-                         Margin="0,4,4,4" IsReadOnly="True"/>
-            </Grid>
-        </Grid>
+            </TabItem>
+            <TabItem Header="Diversos" Name="tiDivers" Style="{DynamicResource NonEditableTabItem}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="29*"/>
+                        <ColumnDefinition Width="1056*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="10*"/>
+                        <RowDefinition Height="15*"/>
+                        <RowDefinition Height="3*"/>
+                    </Grid.RowDefinitions>
+                    <TextBox Grid.Row="1" Name="tbSeveralRemarks" Margin="5" TextWrapping="Wrap" AcceptsReturn="True"
+                             HorizontalContentAlignment="Stretch" VerticalContentAlignment="Top" IsReadOnly="True"
+                             ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Visible" 
+                             ScrollViewer.VerticalScrollBarVisibility="Visible" Grid.ColumnSpan="2" IsTabStop="False"/>
+                    <GroupBox Name="gbSeveralDataAcum" Grid.Row="2" Margin="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource NonEditableGroupBox}" Grid.ColumnSpan="2">
+                        <GroupBox.Header>
+                            <BulletDecorator>
+                                <BulletDecorator.Bullet>
+                                    <Image Width="16" Source="{DynamicResource Coin}"/>
+                                </BulletDecorator.Bullet>
+                                <TextBlock Margin="10,0"><Run Text="ACUMULATS IVA INCLÒS"/></TextBlock>
+                            </BulletDecorator>
+                        </GroupBox.Header>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="2*" MinHeight="75"/>
+                                <RowDefinition Height="2*" MinHeight="75"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="6*" MinWidth="175"/>
+                                <ColumnDefinition Width="6*" MinWidth="175"/>
+                                <ColumnDefinition Width="6*" MinWidth="175"/>
+                                <ColumnDefinition Width="6*" MinWidth="175"/>
+                                <ColumnDefinition Width="6*" MinWidth="175"/>
+                                <ColumnDefinition Width="6*" MinWidth="175"/>
+                            </Grid.ColumnDefinitions>
+                            <GroupBox Grid.Row="0" Grid.Column="0" Margin="5" Style="{StaticResource NonEditableGroupBox}"
+                                      HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                <GroupBox.Header>
+                                    <BulletDecorator>
+                                        <BulletDecorator.Bullet>
+                                            <Image Width="16" Source="{DynamicResource CalendarIcon}"/>
+                                        </BulletDecorator.Bullet>
+                                        <TextBlock Margin="10,0"><Run Text="GENER"/></TextBlock>
+                                    </BulletDecorator>
+                                </GroupBox.Header>
+                                <TextBox x:Name="tbSeveralDataAcum_1" Height="23" IsReadOnly="True" MaxLength="20"
+                                         HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="0,4,4,0" 
+                                         HorizontalContentAlignment="Center" IsTabStop="False"/>
+                            </GroupBox>
+                            <GroupBox Grid.Row="0" Grid.Column="1" Margin="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource NonEditableGroupBox}">
+                                <GroupBox.Header>
+                                    <BulletDecorator>
+                                        <BulletDecorator.Bullet>
+                                            <Image Width="16" Source="{DynamicResource CalendarIcon}"/>
+                                        </BulletDecorator.Bullet>
+                                        <TextBlock Margin="10,0"><Run Text="FEBRER"/></TextBlock>
+                                    </BulletDecorator>
+                                </GroupBox.Header>
+                                <TextBox x:Name="tbSeveralDataAcum_2" Height="23" IsReadOnly="True" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="0,4,4,0" 
+                                         MaxLength="10" HorizontalContentAlignment="Center" IsTabStop="False"/>
+                            </GroupBox>
+                            <GroupBox Grid.Row="0" Grid.Column="2" Margin="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource NonEditableGroupBox}">
+                                <GroupBox.Header>
+                                    <BulletDecorator>
+                                        <BulletDecorator.Bullet>
+                                            <Image Width="16" Source="{DynamicResource CalendarIcon}"/>
+                                        </BulletDecorator.Bullet>
+                                        <TextBlock Margin="10,0"><Run Text="MARÇ"/></TextBlock>
+                                    </BulletDecorator>
+                                </GroupBox.Header>
+                                <TextBox x:Name="tbSeveralDataAcum_3" Height="23" IsReadOnly="True" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="0,4,4,0" 
+                                         MaxLength="10" HorizontalContentAlignment="Center" IsTabStop="False"/>
+                            </GroupBox>
+                            <GroupBox Grid.Row="0" Grid.Column="3" Margin="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource NonEditableGroupBox}">
+                                <GroupBox.Header>
+                                    <BulletDecorator>
+                                        <BulletDecorator.Bullet>
+                                            <Image Width="16" Source="{DynamicResource CalendarIcon}"/>
+                                        </BulletDecorator.Bullet>
+                                        <TextBlock Margin="10,0"><Run Text="ABRIL"/></TextBlock>
+                                    </BulletDecorator>
+                                </GroupBox.Header>
+                                <TextBox x:Name="tbSeveralDataAcum_4" Height="23" IsReadOnly="True" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="0,4,4,0" 
+                                         MaxLength="10" HorizontalContentAlignment="Center" IsTabStop="False"/>
+                            </GroupBox>
+                            <GroupBox Grid.Row="0" Grid.Column="4" Margin="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource NonEditableGroupBox}">
+                                <GroupBox.Header>
+                                    <BulletDecorator>
+                                        <BulletDecorator.Bullet>
+                                            <Image Width="16" Source="{DynamicResource CalendarIcon}"/>
+                                        </BulletDecorator.Bullet>
+                                        <TextBlock Margin="10,0"><Run Text="MAIG"/></TextBlock>
+                                    </BulletDecorator>
+                                </GroupBox.Header>
+                                <TextBox x:Name="tbSeveralDataAcum_5" Height="23" IsReadOnly="True" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="0,4,4,0" 
+                                         MaxLength="10" HorizontalContentAlignment="Center" IsTabStop="False"/>
+                            </GroupBox>
+                            <GroupBox Grid.Row="0" Grid.Column="5" Margin="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource NonEditableGroupBox}">
+                                <GroupBox.Header>
+                                    <BulletDecorator>
+                                        <BulletDecorator.Bullet>
+                                            <Image Width="16" Source="{DynamicResource CalendarIcon}"/>
+                                        </BulletDecorator.Bullet>
+                                        <TextBlock Margin="10,0"><Run Text="JUNY"/></TextBlock>
+                                    </BulletDecorator>
+                                </GroupBox.Header>
+                                <TextBox x:Name="tbSeveralDataAcum_6" Height="23" IsReadOnly="True" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="0,4,4,0" 
+                                         MaxLength="10" HorizontalContentAlignment="Center" IsTabStop="False"/>
+                            </GroupBox>
+                            <GroupBox Grid.Row="1" Grid.Column="0" Margin="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource NonEditableGroupBox}">
+                                <GroupBox.Header>
+                                    <BulletDecorator>
+                                        <BulletDecorator.Bullet>
+                                            <Image Width="16" Source="{DynamicResource CalendarIcon}"/>
+                                        </BulletDecorator.Bullet>
+                                        <TextBlock Margin="10,0"><Run Text="JULIOL"/></TextBlock>
+                                    </BulletDecorator>
+                                </GroupBox.Header>
+                                <TextBox x:Name="tbSeveralDataAcum_7" Height="23" IsReadOnly="True" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="0,4,4,0" 
+                                         MaxLength="10" HorizontalContentAlignment="Center" IsTabStop="False"/>
+                            </GroupBox>
+                            <GroupBox Grid.Row="1" Grid.Column="1" Margin="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource NonEditableGroupBox}">
+                                <GroupBox.Header>
+                                    <BulletDecorator>
+                                        <BulletDecorator.Bullet>
+                                            <Image Width="16" Source="{DynamicResource CalendarIcon}"/>
+                                        </BulletDecorator.Bullet>
+                                        <TextBlock Margin="10,0"><Run Text="AGOST"/></TextBlock>
+                                    </BulletDecorator>
+                                </GroupBox.Header>
+                                <TextBox x:Name="tbSeveralDataAcum_8" Height="23" IsReadOnly="True" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="0,4,4,0" 
+                                         MaxLength="10" HorizontalContentAlignment="Center" IsTabStop="False"/>
+                            </GroupBox>
+                            <GroupBox Grid.Row="1" Grid.Column="2" Margin="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource NonEditableGroupBox}">
+                                <GroupBox.Header>
+                                    <BulletDecorator>
+                                        <BulletDecorator.Bullet>
+                                            <Image Width="16" Source="{DynamicResource CalendarIcon}"/>
+                                        </BulletDecorator.Bullet>
+                                        <TextBlock Margin="10,0"><Run Text="SETEMBRE"/></TextBlock>
+                                    </BulletDecorator>
+                                </GroupBox.Header>
+                                <TextBox x:Name="tbSeveralDataAcum_9" Height="23" IsReadOnly="True" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="0,4,4,0" 
+                                         MaxLength="10" HorizontalContentAlignment="Center" IsTabStop="False"/>
+                            </GroupBox>
+                            <GroupBox Grid.Row="1" Grid.Column="3" Margin="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource NonEditableGroupBox}">
+                                <GroupBox.Header>
+                                    <BulletDecorator>
+                                        <BulletDecorator.Bullet>
+                                            <Image Width="16" Source="{DynamicResource CalendarIcon}"/>
+                                        </BulletDecorator.Bullet>
+                                        <TextBlock Margin="10,0"><Run Text="OCTUBRE"/></TextBlock>
+                                    </BulletDecorator>
+                                </GroupBox.Header>
+                                <TextBox x:Name="tbSeveralDataAcum_10" Height="23" IsReadOnly="True" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="0,4,4,0" 
+                                         MaxLength="10" HorizontalContentAlignment="Center" IsTabStop="False"/>
+                            </GroupBox>
+                            <GroupBox Grid.Row="1" Grid.Column="4" Margin="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource NonEditableGroupBox}">
+                                <GroupBox.Header>
+                                    <BulletDecorator>
+                                        <BulletDecorator.Bullet>
+                                            <Image Width="16" Source="{DynamicResource CalendarIcon}"/>
+                                        </BulletDecorator.Bullet>
+                                        <TextBlock Margin="10,0"><Run Text="NOVEMBRE"/></TextBlock>
+                                    </BulletDecorator>
+                                </GroupBox.Header>
+                                <TextBox x:Name="tbSeveralDataAcum_11" Height="23" IsReadOnly="True" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="0,4,4,0" 
+                                         MaxLength="10" HorizontalContentAlignment="Center" IsTabStop="False"/>
+                            </GroupBox>
+                            <GroupBox Grid.Row="1" Grid.Column="5" Margin="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource NonEditableGroupBox}">
+                                <GroupBox.Header>
+                                    <BulletDecorator>
+                                        <BulletDecorator.Bullet>
+                                            <Image Width="16" Source="{DynamicResource CalendarIcon}"/>
+                                        </BulletDecorator.Bullet>
+                                        <TextBlock Margin="10,0"><Run Text="DESEMBRE"/></TextBlock>
+                                    </BulletDecorator>
+                                </GroupBox.Header>
+                                <TextBox x:Name="tbSeveralDataAcum_12" Height="23" IsReadOnly="True" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="0,4,4,0" 
+                                         MaxLength="10" HorizontalContentAlignment="Center" IsTabStop="False"/>
+                            </GroupBox>
+                        </Grid>
+                    </GroupBox>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Clients Relacionats" Name="tiRelatedProvider" Margin="-3,0,3,0" Style="{DynamicResource NonEditableTabItem}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="3*"/>
+                        <RowDefinition Height="30*"/>
+                        <RowDefinition Height="3*"/>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="20"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="20"/>
+                        </Grid.ColumnDefinitions>
+                        <GroupBox Grid.Column="1" x:Name="gbItemsListDefinedProviders" Margin="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                            <GroupBox.Header>
+                                <BulletDecorator>
+                                    <BulletDecorator.Bullet>
+                                        <Image Width="16" Source="{DynamicResource ItemsList}"/>
+                                    </BulletDecorator.Bullet>
+                                    <TextBlock Margin="10,0"><Run Text="Clients Definits"/></TextBlock>
+                                </BulletDecorator>
+                            </GroupBox.Header>
+                            <ListView x:Name="ListItemsDefinedProviders" ItemsSource="{Binding DataListDefinedProviders}" IsSynchronizedWithCurrentItem="True"
+                                      HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectionMode="Extended" AllowDrop="True">
+                                <ListView.View>
+                                    <GridView>
+                                        <GridViewColumn Width="Auto">
+                                            <GridViewColumnHeader Content="Client" HorizontalContentAlignment="Left"/>
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <Grid Background="#FF0A3E69">
+                                                        <TextBlock Text="{Binding Provider_Id}" Foreground="White" 
+                                                           TextAlignment="Left" Margin="2,0,2,0"/>
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
+                                        </GridViewColumn>
+                                        <GridViewColumn Width="Auto">
+                                            <GridViewColumnHeader Content="Alias" HorizontalContentAlignment="Left"/>
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <Grid Background="Transparent" HorizontalAlignment="Stretch" >
+                                                        <TextBlock Text="{Binding Provider_Alias}" TextAlignment="Left" Margin="0,0,2,0"/>
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
+                                        </GridViewColumn>
+                                        <GridViewColumn Width="Auto">
+                                            <GridViewColumnHeader Content="Nom" HorizontalContentAlignment="Left"/>
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <Grid Background="Transparent" HorizontalAlignment="Stretch" >
+                                                        <TextBlock Text="{Binding Company_Name}" TextAlignment="Left" Margin="0,0,2,0"/>
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
+                                        </GridViewColumn>
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
+                        </GroupBox>
+                        <Grid Grid.Column="2">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="1.25*"/>
+                                <RowDefinition Height="30"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="30"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Button Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,2,0,0" x:Name="btnRelatedProvider" Width="95" Height="23">
+                                <StackPanel x:Name="spRelatedProvider" Margin="2" Orientation="Horizontal">
+                                    <Image Height="16" Margin="0,0,5,0" Source="{DynamicResource SelectImage}" Width="16"/>
+                                    <TextBlock x:Name="tbRelatedProvider" Text="Relacionar" />
+                                </StackPanel>
+                            </Button>
+                            <Button Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,2,0,0" x:Name="btnUnRelatedProvider" Width="95" Height="23">
+                                <StackPanel x:Name="spUnRelatedProvider" Margin="2" Orientation="Horizontal">
+                                    <Image Height="16" Margin="0,0,5,0" Source="{DynamicResource UnselectImage}" Width="16"/>
+                                    <TextBlock x:Name="tbUnRelatedProvider" Text="Retirar" />
+                                </StackPanel>
+                            </Button>
+                        </Grid>
+                        <GroupBox Grid.Column="3" x:Name="gbItemsListRelatedProviders" Margin="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                            <GroupBox.Header>
+                                <BulletDecorator>
+                                    <BulletDecorator.Bullet>
+                                        <Image Width="16" Source="{DynamicResource ItemsList}"/>
+                                    </BulletDecorator.Bullet>
+                                    <TextBlock Margin="10,0"><Run Text="Clients Relacionats"/></TextBlock>
+                                </BulletDecorator>
+                            </GroupBox.Header>
+                            <ListView x:Name="ListItemsRelatedProviders" ItemsSource="{Binding DataListRelatedProviders}" IsSynchronizedWithCurrentItem="True"
+                                      HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectionMode="Extended" AllowDrop="True">
+                                <ListView.View>
+                                    <GridView>
+                                        <GridViewColumn Width="Auto">
+                                            <GridViewColumnHeader Content="Client" HorizontalContentAlignment="Left"/>
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <Grid Background="#FF0A3E69">
+                                                        <TextBlock Text="{Binding Provider_Id}" Foreground="White" 
+                                                           TextAlignment="Left" Margin="2,0,2,0"/>
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
+                                        </GridViewColumn>
+                                        <GridViewColumn Width="Auto">
+                                            <GridViewColumnHeader Content="Alias" HorizontalContentAlignment="Left"/>
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <Grid Background="Transparent" HorizontalAlignment="Stretch" >
+                                                        <TextBlock Text="{Binding Provider_Alias}" TextAlignment="Left" Margin="0,0,2,0"/>
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
+                                        </GridViewColumn>
+                                        <GridViewColumn Width="Auto">
+                                            <GridViewColumnHeader Content="Nom" HorizontalContentAlignment="Left"/>
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <Grid Background="Transparent" HorizontalAlignment="Stretch" >
+                                                        <TextBlock Text="{Binding Company_Name}" TextAlignment="Left" Margin="0,0,2,0"/>
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
+                                        </GridViewColumn>
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
+                        </GroupBox>
+                    </Grid>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Consultes" Name="tiConsullation" Margin="-3,0,3,0" Style="{DynamicResource NonEditableTabItem}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="3*"/>
+                        <RowDefinition Height="30*"/>
+                        <RowDefinition Height="3*"/>
+                    </Grid.RowDefinitions>
+                    <GroupBox Grid.Row="1" Margin="5" Name="gbQueries" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource NonEditableGroupBox}">
+                        <GroupBox.Header>
+                            <BulletDecorator>
+                                <BulletDecorator.Bullet>
+                                    <Image Width="16" Source="{DynamicResource Report}"/>
+                                </BulletDecorator.Bullet>
+                                <TextBlock Margin="10,0"><Run Text="CONSULTES"/></TextBlock>
+                            </BulletDecorator>
+                        </GroupBox.Header>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="5*" />
+                                <RowDefinition Height="5*" />
+                                <RowDefinition Height="5*" />
+                                <RowDefinition Height="5*" />
+                                <RowDefinition Height="5*" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="195" />
+                                <ColumnDefinition Width="185" />
+                                <ColumnDefinition Width="185" />
+                                <ColumnDefinition Width="130" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Button Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,2,0,0" x:Name="btnPendentProviderOrders" 
+                                    Width="165" Height="23" IsEnabled="False">
+                                <StackPanel x:Name="spPendentProviderOrders" Margin="2" Orientation="Horizontal">
+                                    <Image Height="16" Margin="0,0,10,0" Source="{DynamicResource ReportData}" Width="16"/>
+                                    <TextBlock x:Name="tbPendentProviderOrders" Text="Comandes Pendents" />
+                                </StackPanel>
+                            </Button>
+                            <Button Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,2,0,0" x:Name="btnPendentDeliveryNotes" 
+                                    Width="155" Height="23" IsEnabled="False">
+                                <StackPanel x:Name="spPendentDeliveryNotes" Margin="2" Orientation="Horizontal">
+                                    <Image Height="16" Margin="0,0,10,0" Source="{DynamicResource ReportData}" Width="16"/>
+                                    <TextBlock x:Name="tbPendentDeliveryNotes" Text="Albarans Pendents" />
+                                </StackPanel>
+                            </Button>
+                            <Button Grid.Row="0" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,2,0,0" x:Name="btnHistoricAcum"  
+                                    Width="155" Height="23" IsEnabled="False">
+                                <StackPanel x:Name="spHistoricAcum" Margin="2" Orientation="Horizontal">
+                                    <Image Height="16" Margin="0,0,10,0" Source="{DynamicResource ReportData}" Width="16"/>
+                                    <TextBlock x:Name="tbHistoricAcum" Text="Historics Acumulats" />
+                                </StackPanel>
+                            </Button>
+                            <Button Grid.Row="0" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,2,0,0" x:Name="btnBadDebt" 
+                                    Width="100" Height="23" IsEnabled="False">
+                                <StackPanel x:Name="spBadDebt" Margin="2" Orientation="Horizontal">
+                                    <Image Height="16" Margin="0,0,10,0" Source="{DynamicResource ReportData}" Width="16"/>
+                                    <TextBlock x:Name="tbBadDebt" Text="Impagats" />
+                                </StackPanel>
+                            </Button>
+                        </Grid>
+                    </GroupBox>
+                </Grid>
+            </TabItem>
+        </TabControl>        
         <Grid Grid.Row="2" Margin="15,0,15,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="3*"/>

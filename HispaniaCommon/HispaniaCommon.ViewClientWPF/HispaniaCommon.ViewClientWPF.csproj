@@ -136,6 +136,9 @@
     <Compile Include="Windows\Menu\A Tables\08 Customers\08.2 Histo Cumulative Customers\HistoCumulativeCustomers.xaml.cs">
       <DependentUpon>HistoCumulativeCustomers.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\Menu\A Tables\09 Providers\09.2 Histo Cumulative Providers\HistoCumulativeProviders.xaml.cs">
+      <DependentUpon>HistoCumulativeProviders.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\Menu\A Tables\09 Providers\09.4 Histo Providers\HistoProviders.xaml.cs">
       <DependentUpon>HistoProviders.xaml</DependentUpon>
     </Compile>
@@ -398,6 +401,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Windows\Menu\A Tables\08 Customers\08.2 Histo Cumulative Customers\HistoCumulativeCustomers.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\Menu\A Tables\09 Providers\09.2 Histo Cumulative Providers\HistoCumulativeProviders.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
