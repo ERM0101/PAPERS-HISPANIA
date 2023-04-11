@@ -603,12 +603,12 @@ namespace HispaniaCommon.ViewModel
                 }
                 if ((!According) && (movements_non_according.Count == 0))
                 {
-                    ErrMsg = "No es pot preparar la comanda de client per un Albarà ja que no te línies de comanda.";
+                    ErrMsg = "No es pot preparar la comanda de proveidor per un Albarà ja que no te línies de comanda.";
                     return false;
                 }
                 else if (!According)
                 {
-                    ErrMsg = "No hi ha línies conformades en la comanda de client que es vol preparar per un Albarà.";
+                    ErrMsg = "No hi ha línies conformades en la comanda de proveidor que es vol preparar per un Albarà.";
                     return false;
                 }
                 else if (movements_non_according.Count == 0)

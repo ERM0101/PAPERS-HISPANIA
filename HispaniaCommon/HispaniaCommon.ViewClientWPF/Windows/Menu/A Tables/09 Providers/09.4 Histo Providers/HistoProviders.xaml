@@ -6,7 +6,7 @@
     xmlns:my="clr-namespace:MBCode.Framework.Managers.Culture;assembly=MBCode.Framework"
     x:Class="HispaniaCommon.ViewClientWPF.Windows.HistoProviders" 
         mc:Ignorable="d"
-        Title="Històric de Clients" Icon="{DynamicResource WindowDemoDataBaseIcon}"  Width="1280" Height="750" MinWidth="1280" MinHeight="750" Foreground="#FF9B211D"
+        Title="Històric de Proveidors" Icon="{DynamicResource WindowDemoDataBaseIcon}"  Width="1280" Height="750" MinWidth="1280" MinHeight="750" Foreground="#FF9B211D"
         WindowStartupLocation="CenterScreen" ResizeMode="CanResize">
     <Window.Resources>
         <ResourceDictionary >
@@ -32,7 +32,7 @@
                             <BulletDecorator.Bullet>
                                 <Image Width="16" Source="{DynamicResource Hispania}"/>
                             </BulletDecorator.Bullet>
-                            <TextBlock Margin="10,0"><Run Text="Dades del Client"/></TextBlock>
+                            <TextBlock Margin="10,0"><Run Text="Dades del Proveidor"/></TextBlock>
                         </BulletDecorator>
                     </GroupBox.Header>
                     <Grid>
@@ -166,7 +166,7 @@
                         <BulletDecorator.Bullet>
                             <Image Width="16" Source="{DynamicResource ItemsList}"/>
                         </BulletDecorator.Bullet>
-                        <TextBlock Margin="10,0"><Run Text="Històric de Client"/></TextBlock>
+                        <TextBlock Margin="10,0"><Run Text="Històric del Proveidor"/></TextBlock>
                     </BulletDecorator>
                 </GroupBox.Header>
                 <ListView x:Name="ListItems" ItemsSource="{Binding DataList}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 

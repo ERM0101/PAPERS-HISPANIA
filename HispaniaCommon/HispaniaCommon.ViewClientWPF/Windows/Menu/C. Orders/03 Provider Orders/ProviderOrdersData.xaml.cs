@@ -278,7 +278,7 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                     EditedProviderOrder = new ProviderOrdersView(m_ProviderOrder);
                     LoadDataInControls(m_ProviderOrder, true, 1);
                 }
-                else throw new ArgumentNullException("Error, no s'han trobat les dades de la Comanda de Client a carregar."); 
+                else throw new ArgumentNullException("Error, no s'han trobat les dades de la Comanda de Proveidor a carregar."); 
             }
         }
 

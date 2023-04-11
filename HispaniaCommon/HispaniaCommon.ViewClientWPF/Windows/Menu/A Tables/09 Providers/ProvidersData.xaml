@@ -879,16 +879,24 @@
         </TabControl>        
         <Grid Grid.Row="2" Margin="15,0,15,0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="120" Name="cbAcceptButton"/>
-                <ColumnDefinition Width="2*"  Name="cbMiddlePanel"/>
+                <ColumnDefinition Width="*"  Name="cbMiddleColumn_1"/>
+                <ColumnDefinition Width="120" Name="cbHistoricButton"/>
+                <ColumnDefinition Width="*"  Name="cbMiddleColumn_2"/>
                 <ColumnDefinition Width="120"/>
-                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Button Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,2,0,0" x:Name="btnAccept" Width="115" Height="23">
                 <StackPanel x:Name="spAccept" Margin="2" Orientation="Horizontal">
                     <Image Height="16" Margin="0,0,10,0" Source="{DynamicResource Accept}" Width="16"/>
                     <TextBlock x:Name="tbAccept" Text="Acceptar" />
+                </StackPanel>
+            </Button>
+            <Button Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,2,0,0" x:Name="btnHistoric" Width="115" Height="23">
+                <StackPanel x:Name="spHistoric" Margin="2" Orientation="Horizontal">
+                    <Image Height="16" Margin="0,0,10,0" Source="{DynamicResource Report}" Width="16"/>
+                    <TextBlock x:Name="tbHistoric" Text="Historic" />
                 </StackPanel>
             </Button>
             <Button Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,2,0,0" x:Name="btnCancel" Width="115" Height="23">

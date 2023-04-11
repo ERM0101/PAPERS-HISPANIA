@@ -423,7 +423,7 @@ namespace HispaniaCommon.ViewModel
                     new Tuple<string, PDF_Align>(providerOrder.SendType.Description, PDF_Align.Left),
                 }
             };
-            if (!providerOrder.Address.ToUpper().Equals(providerOrder.Provider.Company_Address.ToUpper()))
+            if (!providerOrder.Address.ToUpper().Equals(providerOrder.Provider.Address.ToUpper()))
             {
                 SendItems.Add(new List<Tuple<string, PDF_Align>>(1)
                               {

@@ -800,15 +800,15 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                             {
                                 try
                                 {
-                                    string AddRemark = string.Format("Comanda de Client canviada de la data {0} a la data {1}.\r\n", providerOrder.Date, NewDate);
+                                    string AddRemark = string.Format("Comanda de Proveidor canviada de la data {0} a la data {1}.\r\n", providerOrder.Date, NewDate);
                                     providerOrder.Date = NewDate;
                                     providerOrder.Remarks = AddRemark + providerOrder.Remarks;
                                     GlobalViewModel.Instance.HispaniaViewModel.UpdateProviderOrder(providerOrder);
-                                    sbInfoExecution.AppendFormat("Data de la Comanda de Client '{0}' actualitzada correctament.\r\n", providerOrder.ProviderOrder_Id);
+                                    sbInfoExecution.AppendFormat("Data de la Comanda de Proveidor '{0}' actualitzada correctament.\r\n", providerOrder.ProviderOrder_Id);
                                 }
                                 catch (Exception)
                                 {
-                                    sbInfoExecution.AppendFormat("Error al actualitzar la data de la Comanda de Client '{0}'.\r\n", providerOrder.ProviderOrder_Id);
+                                    sbInfoExecution.AppendFormat("Error al actualitzar la data de la Comanda de Proveidor '{0}'.\r\n", providerOrder.ProviderOrder_Id);
                                 }
                             }
                             MsgManager.ShowMessage(sbInfoExecution.ToString(), MsgType.Information);
@@ -892,7 +892,7 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                 catch (Exception ex)
                 {
                     ProviderOrdersView ProviderOrder = (ProviderOrdersView)ListItems.SelectedItem;
-                    string ItemDescription = PrintProviderOrder ? string.Format("la Comanda de Client '{0}'", ProviderOrder.ProviderOrder_Id)
+                    string ItemDescription = PrintProviderOrder ? string.Format("la Comanda de Proveidor '{0}'", ProviderOrder.ProviderOrder_Id)
                                                                 : string.Format("l'Albarà '{0}'", ProviderOrder.DeliveryNote_Id_Str);
                     MsgManager.ShowMessage(string.Format("Error, al visualitzar les dades de {0}.\r\nDetalls:{1}", ItemDescription, MsgManager.ExcepMsg(ex)));
                 }
@@ -914,7 +914,7 @@ namespace HispaniaCommon.ViewClientWPF.Windows
             }
             catch (Exception ex)
             {
-                MsgManager.ShowMessage(string.Format("Error, al afegir una Comanda de Client.\r\nDetalls:{0}", MsgManager.ExcepMsg(ex)));
+                MsgManager.ShowMessage(string.Format("Error, al afegir una Comanda de Proveidor.\r\nDetalls:{0}", MsgManager.ExcepMsg(ex)));
             }
         }
 
@@ -953,7 +953,7 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                 catch (Exception ex)
                 {
                     ProviderOrdersView ProviderOrder = (ProviderOrdersView)ListItems.SelectedItem;
-                    string ItemDescription = PrintProviderOrder ? string.Format("la Comanda de Client '{0}'", ProviderOrder.ProviderOrder_Id)
+                    string ItemDescription = PrintProviderOrder ? string.Format("la Comanda de Proveidor '{0}'", ProviderOrder.ProviderOrder_Id)
                                                                 : string.Format("l'Albarà '{0}'", ProviderOrder.DeliveryNote_Id_Str);
                     MsgManager.ShowMessage(string.Format("Error, a l'editar {0}.\r\nDetalls:{1}", ItemDescription, MsgManager.ExcepMsg(ex)));
                 }
@@ -1014,13 +1014,13 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                 switch (ProviderOrderDataControl.CtrlOperation)
                 {
                     case Operation.Edit:
-                         string ItemDescription = PrintProviderOrder ? string.Format("la Comanda de Client '{0}'", NewOrEditedProviderOrder.ProviderOrder_Id)
+                         string ItemDescription = PrintProviderOrder ? string.Format("la Comanda de Proveidor '{0}'", NewOrEditedProviderOrder.ProviderOrder_Id)
                                                                      : string.Format("l'Albarà '{0}'", NewOrEditedProviderOrder.DeliveryNote_Id_Str);
                          MsgManager.ShowMessage(string.Format("Error, al guardar les dades de l'edició de {0}.\r\nDetalls:{1}", ItemDescription, MsgManager.ExcepMsg(ex)));
                          break;
                     case Operation.Add:
                     default:
-                         MsgManager.ShowMessage(string.Format("Error, al crear la Comanda de Client.\r\nDetalls:{0}", MsgManager.ExcepMsg(ex)));
+                         MsgManager.ShowMessage(string.Format("Error, al crear la Comanda de Proveidor.\r\nDetalls:{0}", MsgManager.ExcepMsg(ex)));
                          break;
                 }
             }
@@ -1077,7 +1077,7 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                 {
                     ActualizeProviderOrderFromDb();
                     ProviderOrdersView ProviderOrdersToDelete = (ProviderOrdersView)ListItems.SelectedItem;
-                    string ItemDescription = PrintProviderOrder ? string.Format("la Comanda de Client '{0}'", ProviderOrdersToDelete.ProviderOrder_Id)
+                    string ItemDescription = PrintProviderOrder ? string.Format("la Comanda de Proveidor '{0}'", ProviderOrdersToDelete.ProviderOrder_Id)
                                                                 : string.Format("l'Albarà '{0}'", ProviderOrdersToDelete.DeliveryNote_Id);
                     if (MsgManager.ShowQuestion(string.Format("Està segur que vol esborrar {0} ?", ItemDescription)) == MessageBoxResult.Yes)
                     {
@@ -1112,7 +1112,7 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                 catch (Exception ex)
                 {
                     ProviderOrdersView ProviderOrdersToDelete = (ProviderOrdersView)ListItems.SelectedItem;
-                    string ItemDescription = PrintProviderOrder ? string.Format("la Comanda de Client '{0}'", ProviderOrdersToDelete.ProviderOrder_Id)
+                    string ItemDescription = PrintProviderOrder ? string.Format("la Comanda de Proveidor '{0}'", ProviderOrdersToDelete.ProviderOrder_Id)
                                                                 : string.Format("l'Albarà '{0}'", ProviderOrdersToDelete.DeliveryNote_Id);
                     MsgManager.ShowMessage(string.Format("Error, a l'esborrar {0}.\r\nDetalls: {1}", ItemDescription, MsgManager.ExcepMsg(ex)));
                 }
@@ -1208,13 +1208,13 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                     {
                         if (ProviderOrdersReportView.CreateReport(providerOrder, PDF_FileName, out ErrMsg, isProfoma))
                         {
-                            if (ReportView.PrintReport(PDF_FileName, string.Format("Comanda de Client '{0}'", providerOrder.ProviderOrder_Id), out ErrMsg))
+                            if (ReportView.PrintReport(PDF_FileName, string.Format("Comanda de Proveidor '{0}'", providerOrder.ProviderOrder_Id), out ErrMsg))
                             {
                                 if (ProviderOrdersReportView.UpdateProviderOrderFlag(providerOrder, ProviderOrderFlag.Print, true, out ErrMsg))
                                 {
                                     DataList[DataList.IndexOf(providerOrder)].Print_ProviderOrder = true;
                                     MsgManager.ShowMessage(
-                                       string.Format("Informe de la Comanda de Client '{0}' enviat a impressió correctament.\r\n", 
+                                       string.Format("Informe de la Comanda de Proveidor '{0}' enviat a impressió correctament.\r\n", 
                                                      providerOrder.ProviderOrder_Id),
                                        MsgType.Information);
                                     return;
@@ -1238,12 +1238,12 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                     {
                         if (ProviderOrdersReportView.CreateReport(providerOrder, PDF_FileName, out ErrMsg, isProforma))
                         {
-                            if (ReportView.PrintReport(PDF_FileName, string.Format("Comanda de Client '{0}'", providerOrder.ProviderOrder_Id), out ErrMsg))
+                            if (ReportView.PrintReport(PDF_FileName, string.Format("Comanda de Proveidor '{0}'", providerOrder.ProviderOrder_Id), out ErrMsg))
                             {
                                 if (ProviderOrdersReportView.UpdateProviderOrderFlag(providerOrder, ProviderOrderFlag.Print, true, out ErrMsg))
                                 {
                                     DataList[DataList.IndexOf(providerOrder)].Print_ProviderOrder = true;
-                                    sbInfoExecution.AppendFormat("Informe de la Comanda de Client '{0}' enviat a impressió correctament.\r\n", providerOrder.ProviderOrder_Id);
+                                    sbInfoExecution.AppendFormat("Informe de la Comanda de Proveidor '{0}' enviat a impressió correctament.\r\n", providerOrder.ProviderOrder_Id);
                                     continue;
                                 }
                             }
@@ -1375,7 +1375,7 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                                 if (ProviderOrdersReportView.UpdateProviderOrderFlag(providerOrder, ProviderOrderFlag.SendByEMail, true, out ErrMsg))
                                 {
                                     DataList[DataList.IndexOf(providerOrder)].SendByEMail_ProviderOrder = true;
-                                    MsgManager.ShowMessage(string.Format("Creat correctament l'email de la comanda de client '{0}'.\r\n", providerOrder.ProviderOrder_Id),
+                                    MsgManager.ShowMessage(string.Format("Creat correctament l'email de la comanda de proveidor '{0}'.\r\n", providerOrder.ProviderOrder_Id),
                                                            MsgType.Information);
                                     return;
                                 }
@@ -1402,7 +1402,7 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                             if (ProviderOrdersReportView.UpdateProviderOrderFlag(providerOrder, ProviderOrderFlag.SendByEMail, true, out ErrMsg))
                             {
                                 DataList[DataList.IndexOf(providerOrder)].SendByEMail_ProviderOrder = true;
-                                sbInfoExecution.AppendFormat("Creat correctament l'email de la comanda de client '{0}'.\r\n", providerOrder.ProviderOrder_Id);
+                                sbInfoExecution.AppendFormat("Creat correctament l'email de la comanda de proveidor '{0}'.\r\n", providerOrder.ProviderOrder_Id);
                                 continue;
                             }
                         }
@@ -1454,7 +1454,7 @@ namespace HispaniaCommon.ViewClientWPF.Windows
         {
             if (ListItems.SelectedItems != null)
             {
-                string Question = string.Format("Està segur que vol crear factures per les comandes de client seleccionades ?");
+                string Question = string.Format("Està segur que vol crear factures per les comandes de proveidor seleccionades ?");
                 if (MsgManager.ShowQuestion(Question) == MessageBoxResult.Yes)
                 {
                     try
@@ -1559,7 +1559,7 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                     ProviderOrdersView ProviderOrder = (ProviderOrdersView)ListItems.SelectedItem;
                     if (!ProviderOrder.HasDeliveryNote)
                     {
-                        string Question = string.Format("Està segur que vol crear un albarà per la comanda de client '{0}' ?", ProviderOrder.ProviderOrder_Id);
+                        string Question = string.Format("Està segur que vol crear un albarà per la comanda de proveidor '{0}' ?", ProviderOrder.ProviderOrder_Id);
                         if (MsgManager.ShowQuestion(Question) == MessageBoxResult.Yes)
                         {
                             string ErrMsg;
@@ -1575,14 +1575,14 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                                         DataList.Remove(ProviderOrder);
                                         DataChangedManagerActive = true;
                                         ListItems.UpdateLayout();
-                                        MsgManager.ShowMessage(string.Format("Informació, s'ha creat l'albarà '{0}' per la comanda de client '{1}'.",
+                                        MsgManager.ShowMessage(string.Format("Informació, s'ha creat l'albarà '{0}' per la comanda de proveidor '{1}'.",
                                                                              ProviderOrder.DeliveryNote_Id, ProviderOrder.ProviderOrder_Id), MsgType.Information);
                                     }
                                 }
                             }
                             catch (Exception ex)
                             {
-                                ErrMsg = string.Format("Error, al crear l'albarà per la Comanda de Client '{0}'.\r\nDetalls: {1}",
+                                ErrMsg = string.Format("Error, al crear l'albarà per la Comanda de Proveidor '{0}'.\r\nDetalls: {1}",
                                                         ProviderOrder.ProviderOrder_Id, MsgManager.ExcepMsg(ex));
                             }
                             if (!string.IsNullOrEmpty(ErrMsg))
@@ -1595,7 +1595,7 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                     }
                     else
                     {
-                        MsgManager.ShowMessage(string.Format("Ja s'ha creat un albarà per la comanda de client '{0}' ?", ProviderOrder.ProviderOrder_Id),
+                        MsgManager.ShowMessage(string.Format("Ja s'ha creat un albarà per la comanda de proveidor '{0}' ?", ProviderOrder.ProviderOrder_Id),
                                                 MsgType.Warning);
                         FilterDataListObjects();
                     }
@@ -1604,7 +1604,7 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                 {
                     ProviderOrdersView ProviderOrder = (ProviderOrdersView)ListItems.SelectedItem;
                     MsgManager.ShowMessage(
-                       string.Format("Error, al crear l'Albarà a partir de la Comanda de Client '{0}'.\r\nDetalls: {1}",
+                       string.Format("Error, al crear l'Albarà a partir de la Comanda de Proveidor '{0}'.\r\nDetalls: {1}",
                                      ProviderOrder.ProviderOrder_Id, MsgManager.ExcepMsg(ex)));
                 }
             }
@@ -1622,7 +1622,7 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                 {
                     ActualizeProviderOrderFromDb();
                     ProviderOrdersView ProviderOrder = (ProviderOrdersView)ListItems.SelectedItem;
-                    string Question = string.Format("Està segur que vol preparar la comanda de client '{0}' per poder crear un Albarà ?", ProviderOrder.ProviderOrder_Id);
+                    string Question = string.Format("Està segur que vol preparar la comanda de proveidor '{0}' per poder crear un Albarà ?", ProviderOrder.ProviderOrder_Id);
                     if (MsgManager.ShowQuestion(Question) == MessageBoxResult.Yes)
                     {
                         string ErrMsg;
@@ -1644,27 +1644,27 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                                     if (NewProviderOrder == null)
                                     {
                                         MsgManager.ShowMessage(
-                                            string.Format("Informació, la comanda de client '{0}' ja estava preparada per crear un Albarà.",
+                                            string.Format("Informació, la comanda de proveidor '{0}' ja estava preparada per crear un Albarà.",
                                                           ProviderOrder.ProviderOrder_Id), MsgType.Information);
                                     }
                                     else
                                     {
                                         MsgManager.ShowMessage(
-                                            string.Format("Informació, la comanda de client '{0}' s'ha preparat per crear un Albarà.\r\n" +
-                                                          "S'ha creat la comanda de client '{1}' amb les línies no conformes de la comanda inicial.",
+                                            string.Format("Informació, la comanda de proveidor '{0}' s'ha preparat per crear un Albarà.\r\n" +
+                                                          "S'ha creat la comanda de proveidor '{1}' amb les línies no conformes de la comanda inicial.",
                                                           ProviderOrder.ProviderOrder_Id, NewProviderOrder.ProviderOrder_Id), MsgType.Information);
                                     }
                                 }
                                 else
                                 {
-                                    ErrMsg = string.Format("Error, al preparar la Comanda de Client '{0}' per crear l'Albarà.\r\nDetalls: {1}",
+                                    ErrMsg = string.Format("Error, al preparar la Comanda de Proveidor '{0}' per crear l'Albarà.\r\nDetalls: {1}",
                                                             ProviderOrder.ProviderOrder_Id, ErrMsg);
                                 }
                             }
                         }
                         catch (Exception ex)
                         {
-                            ErrMsg = string.Format("Error, al preparar la Comanda de Client '{0}' per crear l'Albarà.\r\nDetalls: {1}",
+                            ErrMsg = string.Format("Error, al preparar la Comanda de Proveidor '{0}' per crear l'Albarà.\r\nDetalls: {1}",
                                                     ProviderOrder.ProviderOrder_Id, MsgManager.ExcepMsg(ex));
                         }
                         if (!string.IsNullOrEmpty(ErrMsg))
@@ -1679,7 +1679,7 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                 {
                     ProviderOrdersView ProviderOrder = (ProviderOrdersView)ListItems.SelectedItem;
                     MsgManager.ShowMessage(
-                       string.Format("Error, al separar la Comanda de Client '{0}'.\r\nDetalls: {1}", 
+                       string.Format("Error, al separar la Comanda de Proveidor '{0}'.\r\nDetalls: {1}", 
                                      ProviderOrder.ProviderOrder_Id,
                                      MsgManager.ExcepMsg(ex)));
                 }

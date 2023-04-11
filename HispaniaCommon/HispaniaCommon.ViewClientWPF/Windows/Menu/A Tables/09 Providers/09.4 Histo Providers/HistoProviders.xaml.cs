@@ -133,7 +133,7 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                     m_Data = value;
                     LoadDataInWindow(m_Data);
                 }
-                else throw new ArgumentNullException("Error, no s'ha trobat el Client a carregar.");
+                else throw new ArgumentNullException("Error, no s'ha trobat el Proveidor a carregar.");
             }
         }
 

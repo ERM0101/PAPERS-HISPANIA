@@ -52,7 +52,7 @@ namespace HispaniaCommon.ViewModel
             {
                 doc = ReportView.CreateDocument(iTextSharp.text.PageSize.A4, PDF_Orientation.Vertical, 0, 0, 15, ReportView.MinBottomMarginDoc);
                 writer = ReportView.GetPDF_PdfWriter(doc, PDF_Report_Types.ProviderOrder, PDF_FileName);
-                doc.AddTitle(string.Format("Comanda de Client Numero {0}", providerOrder.ProviderOrder_Id));
+                doc.AddTitle(string.Format("Comanda de Proveidor Numero {0}", providerOrder.ProviderOrder_Id));
                 doc.AddCreator("Hispania Papers S.L.");
                 doc.Open();
                 CommonReportView.InsertHispaniaHeader(doc);
@@ -80,7 +80,7 @@ namespace HispaniaCommon.ViewModel
                 if ((doc != null) && (doc.IsOpen())) doc.Close();
                 if (writer != null) writer.Close();
                 PDF_FileName = null;
-                ErrMsg = string.Format("Error, al construïr el PDF de la Comanda de Client número {0}.\r\nDetalls: {1}",
+                ErrMsg = string.Format("Error, al construïr el PDF de la Comanda de Proveidor número {0}.\r\nDetalls: {1}",
                                        providerOrder.ProviderOrder_Id, MsgManager.ExcepMsg(ex));
             }
             return (ErrMsg == string.Empty);
@@ -91,26 +91,26 @@ namespace HispaniaCommon.ViewModel
             ErrMsg = string.Empty;
             try
             {
-                if (!string.IsNullOrEmpty(providerOrder.Provider.Company_EMail))
+                if (!string.IsNullOrEmpty(providerOrder.Provider.EMail))
                 {
-                    string EMAIL_Address = providerOrder.Provider.Company_EMail;
-                    string Subject = string.Format("Comanda de Client número ({0})", providerOrder.ProviderOrder_Id);
-                    string BodyMessage = string.Format("Comanda de Client número ({0})\r\nPapers Hispània S.L.\r\n", providerOrder.ProviderOrder_Id);
+                    string EMAIL_Address = providerOrder.Provider.EMail;
+                    string Subject = string.Format("Comanda de Proveidor número ({0})", providerOrder.ProviderOrder_Id);
+                    string BodyMessage = string.Format("Comanda de Proveidor número ({0})\r\nPapers Hispània S.L.\r\n", providerOrder.ProviderOrder_Id);
                     List<Tuple<string, string>> FileAttachments = new List<Tuple<string, string>>(1)
                     {
-                        new Tuple<string, string>(PDF_FileName, string.Format("Comanda_Client_{0}", providerOrder.ProviderOrder_Id))
+                        new Tuple<string, string>(PDF_FileName, string.Format("Comanda_Proveidor_{0}", providerOrder.ProviderOrder_Id))
                     };
                     ReportView.SendReport(EMAIL_Address, Subject, BodyMessage, FileAttachments, out ErrMsg);
                 }
                 else
                 {
-                    ErrMsg = string.Format("Error, a l'enviar per email el PDF de la Comanda de Client número {0}.\r\nDetalls: Manca l'adreça electrònica del client.",
+                    ErrMsg = string.Format("Error, a l'enviar per email el PDF de la Comanda de Proveidor número {0}.\r\nDetalls: Manca l'adreça electrònica del proveidor.",
                                            providerOrder.ProviderOrder_Id);
                 }
             }
             catch (Exception ex)
             {
-                ErrMsg = string.Format("Error, a l'enviar per email el PDF de la Comanda de Client número {0}.\r\nDetalls: {1}",
+                ErrMsg = string.Format("Error, a l'enviar per email el PDF de la Comanda de Proveidor número {0}.\r\nDetalls: {1}",
                                        providerOrder.ProviderOrder_Id, MsgManager.ExcepMsg(ex));
             }
             return (ErrMsg == string.Empty);
@@ -137,7 +137,7 @@ namespace HispaniaCommon.ViewModel
             }
             catch (Exception ex)
             {
-                ErrMsg = string.Format("Error, al actualitzar el flag '{0}' per la Comanda de Client número '{1}' a la Base de Dades.\r\nDetalls: {2}",
+                ErrMsg = string.Format("Error, al actualitzar el flag '{0}' per la Comanda de Proveidor número '{1}' a la Base de Dades.\r\nDetalls: {2}",
                                         FlagToUpdate, providerOrder.DeliveryNote_Id, MsgManager.ExcepMsg(ex));
             }
             return (ErrMsg == string.Empty);
@@ -151,11 +151,11 @@ namespace HispaniaCommon.ViewModel
             try
             {
                 decimal Year = providerOrder.Date.Year;
-                string BasePdfFileName = string.Format("ComandaClient_({0})", providerOrder.ProviderOrder_Id);
+                string BasePdfFileName = string.Format("ComandaProveidor_({0})", providerOrder.ProviderOrder_Id);
                 if (ReportView.ExistPDF_FileName(PDF_Report_Types.ProviderOrder, BasePdfFileName, 
                                                  out string[] OldPdfReports, Year))
                 {
-                    string Question = string.Format("Hi ha un o més informes creats per la Comanda de Client {0} vol continuar i esborrar-los ?",
+                    string Question = string.Format("Hi ha un o més informes creats per la Comanda de Proveidor {0} vol continuar i esborrar-los ?",
                                                     providerOrder.ProviderOrder_Id);
                     if (MsgManager.ShowQuestion(Question) == MessageBoxResult.Yes)
                     {
@@ -164,7 +164,7 @@ namespace HispaniaCommon.ViewModel
                     }
                     else
                     {
-                        ErrMsg = string.Format("Informació, s'ha cancel·lat la construcció de l'informe de la Comanda de Client número {0}.",
+                        ErrMsg = string.Format("Informació, s'ha cancel·lat la construcció de l'informe de la Comanda de Proveidor número {0}.",
                                                 providerOrder.ProviderOrder_Id);
                     }
                 }
@@ -175,7 +175,7 @@ namespace HispaniaCommon.ViewModel
             }
             catch (Exception ex)
             {
-                ErrMsg = string.Format("Error, al construïr el PDF de la Comanda de Client número {0}.\r\nDetalls: {1}",
+                ErrMsg = string.Format("Error, al construïr el PDF de la Comanda de Proveidor número {0}.\r\nDetalls: {1}",
                                        providerOrder.ProviderOrder_Id, MsgManager.ExcepMsg(ex));
             }
             return (ErrMsg == string.Empty);
@@ -215,7 +215,7 @@ namespace HispaniaCommon.ViewModel
                             new Tuple<string, PDF_Align>(providerOrder.SendType.Description, PDF_Align.Left),
                         }
                     };
-            if (!providerOrder.Address.ToUpper().Equals(providerOrder.Provider.Company_Address.ToUpper()))
+            if (!providerOrder.Address.ToUpper().Equals(providerOrder.Provider.Address.ToUpper()))
             {
                 SendItems.Add(new List<Tuple<string, PDF_Align>>(1)
                                       {

@@ -2293,9 +2293,6 @@ advertencia 6002: La tabla o vista 'COMPTABILITAT.dbo.TEMP_DIARY_BANDAGE' no tie
             <End Role="SendType" EntitySet="SendTypes" />
             <End Role="ProviderOrder" EntitySet="ProviderOrders" />
           </AssociationSet>
-          <FunctionImport Name="LiniesProveidorConformes" ReturnType="Collection(HispaniaComptabilitatModel.LiniesProveidorConformes_Result)">
-          <Parameter Name="ProviderOrder_Id" Mode="In" Type="Int32" />
-          </FunctionImport>
           <FunctionImport Name="ProviderOrderMovementsComments" ReturnType="Collection(String)">
           <Parameter Name="ProviderOrder_Id" Mode="In" Type="Int32" />
           </FunctionImport>
@@ -2319,6 +2316,9 @@ advertencia 6002: La tabla o vista 'COMPTABILITAT.dbo.TEMP_DIARY_BANDAGE' no tie
             <End Role="Provider" EntitySet="Providers" />
             <End Role="HistoCumulativeProvider" EntitySet="HistoCumulativeProviders" />
           </AssociationSet>
+          <FunctionImport Name="LiniesConformesProveidor" ReturnType="Collection(HispaniaComptabilitatModel.LiniesProveidorConformes_Result)">
+            <Parameter Name="ProviderOrder_Id" Mode="In" Type="Int32" />
+          </FunctionImport>
           </EntityContainer>
         <EntityType Name="LocalConnection">
           <Key>
@@ -4299,10 +4299,6 @@ advertencia 6002: La tabla o vista 'COMPTABILITAT.dbo.TEMP_DIARY_BANDAGE' no tie
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <ComplexType Name="LiniesProveidorConformes_Result">
-          <Property Type="Int32" Name="Column1" Nullable="true" />
-          <Property Type="Int32" Name="LiniesConformes" Nullable="false" />
-        </ComplexType>
         <ComplexType Name="ProviderOrderMovementsComments">
           <Property Type="String" Name="Comentari" Nullable="false" />
         </ComplexType>
@@ -4375,6 +4371,10 @@ advertencia 6002: La tabla o vista 'COMPTABILITAT.dbo.TEMP_DIARY_BANDAGE' no tie
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <ComplexType Name="LiniesProveidorConformes_Result">
+          <Property Type="Int32" Name="ProviderOrder_Id" Nullable="true" />
+          <Property Type="Int32" Name="LiniesConformes" Nullable="false" />
+        </ComplexType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -5364,14 +5364,6 @@ advertencia 6002: La tabla o vista 'COMPTABILITAT.dbo.TEMP_DIARY_BANDAGE' no tie
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="LiniesProveidorConformes" FunctionName="Store.LiniesProveidorConformes">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="HispaniaComptabilitatModel.LiniesProveidorConformes_Result">
-                <ScalarProperty Name="Column1" ColumnName="Column1" />
-                <ScalarProperty Name="LiniesConformes" ColumnName="LiniesConformes" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="ProviderOrderMovementsComments" FunctionName="Store.ProviderOrderMovementsComments" />
           <FunctionImportMapping FunctionImportName="SP_ProviderOrderMovementsComments" FunctionName="Store.ProviderOrderMovementsComments">
             <ResultMapping>
@@ -5401,6 +5393,14 @@ advertencia 6002: La tabla o vista 'COMPTABILITAT.dbo.TEMP_DIARY_BANDAGE' no tie
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="LiniesConformesProveidor" FunctionName="Store.LiniesProveidorConformes">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="HispaniaComptabilitatModel.LiniesProveidorConformes_Result">
+                <ScalarProperty Name="ProviderOrder_Id" ColumnName="ProviderOrder_Id" />
+                <ScalarProperty Name="LiniesConformes" ColumnName="LiniesConformes" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           </EntityContainerMapping>
 </Mapping></edmx:Mappings>
   </edmx:Runtime>

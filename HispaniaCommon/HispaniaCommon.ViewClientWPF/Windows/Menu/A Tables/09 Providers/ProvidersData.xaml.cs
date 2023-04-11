@@ -42,6 +42,11 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
         private GridLength ViewHistoricButton = new GridLength(160.0);
 
         /// <summary>
+        /// Hide the button bar.
+        /// </summary>
+        private GridLength HideHistoricButton = new GridLength(0.0);
+
+        /// <summary>
         /// Show the Accept button.
         /// </summary>
         private GridLength ViewAcceptButton = new GridLength(120.0);
@@ -355,7 +360,7 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                 {
                     case Operation.Show :
                          if (Provider == null) throw new InvalidOperationException("Error, impossible visualitzar un Proveïdor sense dades.");
-                         cbMiddlePanel.Width = HideAcceptButton;
+                        cbMiddleColumn_1.Width = HideAcceptButton;
                          tiConsullation.Visibility = Visibility.Visible;
                          gbSeveralDataAcum.Visibility = Visibility.Visible;
                          cbHistoricButton.Width = ViewHistoricButton;
@@ -364,8 +369,8 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                          break;
                     case Operation.Add:
                         ProvidersView NewProvider = new ProvidersView();
-                         //if (Provider == null) throw new InvalidOperationException("Error, impossible realitzar l'alta d'un Proveïdor sense Identificador.");
-                         cbMiddlePanel.Width = ViewAcceptButton;
+                        //if (Provider == null) throw new InvalidOperationException("Error, impossible realitzar l'alta d'un Proveïdor sense Identificador.");
+                        cbMiddleColumn_1.Width = ViewAcceptButton;
                          NewProvider.Provider_Id = GlobalViewModel.Instance.HispaniaViewModel.GetNextIdentityValueTable(NewProvider);
                          Provider = NewProvider;
                          tiConsullation.Visibility = Visibility.Hidden;
@@ -380,7 +385,7 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                          cbHistoricButton.Width = ViewHistoricButton;
                          gbSeveralDataAcum.Visibility = Visibility.Visible;
                          tbDataBankIBANCountryCode.ContextMenu = ctxmnuIBAN_Initial;
-                         cbMiddlePanel.Width = ViewAcceptButton;
+                        cbMiddleColumn_1.Width = ViewAcceptButton;
                          tbCancel.Text = "Cancel·lar";
                          break;
                 }

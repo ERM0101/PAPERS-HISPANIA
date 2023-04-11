@@ -4704,6 +4704,8 @@ namespace HispaniaCommon.DataAccess
                             {
                                 movementToDelete = db.ProviderOrderMovements.Find(movement.ProviderOrderMovement_Id);
                                 db.ProviderOrderMovements.Remove(movementToDelete);
+                                db.Entry(movementToDelete).State = EntityState.Deleted;
+                                db.SaveChanges();
                                 if (movement.According)
                                 {
                                     MovementGood = db.Goods.Find(movement.Good_Id);
@@ -6026,7 +6028,7 @@ namespace HispaniaCommon.DataAccess
         {
             using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
             {
-                List<HispaniaCompData.LiniesProveidorConformes_Result> LiniesConformes = db.LiniesProveidorConformes(ProviderOrder_Id).ToList();
+                List<HispaniaCompData.LiniesProveidorConformes_Result> LiniesConformes = db.LiniesConformesProveidor(ProviderOrder_Id).ToList();
                 if (LiniesConformes.Count == 1)
                 {
                     return LiniesConformes[0].LiniesConformes == 0 ? false : true;

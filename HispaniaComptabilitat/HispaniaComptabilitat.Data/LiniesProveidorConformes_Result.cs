@@ -13,7 +13,7 @@ namespace HispaniaComptabilitat.Data
     
     public partial class LiniesProveidorConformes_Result
     {
-        public Nullable<int> Column1 { get; set; }
+        public Nullable<int> ProviderOrder_Id { get; set; }
         public int LiniesConformes { get; set; }
     }
 }

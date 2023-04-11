@@ -638,7 +638,7 @@ namespace HispaniaCommon.ViewModel
         {
             get
             {
-                bool? LiniesConformes = GlobalViewModel.Instance.HispaniaViewModel.LiniesConformes(ProviderOrder_Id);
+                bool? LiniesConformes = GlobalViewModel.Instance.HispaniaViewModel.LiniesProveidorConformes(ProviderOrder_Id);
                 if (LiniesConformes == true)
                 {
                     return "pack://application:,,,/HispaniaCommon.ViewClientWPF;component/recursos/Imagenes/AcceptNonText.png";
@@ -658,7 +658,7 @@ namespace HispaniaCommon.ViewModel
         {
             get
             {
-                bool? LiniesConformes = GlobalViewModel.Instance.HispaniaViewModel.LiniesConformes(ProviderOrder_Id);
+                bool? LiniesConformes = GlobalViewModel.Instance.HispaniaViewModel.LiniesProveidorConformes(ProviderOrder_Id);
                 if (LiniesConformes == true)
                 {
                     return "Totes les línies estan conformes.";

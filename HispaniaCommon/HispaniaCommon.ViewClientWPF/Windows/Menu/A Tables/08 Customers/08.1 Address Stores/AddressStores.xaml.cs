@@ -514,7 +514,14 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                              GlobalViewModel.Instance.HispaniaViewModel.CreateAddressStore(NewAddressStore);
                              DataChangedManagerActive = false;
                              if (ListItems.SelectedItem != null) ListItems.UnselectAll();
-                             DataList = GlobalViewModel.Instance.HispaniaViewModel.GetAddressStores(Data.Customer_Id);
+                             if (Data == null)
+                            {
+                                DataList = GlobalViewModel.Instance.HispaniaViewModel.GetAddressStores(DataProv.Provider_Id);
+                            }else
+                            {
+                                DataList = GlobalViewModel.Instance.HispaniaViewModel.GetAddressStores(Data.Customer_Id);
+                            }
+                             
                              DataChangedManagerActive = true;
                          }
                          ListItems.SelectedItem = NewAddressStore;
@@ -541,7 +548,15 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                             }
                             DataChangedManagerActive = false;
                             if (ListItems.SelectedItem != null) ListItems.UnselectAll();
-                            DataList = GlobalViewModel.Instance.HispaniaViewModel.GetAddressStores(Data.Customer_Id);
+                            if (Data==null)
+                            {
+                                DataList = GlobalViewModel.Instance.HispaniaViewModel.GetAddressStores(DataProv.Provider_Id);
+                            }
+                            else
+                            {
+                                DataList = GlobalViewModel.Instance.HispaniaViewModel.GetAddressStores(Data.Customer_Id);
+                            }
+                            
                             DataChangedManagerActive = true;
                          }
                          ListItems.SelectedItem = NewAddressStore;
