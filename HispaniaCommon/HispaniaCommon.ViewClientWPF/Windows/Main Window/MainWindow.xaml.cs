@@ -1748,7 +1748,10 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                     ProvidersWindow = new Providers(AppType)
                     {
                         Print = false,
+                        EffectTypes = GlobalViewModel.Instance.HispaniaViewModel.EffectTypesDict,
                         PostalCodes = GlobalViewModel.Instance.HispaniaViewModel.PostalCodesDict,
+                        SendTypes = GlobalViewModel.Instance.HispaniaViewModel.SendTypesDict,
+                        IVATypes = GlobalViewModel.Instance.HispaniaViewModel.IVATypesDict,
                         Agents = GlobalViewModel.Instance.HispaniaViewModel.AgentsDict,
                         DataList = GlobalViewModel.Instance.HispaniaViewModel.Providers
                     };
@@ -1801,7 +1804,10 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                     {
                         Print = true,
                         PostalCodes = GlobalViewModel.Instance.HispaniaViewModel.PostalCodesDict,
+                        EffectTypes = GlobalViewModel.Instance.HispaniaViewModel.EffectTypesDict,
+                        SendTypes = GlobalViewModel.Instance.HispaniaViewModel.SendTypesDict,
                         Agents = GlobalViewModel.Instance.HispaniaViewModel.AgentsDict,
+                        IVATypes = GlobalViewModel.Instance.HispaniaViewModel.IVATypesDict,
                         DataList = GlobalViewModel.Instance.HispaniaViewModel.Providers
                     };
                     ProvidersPrintWindow.Closed += ProvidersPrintWindow_Closed;

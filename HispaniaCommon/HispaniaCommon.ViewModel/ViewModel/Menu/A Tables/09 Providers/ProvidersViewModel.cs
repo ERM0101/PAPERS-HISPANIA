@@ -119,6 +119,12 @@ namespace HispaniaCommon.ViewModel
             return new ProvidersView(GetProviderInDb(providersView.Provider_Id));
         }
 
+        public ProvidersView GetProviderFromDb(int Provider_Id)
+        {
+            return new ProvidersView(GetProviderInDb(Provider_Id));
+        }
+
+
         public HispaniaCompData.Provider GetProvider(int Providers_Id)
         {
             return GetProviderInDb(Providers_Id);
