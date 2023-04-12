@@ -133,10 +133,16 @@
     <Compile Include="HistoCumulativeCustomer.cs">
       <DependentUpon>HispaniaComptabilitatModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="HistoCumulativeProvider.cs">
+      <DependentUpon>HispaniaComptabilitatModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="HistoCustomer.cs">
       <DependentUpon>HispaniaComptabilitatModel.tt</DependentUpon>
     </Compile>
     <Compile Include="HistoGood.cs">
+      <DependentUpon>HispaniaComptabilitatModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="HistoProvider.cs">
       <DependentUpon>HispaniaComptabilitatModel.tt</DependentUpon>
     </Compile>
     <Compile Include="InputOutput.cs">
@@ -155,6 +161,9 @@
       <DependentUpon>HispaniaComptabilitatModel.tt</DependentUpon>
     </Compile>
     <Compile Include="LiniesConformes_Result1.cs">
+      <DependentUpon>HispaniaComptabilitatModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="LiniesProveidorConformes_Result.cs">
       <DependentUpon>HispaniaComptabilitatModel.tt</DependentUpon>
     </Compile>
     <Compile Include="LocalConnection.cs">
@@ -176,6 +185,15 @@
     <Compile Include="Provider.cs">
       <DependentUpon>HispaniaComptabilitatModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="ProviderOrder.cs">
+      <DependentUpon>HispaniaComptabilitatModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ProviderOrderMovement.cs">
+      <DependentUpon>HispaniaComptabilitatModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ProviderOrderMovementsComments.cs">
+      <DependentUpon>HispaniaComptabilitatModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="QueryCustom.cs">
       <DependentUpon>HispaniaComptabilitatModel.tt</DependentUpon>
     </Compile>
@@ -195,6 +213,9 @@
       <DependentUpon>HispaniaComptabilitatModel.tt</DependentUpon>
     </Compile>
     <Compile Include="RelatedCustomer.cs">
+      <DependentUpon>HispaniaComptabilitatModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RelatedProvider.cs">
       <DependentUpon>HispaniaComptabilitatModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Revisio.cs">

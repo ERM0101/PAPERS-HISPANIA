@@ -1,5 +1,6 @@
 ﻿#region Libraries used for the class
 
+using HispaniaComptabilitat.Data;
 using System;
 using System.Collections.Generic;
 using HispaniaCompData = HispaniaComptabilitat.Data;
@@ -29,7 +30,33 @@ namespace HispaniaCommon.ViewModel
         Comment,
         PostalCode,
         Data_Agent,
+        BillingData_BillingType,
+        BillingData_EarlyPaymentDiscount,
+        BillingData_RiskGranted,
+        BillingData_CurrentRisk,
+        BillingData_Unpaid,
+        BillingData_Duplicate,
+        BillingData_NumUnpaid,
+        Several_Remarks,
+        DataBank_Effect,
+        BillingData_Agent,
+        BillingData_IVAType,
+        BillingData_SendType,
+        DataBank_Bank,
+        DataBank_BankAddress,
+        DataBank_NumEffect,
+        DataBank_FirstExpirationData,
+        DataBank_ExpirationInterval,
+        DataBank_Payday_1,
+        DataBank_Payday_2,
+        DataBank_Payday_3,
+        DataBank_IBAN_CountryCode,
+        DataBank_IBAN_BankCode,
+        DataBank_IBAN_OfficeCode,
+        DataBank_IBAN_CheckDigits,
+        DataBank_IBAN_AccountNumber,       
         None,
+
     }
 
     /// <summary>
@@ -40,12 +67,12 @@ namespace HispaniaCommon.ViewModel
         #region Fields for Filter
 
         /// <summary>
-        /// Store the list of fields that compose the Customer class
+        /// Store the list of fields that compose the Provider class
         /// </summary>
         private static Dictionary<string, string> m_Fields = null;
 
         /// <summary>
-        /// Get the list of fields that compose the Customer class
+        /// Get the list of fields that compose the Provider class
         /// </summary>
         public static Dictionary<string, string> Fields
         {
@@ -239,6 +266,270 @@ namespace HispaniaCommon.ViewModel
 
         #endregion
 
+        #region Diversos
+        public string Several_Remarks { get; set; }
+        public decimal SeveralData_Acum_1 { get; set; }
+        public decimal SeveralData_Acum_2 { get; set; }
+        public decimal SeveralData_Acum_3 { get; set; }
+        public decimal SeveralData_Acum_4 { get; set; }
+        public decimal SeveralData_Acum_5 { get; set; }
+        public decimal SeveralData_Acum_6 { get; set; }
+        public decimal SeveralData_Acum_7 { get; set; }
+        public decimal SeveralData_Acum_8 { get; set; }
+        public decimal SeveralData_Acum_9 { get; set; }
+        public decimal SeveralData_Acum_10 { get; set; }
+        public decimal SeveralData_Acum_11 { get; set; }
+        public decimal SeveralData_Acum_12 { get; set; }
+        #endregion
+
+        #region Company
+
+        public string Company_Name { get; set; }
+        public string Company_Address { get; set; }
+        public string Company_Phone_1 { get; set; }
+        public string Company_Phone_2 { get; set; }
+        public string Company_Fax { get; set; }
+        public string Company_MobilePhone { get; set; }
+        public string Company_EMail { get; set; }
+        public string Company_EMail2 { get; set; }
+        public string Company_EMail3 { get; set; }
+        public string Company_ContactPerson { get; set; }
+        public string Company_TimeTable { get; set; }
+        public string Company_NumProv { get; set; }
+        public string Company_Cif { get; set; }
+
+        #endregion
+
+        #region Bank Data (Bancarios)
+
+        public decimal DataBank_NumEffect { get; set; }
+        public decimal DataBank_FirstExpirationData { get; set; }
+        public decimal DataBank_ExpirationInterval { get; set; }
+        public decimal DataBank_Payday_1 { get; set; }
+        public decimal DataBank_Payday_2 { get; set; }
+        public decimal DataBank_Payday_3 { get; set; }
+        public string DataBank_Bank { get; set; }
+        public string DataBank_BankAddress { get; set; }
+        public string DataBank_IBAN_CountryCode { get; set; }
+        public string DataBank_IBAN_BankCode { get; set; }
+        public string DataBank_IBAN_OfficeCode { get; set; }
+        public string DataBank_IBAN_CheckDigits { get; set; }
+        public string DataBank_IBAN_AccountNumber { get; set; }
+
+        #endregion
+
+        #region Postal Codes
+
+        private int? _Company_PostalCode_Id { get; set; }
+
+        private PostalCodesView _Company_PostalCode;
+
+        public PostalCodesView Company_PostalCode
+        {
+            get
+            {
+                if ((_Company_PostalCode == null) && (_Company_PostalCode_Id != GlobalViewModel.IntIdInitValue) &&
+                    (_Company_PostalCode_Id != null))
+                {
+                    _Company_PostalCode = new PostalCodesView(GlobalViewModel.Instance.HispaniaViewModel.GetPostalCode((int)_Company_PostalCode_Id));
+                }
+                return (_Company_PostalCode);
+            }
+            set
+            {
+                if (value != null)
+                {
+                    _Company_PostalCode = new PostalCodesView(value);
+                    if (_Company_PostalCode == null) _Company_PostalCode_Id = GlobalViewModel.IntIdInitValue;
+                    else _Company_PostalCode_Id = _Company_PostalCode.PostalCode_Id;
+                }
+                else
+                {
+                    _Company_PostalCode = null;
+                    _Company_PostalCode_Id = GlobalViewModel.IntIdInitValue;
+                }
+            }
+        }
+
+        public string Company_PostalCode_Str
+        {
+            get
+            {
+                return (Company_PostalCode == null) ? string.Empty : Company_PostalCode.Postal_Code;
+            }
+        }
+
+        public string Company_City_Str
+        {
+            get
+            {
+                return (Company_PostalCode == null) ? string.Empty : Company_PostalCode.City;
+            }
+        }
+
+        public string Company_Province_Str
+        {
+            get
+            {
+                return (Company_PostalCode == null) ? string.Empty : Company_PostalCode.Province;
+            }
+        }
+
+        #endregion
+
+        #region IVATypes
+
+        private int? _BillingData_IVAType_Id;
+
+        private IVATypesView _BillingData_IVAType;
+
+        public IVATypesView BillingData_IVAType
+        {
+            get
+            {
+                if ((_BillingData_IVAType == null) && (_BillingData_IVAType_Id != GlobalViewModel.IntIdInitValue) &&
+                    (_BillingData_IVAType_Id != null))
+                {
+                    _BillingData_IVAType = new IVATypesView(GlobalViewModel.Instance.HispaniaViewModel.GetIVAType((int)_BillingData_IVAType_Id));
+                }
+                return (_BillingData_IVAType);
+            }
+            set
+            {
+                if (value != null)
+                {
+                    _BillingData_IVAType = new IVATypesView(value);
+                    if (_BillingData_IVAType == null) _BillingData_IVAType_Id = GlobalViewModel.IntIdInitValue;
+                    else _BillingData_IVAType_Id = _BillingData_IVAType.IVAType_Id;
+                }
+                else
+                {
+                    _BillingData_IVAType = null;
+                    _BillingData_IVAType_Id = GlobalViewModel.IntIdInitValue;
+                }
+            }
+        }
+
+        #endregion
+
+        #region SendTypes
+
+        private int? _BillingData_SendType_Id;
+
+        private SendTypesView _BillingData_SendType;
+
+        public SendTypesView BillingData_SendType
+        {
+            get
+            {
+                if ((_BillingData_SendType == null) && (_BillingData_SendType_Id != GlobalViewModel.IntIdInitValue) &&
+                    (_BillingData_SendType_Id != null))
+                {
+                    _BillingData_SendType = new SendTypesView(GlobalViewModel.Instance.HispaniaViewModel.GetSendType((int)_BillingData_SendType_Id));
+                }
+                return (_BillingData_SendType);
+            }
+            set
+            {
+                if (value != null)
+                {
+                    _BillingData_SendType = new SendTypesView(value);
+                    if (_BillingData_SendType == null) _BillingData_SendType_Id = GlobalViewModel.IntIdInitValue;
+                    else _BillingData_SendType_Id = _BillingData_SendType.SendType_Id;
+                }
+                else
+                {
+                    _BillingData_SendType = null;
+                    _BillingData_SendType_Id = GlobalViewModel.IntIdInitValue;
+                }
+            }
+        }
+
+        #endregion
+
+        #region EffectTypes
+
+        private int? _DataBank_EffectType_Id;
+
+        public EffectTypesView _DataBank_EffectType;
+
+        public EffectTypesView DataBank_EffectType
+        {
+            get
+            {
+                if ((_DataBank_EffectType == null) && (_DataBank_EffectType_Id != GlobalViewModel.IntIdInitValue) &&
+                    (_DataBank_EffectType_Id != null))
+                {
+                    _DataBank_EffectType = new EffectTypesView(GlobalViewModel.Instance.HispaniaViewModel.GetEffectType((int)_DataBank_EffectType_Id));
+                }
+                return (_DataBank_EffectType);
+            }
+            set
+            {
+                if (value != null)
+                {
+                    _DataBank_EffectType = new EffectTypesView(value);
+                    if (_DataBank_EffectType == null) _DataBank_EffectType_Id = GlobalViewModel.IntIdInitValue;
+                    else _DataBank_EffectType_Id = _DataBank_EffectType.EffectType_Id;
+                }
+                else
+                {
+                    _DataBank_EffectType = null;
+                    _DataBank_EffectType_Id = GlobalViewModel.IntIdInitValue;
+                }
+            }
+        }
+
+        #endregion
+
+        #region Agents
+
+        private int? _BillingData_Agent_Id;
+
+        private AgentsView _BillingData_Agent;
+
+        public AgentsView BillingData_Agent
+        {
+            get
+            {
+                if ((_BillingData_Agent == null) && (_BillingData_Agent_Id != GlobalViewModel.IntIdInitValue) &&
+                    (_BillingData_Agent_Id != null))
+                {
+                    _BillingData_Agent = new AgentsView(GlobalViewModel.Instance.HispaniaViewModel.GetAgent((int)_BillingData_Agent_Id));
+                }
+                return (_BillingData_Agent);
+            }
+            set
+            {
+                if (value != null)
+                {
+                    _BillingData_Agent = new AgentsView(value);
+                    if (_BillingData_Agent == null) _BillingData_Agent_Id = GlobalViewModel.IntIdInitValue;
+                    else _BillingData_Agent_Id = _BillingData_Agent.Agent_Id;
+                }
+                else
+                {
+                    _BillingData_Agent = null;
+                    _BillingData_Agent_Id = GlobalViewModel.IntIdInitValue;
+                }
+            }
+        }
+
+        #endregion
+
+        #region Billing Data (Facturación)
+        public string BillingData_BillingType { get; set; }
+        public decimal BillingData_Duplicate { get; set; }
+        public decimal BillingData_EarlyPaymentDiscount { get; set; }
+        public bool BillingData_Valued { get; set; }
+        public decimal BillingData_RiskGranted { get; set; }
+        public decimal BillingData_CurrentRisk { get; set; }
+        public decimal BillingData_Unpaid { get; set; }
+        public decimal BillingData_NumUnpaid { get; set; }
+        public DateTime BillingData_Register { get; set; }
+
+        #endregion
+
         #endregion
 
         #region Builders
@@ -266,6 +557,43 @@ namespace HispaniaCommon.ViewModel
             Canceled = false;
             PostalCode = null;
             Data_Agent = null;
+            BillingData_EarlyPaymentDiscount = GlobalViewModel.DecimalInitValue;
+            DataBank_NumEffect = GlobalViewModel.DecimalInitValue;
+            DataBank_FirstExpirationData = GlobalViewModel.DecimalInitValue;
+            DataBank_ExpirationInterval = GlobalViewModel.DecimalInitValue;
+            DataBank_Payday_1 = GlobalViewModel.DecimalInitValue;
+            DataBank_Payday_2 = GlobalViewModel.DecimalInitValue;
+            DataBank_Payday_3 = GlobalViewModel.DecimalInitValue;
+            DataBank_Bank = string.Empty;
+            DataBank_BankAddress = string.Empty;
+            DataBank_IBAN_CountryCode = string.Empty;
+            DataBank_IBAN_BankCode = string.Empty;
+            DataBank_IBAN_OfficeCode = string.Empty;
+            DataBank_IBAN_CheckDigits = string.Empty;
+            DataBank_IBAN_AccountNumber = string.Empty;
+            BillingData_BillingType = string.Empty;
+            BillingData_Duplicate = GlobalViewModel.DecimalInitValue;
+            BillingData_EarlyPaymentDiscount = GlobalViewModel.DecimalInitValue;
+            BillingData_Valued = false;
+            BillingData_RiskGranted = GlobalViewModel.DecimalInitValue;
+            BillingData_CurrentRisk = GlobalViewModel.DecimalInitValue;
+            BillingData_Unpaid = GlobalViewModel.DecimalInitValue;
+            BillingData_NumUnpaid = GlobalViewModel.DecimalInitValue;
+            BillingData_Register = DateTime.Now;
+            Several_Remarks = string.Empty;
+            SeveralData_Acum_1 = GlobalViewModel.DecimalInitValue;
+            SeveralData_Acum_2 = GlobalViewModel.DecimalInitValue;
+            SeveralData_Acum_3 = GlobalViewModel.DecimalInitValue;
+            SeveralData_Acum_4 = GlobalViewModel.DecimalInitValue;
+            SeveralData_Acum_5 = GlobalViewModel.DecimalInitValue;
+            SeveralData_Acum_6 = GlobalViewModel.DecimalInitValue;
+            SeveralData_Acum_7 = GlobalViewModel.DecimalInitValue;
+            SeveralData_Acum_8 = GlobalViewModel.DecimalInitValue;
+            SeveralData_Acum_9 = GlobalViewModel.DecimalInitValue;
+            SeveralData_Acum_10 = GlobalViewModel.DecimalInitValue;
+            SeveralData_Acum_11 = GlobalViewModel.DecimalInitValue;
+            SeveralData_Acum_12 = GlobalViewModel.DecimalInitValue;
+            BillingData_IVAType = null;           
         }
 
         /// <summary>
@@ -289,8 +617,51 @@ namespace HispaniaCommon.ViewModel
             AdditionalDiscount = GlobalViewModel.GetDecimalValue(GlobalViewModel.GetStringFromDecimalValue(provider.AdditionalDiscount, DecimalType.Percent));
             Comment = provider.Comment;
             Canceled = provider.Canceled;
+            
+            DataBank_NumEffect = provider.DataBank_NumEffect;
+            DataBank_FirstExpirationData = provider.DataBank_FirstExpirationData;
+            DataBank_ExpirationInterval = provider.DataBank_ExpirationInterval;
+            DataBank_Payday_1 = provider.DataBank_Payday_1;
+            DataBank_Payday_2 = provider.DataBank_Payday_2;
+            DataBank_Payday_3 = provider.DataBank_Payday_3;
+            DataBank_Bank = provider.DataBank_Bank;
+            DataBank_BankAddress = provider.DataBank_BankAddress;
+            DataBank_IBAN_CountryCode = provider.DataBank_IBAN_CountryCode;
+            DataBank_IBAN_BankCode = provider.DataBank_IBAN_BankCode;
+            DataBank_IBAN_OfficeCode = provider.DataBank_IBAN_OfficeCode;
+            DataBank_IBAN_CheckDigits = provider.DataBank_IBAN_CheckDigits;
+            DataBank_IBAN_AccountNumber = provider.DataBank_IBAN_AccountNumber;
+            BillingData_BillingType = provider.BillingData_BillingType;
+            BillingData_Duplicate = GlobalViewModel.GetDecimalValue(provider.BillingData_Duplicate);
+            BillingData_EarlyPaymentDiscount = GlobalViewModel.GetDecimalValue(provider.BillingData_EarlyPaymentDiscount);
+            BillingData_Valued = provider.BillingData_Valued;
+            BillingData_RiskGranted = GlobalViewModel.GetDecimalValue(provider.BillingData_RiskGranted);
+            BillingData_CurrentRisk = GlobalViewModel.GetDecimalValue(provider.BillingData_CurrentRisk);
+            BillingData_Unpaid = GlobalViewModel.GetDecimalValue(provider.BillingData_Unpaid);
+            BillingData_NumUnpaid = GlobalViewModel.GetDecimalValue(provider.BillingData_NumUnpaid);
+            BillingData_Register = GlobalViewModel.GetDateTimeValue(provider.BillingData_Register);
+            Several_Remarks = provider.Several_Remarks;
+            SeveralData_Acum_1 = GlobalViewModel.GetDecimalValue(provider.SeveralData_Acum_1);
+            SeveralData_Acum_2 = GlobalViewModel.GetDecimalValue(provider.SeveralData_Acum_2);
+            SeveralData_Acum_3 = GlobalViewModel.GetDecimalValue(provider.SeveralData_Acum_3);
+            SeveralData_Acum_4 = GlobalViewModel.GetDecimalValue(provider.SeveralData_Acum_4);
+            SeveralData_Acum_5 = GlobalViewModel.GetDecimalValue(provider.SeveralData_Acum_5);
+            SeveralData_Acum_6 = GlobalViewModel.GetDecimalValue(provider.SeveralData_Acum_6);
+            SeveralData_Acum_7 = GlobalViewModel.GetDecimalValue(provider.SeveralData_Acum_7);
+            SeveralData_Acum_8 = GlobalViewModel.GetDecimalValue(provider.SeveralData_Acum_8);
+            SeveralData_Acum_9 = GlobalViewModel.GetDecimalValue(provider.SeveralData_Acum_9);
+            SeveralData_Acum_10 = GlobalViewModel.GetDecimalValue(provider.SeveralData_Acum_10);
+            SeveralData_Acum_11 = GlobalViewModel.GetDecimalValue(provider.SeveralData_Acum_11);
+            SeveralData_Acum_12 = GlobalViewModel.GetDecimalValue(provider.SeveralData_Acum_12);
             _PostalCode_Id = GlobalViewModel.GetIntFromIntIdValue(provider.PostalCode_Id);
             _Data_Agent_Id = GlobalViewModel.GetIntFromIntIdValue(provider.Agent_Id);
+            _PostalCode_Id = provider.PostalCode_Id;
+            _DataBank_EffectType_Id = provider.DataBank_EffectType_Id;
+            _BillingData_Agent_Id = provider.BillingData_Agent_Id;
+            _BillingData_IVAType_Id = provider.BillingData_IVAType_Id;
+            _BillingData_SendType_Id = provider.BillingData_SendType_Id;
+            //QueryData_Active = false;
+            //QueryData_Print = false;
         }
 
         /// <summary>
@@ -317,11 +688,52 @@ namespace HispaniaCommon.ViewModel
             Canceled = provider.Canceled;
             PostalCode = provider.PostalCode;
             Data_Agent = provider.Data_Agent;
+            DataBank_NumEffect = provider.DataBank_NumEffect;
+            DataBank_FirstExpirationData = provider.DataBank_FirstExpirationData;
+            DataBank_ExpirationInterval = provider.DataBank_ExpirationInterval;
+            DataBank_Payday_1 = provider.DataBank_Payday_1;
+            DataBank_Payday_2 = provider.DataBank_Payday_2;
+            DataBank_Payday_3 = provider.DataBank_Payday_3;
+            DataBank_Bank = provider.DataBank_Bank;
+            DataBank_BankAddress = provider.DataBank_BankAddress;
+            DataBank_IBAN_CountryCode = provider.DataBank_IBAN_CountryCode;
+            DataBank_IBAN_BankCode = provider.DataBank_IBAN_BankCode;
+            DataBank_IBAN_OfficeCode = provider.DataBank_IBAN_OfficeCode;
+            DataBank_IBAN_CheckDigits = provider.DataBank_IBAN_CheckDigits;
+            DataBank_IBAN_AccountNumber = provider.DataBank_IBAN_AccountNumber;
+            Company_Cif = provider.Company_Cif;
+            BillingData_BillingType = provider.BillingData_BillingType;
+            BillingData_Duplicate = provider.BillingData_Duplicate;
+            BillingData_EarlyPaymentDiscount = provider.BillingData_EarlyPaymentDiscount;
+            BillingData_Valued = provider.BillingData_Valued;
+            BillingData_RiskGranted = provider.BillingData_RiskGranted;
+            BillingData_CurrentRisk = provider.BillingData_CurrentRisk;
+            BillingData_Unpaid = provider.BillingData_Unpaid;
+            BillingData_NumUnpaid = provider.BillingData_NumUnpaid;
+            BillingData_Register = provider.BillingData_Register;
+            Several_Remarks = provider.Several_Remarks;
+            SeveralData_Acum_1 = provider.SeveralData_Acum_1;
+            SeveralData_Acum_2 = provider.SeveralData_Acum_2;
+            SeveralData_Acum_3 = provider.SeveralData_Acum_3;
+            SeveralData_Acum_4 = provider.SeveralData_Acum_4;
+            SeveralData_Acum_5 = provider.SeveralData_Acum_5;
+            SeveralData_Acum_6 = provider.SeveralData_Acum_6;
+            SeveralData_Acum_7 = provider.SeveralData_Acum_7;
+            SeveralData_Acum_8 = provider.SeveralData_Acum_8;
+            SeveralData_Acum_9 = provider.SeveralData_Acum_9;
+            SeveralData_Acum_10 = provider.SeveralData_Acum_10;
+            SeveralData_Acum_11 = provider.SeveralData_Acum_11;
+            SeveralData_Acum_12 = provider.SeveralData_Acum_12;
+            Company_PostalCode = provider.Company_PostalCode;
+            DataBank_EffectType = provider.DataBank_EffectType;
+            BillingData_Agent = provider.BillingData_Agent;
+            BillingData_IVAType = provider.BillingData_IVAType;
+            BillingData_SendType = provider.BillingData_SendType;
         }
 
         #endregion
 
-        #region GetCustomer
+        #region GetProvider
 
         /// <summary>
         /// Builder by default of the class.
@@ -448,6 +860,138 @@ namespace HispaniaCommon.ViewModel
                 ErrorField = ProvidersAttributes.Data_Agent;
                 throw new FormatException("Error, manca seleccionar l'Agent.");
             }
+            #region DataBank Fields
+            if (!GlobalViewModel.IsEmptyOrComment(DataBank_Bank))
+            {
+                ErrorField = ProvidersAttributes.DataBank_Bank;
+                throw new FormatException("Error, format incorrecte del NOM DEL BANC");
+            }
+            if (!GlobalViewModel.IsEmptyOrAddress(DataBank_BankAddress))
+            {
+                ErrorField = ProvidersAttributes.DataBank_BankAddress;
+                throw new FormatException("Error, format incorrecte de l'ADREÇA DEL BANC");
+            }
+            if (!GlobalViewModel.IsEmptyOrShortDecimal(DataBank_NumEffect, "NUMERO D''EFECTE", out ErrMsg))
+            {
+                ErrorField = ProvidersAttributes.DataBank_NumEffect;
+                throw new FormatException(ErrMsg);
+            }
+            if (!GlobalViewModel.IsEmptyOrShortDecimal(DataBank_FirstExpirationData, "DIES DE PRIMER VENCIMENT", out ErrMsg))
+            {
+                ErrorField = ProvidersAttributes.DataBank_FirstExpirationData;
+                throw new FormatException(ErrMsg);
+            }
+            if (!GlobalViewModel.IsEmptyOrShortDecimal(DataBank_ExpirationInterval, "INTERVAL DE VENCIMENT", out ErrMsg))
+            {
+                ErrorField = ProvidersAttributes.DataBank_ExpirationInterval;
+                throw new FormatException(ErrMsg);
+            }
+            if (!GlobalViewModel.IsEmptyOrShortDecimal(DataBank_Payday_1, "PRIMER DIA DE PAGAMENT", out ErrMsg))
+            {
+                ErrorField = ProvidersAttributes.DataBank_Payday_1;
+                throw new FormatException(ErrMsg);
+            }
+            if (!GlobalViewModel.IsEmptyOrShortDecimal(DataBank_Payday_2, "SEGON DIA DE PAGAMENT", out ErrMsg))
+            {
+                ErrorField = ProvidersAttributes.DataBank_Payday_2;
+                throw new FormatException(ErrMsg);
+            }
+            if (!GlobalViewModel.IsEmptyOrShortDecimal(DataBank_Payday_3, "TERCER DIA DE PAGAMENT", out ErrMsg))
+            {
+                ErrorField = ProvidersAttributes.DataBank_Payday_3;
+                throw new FormatException(ErrMsg);
+            }
+            string CCC = string.Format("{0}{1}{2}{3}", DataBank_IBAN_BankCode, DataBank_IBAN_OfficeCode,
+                                                       DataBank_IBAN_CheckDigits, DataBank_IBAN_AccountNumber);
+            if (!GlobalViewModel.IsEmptyOrIBAN_CountryCode(DataBank_IBAN_CountryCode, CCC, out ErrMsg))
+            {
+                ErrorField = ProvidersAttributes.DataBank_IBAN_CountryCode;
+                throw new FormatException(ErrMsg);
+            }
+            if (!GlobalViewModel.IsEmptyOrIBAN_BankCode(DataBank_IBAN_BankCode))
+            {
+                ErrorField = ProvidersAttributes.DataBank_IBAN_BankCode;
+                throw new FormatException(GlobalViewModel.ValidationEmptyOrIBAN_BankCodeError);
+            }
+            if (!GlobalViewModel.IsEmptyOrIBAN_OfficeCode(DataBank_IBAN_OfficeCode))
+            {
+                ErrorField = ProvidersAttributes.DataBank_IBAN_OfficeCode;
+                throw new FormatException(GlobalViewModel.ValidationEmptyOrIBAN_OfficeCodeError);
+            }
+            if (!GlobalViewModel.IsEmptyOrIBAN_CheckDigits(DataBank_IBAN_CheckDigits))
+            {
+                ErrorField = ProvidersAttributes.DataBank_IBAN_CheckDigits;
+                throw new FormatException(GlobalViewModel.ValidationEmptyOrIBAN_CheckDigitsError);
+            }
+            if (!GlobalViewModel.IsEmptyOrIBAN_AccountNumber(DataBank_IBAN_AccountNumber))
+            {
+                ErrorField = ProvidersAttributes.DataBank_IBAN_AccountNumber;
+                throw new FormatException(GlobalViewModel.ValidationEmptyOrIBAN_AccountNumberError);
+            }
+            #endregion
+            #region BillingData Fields
+            if (!GlobalViewModel.IsEmptyOrShortDecimal(BillingData_BillingType, "TIPUS DE FACTURACIÓ", out ErrMsg))
+            {
+                ErrorField = ProvidersAttributes.BillingData_BillingType;
+                throw new FormatException(ErrMsg);
+            }
+            if (!GlobalViewModel.IsEmptyOrPercent(BillingData_EarlyPaymentDiscount, "DESCOMPTE PAGAMENT IMMEDIAT", out ErrMsg))
+            {
+                ErrorField = ProvidersAttributes.BillingData_EarlyPaymentDiscount;
+                throw new FormatException(ErrMsg);
+            }
+            if (!GlobalViewModel.IsEmptyOrCurrency(BillingData_RiskGranted, "RISC CONCEDIT", out ErrMsg))
+            {
+                ErrorField = ProvidersAttributes.BillingData_RiskGranted;
+                throw new FormatException(ErrMsg);
+            }
+            if (!GlobalViewModel.IsEmptyOrCurrency(BillingData_CurrentRisk, "RISC ACTUAL", out ErrMsg))
+            {
+                ErrorField = ProvidersAttributes.BillingData_CurrentRisk;
+                throw new FormatException(ErrMsg);
+            }
+            if (!GlobalViewModel.IsEmptyOrCurrency(BillingData_Unpaid, "IMPORT IMPAGATS", out ErrMsg))
+            {
+                ErrorField = ProvidersAttributes.BillingData_Unpaid;
+                throw new FormatException(ErrMsg);
+            }
+            if (!GlobalViewModel.IsEmptyOrShortDecimal(BillingData_Duplicate, "FACTURES DUPLICADES", out ErrMsg))
+            {
+                ErrorField = ProvidersAttributes.BillingData_Duplicate;
+                throw new FormatException(ErrMsg);
+            }
+            if (!GlobalViewModel.IsEmptyOrShortDecimal(BillingData_NumUnpaid, "FACTURES IMPAGADES", out ErrMsg))
+            {
+                ErrorField = ProvidersAttributes.BillingData_NumUnpaid;
+                throw new FormatException(ErrMsg);
+            }
+            if (!GlobalViewModel.IsEmptyOrComment(Several_Remarks))
+            {
+                ErrorField = ProvidersAttributes.Several_Remarks;
+                throw new FormatException(GlobalViewModel.ValidationCommentError);
+            }
+            #endregion
+            
+            if (DataBank_EffectType == null)
+            {
+                ErrorField = ProvidersAttributes.DataBank_Effect;
+                throw new FormatException("Error, manca seleccionar el Tipus d'Efecte.");
+            }
+            if (BillingData_Agent == null)
+            {
+                ErrorField = ProvidersAttributes.BillingData_Agent;
+                throw new FormatException("Error, manca seleccionar l'Agent.");
+            }
+            if (BillingData_IVAType == null)
+            {
+                ErrorField = ProvidersAttributes.BillingData_IVAType;
+                throw new FormatException("Error, manca seleccionar el Tipus d'IVA.");
+            }
+            if (BillingData_SendType == null)
+            {
+                ErrorField = ProvidersAttributes.BillingData_SendType;
+                throw new FormatException("Error, manca seleccionar el Tipus d'Enviament.");
+            }
         }
 
         /// <summary>
@@ -473,6 +1017,32 @@ namespace HispaniaCommon.ViewModel
             PostalCode = Data.PostalCode;
             Comment = Data.Comment;
             Canceled = Data.Canceled;
+            DataBank_Bank = Data.DataBank_Bank;
+            DataBank_BankAddress = Data.DataBank_BankAddress;
+            DataBank_NumEffect = Data.DataBank_NumEffect;
+            DataBank_FirstExpirationData = Data.DataBank_FirstExpirationData;
+            DataBank_ExpirationInterval = Data.DataBank_ExpirationInterval;
+            DataBank_Payday_1 = Data.DataBank_Payday_1;
+            DataBank_Payday_2 = Data.DataBank_Payday_2;
+            DataBank_Payday_3 = Data.DataBank_Payday_3;
+            DataBank_IBAN_CountryCode = Data.DataBank_IBAN_CountryCode;
+            DataBank_IBAN_BankCode = Data.DataBank_IBAN_BankCode;
+            DataBank_IBAN_OfficeCode = Data.DataBank_IBAN_OfficeCode;
+            DataBank_IBAN_CheckDigits = Data.DataBank_IBAN_CheckDigits;
+            DataBank_IBAN_AccountNumber = Data.DataBank_IBAN_AccountNumber;
+            BillingData_BillingType = Data.BillingData_BillingType;
+            BillingData_EarlyPaymentDiscount = Data.BillingData_EarlyPaymentDiscount;
+            BillingData_RiskGranted = Data.BillingData_RiskGranted;
+            BillingData_CurrentRisk = Data.BillingData_CurrentRisk;
+            BillingData_Unpaid = Data.BillingData_Unpaid;
+            BillingData_Duplicate = Data.BillingData_Duplicate;
+            BillingData_NumUnpaid = Data.BillingData_NumUnpaid;
+            Several_Remarks = Data.Several_Remarks;
+            Company_PostalCode = Data.Company_PostalCode;
+            DataBank_EffectType = Data.DataBank_EffectType;
+            BillingData_Agent = Data.BillingData_Agent;
+            BillingData_IVAType = Data.BillingData_IVAType;
+            BillingData_SendType = Data.BillingData_SendType;
         }
 
         /// <summary>
@@ -532,6 +1102,81 @@ namespace HispaniaCommon.ViewModel
                 case ProvidersAttributes.Comment:
                      Comment = Data.Comment;
                      break;
+                case ProvidersAttributes.DataBank_Bank:
+                    DataBank_Bank = Data.DataBank_Bank;
+                    break;
+                case ProvidersAttributes.DataBank_BankAddress:
+                    DataBank_BankAddress = Data.DataBank_BankAddress;
+                    break;
+                case ProvidersAttributes.DataBank_NumEffect:
+                    DataBank_NumEffect = Data.DataBank_NumEffect;
+                    break;
+                case ProvidersAttributes.DataBank_FirstExpirationData:
+                    DataBank_FirstExpirationData = Data.DataBank_FirstExpirationData;
+                    break;
+                case ProvidersAttributes.DataBank_ExpirationInterval:
+                    DataBank_ExpirationInterval = Data.DataBank_ExpirationInterval;
+                    break;
+                case ProvidersAttributes.DataBank_Payday_1:
+                    DataBank_Payday_1 = Data.DataBank_Payday_1;
+                    break;
+                case ProvidersAttributes.DataBank_Payday_2:
+                    DataBank_Payday_2 = Data.DataBank_Payday_2;
+                    break;
+                case ProvidersAttributes.DataBank_Payday_3:
+                    DataBank_Payday_3 = Data.DataBank_Payday_3;
+                    break;
+                case ProvidersAttributes.DataBank_IBAN_CountryCode:
+                    DataBank_IBAN_CountryCode = Data.DataBank_IBAN_CountryCode;
+                    break;
+                case ProvidersAttributes.DataBank_IBAN_BankCode:
+                    DataBank_IBAN_BankCode = Data.DataBank_IBAN_BankCode;
+                    break;
+                case ProvidersAttributes.DataBank_IBAN_OfficeCode:
+                    DataBank_IBAN_OfficeCode = Data.DataBank_IBAN_OfficeCode;
+                    break;
+                case ProvidersAttributes.DataBank_IBAN_CheckDigits:
+                    DataBank_IBAN_CheckDigits = Data.DataBank_IBAN_CheckDigits;
+                    break;
+                case ProvidersAttributes.DataBank_IBAN_AccountNumber:
+                    DataBank_IBAN_AccountNumber = Data.DataBank_IBAN_AccountNumber;
+                    break;
+                case ProvidersAttributes.BillingData_BillingType:
+                    BillingData_BillingType = Data.BillingData_BillingType;
+                    break;
+                case ProvidersAttributes.BillingData_EarlyPaymentDiscount:
+                    BillingData_EarlyPaymentDiscount = Data.BillingData_EarlyPaymentDiscount;
+                    break;
+                case ProvidersAttributes.BillingData_RiskGranted:
+                    BillingData_RiskGranted = Data.BillingData_RiskGranted;
+                    break;
+                case ProvidersAttributes.BillingData_CurrentRisk:
+                    BillingData_CurrentRisk = Data.BillingData_CurrentRisk;
+                    break;
+                case ProvidersAttributes.BillingData_Unpaid:
+                    BillingData_Unpaid = Data.BillingData_Unpaid;
+                    break;
+                case ProvidersAttributes.BillingData_Duplicate:
+                    BillingData_Duplicate = Data.BillingData_Duplicate;
+                    break;
+                case ProvidersAttributes.BillingData_NumUnpaid:
+                    BillingData_NumUnpaid = Data.BillingData_NumUnpaid;
+                    break;
+                case ProvidersAttributes.Several_Remarks:
+                    Several_Remarks = Data.Several_Remarks;
+                    break;               
+                case ProvidersAttributes.DataBank_Effect:
+                    DataBank_EffectType = Data.DataBank_EffectType;
+                    break;
+                case ProvidersAttributes.BillingData_Agent:
+                    BillingData_Agent = Data.BillingData_Agent;
+                    break;
+                case ProvidersAttributes.BillingData_IVAType:
+                    BillingData_IVAType = Data.BillingData_IVAType;
+                    break;
+                case ProvidersAttributes.BillingData_SendType:
+                    BillingData_SendType = Data.BillingData_SendType;
+                    break;
                 default:
                      break;
             }

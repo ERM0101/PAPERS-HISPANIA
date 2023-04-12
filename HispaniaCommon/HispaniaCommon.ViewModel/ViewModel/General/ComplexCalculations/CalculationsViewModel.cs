@@ -114,6 +114,44 @@ namespace HispaniaCommon.ViewModel
             }
         }
 
+        public void CalculateAmountInfo(ProvidersView Provider,
+                                       List<ProviderOrdersView> ProviderOrders,
+                                       out ObservableCollection<ProviderOrderMovementsView> Movements,
+                                       out decimal GrossAmount,
+                                       out decimal EarlyPayementDiscountAmount,
+                                       out decimal TaxableBaseAmount,
+                                       out decimal IVAAmount,
+                                       out decimal SurchargeAmount,
+                                       out decimal TotalAmount)
+        {
+            Movements = new ObservableCollection<ProviderOrderMovementsView>();
+            if (!(ProviderOrders is null) && (ProviderOrders.Count > 0))
+            {
+                foreach (ProviderOrdersView providerOrder in ProviderOrders)
+                {
+                    foreach (ProviderOrderMovementsView Movement in GetProviderOrderMovements(providerOrder.ProviderOrder_Id))
+                    {
+                        Movements.Add(Movement);
+                    }
+                }
+                decimal EarlyPaymentDiscountPrecent = Provider.BillingData_EarlyPaymentDiscount;
+                decimal IVAPercent = (Provider.BillingData_IVAType is null) ? 0 : Provider.BillingData_IVAType.IVAPercent;
+                decimal SurchargePercent = (Provider.BillingData_IVAType is null) ? 0 : Provider.BillingData_IVAType.SurchargePercent;
+                CalculateAmountInfo(Movements, EarlyPaymentDiscountPrecent, IVAPercent, SurchargePercent,
+                                    out GrossAmount, out EarlyPayementDiscountAmount, out TaxableBaseAmount,
+                                    out IVAAmount, out SurchargeAmount, out TotalAmount);
+            }
+            else
+            {
+                GrossAmount = 0;
+                EarlyPayementDiscountAmount = 0;
+                TaxableBaseAmount = 0;
+                IVAAmount = 0;
+                SurchargeAmount = 0;
+                TotalAmount = 0;
+            }
+        }
+              
         public void CalculateAmountInfo(CustomersView Customer, BillsView Bill, out decimal TotalAmount)
         {
             if (!(CustomerOrders is null) && (CustomerOrders.Count > 0))
@@ -136,6 +174,28 @@ namespace HispaniaCommon.ViewModel
             else TotalAmount = 0;
         }
 
+        public void CalculateAmountInfo(ProvidersView Provider, BillsView Bill, out decimal TotalAmount)
+        {
+            if (!(ProviderOrders is null) && (ProviderOrders.Count > 0))
+            {
+                ObservableCollection<ProviderOrderMovementsView> Movements = new ObservableCollection<ProviderOrderMovementsView>();
+                foreach (ProviderOrdersView providerOrder in Bill.ProviderOrders)
+                {
+                    foreach (ProviderOrderMovementsView Movement in GetProviderOrderMovements(providerOrder.ProviderOrder_Id))
+                    {
+                        Movements.Add(Movement);
+                    }
+                }
+                decimal EarlyPaymentDiscountPrecent = Provider.BillingData_EarlyPaymentDiscount;
+                decimal IVAPercent = (Provider.BillingData_IVAType is null) ? 0 : Provider.BillingData_IVAType.IVAPercent;
+                decimal SurchargePercent = (Provider.BillingData_IVAType is null) ? 0 : Provider.BillingData_IVAType.SurchargePercent;
+                CalculateAmountInfo(Movements, EarlyPaymentDiscountPrecent, IVAPercent, SurchargePercent,
+                                    out decimal GrossAmount, out decimal EarlyPayementDiscountAmount, out decimal TaxableBaseAmount,
+                                    out decimal IVAAmount, out decimal SurchargeAmount, out TotalAmount);
+            }
+            else TotalAmount = 0;
+        }
+
         public void CalculateAmountInfo(BillsView Bill,
                                         out decimal GrossAmount, out decimal EarlyPayementDiscountAmount, out decimal TaxableBaseAmount,
                                         out decimal IVAAmount, out decimal SurchargeAmount, out decimal TotalAmount)
@@ -146,6 +206,25 @@ namespace HispaniaCommon.ViewModel
                 foreach (CustomerOrdersView customerOrder in Bill.CustomerOrders)
                 {
                     foreach (CustomerOrderMovementsView Movement in GetCustomerOrderMovements(customerOrder.CustomerOrder_Id))
+                    {
+                        Movements.Add(Movement);
+                    }
+                }
+                CustomersView Customer = Bill.Customer;
+                IVATypesView IVAType = Customer.BillingData_IVAType;
+                decimal EarlyPaymentDiscountPrecent = Customer.BillingData_EarlyPaymentDiscount;
+                decimal IVAPercent = (IVAType is null) ? 0 : IVAType.IVAPercent;
+                decimal SurchargePercent = (IVAType is null) ? 0 : IVAType.SurchargePercent;
+                CalculateAmountInfo(Movements, EarlyPaymentDiscountPrecent, IVAPercent, SurchargePercent,
+                                    out GrossAmount, out EarlyPayementDiscountAmount, out TaxableBaseAmount,
+                                    out IVAAmount, out SurchargeAmount, out TotalAmount);
+            }
+            else if (!(Bill.ProviderOrders is null) && (Bill.ProviderOrders.Count > 0))
+            {
+                ObservableCollection<ProviderOrderMovementsView> Movements = new ObservableCollection<ProviderOrderMovementsView>();
+                foreach (ProviderOrdersView providerOrder in Bill.ProviderOrders)
+                {
+                    foreach (ProviderOrderMovementsView Movement in GetProviderOrderMovements(providerOrder.ProviderOrder_Id))
                     {
                         Movements.Add(Movement);
                     }
@@ -201,6 +280,37 @@ namespace HispaniaCommon.ViewModel
             }
         }
 
+        public void CalculateAmountInfo(ProviderOrdersView ProviderOrder,
+                                       out decimal GrossAmount, out decimal EarlyPayementDiscountAmount, out decimal TaxableBaseAmount,
+                                       out decimal IVAAmount, out decimal SurchargeAmount, out decimal TotalAmount)
+        {
+            if (!(ProviderOrder is null))
+            {
+                ObservableCollection<ProviderOrderMovementsView> Movements = new ObservableCollection<ProviderOrderMovementsView>();
+                foreach (ProviderOrderMovementsView Movement in GetProviderOrderMovements(ProviderOrder.ProviderOrder_Id))
+                {
+                    Movements.Add(Movement);
+                }
+                ProvidersView Provider = ProviderOrder.Provider;
+                IVATypesView IVAType = Provider.BillingData_IVAType;
+                decimal EarlyPaymentDiscountPrecent = Provider.BillingData_EarlyPaymentDiscount;
+                decimal IVAPercent = (IVAType is null) ? 0 : IVAType.IVAPercent;
+                decimal SurchargePercent = (IVAType is null) ? 0 : IVAType.SurchargePercent;
+                CalculateAmountInfo(Movements, EarlyPaymentDiscountPrecent, IVAPercent, SurchargePercent,
+                                    out GrossAmount, out EarlyPayementDiscountAmount, out TaxableBaseAmount,
+                                    out IVAAmount, out SurchargeAmount, out TotalAmount);
+            }
+            else
+            {
+                GrossAmount = 0;
+                EarlyPayementDiscountAmount = 0;
+                TaxableBaseAmount = 0;
+                IVAAmount = 0;
+                SurchargeAmount = 0;
+                TotalAmount = 0;
+            }
+        }
+
         public void CalculateAmountInfo(ObservableCollection<CustomerOrderMovementsView> Movements, 
                                         decimal EarlyPaymentDiscountPrecent, decimal IVAPercent, decimal SurchargePercent,
                                         out decimal GrossAmount, out decimal EarlyPayementDiscountAmount, out decimal TaxableBaseAmount,
@@ -235,6 +345,42 @@ namespace HispaniaCommon.ViewModel
                         SurchargeAmount = GlobalViewModel.GetValueDecimalForCalculations(TaxableBaseAmount * (SurchargePercent / 100), DecimalType.Currency);
                 }
                 TotalAmount = GlobalViewModel.GetValueDecimalForCalculations(TaxableBaseAmount + IVAAmount + SurchargeAmount, DecimalType.Currency);
+        }
+
+        public void CalculateAmountInfo(ObservableCollection<ProviderOrderMovementsView> Movements,
+                                        decimal EarlyPaymentDiscountPrecent, decimal IVAPercent, decimal SurchargePercent,
+                                        out decimal GrossAmount, out decimal EarlyPayementDiscountAmount, out decimal TaxableBaseAmount,
+                                        out decimal IVAAmount, out decimal SurchargeAmount, out decimal TotalAmount)
+        {
+            //  Calculate GrossAmount amount value.
+            GrossAmount = 0;
+            foreach (ProviderOrderMovementsView movement in Movements)
+            {
+                GrossAmount += movement.Amount;
+            }
+            //  Calculate Early Payement Discount amount value.
+            EarlyPayementDiscountAmount = 0;
+            if (EarlyPaymentDiscountPrecent > 0)
+            {
+                EarlyPayementDiscountAmount = GlobalViewModel.GetValueDecimalForCalculations(GrossAmount * (EarlyPaymentDiscountPrecent / 100), DecimalType.Currency);
+            }
+            //  Calculate Taxable Base
+            TaxableBaseAmount = GlobalViewModel.GetValueDecimalForCalculations(GrossAmount - EarlyPayementDiscountAmount, DecimalType.Currency);
+            //  Calculate IVA amount value.
+            IVAAmount = 0;
+            if (IVAPercent > 0)
+            {
+                //  We use the TaxableBaseAmount to apply the Early Payement Discount
+                IVAAmount = GlobalViewModel.GetValueDecimalForCalculations(TaxableBaseAmount * (IVAPercent / 100), DecimalType.Currency);
+            }
+            //  Calculate Surcharge amount value.
+            SurchargeAmount = 0;
+            if (SurchargePercent > 0)
+            {
+                //  We use the TaxableBaseAmount to apply the Early Payement Discount
+                SurchargeAmount = GlobalViewModel.GetValueDecimalForCalculations(TaxableBaseAmount * (SurchargePercent / 100), DecimalType.Currency);
+            }
+            TotalAmount = GlobalViewModel.GetValueDecimalForCalculations(TaxableBaseAmount + IVAAmount + SurchargeAmount, DecimalType.Currency);
         }
 
         #endregion
@@ -274,6 +420,19 @@ namespace HispaniaCommon.ViewModel
                 decimal Payday_3 = Customer.DataBank_Payday_3;
             //  Return the list of receipts calculated
                 return CalculateReceipts(Bill_Date, NumEffects, FirstExpirationData, ExpirationInterval, Payday_1, Payday_2, Payday_3, BillAmount);
+        }
+
+        public List<HispaniaCompData.Receipt> CalculateReceipts(ProvidersView Provider, decimal BillAmount, DateTime Bill_Date)
+        {
+            //  Load the information needed to calculate the receipts
+            decimal NumEffects = Provider.DataBank_NumEffect;
+            decimal FirstExpirationData = Provider.DataBank_FirstExpirationData;
+            decimal ExpirationInterval = Provider.DataBank_ExpirationInterval;
+            decimal Payday_1 = Provider.DataBank_Payday_1;
+            decimal Payday_2 = Provider.DataBank_Payday_2;
+            decimal Payday_3 = Provider.DataBank_Payday_3;
+            //  Return the list of receipts calculated
+            return CalculateReceipts(Bill_Date, NumEffects, FirstExpirationData, ExpirationInterval, Payday_1, Payday_2, Payday_3, BillAmount);
         }
 
         public List<HispaniaCompData.Receipt> CalculateReceipts(BillsView Bill)
@@ -476,6 +635,24 @@ namespace HispaniaCommon.ViewModel
         {
             Dictionary<int, Pair> GoodsAmountValue = new Dictionary<int, Pair>();
             foreach (CustomerOrderMovementsView Movement in Movements)
+            {
+                if (!GoodsAmountValue.ContainsKey(Movement.Good.Good_Id))
+                {
+                    GoodsAmountValue.Add(Movement.Good.Good_Id, new Pair(Movement.Amount, Movement.AmountCost));
+                }
+                else
+                {
+                    GoodsAmountValue[Movement.Good.Good_Id].Amount += Movement.Amount;
+                    GoodsAmountValue[Movement.Good.Good_Id].AmountCost += Movement.AmountCost;
+                }
+            }
+            return (GoodsAmountValue);
+        }
+
+        public Dictionary<int, Pair> CalculateGoodsAmountValue(ObservableCollection<ProviderOrderMovementsView> Movements)
+        {
+            Dictionary<int, Pair> GoodsAmountValue = new Dictionary<int, Pair>();
+            foreach (ProviderOrderMovementsView Movement in Movements)
             {
                 if (!GoodsAmountValue.ContainsKey(Movement.Good.Good_Id))
                 {

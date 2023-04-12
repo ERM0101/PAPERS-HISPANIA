@@ -57,6 +57,11 @@ namespace HispaniaComptabilitat.Data
         public virtual DbSet<CustomerOrder> CustomerOrders { get; set; }
         public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<TEMP_DIARY_BANDAGE> TEMP_DIARY_BANDAGE { get; set; }
+        public virtual DbSet<HistoProvider> HistoProviders { get; set; }
+        public virtual DbSet<ProviderOrder> ProviderOrders { get; set; }
+        public virtual DbSet<ProviderOrderMovement> ProviderOrderMovements { get; set; }
+        public virtual DbSet<RelatedProvider> RelatedProviders { get; set; }
+        public virtual DbSet<HistoCumulativeProvider> HistoCumulativeProviders { get; set; }
     
         public virtual ObjectResult<Revisio> SP_Revisions(Nullable<int> operation_Type)
         {
@@ -252,6 +257,33 @@ namespace HispaniaComptabilitat.Data
                 new ObjectParameter("Year_Query", typeof(decimal));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Range>("SP_Ranges", good_Id_FromParameter, good_Id_UntilParameter, bill_Id_FromParameter, bill_Id_UntilParameter, year_QueryParameter);
+        }
+    
+        public virtual ObjectResult<string> ProviderOrderMovementsComments(Nullable<int> providerOrder_Id)
+        {
+            var providerOrder_IdParameter = providerOrder_Id.HasValue ?
+                new ObjectParameter("ProviderOrder_Id", providerOrder_Id) :
+                new ObjectParameter("ProviderOrder_Id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("ProviderOrderMovementsComments", providerOrder_IdParameter);
+        }
+    
+        public virtual ObjectResult<ProviderOrderMovementsComments> SP_ProviderOrderMovementsComments(Nullable<int> providerOrder_Id)
+        {
+            var providerOrder_IdParameter = providerOrder_Id.HasValue ?
+                new ObjectParameter("ProviderOrder_Id", providerOrder_Id) :
+                new ObjectParameter("ProviderOrder_Id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<ProviderOrderMovementsComments>("SP_ProviderOrderMovementsComments", providerOrder_IdParameter);
+        }
+    
+        public virtual ObjectResult<LiniesProveidorConformes_Result> LiniesConformesProveidor(Nullable<int> providerOrder_Id)
+        {
+            var providerOrder_IdParameter = providerOrder_Id.HasValue ?
+                new ObjectParameter("ProviderOrder_Id", providerOrder_Id) :
+                new ObjectParameter("ProviderOrder_Id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<LiniesProveidorConformes_Result>("LiniesConformesProveidor", providerOrder_IdParameter);
         }
     }
 }

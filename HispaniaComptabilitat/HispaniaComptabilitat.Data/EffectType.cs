@@ -20,6 +20,8 @@ namespace HispaniaComptabilitat.Data
             this.Bills = new HashSet<Bill>();
             this.Customers = new HashSet<Customer>();
             this.CustomerOrders = new HashSet<CustomerOrder>();
+            this.ProviderOrders = new HashSet<ProviderOrder>();
+            this.Providers = new HashSet<Provider>();
         }
     
         public int EffectType_Id { get; set; }
@@ -32,5 +34,9 @@ namespace HispaniaComptabilitat.Data
         public virtual ICollection<Customer> Customers { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CustomerOrder> CustomerOrders { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ProviderOrder> ProviderOrders { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Provider> Providers { get; set; }
     }
 }

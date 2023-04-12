@@ -18,6 +18,7 @@ namespace HispaniaComptabilitat.Data
         public CustomerOrder()
         {
             this.CustomerOrderMovements = new HashSet<CustomerOrderMovement>();
+            this.ProviderOrderMovements = new HashSet<ProviderOrderMovement>();
         }
     
         public int CustomerOrder_Id { get; set; }
@@ -79,5 +80,7 @@ namespace HispaniaComptabilitat.Data
         public virtual SendType SendType { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CustomerOrderMovement> CustomerOrderMovements { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ProviderOrderMovement> ProviderOrderMovements { get; set; }
     }
 }
