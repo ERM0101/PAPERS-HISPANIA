@@ -211,10 +211,10 @@ namespace HispaniaCommon.ViewModel
                     }
                 }
                 CustomersView Customer = Bill.Customer;
-                IVATypesView IVAType = Customer.BillingData_IVAType;
-                decimal EarlyPaymentDiscountPrecent = Customer.BillingData_EarlyPaymentDiscount;
-                decimal IVAPercent = (IVAType is null) ? 0 : IVAType.IVAPercent;
-                decimal SurchargePercent = (IVAType is null) ? 0 : IVAType.SurchargePercent;
+                
+                decimal EarlyPaymentDiscountPrecent = Bill.BillingData_EarlyPaymentDiscount;
+                decimal IVAPercent = Bill.IVAPercent;
+                decimal SurchargePercent = Bill.SurchargePercent;
                 CalculateAmountInfo(Movements, EarlyPaymentDiscountPrecent, IVAPercent, SurchargePercent,
                                     out GrossAmount, out EarlyPayementDiscountAmount, out TaxableBaseAmount,
                                     out IVAAmount, out SurchargeAmount, out TotalAmount);
