@@ -30,7 +30,7 @@
     <TargetCulture>ca</TargetCulture>
     <ProductName>PH Comptabilitat TEST</ProductName>
     <PublisherName>Madrid Digital IT</PublisherName>
-    <ApplicationRevision>3</ApplicationRevision>
+    <ApplicationRevision>4</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
