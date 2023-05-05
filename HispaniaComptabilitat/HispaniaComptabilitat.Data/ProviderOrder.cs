@@ -14,6 +14,12 @@ namespace HispaniaComptabilitat.Data
     
     public partial class ProviderOrder
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public ProviderOrder()
+        {
+            this.ProviderOrderMovements = new HashSet<ProviderOrderMovement>();
+        }
+    
         public int ProviderOrder_Id { get; set; }
         public int Provider_Id { get; set; }
         public Nullable<System.DateTime> Date { get; set; }
@@ -71,5 +77,7 @@ namespace HispaniaComptabilitat.Data
         public virtual PostalCode PostalCode { get; set; }
         public virtual Provider Provider { get; set; }
         public virtual SendType SendType { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ProviderOrderMovement> ProviderOrderMovements { get; set; }
     }
 }

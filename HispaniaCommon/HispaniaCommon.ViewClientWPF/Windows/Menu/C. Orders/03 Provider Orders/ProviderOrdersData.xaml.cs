@@ -1303,7 +1303,10 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                         bool IsSameProvider = (EditedProviderOrder.Provider != null) &&
                                               (EditedProviderOrder.Provider.Provider_Id == providerSelected.Provider_Id);
                         EditedProviderOrder.Provider = providerSelected;
-                        ActualizeEditedProviderOrder(providerSelected, providerSelected.DataBank_EffectType);
+                        if (providerSelected.DataBank_EffectType != null)
+                        {
+                            ActualizeEditedProviderOrder(providerSelected, providerSelected.DataBank_EffectType);
+                        }                        
                         if (!IsSameProvider)
                         {
                             EditedProviderOrder.Address = string.Empty;

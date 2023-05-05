@@ -784,7 +784,7 @@ namespace HispaniaCommon.ViewModel
             SurchargePercent = GlobalViewModel.GetDecimalValue(customerOrder.SurchargePercent);
             _Bill_Serie_Id = GlobalViewModel.GetIntFromIntIdValue(customerOrder.Bill_Serie_Id);
             _BillingData_Agent_Id = GlobalViewModel.GetIntFromIntIdValue(customerOrder.BillingData_Agent_Id);
-            PrevisioLliurament = customerOrder.PrevisioLliurament.HasValue ? customerOrder.PrevisioLliurament.Value : false ;
+            PrevisioLliurament = customerOrder.PrevisioLliurament;
             PrevisioLliuramentData = customerOrder.PrevisioLliuramentData.HasValue ? customerOrder.PrevisioLliuramentData.Value : DateTime.MinValue;
         }
 

@@ -33,5 +33,6 @@ namespace HispaniaComptabilitat.Data
     
         public virtual CustomerOrder CustomerOrder { get; set; }
         public virtual Good Good { get; set; }
+        public virtual ProviderOrder ProviderOrder { get; set; }
     }
 }

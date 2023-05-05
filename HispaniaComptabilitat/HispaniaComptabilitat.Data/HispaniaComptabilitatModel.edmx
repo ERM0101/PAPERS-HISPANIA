@@ -227,7 +227,7 @@
           <Property Name="SendByEmail_CustomerOrder" Type="bit" Nullable="false" />
           <Property Name="TotalAmount" Type="decimal" Precision="19" Scale="4" Nullable="false" />
           <Property Name="TimeTable" Type="nvarchar" MaxLength="50" />
-          <Property Name="PrevisioLliurament" Type="bit" />
+          <Property Name="PrevisioLliurament" Type="bit" Nullable="false" />
           <Property Name="PrevisioLliuramentData" Type="date" />
         </EntityType>
         <EntityType Name="CustomerOrderMovement">
@@ -541,19 +541,6 @@
           <Property Name="AdditionalDiscount" Type="decimal" Precision="6" Scale="3" />
           <Property Name="Agent_Id" Type="int" />
           <Property Name="Canceled" Type="bit" Nullable="false" />
-          <Property Name="SeveralData_Acum_1" Type="decimal" Precision="19" Scale="4" />
-          <Property Name="SeveralData_Acum_2" Type="decimal" Precision="19" Scale="4" />
-          <Property Name="SeveralData_Acum_3" Type="decimal" Precision="19" Scale="4" />
-          <Property Name="SeveralData_Acum_4" Type="decimal" Precision="19" Scale="4" />
-          <Property Name="SeveralData_Acum_5" Type="decimal" Precision="19" Scale="4" />
-          <Property Name="SeveralData_Acum_6" Type="decimal" Precision="19" Scale="4" />
-          <Property Name="SeveralData_Acum_7" Type="decimal" Precision="19" Scale="4" />
-          <Property Name="SeveralData_Acum_8" Type="decimal" Precision="19" Scale="4" />
-          <Property Name="SeveralData_Acum_9" Type="decimal" Precision="19" Scale="4" />
-          <Property Name="SeveralData_Acum_10" Type="decimal" Precision="19" Scale="4" />
-          <Property Name="SeveralData_Acum_11" Type="decimal" Precision="19" Scale="4" />
-          <Property Name="SeveralData_Acum_12" Type="decimal" Precision="19" Scale="4" />
-          <Property Name="BillingData_CurrentRisk" Type="decimal" Precision="19" Scale="4" />
           <Property Name="Company_ContactPerson" Type="nvarchar" MaxLength="50" />
           <Property Name="Company_TimeTable" Type="nvarchar" MaxLength="50" />
           <Property Name="Company_NumProv" Type="nvarchar" MaxLength="10" />
@@ -591,6 +578,19 @@
           <Property Name="QueryData_Print" Type="bit" Nullable="false" />
           <Property Name="Company_Email2" Type="varchar" MaxLength="50" />
           <Property Name="Company_Email3" Type="varchar" MaxLength="50" />
+          <Property Name="SeveralData_Acum_1" Type="decimal" Precision="19" Scale="4" />
+          <Property Name="SeveralData_Acum_2" Type="decimal" Precision="19" Scale="4" />
+          <Property Name="SeveralData_Acum_3" Type="decimal" Precision="19" Scale="4" />
+          <Property Name="SeveralData_Acum_4" Type="decimal" Precision="19" Scale="4" />
+          <Property Name="SeveralData_Acum_5" Type="decimal" Precision="19" Scale="4" />
+          <Property Name="SeveralData_Acum_6" Type="decimal" Precision="19" Scale="4" />
+          <Property Name="SeveralData_Acum_7" Type="decimal" Precision="19" Scale="4" />
+          <Property Name="SeveralData_Acum_8" Type="decimal" Precision="19" Scale="4" />
+          <Property Name="SeveralData_Acum_9" Type="decimal" Precision="19" Scale="4" />
+          <Property Name="SeveralData_Acum_10" Type="decimal" Precision="19" Scale="4" />
+          <Property Name="SeveralData_Acum_11" Type="decimal" Precision="19" Scale="4" />
+          <Property Name="SeveralData_Acum_12" Type="decimal" Precision="19" Scale="4" />
+          <Property Name="BillingData_CurrentRisk" Type="decimal" Precision="19" Scale="4" />
         </EntityType>
         <EntityType Name="ProviderOrder">
           <Key>
@@ -1472,11 +1472,11 @@ advertencia 6002: La tabla o vista 'COMPTABILITAT.dbo.TEMP_DIARY_BANDAGE' no tie
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_ProviderOrderMovement_ProviderOrder">
-          <End Role="CustomerOrder" Type="Self.CustomerOrder" Multiplicity="0..1" />
+          <End Role="ProviderOrder" Type="Self.ProviderOrder" Multiplicity="0..1" />
           <End Role="ProviderOrderMovement" Type="Self.ProviderOrderMovement" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="CustomerOrder">
-              <PropertyRef Name="CustomerOrder_Id" />
+            <Principal Role="ProviderOrder">
+              <PropertyRef Name="ProviderOrder_Id" />
             </Principal>
             <Dependent Role="ProviderOrderMovement">
               <PropertyRef Name="ProviderOrder_Id" />
@@ -1912,7 +1912,7 @@ advertencia 6002: La tabla o vista 'COMPTABILITAT.dbo.TEMP_DIARY_BANDAGE' no tie
             <End Role="ProviderOrderMovement" EntitySet="ProviderOrderMovement" />
           </AssociationSet>
           <AssociationSet Name="FK_ProviderOrderMovement_ProviderOrder" Association="Self.FK_ProviderOrderMovement_ProviderOrder">
-            <End Role="CustomerOrder" EntitySet="CustomerOrder" />
+            <End Role="ProviderOrder" EntitySet="ProviderOrder" />
             <End Role="ProviderOrderMovement" EntitySet="ProviderOrderMovement" />
           </AssociationSet>
           <AssociationSet Name="FK_Receipt_Bill" Association="Self.FK_Receipt_Bill">
@@ -2317,8 +2317,12 @@ advertencia 6002: La tabla o vista 'COMPTABILITAT.dbo.TEMP_DIARY_BANDAGE' no tie
             <End Role="HistoCumulativeProvider" EntitySet="HistoCumulativeProviders" />
           </AssociationSet>
           <FunctionImport Name="LiniesConformesProveidor" ReturnType="Collection(HispaniaComptabilitatModel.LiniesProveidorConformes_Result)">
-            <Parameter Name="ProviderOrder_Id" Mode="In" Type="Int32" />
+          <Parameter Name="ProviderOrder_Id" Mode="In" Type="Int32" />
           </FunctionImport>
+          <AssociationSet Name="FK_ProviderOrderMovement_ProviderOrder1" Association="HispaniaComptabilitatModel.FK_ProviderOrderMovement_ProviderOrder1">
+            <End Role="ProviderOrder" EntitySet="ProviderOrders" />
+            <End Role="ProviderOrderMovement" EntitySet="ProviderOrderMovements" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="LocalConnection">
           <Key>
@@ -3791,7 +3795,7 @@ advertencia 6002: La tabla o vista 'COMPTABILITAT.dbo.TEMP_DIARY_BANDAGE' no tie
           <NavigationProperty Name="PostalCode" Relationship="HispaniaComptabilitatModel.FK_CustomerOrder_PostalCode" FromRole="CustomerOrder" ToRole="PostalCode" />
           <NavigationProperty Name="SendType" Relationship="HispaniaComptabilitatModel.FK_CustomerOrder_SendType" FromRole="CustomerOrder" ToRole="SendType" />
           <NavigationProperty Name="CustomerOrderMovements" Relationship="HispaniaComptabilitatModel.FK_CustomerOrderMovement_CustomerOrder" FromRole="CustomerOrder" ToRole="CustomerOrderMovement" />
-          <Property Name="PrevisioLliurament" Type="Boolean" />
+          <Property Name="PrevisioLliurament" Type="Boolean" Nullable="false" />
           <Property Name="PrevisioLliuramentData" Type="DateTime" Precision="0" />
           <NavigationProperty Name="ProviderOrderMovements" Relationship="HispaniaComptabilitatModel.FK_ProviderOrderMovement_ProviderOrder" FromRole="CustomerOrder" ToRole="ProviderOrderMovement" />
         </EntityType>
@@ -4052,6 +4056,7 @@ advertencia 6002: La tabla o vista 'COMPTABILITAT.dbo.TEMP_DIARY_BANDAGE' no tie
           <NavigationProperty Name="PostalCode" Relationship="HispaniaComptabilitatModel.FK_ProviderOrder_PostalCode" FromRole="ProviderOrder" ToRole="PostalCode" />
           <NavigationProperty Name="Provider" Relationship="HispaniaComptabilitatModel.FK_ProviderOrder_Provider" FromRole="ProviderOrder" ToRole="Provider" />
           <NavigationProperty Name="SendType" Relationship="HispaniaComptabilitatModel.FK_ProviderOrder_SendType" FromRole="ProviderOrder" ToRole="SendType" />
+          <NavigationProperty Name="ProviderOrderMovements" Relationship="HispaniaComptabilitatModel.FK_ProviderOrderMovement_ProviderOrder1" FromRole="ProviderOrder" ToRole="ProviderOrderMovement" />
         </EntityType>
         <EntityType Name="ProviderOrderMovement">
           <Key>
@@ -4075,6 +4080,7 @@ advertencia 6002: La tabla o vista 'COMPTABILITAT.dbo.TEMP_DIARY_BANDAGE' no tie
           <Property Name="RowOrder" Type="Int32" />
           <NavigationProperty Name="CustomerOrder" Relationship="HispaniaComptabilitatModel.FK_ProviderOrderMovement_ProviderOrder" FromRole="ProviderOrderMovement" ToRole="CustomerOrder" />
           <NavigationProperty Name="Good" Relationship="HispaniaComptabilitatModel.FK_ProviderOrderMovement_Good" FromRole="ProviderOrderMovement" ToRole="Good" />
+          <NavigationProperty Name="ProviderOrder" Relationship="HispaniaComptabilitatModel.FK_ProviderOrderMovement_ProviderOrder1" FromRole="ProviderOrderMovement" ToRole="ProviderOrder" />
         </EntityType>
         <EntityType Name="RelatedProvider">
           <Key>
@@ -4375,6 +4381,18 @@ advertencia 6002: La tabla o vista 'COMPTABILITAT.dbo.TEMP_DIARY_BANDAGE' no tie
           <Property Type="Int32" Name="ProviderOrder_Id" Nullable="true" />
           <Property Type="Int32" Name="LiniesConformes" Nullable="false" />
         </ComplexType>
+        <Association Name="FK_ProviderOrderMovement_ProviderOrder1">
+          <End Type="HispaniaComptabilitatModel.ProviderOrder" Role="ProviderOrder" Multiplicity="0..1" />
+          <End Type="HispaniaComptabilitatModel.ProviderOrderMovement" Role="ProviderOrderMovement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProviderOrder">
+              <PropertyRef Name="ProviderOrder_Id" />
+            </Principal>
+            <Dependent Role="ProviderOrderMovement">
+              <PropertyRef Name="ProviderOrder_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
