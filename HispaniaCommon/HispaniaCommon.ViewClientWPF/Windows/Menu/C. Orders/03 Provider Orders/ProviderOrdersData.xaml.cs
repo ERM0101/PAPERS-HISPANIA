@@ -2524,10 +2524,57 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
 
         #endregion
 
+
+        #region Up/Down Movement
+
+        private void CheckRowOrder()
+        {
+            if (!ComprobarRowOrder())
+            {
+                AsignarRowOrder();
+            }
+        }
+
+        private bool ComprobarRowOrder()
+        {
+            if (ListItems.Items.Count > 1)
+            {
+                var listaOrden = new List<int>();
+                foreach (ProviderOrderMovementsView item in ListItems.Items)
+                {
+                    if (listaOrden.Contains(item.RowOrder))
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        listaOrden.Add(item.RowOrder);
+                    }
+                }
+                return true;
+            }
+            else
+            {
+                return true;
+            }
+
+        }
+
+        private void AsignarRowOrder()
+        {
+            int i = 0;
+            foreach (ProviderOrderMovementsView item in ListItems.Items)
+            {
+                item.RowOrder = i;
+                i++;
+            }
+        }
+
+
         private void btnUp_Click(object sender, RoutedEventArgs e)
         {  
             int Index = ListItems.SelectedIndex;
-            
+            CheckRowOrder();
             if (Index>0)
             {
                 DataChangedManagerActive = false;
@@ -2546,7 +2593,7 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
         private void btnDown_Click(object sender, RoutedEventArgs e)
         {
             int Index = ListItems.SelectedIndex;
-
+            CheckRowOrder();
             if (Index < ListItems.Items.Count-1)
             {
                 DataChangedManagerActive = false;
@@ -2561,5 +2608,7 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                 GlobalViewModel.Instance.HispaniaViewModel.UpdateProviderOrderMovement(nextMovement);
             }
         }
+
+        #endregion
     }
 }

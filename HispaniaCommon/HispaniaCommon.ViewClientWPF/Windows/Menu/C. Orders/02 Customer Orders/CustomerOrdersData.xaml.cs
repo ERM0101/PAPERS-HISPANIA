@@ -644,6 +644,7 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                 LoadDataInWindowComponents();
             //  Load the managers of the controls of the UserControl.
                 LoadManagers();
+                CheckRowOrder();
         }
 
         #endregion
@@ -1826,6 +1827,91 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
 
         #endregion
 
+        #region Up/Down Movement
+
+        private void btnUp_Click(object sender, RoutedEventArgs e)
+        {
+            int Index = ListItems.SelectedIndex;
+            CheckRowOrder();
+            if (Index > 0)
+            {
+                DataChangedManagerActive = false;
+                CustomerOrderMovementsView currentMovement = (CustomerOrderMovementsView)ListItems.Items[Index];
+                CustomerOrderMovementsView previousMovement = (CustomerOrderMovementsView)ListItems.Items[Index - 1];
+                var ord = currentMovement.RowOrder;
+                currentMovement.RowOrder = previousMovement.RowOrder;
+                previousMovement.RowOrder = ord;
+                DataList = new ObservableCollection<CustomerOrderMovementsView>(DataList.OrderBy(x => x.RowOrder));
+                GlobalViewModel.Instance.HispaniaViewModel.UpdateCustomerOrderMovement(currentMovement);
+                GlobalViewModel.Instance.HispaniaViewModel.UpdateCustomerOrderMovement(previousMovement);
+                //AreDataChanged = true;
+            }
+        }
+
+      
+
+        private void btnDown_Click(object sender, RoutedEventArgs e)
+        {
+            int Index = ListItems.SelectedIndex;
+            CheckRowOrder();
+            if (Index < ListItems.Items.Count - 1)
+            {
+                DataChangedManagerActive = false;
+                CustomerOrderMovementsView currentMovement = (CustomerOrderMovementsView)ListItems.Items[Index];
+                CustomerOrderMovementsView nextMovement = (CustomerOrderMovementsView)ListItems.Items[Index + 1];
+                var ord = currentMovement.RowOrder;
+                currentMovement.RowOrder = nextMovement.RowOrder;
+                nextMovement.RowOrder = ord;
+                DataList = new ObservableCollection<CustomerOrderMovementsView>(DataList.OrderBy(x => x.RowOrder));
+
+                GlobalViewModel.Instance.HispaniaViewModel.UpdateCustomerOrderMovement(currentMovement);
+                GlobalViewModel.Instance.HispaniaViewModel.UpdateCustomerOrderMovement(nextMovement);
+            }
+        }
+        private void CheckRowOrder()
+        {
+            if (!ComprobarRowOrder())
+            {
+                AsignarRowOrder();
+            }
+        }
+
+        private bool ComprobarRowOrder()
+        {
+            if (ListItems.Items.Count > 1)
+            {
+                var listaOrden = new List<int>();
+                foreach(CustomerOrderMovementsView item in ListItems.Items)
+                {
+                    if (listaOrden.Contains(item.RowOrder))
+                    {
+                        return false;
+                    }else
+                    {
+                        listaOrden.Add(item.RowOrder);
+                    }
+                }
+                return true;                
+            }
+            else
+            {
+                return true;
+            }
+                    
+        }
+
+        private void AsignarRowOrder()
+        {
+            int i = 0;
+            foreach (CustomerOrderMovementsView item in ListItems.Items)
+            {
+                item.RowOrder = i;
+                i++;                
+            }            
+        }
+
+        #endregion
+
         #endregion
 
         #endregion
@@ -2521,42 +2607,5 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
 
         #endregion
 
-        private void btnUp_Click(object sender, RoutedEventArgs e)
-        {  
-            int Index = ListItems.SelectedIndex;
-            
-            if (Index>0)
-            {
-                DataChangedManagerActive = false;
-                CustomerOrderMovementsView currentMovement = (CustomerOrderMovementsView)ListItems.Items[Index];
-                CustomerOrderMovementsView previousMovement = (CustomerOrderMovementsView)ListItems.Items[Index - 1];
-                var ord = currentMovement.RowOrder;
-                currentMovement.RowOrder = previousMovement.RowOrder;
-                previousMovement.RowOrder = ord;
-                DataList = new ObservableCollection<CustomerOrderMovementsView>(DataList.OrderBy(x => x.RowOrder));
-                GlobalViewModel.Instance.HispaniaViewModel.UpdateCustomerOrderMovement(currentMovement);
-                GlobalViewModel.Instance.HispaniaViewModel.UpdateCustomerOrderMovement(previousMovement);
-                //AreDataChanged = true;
-            }
-        }
-
-        private void btnDown_Click(object sender, RoutedEventArgs e)
-        {
-            int Index = ListItems.SelectedIndex;
-
-            if (Index < ListItems.Items.Count-1)
-            {
-                DataChangedManagerActive = false;
-                CustomerOrderMovementsView currentMovement = (CustomerOrderMovementsView)ListItems.Items[Index];
-                CustomerOrderMovementsView nextMovement = (CustomerOrderMovementsView)ListItems.Items[Index + 1];
-                var ord = currentMovement.RowOrder;
-                currentMovement.RowOrder = nextMovement.RowOrder;
-                nextMovement.RowOrder = ord;
-                DataList = new ObservableCollection<CustomerOrderMovementsView>(DataList.OrderBy(x => x.RowOrder));
-               
-                GlobalViewModel.Instance.HispaniaViewModel.UpdateCustomerOrderMovement(currentMovement);
-                GlobalViewModel.Instance.HispaniaViewModel.UpdateCustomerOrderMovement(nextMovement);
-            }
-        }
     }
 }

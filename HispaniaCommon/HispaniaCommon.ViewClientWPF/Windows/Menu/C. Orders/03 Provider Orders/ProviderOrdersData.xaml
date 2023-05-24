@@ -420,70 +420,70 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <Button Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" 
-                                    Margin="0,2,0,0" x:Name="btnAdd" Width="115" Height="23">
+                                    Margin="0,2,0,0" x:Name="btnAdd" Width="100" Height="23">
                                 <StackPanel x:Name="spAdd" Margin="2" Orientation="Horizontal">
                                     <Image Height="16" Margin="0,0,10,0" Source="{DynamicResource Add}" Width="16"/>
                                     <TextBlock x:Name="tbAdd" Text="Donar d'alta" />
                                 </StackPanel>
                             </Button>
                             <Button Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" 
-                                    Margin="0,2,0,0" x:Name="btnHistoric" Width="115" Height="23">
+                                    Margin="0,2,0,0" x:Name="btnHistoric" Width="100" Height="23">
                                 <StackPanel x:Name="spHistoric" Margin="2" Orientation="Horizontal">
                                     <Image Height="16" Margin="0,0,10,0" Source="{DynamicResource Report}" Width="16"/>
                                     <TextBlock x:Name="tbHistoric" Text="Historic" />
                                 </StackPanel>
                             </Button>
                             <Button Grid.Row="0" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" 
-                                    Margin="0,2,0,0" x:Name="btnEdit" Width="115" Height="23">
+                                    Margin="0,2,0,0" x:Name="btnEdit" Width="100" Height="23">
                                 <StackPanel x:Name="spEdit"  Margin="2" Orientation="Horizontal">
                                     <Image Height="16" Margin="0,0,10,0" Source="{DynamicResource Edit}" Width="16" />
                                     <TextBlock x:Name="tbEdit" Text="Modificar" Margin="0,0,15,0" />
                                 </StackPanel>
                             </Button>
                             <Button Grid.Row="0" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" 
-                                    Margin="0,2,0,0" x:Name="btnAccordingMovement" Width="115" Height="23">
+                                    Margin="0,2,0,0" x:Name="btnAccordingMovement" Width="100" Height="23">
                                 <StackPanel x:Name="spAccordingMovement"  Margin="2" Orientation="Horizontal">
                                     <Image Height="16" Margin="0,0,10,0" Source="{DynamicResource According}" Width="16" />
                                     <TextBlock x:Name="tbAccordingMovement" Text="Conforme" Margin="0,0,15,0" />
                                 </StackPanel>
                             </Button>
-                            <Button Grid.Row="0" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" 
-                                    Margin="0,2,0,0" x:Name="btnUp" Width="115" Height="23" Click="btnUp_Click">
+                            <Button Grid.Row="0" Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                    Margin="0,2,0,0" x:Name="btnUp" Width="100" Height="23" Click="btnUp_Click">
                                 <StackPanel x:Name="spUp"  Margin="2" Orientation="Horizontal">
                                     <Image Height="16" Margin="0,0,10,0" Source="{DynamicResource Up}" Width="16" />
                                     <TextBlock x:Name="tbUp" Text="Subir" Margin="0,0,15,0" />
                                 </StackPanel>
                             </Button>
                             <Button Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" 
-                                    Margin="0,2,0,0" x:Name="btnDelete" Width="115" Height="23">
+                                    Margin="0,2,0,0" x:Name="btnDelete" Width="100" Height="23">
                                 <StackPanel x:Name="spDelete"  Margin="2" Orientation="Horizontal">
                                     <Image Height="16" Margin="0,0,10,0" Source="{DynamicResource Delete}" Width="16" />
                                     <TextBlock x:Name="tbDelete" Text="Esborrar" Margin="0,0,10,0" />
                                 </StackPanel>
                             </Button>
                             <Button Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" 
-                                    Margin="0,2,0,0" x:Name="btnViewData" Width="115" Height="23">
+                                    Margin="0,2,0,0" x:Name="btnViewData" Width="100" Height="23">
                                 <StackPanel x:Name="spViewData"  Margin="2" Orientation="Horizontal">
                                     <Image Height="16" Margin="0,0,10,0" Source="{DynamicResource DetailsItem}" Width="16" />
                                     <TextBlock x:Name="tbViewData" Text="Veure Dades" />
                                 </StackPanel>
                             </Button>
                             <Button Grid.Row="1" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" 
-                                    Margin="0,2,0,0" x:Name="btnAddGood" Width="115" Height="23">
+                                    Margin="0,2,0,0" x:Name="btnAddGood" Width="100" Height="23">
                                 <StackPanel x:Name="spAddGood" Margin="2" Orientation="Horizontal">
                                     <Image Height="16" Margin="0,0,10,0" Source="{DynamicResource CreateGood}" Width="16"/>
                                     <TextBlock x:Name="tbAddGood" Text="Crear artícle" />
                                 </StackPanel>
                             </Button>
                             <Button Grid.Row="1" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" 
-                                    Margin="0,2,0,0" x:Name="btnUnAccordingMovement" Width="115" Height="23">
+                                    Margin="0,2,0,0" x:Name="btnUnAccordingMovement" Width="100" Height="23">
                                 <StackPanel x:Name="spUnAccordingMovement"  Margin="2" Orientation="Horizontal">
                                     <Image Height="16" Margin="2,0,8,0" Source="{DynamicResource UnAccording}" Width="16" />
                                     <TextBlock x:Name="tbUnAccordingMovement" Text="No Conforme" Margin="0,0,5,0" />
                                 </StackPanel>
                             </Button>
-                            <Button Grid.Row="1" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" 
-                                    Margin="0,2,0,0" x:Name="btnDown" Width="115" Height="23" Click="btnDown_Click">
+                            <Button Grid.Row="1" Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                    Margin="0,2,0,0" x:Name="btnDown" Width="100" Height="23" Click="btnDown_Click">
                                 <StackPanel x:Name="spDown"  Margin="2" Orientation="Horizontal">
                                     <Image Height="16" Margin="0,0,10,0" Source="{DynamicResource Down}" Width="16" />
                                     <TextBlock x:Name="tbDown" Text="Bajar" Margin="0,0,15,0" />
