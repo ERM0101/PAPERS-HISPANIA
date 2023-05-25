@@ -75,8 +75,8 @@ namespace HispaniaCommon.DataAccess
             {
                 using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
                 {
-                    //using (SqlConnection conn = new SqlConnection(db.Database.Connection.ConnectionString + ";Password=Phispania2"))
-                    using (SqlConnection conn = new SqlConnection(db.Database.Connection.ConnectionString))
+                    using (SqlConnection conn = new SqlConnection(db.Database.Connection.ConnectionString + ";Password=Phispania2"))
+                    //using (SqlConnection conn = new SqlConnection(db.Database.Connection.ConnectionString))
                     {
                         SqlCommand cmd = new SqlCommand(QuerySQL, conn);
                         conn.Open();
@@ -149,8 +149,8 @@ namespace HispaniaCommon.DataAccess
                         default:
                             throw new Exception(string.Format(MsgErr, "Taula no reconeguda."));
                     }
-                    //using (SqlConnection conn = new SqlConnection(db.Database.Connection.ConnectionString + ";Password=Phispania2"))
-                    using (SqlConnection conn = new SqlConnection(db.Database.Connection.ConnectionString))
+                    using (SqlConnection conn = new SqlConnection(db.Database.Connection.ConnectionString + ";Password=Phispania2"))
+                    //using (SqlConnection conn = new SqlConnection(db.Database.Connection.ConnectionString))
                     {
                         conn.Open();
                         try
@@ -204,8 +204,8 @@ namespace HispaniaCommon.DataAccess
                             //  Si es necesari resetja el Id de la taula.
                             if (IsResetNeeded)
                             {
-                                //using (SqlConnection conn = new SqlConnection(db.Database.Connection.ConnectionString + ";Password=Phispania2"))
-                                using (SqlConnection conn = new SqlConnection(db.Database.Connection.ConnectionString))
+                                using (SqlConnection conn = new SqlConnection(db.Database.Connection.ConnectionString + ";Password=Phispania2"))
+                                //using (SqlConnection conn = new SqlConnection(db.Database.Connection.ConnectionString))
                                 {
                                     conn.Open();
                                     try
@@ -3024,8 +3024,8 @@ namespace HispaniaCommon.DataAccess
                             else
                             {
                                 //  Step 1.1 : Create a new Delivery Note.
-                                //using (SqlConnection conn = new SqlConnection(db.Database.Connection.ConnectionString + ";Password=Phispania2"))
-                                using (SqlConnection conn = new SqlConnection(db.Database.Connection.ConnectionString))
+                                using (SqlConnection conn = new SqlConnection(db.Database.Connection.ConnectionString + ";Password=Phispania2"))
+                                //using (SqlConnection conn = new SqlConnection(db.Database.Connection.ConnectionString))
                                 {
                                     conn.Open();
                                     try
@@ -3110,8 +3110,8 @@ namespace HispaniaCommon.DataAccess
                                 {
                                     //  Step 1.1 : Create a new Delivery Note.
                                     int NewDeliveryNote_Year = ((DateTime)customerOrder.DeliveryNote_Date).Year;
-                                    //using (SqlConnection conn = new SqlConnection(db.Database.Connection.ConnectionString + ";Password=Phispania2"))
-                                    using (SqlConnection conn = new SqlConnection(db.Database.Connection.ConnectionString))
+                                    using (SqlConnection conn = new SqlConnection(db.Database.Connection.ConnectionString + ";Password=Phispania2"))
+                                    //using (SqlConnection conn = new SqlConnection(db.Database.Connection.ConnectionString))
                                     {
                                         conn.Open();
                                         try
@@ -4455,8 +4455,8 @@ namespace HispaniaCommon.DataAccess
                             else
                             {
                                 //  Step 1.1 : Create a new Delivery Note.
-                                //using (SqlConnection conn = new SqlConnection(db.Database.Connection.ConnectionString + ";Password=Phispania2"))
-                                using (SqlConnection conn = new SqlConnection(db.Database.Connection.ConnectionString))
+                                using (SqlConnection conn = new SqlConnection(db.Database.Connection.ConnectionString + ";Password=Phispania2"))
+                                //using (SqlConnection conn = new SqlConnection(db.Database.Connection.ConnectionString))
                                 {
                                     conn.Open();
                                     try
@@ -4541,8 +4541,8 @@ namespace HispaniaCommon.DataAccess
                                 {
                                     //  Step 1.1 : Create a new Delivery Note.
                                     int NewDeliveryNote_Year = ((DateTime)providerOrder.DeliveryNote_Date).Year;
-                                    //using (SqlConnection conn = new SqlConnection(db.Database.Connection.ConnectionString + ";Password=Phispania2"))
-                                    using (SqlConnection conn = new SqlConnection(db.Database.Connection.ConnectionString))
+                                    using (SqlConnection conn = new SqlConnection(db.Database.Connection.ConnectionString + ";Password=Phispania2"))
+                                    //using (SqlConnection conn = new SqlConnection(db.Database.Connection.ConnectionString))
                                     {
                                         conn.Open();
                                         try
@@ -6079,8 +6079,8 @@ namespace HispaniaCommon.DataAccess
             {
                 using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
                 {
-                    //using (SqlConnection conn = new SqlConnection(db.Database.Connection.ConnectionString + ";Password=Phispania2"))
-                    using (SqlConnection conn = new SqlConnection(db.Database.Connection.ConnectionString))
+                    using (SqlConnection conn = new SqlConnection(db.Database.Connection.ConnectionString + ";Password=Phispania2"))
+                    //using (SqlConnection conn = new SqlConnection(db.Database.Connection.ConnectionString))
                     {
                         conn.Open();
                         try
