@@ -45,7 +45,6 @@ namespace HispaniaCommon.ViewModel
                     {new Tuple<string, int, PDF_Align>("NIF", 1, PDF_Align.Center) },
                     {new Tuple<string, int, PDF_Align>("DIRECCION", 3, PDF_Align.Left) },
                     {new Tuple<string, int, PDF_Align>("CP", 1, PDF_Align.Center) },
-                    {new Tuple<string, int, PDF_Align>("CIUTAT", 3, PDF_Align.Left) },
                     {new Tuple<string, int, PDF_Align>("POBLACION", 3, PDF_Align.Left) },
                     {new Tuple<string, int, PDF_Align>("PROVINCIA", 3, PDF_Align.Left) },
                     {new Tuple<string, int, PDF_Align>("CÓDIGO REPRESENTANTE", 3, PDF_Align.Left) },
