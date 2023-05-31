@@ -1637,10 +1637,7 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                                     if (ListItems.SelectedItem != null) ListItems.UnselectAll();
                                     DataList.Remove(CustomerOrder);
                                     DataList.Add(GlobalViewModel.Instance.HispaniaViewModel.GetCustomerOrderFromDb(CustomerOrder));
-                                    DataList.Add(GlobalViewModel.Instance.HispaniaViewModel.GetCustomerOrderFromDb(NewCustomerOrder));
-                                    DataChangedManagerActive = true;
-                                    ListItems.SelectedItem = NewCustomerOrder;
-                                    ListItems.UpdateLayout();
+                                    
                                     if (NewCustomerOrder == null)
                                     {
                                         MsgManager.ShowMessage(
@@ -1649,6 +1646,10 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                                     }
                                     else
                                     {
+                                        DataList.Add(GlobalViewModel.Instance.HispaniaViewModel.GetCustomerOrderFromDb(NewCustomerOrder));
+                                        DataChangedManagerActive = true;
+                                        ListItems.SelectedItem = NewCustomerOrder;
+                                        ListItems.UpdateLayout();
                                         MsgManager.ShowMessage(
                                             string.Format("Informació, la comanda de client '{0}' s'ha preparat per crear un Albarà.\r\n" +
                                                           "S'ha creat la comanda de client '{1}' amb les línies no conformes de la comanda inicial.",

@@ -245,7 +245,7 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                     {
                         //  Set the information of the provider in Provider Info fields.
                             tbProviderCode.Text = GlobalViewModel.GetStringFromIntIdValue(m_Provider.Provider_Id);
-                            tbProviderDescription.Text = m_Provider.Company_Name;
+                            tbProviderDescription.Text = m_Provider.Name;
                         //  Remove the option of filter by client id.
                             if (cbFieldItemToSearch.ItemsSource != null)
                             {
@@ -462,17 +462,7 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                 ProviderOrderDataControl.EffectTypes = value;
             }
         }
-
-        /// <summary>
-        /// Get or Set the Agents
-        /// </summary>
-        public Dictionary<string, AgentsView> Agents
-        {
-            set
-            {
-                ProviderOrderDataControl.Agents = value;
-            }
-        }
+                
 
         #endregion
 
@@ -1775,7 +1765,6 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                     Providers = GlobalViewModel.Instance.HispaniaViewModel.ProvidersActiveDict;
                     SendTypes = GlobalViewModel.Instance.HispaniaViewModel.SendTypesDict;
                     EffectTypes = GlobalViewModel.Instance.HispaniaViewModel.EffectTypesDict;
-                    Agents = GlobalViewModel.Instance.HispaniaViewModel.AgentsDict;
                     Parameters = GlobalViewModel.Instance.HispaniaViewModel.Parameters;
                     DataList = GlobalViewModel.Instance.HispaniaViewModel.ProviderOrders;
                 }

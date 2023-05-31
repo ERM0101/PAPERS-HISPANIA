@@ -282,23 +282,23 @@ namespace HispaniaCommon.ViewModel
         public decimal SeveralData_Acum_12 { get; set; }
         #endregion
 
-        #region Company
+        //#region Company
 
-        public string Company_Name { get; set; }
-        public string Company_Address { get; set; }
-        public string Company_Phone_1 { get; set; }
-        public string Company_Phone_2 { get; set; }
-        public string Company_Fax { get; set; }
-        public string Company_MobilePhone { get; set; }
-        public string Company_EMail { get; set; }
-        public string Company_EMail2 { get; set; }
-        public string Company_EMail3 { get; set; }
-        public string Company_ContactPerson { get; set; }
-        public string Company_TimeTable { get; set; }
-        public string Company_NumProv { get; set; }
-        public string Company_Cif { get; set; }
+        //public string Company_Name { get; set; }
+        //public string Company_Address { get; set; }
+        //public string Company_Phone_1 { get; set; }
+        //public string Company_Phone_2 { get; set; }
+        //public string Company_Fax { get; set; }
+        //public string Company_MobilePhone { get; set; }
+        //public string Company_EMail { get; set; }
+        //public string Company_EMail2 { get; set; }
+        //public string Company_EMail3 { get; set; }
+        //public string Company_ContactPerson { get; set; }
+        //public string Company_TimeTable { get; set; }
+        //public string Company_NumProv { get; set; }
+        //public string Company_Cif { get; set; }
 
-        #endregion
+        //#endregion
 
         #region Bank Data (Bancarios)
 
@@ -701,7 +701,6 @@ namespace HispaniaCommon.ViewModel
             DataBank_IBAN_OfficeCode = provider.DataBank_IBAN_OfficeCode;
             DataBank_IBAN_CheckDigits = provider.DataBank_IBAN_CheckDigits;
             DataBank_IBAN_AccountNumber = provider.DataBank_IBAN_AccountNumber;
-            Company_Cif = provider.Company_Cif;
             BillingData_BillingType = provider.BillingData_BillingType;
             BillingData_Duplicate = provider.BillingData_Duplicate;
             BillingData_EarlyPaymentDiscount = provider.BillingData_EarlyPaymentDiscount;
@@ -854,12 +853,7 @@ namespace HispaniaCommon.ViewModel
             {
                 ErrorField = ProvidersAttributes.PostalCode;
                 throw new FormatException("Error, manca seleccionar el Codi Postal.");
-            }
-            if (Data_Agent == null)
-            {
-                ErrorField = ProvidersAttributes.Data_Agent;
-                throw new FormatException("Error, manca seleccionar l'Agent.");
-            }
+            }            
             #region DataBank Fields
             if (!GlobalViewModel.IsEmptyOrComment(DataBank_Bank))
             {
@@ -976,12 +970,7 @@ namespace HispaniaCommon.ViewModel
             {
                 ErrorField = ProvidersAttributes.DataBank_Effect;
                 throw new FormatException("Error, manca seleccionar el Tipus d'Efecte.");
-            }
-            if (BillingData_Agent == null)
-            {
-                ErrorField = ProvidersAttributes.BillingData_Agent;
-                throw new FormatException("Error, manca seleccionar l'Agent.");
-            }
+            }            
             if (BillingData_IVAType == null)
             {
                 ErrorField = ProvidersAttributes.BillingData_IVAType;

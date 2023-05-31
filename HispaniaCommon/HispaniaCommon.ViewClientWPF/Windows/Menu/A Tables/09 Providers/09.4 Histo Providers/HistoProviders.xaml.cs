@@ -313,7 +313,7 @@ namespace HispaniaCommon.ViewClientWPF.Windows
             //  Load the data in the window.
                 if (providerView == null) return;
                 tbProviderCode.Text = GlobalViewModel.GetStringFromIntIdValue(providerView.Provider_Id);
-                tbProviderDescription.Text = providerView.Company_Name;
+                tbProviderDescription.Text = providerView.Name;
                 ActualizeButtonState();
                 ActualizeUnitInformation();
             //  Deactivate managers

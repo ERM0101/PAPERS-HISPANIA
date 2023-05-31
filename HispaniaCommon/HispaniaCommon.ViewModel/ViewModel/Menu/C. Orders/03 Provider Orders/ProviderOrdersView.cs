@@ -837,8 +837,7 @@ namespace HispaniaCommon.ViewModel
             EffectType = providerOrder.EffectType;
             IVAPercent = providerOrder.IVAPercent;
             SurchargePercent = providerOrder.SurchargePercent;
-            Bill_Serie = providerOrder.Bill_Serie;
-            BillingData_Agent = providerOrder.BillingData_Agent;
+            Bill_Serie = providerOrder.Bill_Serie;            
             PrevisioLliurament = providerOrder.PrevisioLliurament;
             PrevisioLliuramentData = providerOrder.PrevisioLliuramentData;
         }
@@ -1024,12 +1023,7 @@ namespace HispaniaCommon.ViewModel
             {
                 ErrorField = ProviderOrdersAttributes.EffectType;
                 throw new FormatException("Error, manca seleccionar el Tipus d'Efecte.");
-            }
-            if (BillingData_Agent == null)
-            {
-                ErrorField = ProviderOrdersAttributes.BillingData_Agent;
-                throw new FormatException("Error, manca seleccionar l'Agent.");
-            }
+            }            
         }
 
         /// <summary>

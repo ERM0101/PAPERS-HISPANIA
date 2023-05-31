@@ -855,7 +855,7 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
             tbDataBankIBANCheckDigits.Text = providersView.DataBank_IBAN_CheckDigits;
             tbDataBankIBANAccountNumber.Text = providersView.DataBank_IBAN_AccountNumber;
             //  BillingData
-            tbCompanyCif.Text = providersView.Company_Cif;
+            tbCompanyCif.Text = providersView.NIF;
             tbBillingDataBillingType.Text = providersView.BillingData_BillingType;
             tbBillingDataDuplicate.Text = GlobalViewModel.GetStringFromDecimalValue(providersView.BillingData_Duplicate, DecimalType.WithoutDecimals);
             tbBillingDataEarlyPaymentDiscount.Text = GlobalViewModel.GetStringFromDecimalValue(providersView.BillingData_EarlyPaymentDiscount, DecimalType.Percent);
@@ -1440,7 +1440,6 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                         Providers = GlobalViewModel.Instance.HispaniaViewModel.ProvidersActiveDict,
                         SendTypes = GlobalViewModel.Instance.HispaniaViewModel.SendTypesDict,
                         EffectTypes = GlobalViewModel.Instance.HispaniaViewModel.EffectTypesDict,
-                        Agents = GlobalViewModel.Instance.HispaniaViewModel.AgentsDict,
                         Parameters = GlobalViewModel.Instance.HispaniaViewModel.Parameters,
                         DataList = GlobalViewModel.Instance.HispaniaViewModel.ProviderOrders
                     };
@@ -1490,7 +1489,6 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                         Providers = GlobalViewModel.Instance.HispaniaViewModel.ProvidersActiveDict,
                         SendTypes = GlobalViewModel.Instance.HispaniaViewModel.SendTypesDict,
                         EffectTypes = GlobalViewModel.Instance.HispaniaViewModel.EffectTypesDict,
-                        Agents = GlobalViewModel.Instance.HispaniaViewModel.AgentsDict,
                         Parameters = GlobalViewModel.Instance.HispaniaViewModel.Parameters,
                         DataList = GlobalViewModel.Instance.HispaniaViewModel.ProviderOrders
                     };

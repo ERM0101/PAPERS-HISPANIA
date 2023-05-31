@@ -2019,7 +2019,6 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                         Providers = GlobalViewModel.Instance.HispaniaViewModel.ProvidersActiveDict,
                         SendTypes = GlobalViewModel.Instance.HispaniaViewModel.SendTypesDict,
                         EffectTypes = GlobalViewModel.Instance.HispaniaViewModel.EffectTypesDict,
-                        Agents = GlobalViewModel.Instance.HispaniaViewModel.AgentsDict,
                         Parameters = GlobalViewModel.Instance.HispaniaViewModel.Parameters,
                         DataList = GlobalViewModel.Instance.HispaniaViewModel.ProviderOrders
                     };

@@ -164,10 +164,10 @@
                                VerticalAlignment="Center" IsEnabled="False"/>
                         <TextBox Grid.Column="1" x:Name="tbCompanyCif" Height="23" Margin="0,4,4,0" HorizontalAlignment="Stretch" VerticalAlignment="Center" 
                                  HorizontalContentAlignment="Center" MaxLength="20" IsReadOnly="True" IsTabStop="False"/>
-                        <Label Grid.Column="2" x:Name="lblCompanyNumProv"  Content="NUMERO PROVEÏDOR ASSIGNAT PEL CLIENT :" Margin="4,4,0,0" FontWeight="Bold" HorizontalAlignment="Center" 
+                        <!--<Label Grid.Column="2" x:Name="lblCompanyNumProv"  Content="NUMERO PROVEÏDOR ASSIGNAT PEL CLIENT :" Margin="4,4,0,0" FontWeight="Bold" HorizontalAlignment="Center" 
                                VerticalAlignment="Center" IsEnabled="False"/>
                         <TextBox Grid.Column="3" x:Name="tbCompanyNumProv" Height="23" MaxLength="10" HorizontalAlignment="Stretch" VerticalAlignment="Center" 
-                                 HorizontalContentAlignment="Center" Margin="4,4,4,0" IsReadOnly="True" IsTabStop="False"/>
+                                 HorizontalContentAlignment="Center" Margin="4,4,4,0" IsReadOnly="True" IsTabStop="False"/>-->
                     </Grid>
                     <Grid Grid.Row="4">
                         <Grid.ColumnDefinitions>
@@ -377,8 +377,8 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="280"/>
                             <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="500"/>
                             <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="600"/>
                         </Grid.ColumnDefinitions>
                         <GroupBox Grid.Column="0" Margin="5" Style="{StaticResource NonEditableGroupBox}"
                                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
@@ -408,12 +408,13 @@
                                      HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="0,4,4,0" 
                                      HorizontalContentAlignment="Center" IsTabStop="False"/>
                         </GroupBox>
-                        <Grid Grid.Column="4">
+                        <Grid Grid.Column="5">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="*"/>
@@ -441,7 +442,7 @@
                                 </StackPanel>
                             </Button>
                             <Button Grid.Row="0" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" 
-                                    Margin="0,2,0,0" x:Name="btnAccordingMovement" Width="100" Height="23">
+                                    Margin="0,2,0,0" x:Name="btnAccordingMovement" Width="115" Height="23">
                                 <StackPanel x:Name="spAccordingMovement"  Margin="2" Orientation="Horizontal">
                                     <Image Height="16" Margin="0,0,10,0" Source="{DynamicResource According}" Width="16" />
                                     <TextBlock x:Name="tbAccordingMovement" Text="Conforme" Margin="0,0,15,0" />
@@ -476,7 +477,7 @@
                                 </StackPanel>
                             </Button>
                             <Button Grid.Row="1" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" 
-                                    Margin="0,2,0,0" x:Name="btnUnAccordingMovement" Width="100" Height="23">
+                                    Margin="0,2,0,0" x:Name="btnUnAccordingMovement" Width="115" Height="23">
                                 <StackPanel x:Name="spUnAccordingMovement"  Margin="2" Orientation="Horizontal">
                                     <Image Height="16" Margin="2,0,8,0" Source="{DynamicResource UnAccording}" Width="16" />
                                     <TextBlock x:Name="tbUnAccordingMovement" Text="No Conforme" Margin="0,0,5,0" />
@@ -737,7 +738,7 @@
                     </GroupBox>
                 </Grid>
             </TabItem>
-            <TabItem Header="Diversos" Name="tiDivers" Style="{DynamicResource NonEditableTabItem}">
+            <!--<TabItem Header="Diversos" Name="tiDivers" Style="{DynamicResource NonEditableTabItem}">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
@@ -781,7 +782,7 @@
                                  IsReadOnly="True"/>
                     </Grid>
                 </Grid>
-            </TabItem>
+            </TabItem>-->
             <TabItem Header="Dades de Proveidor" Name="tiGeneral"  Style="{DynamicResource NonEditableTabItem}">
                 <Grid>
                     <Grid.RowDefinitions>

@@ -564,26 +564,7 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
             }
         }
 
-        /// <summary>
-        /// Get or Set the Agents 
-        /// </summary>
-        public Dictionary<string, AgentsView> Agents
-        {
-            get
-            {
-                return (m_Agents);
-            }
-            set
-            {
-                m_Agents = value;
-                if (m_Agents != null)
-                {
-                    cbBillingDataAgent.ItemsSource = m_Agents;
-                    cbBillingDataAgent.DisplayMemberPath = "Key";
-                    cbBillingDataAgent.SelectedValuePath = "Value";
-                }
-            }
-        }
+      
 
         #endregion
 
@@ -681,11 +662,7 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                 lblSendPostalCode,
                 tbSendPostalCode,
                 lblSendTimetable,
-                tbSendTimetable,
-                lblProviderRemarks,
-                tbProviderRemarks,
-                lblBillingDataNumUnpaid,
-                tbBillingDataNumUnpaid,
+                tbSendTimetable,                
                 tbShippingUnitAvailable,
                 tbBillingUnitAvailable,
                 lblIVAPercent,
@@ -763,10 +740,7 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                 lblDataBankIBANCheckDigits,
                 tbDataBankIBANCheckDigits,
                 lblDataBankIBANAccountNumber,
-                tbDataBankIBANAccountNumber,
-                lblBillingDataAgent,
-                cbBillingDataAgent,
-                btnAgents,
+                tbDataBankIBANAccountNumber,                
                 gbItemsList,
                 ListItems,
                 gbIBAN,
@@ -774,7 +748,6 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                 tiLines,
                 tiFootData,
                 tiBillingData,
-                tiDivers,
                 btnAdd,
                 btnHistoric,
                 btnEdit,
@@ -880,23 +853,23 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                     }
                     cbProvider.SelectedValue = Providers[Key];
                     tbProviderAlias.Text = ProviderOrder.Provider.Alias;
-                    tbCompanyName.Text = ProviderOrder.Provider.Company_Name;
-                    tbCompanyCif.Text = ProviderOrder.Provider.Company_Cif;
+                    tbCompanyName.Text = ProviderOrder.Provider.Name;
+                    tbCompanyCif.Text = ProviderOrder.Provider.NIF;
                     //tbCompanyNumProv.Text = ProviderOrder.Provider.Company_NumProv;
                     //  Dades de Proveidor Tab Controls
                     tbProviderId.Text = ProviderOrder.Provider.Provider_Id.ToString();
                     tbProviderAliasProveidor.Text = ProviderOrder.Provider.Alias;
-                    tbCompanyNameProveidor.Text = ProviderOrder.Provider.Company_Name;
-                    tbCompanyContactPerson.Text = ProviderOrder.Provider.Company_ContactPerson;
-                    tbCompanyEmail.Text = ProviderOrder.Provider.Company_EMail;
-                    tbCompanyAddress.Text = ProviderOrder.Provider.Company_Address;
-                    cbCompanyPostalCode.Text = ProviderOrder.Provider.Company_PostalCode_Str;
-                    tbCompanyPhone1.Text = ProviderOrder.Provider.Company_Phone_1;
-                    tbCompanyPhone2.Text = ProviderOrder.Provider.Company_Phone_2;
-                    tbCompanyMobilePhone.Text = ProviderOrder.Provider.Company_MobilePhone;
-                    tbCompanyFax.Text = ProviderOrder.Provider.Company_Fax;
-                    tbCompanyTimeTable.Text = ProviderOrder.Provider.Company_TimeTable;
-                    tbCompanyNumProvClient.Text= ProviderOrder.Provider.Company_NumProv;
+                    tbCompanyNameProveidor.Text = ProviderOrder.Provider.Name;
+                    tbCompanyContactPerson.Text = ProviderOrder.Provider.Agent_Name;
+                    tbCompanyEmail.Text = ProviderOrder.Provider.EMail;
+                    tbCompanyAddress.Text = ProviderOrder.Provider.Address;
+                    cbCompanyPostalCode.Text = ProviderOrder.Provider.PostalCode_Str;
+                    tbCompanyPhone1.Text = ProviderOrder.Provider.Phone;
+                    //tbCompanyPhone2.Text = ProviderOrder.Provider.Phone_2;
+                    tbCompanyMobilePhone.Text = ProviderOrder.Provider.MobilePhone;
+                    tbCompanyFax.Text = ProviderOrder.Provider.Fax;
+                    //tbCompanyTimeTable.Text = ProviderOrder.Provider.TimeTable;
+                    //tbCompanyNumProvClient.Text= ProviderOrder.Provider.Company_NumProv;
 
                     ActualizeProviderAddressData(ProviderOrder.Provider);
                 }
@@ -926,18 +899,7 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                 tbDataBankIBANBankCode.Text = ProviderOrder.DataBank_IBAN_BankCode;
                 tbDataBankIBANOfficeCode.Text = ProviderOrder.DataBank_IBAN_OfficeCode;
                 tbDataBankIBANCheckDigits.Text = ProviderOrder.DataBank_IBAN_CheckDigits;
-                tbDataBankIBANAccountNumber.Text = ProviderOrder.DataBank_IBAN_AccountNumber;
-            //  Various Tab Controls
-                if (ProviderOrder.Provider is null)
-                {
-                    tbProviderRemarks.Text = String.Empty;
-                    tbBillingDataNumUnpaid.Text = string.Empty;
-                }
-                else
-                {
-                    tbProviderRemarks.Text = ProviderOrder.Provider.Several_Remarks;
-                    tbBillingDataNumUnpaid.Text = GlobalViewModel.GetStringFromDecimalValue(ProviderOrder.Provider.BillingData_NumUnpaid, DecimalType.WithoutDecimals);                    
-                }
+                tbDataBankIBANAccountNumber.Text = ProviderOrder.DataBank_IBAN_AccountNumber;            
                 LoadExternalTablesInfo(ProviderOrder, ThrowException);
             //  Update historic button
                 btnHistoric.IsEnabled = true;
@@ -979,21 +941,7 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                     }
                 }
             }
-            else cbSendType.SelectedIndex = -1;
-            if ((Agents != null) && (providerOrder.BillingData_Agent != null))
-            {
-                Dictionary<string, AgentsView> Items = (Dictionary<string, AgentsView>)cbBillingDataAgent.ItemsSource;
-                string Key = GlobalViewModel.Instance.HispaniaViewModel.GetKeyAgentView(providerOrder.BillingData_Agent);
-                if (Items.ContainsKey(Key)) cbBillingDataAgent.SelectedValue = Agents[Key];
-                else
-                {
-                    if (ThrowException == 1)
-                    {
-                        throw new Exception(string.Format("No s'ha trobat el Representant '{0}'.", Agents[Key].Name));
-                    }
-                }
-            }
-            else cbBillingDataAgent.SelectedIndex = -1;
+            else cbSendType.SelectedIndex = -1;           
         }
 
         /// <summary>
@@ -1081,8 +1029,7 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
             //  ComboBox
             cbAddressStores.SelectionChanged += CbAddressStores_SelectionChanged;
                 cbSendType.SelectionChanged += CbSendType_SelectionChanged;
-                cbEffectType.SelectionChanged += CbEffectType_SelectionChanged;
-                cbBillingDataAgent.SelectionChanged += CbBillingDataAgent_SelectionChanged;
+                cbEffectType.SelectionChanged += CbEffectType_SelectionChanged;               
                 cbFieldItemToSearch.SelectionChanged += CbFieldItemToSearch_SelectionChanged;
             //  Define ListView events to manage.
                 ListItems.SelectionChanged += ListItems_SelectionChanged;   
@@ -1100,7 +1047,6 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                 btnUnAccordingMovement.Click += BtnUnAccordingMovement_Click;
                 btnAcceptSearch.Click += BtnAcceptSearch_Click;
                 btnAddGood.Click += BtnAddGood_Click;
-                btnAgents.Click += BtnAgents_Click;
                 btnAccept.Click += BtnAccept_Click;
                 btnCancel.Click += BtnCancel_Click;
         }
@@ -1452,7 +1398,6 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
         /// <param name="e">Parameters of the event</param>
         private void AgentsWindow_Closed(object sender, EventArgs e)
         {
-            ActualizeProviderOrderAgentsData();
             AgentsWindow.Closed -= AgentsWindow_Closed;
             AgentsWindow = null;
         }
@@ -1941,20 +1886,6 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
             }
         }
 
-        private void CbBillingDataAgent_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (DataChangedManagerActive)
-            {
-                DataChangedManagerActive = false;
-                if (cbBillingDataAgent.SelectedItem != null)
-                {
-                    EditedProviderOrder.BillingData_Agent = ((AgentsView)cbBillingDataAgent.SelectedValue);
-                    AreDataChanged = (EditedProviderOrder != ProviderOrder);
-                }
-                DataChangedManagerActive = true;
-            }
-        }
-
         #endregion
 
         #region CheckBox
@@ -2178,21 +2109,6 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
             }
         }
 
-        private void ActualizeProviderOrderAgentsData()
-        {
-            try
-            {
-                GlobalViewModel.Instance.HispaniaViewModel.RefreshAgents();
-                this.Agents = GlobalViewModel.Instance.HispaniaViewModel.AgentsDict;
-            }
-            catch (Exception ex)
-            {
-                MsgManager.ShowMessage(
-                        string.Format("Error, a l'actualitzar la informació dels representants.\r\nDetalls:{0}",
-                                      MsgManager.ExcepMsg(ex)));
-            }
-        }
-
         private void ActualizeAvalilableUnitInfo()
         {
             if (ListItems.SelectedItem != null)
@@ -2407,17 +2323,17 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
             {
                 string Key;
                 Dictionary<string, AddressStoresView> AddressStoresOfProvider = new Dictionary<string, AddressStoresView>();
-                if (provider.Company_PostalCode == null) Key = $"Adreça Principal del Client | {provider.Company_Address}";
+                if (provider.PostalCode == null) Key = $"Adreça Principal del Client | {provider.Address}";
                 else
                 {
-                    string PostalCode = provider.Company_PostalCode.Postal_Code_Info;
-                    Key = $"Adreça Principal del Client ->  Adreça: '{provider.Company_Address}'  -  Còdi Postal: '{PostalCode}'";
+                    string PostalCode = provider.PostalCode.Postal_Code_Info;
+                    Key = $"Adreça Principal del Client ->  Adreça: '{provider.Address}'  -  Còdi Postal: '{PostalCode}'";
                 }
                 AddressStoresView Address = new AddressStoresView(provider.Provider_Id)
                 {
-                    Address = provider.Company_Address,
-                    PostalCode = provider.Company_PostalCode,
-                    Timetable = provider.Company_TimeTable
+                    Address = provider.Address,
+                    PostalCode = provider.PostalCode,
+                    //Timetable = provider.Company_TimeTable
                 };
                 AddressStoresOfProvider.Add(Key, Address);
                 foreach (AddressStoresView addressStore in GlobalViewModel.Instance.HispaniaViewModel.GetAddressStores(provider.Provider_Id))

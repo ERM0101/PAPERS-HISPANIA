@@ -261,12 +261,12 @@ namespace HispaniaCommon.ViewModel
             List<PdfPCell> CellsDeliveryNote;
             List<Tuple<string, int, PDF_Align>> Columns = null;
             List<List<Tuple<string, PDF_Align>>> Items = null;
-            bool NumProvExist = !String.IsNullOrEmpty(Provider.Company_NumProv);
+            bool NumProvExist = !String.IsNullOrEmpty(Provider.Provider_Id.ToString());
             if (NumProvExist)
             {
                 string NumProvInfo =
                           string.Format("{0}{1}",
-                                        Provider.Company_NumProv,
+                                        Provider.Provider_Id.ToString(),
                                         Provider.Provider_Id == 233 || Provider.Provider_Id == 3893 ? " (ESB08949950)"
                                                                                                     : string.Empty);
                 Columns = new List<Tuple<string, int, PDF_Align>>(1)
@@ -304,23 +304,23 @@ namespace HispaniaCommon.ViewModel
                                                     ReportView.CreateEmptyRow(6),
                                                     ReportView.CreateEmptyRow(6),
                                                };
-            string TimeTable = IsBill ? string.Empty : Provider.Company_TimeTable;
+            //string TimeTable = IsBill ? string.Empty : Provider.Company_TimeTable;
             List<PdfPCell> CellsCustomerInfo = new List<PdfPCell>()
             {
                 ReportView.CreateEmptyRow(BackColorCustomerInfo, BackColorCustomerInfo, 1),
                 ReportView.CreateRow(Provider.Provider_Id.ToString(), 2, ForeFontCustomerInfo, BackColorCustomerInfo, BackColorCustomerInfo, PDF_Align.Left),
                 ReportView.CreateRow("D.N.I./C.I.F.: ", 3, ForeFontCustomerInfo, BackColorCustomerInfo, BackColorCustomerInfo),
-                ReportView.CreateRow(Provider.Company_Cif, 4, ForeFontCustomerInfo, BackColorCustomerInfo, BackColorCustomerInfo, PDF_Align.Left),
+                ReportView.CreateRow(Provider.NIF, 4, ForeFontCustomerInfo, BackColorCustomerInfo, BackColorCustomerInfo, PDF_Align.Left),
                 ReportView.CreateEmptyRow(BackColorCustomerInfo, BackColorCustomerInfo, 1),
-                ReportView.CreateRow(Provider.Company_Name, 9, ForeFontCustomerInfo, BackColorCustomerInfo, BackColorCustomerInfo, PDF_Align.Left),
+                ReportView.CreateRow(Provider.Name, 9, ForeFontCustomerInfo, BackColorCustomerInfo, BackColorCustomerInfo, PDF_Align.Left),
                 ReportView.CreateEmptyRow(BackColorCustomerInfo, BackColorCustomerInfo, 1),
-                ReportView.CreateRow(Provider.Company_Address, 9, ForeFontCustomerInfo, BackColorCustomerInfo, BackColorCustomerInfo, PDF_Align.Left),
+                ReportView.CreateRow(Provider.Address, 9, ForeFontCustomerInfo, BackColorCustomerInfo, BackColorCustomerInfo, PDF_Align.Left),
                 ReportView.CreateEmptyRow(BackColorCustomerInfo, BackColorCustomerInfo, 1),
                 ReportView.CreateRow(Provider.Company_City_Str, 9, ForeFontCustomerInfo, BackColorCustomerInfo, BackColorCustomerInfo, PDF_Align.Left),
                 ReportView.CreateEmptyRow(BackColorCustomerInfo, BackColorCustomerInfo, 1),
                 ReportView.CreateRow(Provider.Company_PostalCode_Str, 9, ForeFontCustomerInfo, BackColorCustomerInfo, BackColorCustomerInfo, PDF_Align.Left),
                 ReportView.CreateEmptyRow(BackColorCustomerInfo, BackColorCustomerInfo, 1),
-                ReportView.CreateRow(TimeTable, 9, ForeFontCustomerInfo, BackColorCustomerInfo, BackColorCustomerInfo, PDF_Align.Left),
+                //ReportView.CreateRow(TimeTable, 9, ForeFontCustomerInfo, BackColorCustomerInfo, BackColorCustomerInfo, PDF_Align.Left),
             };
             List<PdfPCell> Cells = new List<PdfPCell>(3)
             {

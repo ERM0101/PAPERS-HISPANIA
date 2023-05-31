@@ -151,9 +151,9 @@ namespace HispaniaCommon.ViewModel
             ErrMsg = string.Empty;
             try
             {
-                if (!string.IsNullOrEmpty(providerOrder.Provider.Company_EMail))
+                if (!string.IsNullOrEmpty(providerOrder.Provider.EMail))
                 {
-                    string EMAIL_Address = providerOrder.Provider.Company_EMail;
+                    string EMAIL_Address = providerOrder.Provider.EMail;
                     string Subject = string.Format("Albarà número ({0})", providerOrder.DeliveryNote_Id);
                     string BodyMessage = string.Format("Albarà número ({0})\r\nPapers Hispània S.L.\r\n", providerOrder.DeliveryNote_Id);
                     List<Tuple<string, string>> FileAttachments = new List<Tuple<string, string>>(1)

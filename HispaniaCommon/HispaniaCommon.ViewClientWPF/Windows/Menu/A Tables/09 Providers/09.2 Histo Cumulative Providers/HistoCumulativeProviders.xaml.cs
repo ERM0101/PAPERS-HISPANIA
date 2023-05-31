@@ -243,7 +243,7 @@ namespace HispaniaCommon.ViewClientWPF.Windows
         {
             if (providerView == null) return;
             tbProviderCode.Text = GlobalViewModel.GetStringFromIntIdValue(providerView.Provider_Id);
-            tbProviderDescription.Text = providerView.Company_Name;
+            tbProviderDescription.Text = providerView.Name;
         }
 
         /// <summary>

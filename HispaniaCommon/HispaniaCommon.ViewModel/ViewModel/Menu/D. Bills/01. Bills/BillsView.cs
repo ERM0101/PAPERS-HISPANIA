@@ -746,10 +746,10 @@ namespace HispaniaCommon.ViewModel
             _BillingSerie_Id = 1; //  Aquest camp tindrà valor al crear l'Item a la Base de Dades Sèrie de Facturació A (Factures normals (valor > 0)).
             Provider_Id = provider.Provider_Id;
             Provider_Alias = provider.Alias;
-            Company_Name = provider.Company_Name;
-            Company_Cif = provider.Company_Cif;
-            Company_Address = provider.Company_Address;
-            Company_NumProv = provider.Company_NumProv;
+            Company_Name = provider.Name;
+            Company_Cif = provider.NIF;
+            Company_Address = provider.Address;
+            Company_NumProv = provider.Provider_Id.ToString();
             DataBank_Bank = provider.DataBank_Bank;
             DataBank_BankAddress = provider.DataBank_BankAddress;
             DataBank_NumEffect = provider.DataBank_NumEffect;
