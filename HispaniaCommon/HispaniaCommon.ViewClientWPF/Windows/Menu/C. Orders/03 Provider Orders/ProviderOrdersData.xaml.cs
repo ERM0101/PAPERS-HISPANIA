@@ -2500,9 +2500,24 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                 currentMovement.RowOrder = previousMovement.RowOrder;
                 previousMovement.RowOrder = ord;
                 DataList = new ObservableCollection<ProviderOrderMovementsView>(DataList.OrderBy(x => x.RowOrder));
-                GlobalViewModel.Instance.HispaniaViewModel.UpdateProviderOrderMovement(currentMovement);
-                GlobalViewModel.Instance.HispaniaViewModel.UpdateProviderOrderMovement(previousMovement);
-                //AreDataChanged = true;
+
+                if (currentMovement.ProviderOrderMovement_Id <= 0)
+                {
+                    GlobalViewModel.Instance.HispaniaViewModel.CreateProviderOrderMovement(currentMovement);
+                }
+                else
+                {
+                    GlobalViewModel.Instance.HispaniaViewModel.UpdateProviderOrderMovement(currentMovement);
+                }
+
+                if (previousMovement.ProviderOrderMovement_Id <= 0)
+                {
+                    GlobalViewModel.Instance.HispaniaViewModel.CreateProviderOrderMovement(previousMovement);
+                }
+                else
+                {
+                    GlobalViewModel.Instance.HispaniaViewModel.UpdateProviderOrderMovement(previousMovement);
+                }                
             }
         }
 
@@ -2520,8 +2535,22 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                 nextMovement.RowOrder = ord;
                 DataList = new ObservableCollection<ProviderOrderMovementsView>(DataList.OrderBy(x => x.RowOrder));
                
-                GlobalViewModel.Instance.HispaniaViewModel.UpdateProviderOrderMovement(currentMovement);
-                GlobalViewModel.Instance.HispaniaViewModel.UpdateProviderOrderMovement(nextMovement);
+                if (currentMovement.ProviderOrderMovement_Id <= 0)
+                {
+                    GlobalViewModel.Instance.HispaniaViewModel.CreateProviderOrderMovement(currentMovement);
+                }else
+                {
+                    GlobalViewModel.Instance.HispaniaViewModel.UpdateProviderOrderMovement(currentMovement);
+                }
+                
+                if (nextMovement.ProviderOrderMovement_Id<=0)
+                {
+                    GlobalViewModel.Instance.HispaniaViewModel.CreateProviderOrderMovement(nextMovement);
+                }
+                else
+                {
+                    GlobalViewModel.Instance.HispaniaViewModel.UpdateProviderOrderMovement(nextMovement);
+                }
             }
         }
 
