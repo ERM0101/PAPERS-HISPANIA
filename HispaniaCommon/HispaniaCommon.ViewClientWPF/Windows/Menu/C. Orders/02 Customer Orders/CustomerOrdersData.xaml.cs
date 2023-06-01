@@ -1842,9 +1842,23 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                 currentMovement.RowOrder = previousMovement.RowOrder;
                 previousMovement.RowOrder = ord;
                 DataList = new ObservableCollection<CustomerOrderMovementsView>(DataList.OrderBy(x => x.RowOrder));
-                GlobalViewModel.Instance.HispaniaViewModel.UpdateCustomerOrderMovement(currentMovement);
-                GlobalViewModel.Instance.HispaniaViewModel.UpdateCustomerOrderMovement(previousMovement);
-                //AreDataChanged = true;
+                if (currentMovement.CustomerOrderMovement_Id<=0)
+                {
+                    GlobalViewModel.Instance.HispaniaViewModel.CreateCustomerOrderMovement(currentMovement);
+                }
+                else
+                {
+                    GlobalViewModel.Instance.HispaniaViewModel.UpdateCustomerOrderMovement(currentMovement);
+                }
+
+                if (previousMovement.CustomerOrderMovement_Id <= 0)
+                {
+                    GlobalViewModel.Instance.HispaniaViewModel.CreateCustomerOrderMovement(previousMovement);
+                }
+                else
+                {
+                    GlobalViewModel.Instance.HispaniaViewModel.UpdateCustomerOrderMovement(previousMovement);
+                }               
             }
         }
 
@@ -1864,8 +1878,23 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                 nextMovement.RowOrder = ord;
                 DataList = new ObservableCollection<CustomerOrderMovementsView>(DataList.OrderBy(x => x.RowOrder));
 
-                GlobalViewModel.Instance.HispaniaViewModel.UpdateCustomerOrderMovement(currentMovement);
-                GlobalViewModel.Instance.HispaniaViewModel.UpdateCustomerOrderMovement(nextMovement);
+                if (currentMovement.CustomerOrderMovement_Id <= 0)
+                {
+                    GlobalViewModel.Instance.HispaniaViewModel.CreateCustomerOrderMovement(currentMovement);
+                }
+                else
+                {
+                    GlobalViewModel.Instance.HispaniaViewModel.UpdateCustomerOrderMovement(currentMovement);
+                }
+
+                if (nextMovement.CustomerOrderMovement_Id <= 0)
+                {
+                    GlobalViewModel.Instance.HispaniaViewModel.CreateCustomerOrderMovement(nextMovement);
+                }
+                else
+                {
+                    GlobalViewModel.Instance.HispaniaViewModel.UpdateCustomerOrderMovement(nextMovement);
+                }
             }
         }
         private void CheckRowOrder()
