@@ -2488,7 +2488,8 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
 
 
         private void btnUp_Click(object sender, RoutedEventArgs e)
-        {  
+        {
+           
             int Index = ListItems.SelectedIndex;
             CheckRowOrder();
             if (Index>0)
@@ -2496,13 +2497,20 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                 DataChangedManagerActive = false;
                 ProviderOrderMovementsView currentMovement = (ProviderOrderMovementsView)ListItems.Items[Index];
                 ProviderOrderMovementsView previousMovement = (ProviderOrderMovementsView)ListItems.Items[Index - 1];
+                if ((currentMovement._ProviderOrder_Id <= 0 || previousMovement._ProviderOrder_Id <= 0) || ((currentMovement.ProviderOrder.EffectType == null) || (previousMovement.ProviderOrder.EffectType == null)))
+                {
+                    MessageBox.Show("Debe guardar la comanda antes de poder ordenar las líneas");
+                    return;
+                }
+
                 var ord = currentMovement.RowOrder;
                 currentMovement.RowOrder = previousMovement.RowOrder;
                 previousMovement.RowOrder = ord;
                 DataList = new ObservableCollection<ProviderOrderMovementsView>(DataList.OrderBy(x => x.RowOrder));
 
+
                 if (currentMovement.ProviderOrderMovement_Id <= 0)
-                {
+                {                    
                     GlobalViewModel.Instance.HispaniaViewModel.CreateProviderOrderMovement(currentMovement);
                 }
                 else
@@ -2530,11 +2538,26 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                 DataChangedManagerActive = false;
                 ProviderOrderMovementsView currentMovement = (ProviderOrderMovementsView)ListItems.Items[Index];
                 ProviderOrderMovementsView nextMovement = (ProviderOrderMovementsView)ListItems.Items[Index + 1];
+                if ((currentMovement._ProviderOrder_Id <= 0 || nextMovement._ProviderOrder_Id <= 0) || ((currentMovement.ProviderOrder.EffectType == null) ||(nextMovement.ProviderOrder.EffectType==null)))
+                {
+                    MessageBox.Show("Debe guardar la comanda antes de poder ordenar las líneas");
+                    return;
+                }
+
                 var ord = currentMovement.RowOrder;
                 currentMovement.RowOrder = nextMovement.RowOrder;
                 nextMovement.RowOrder = ord;
                 DataList = new ObservableCollection<ProviderOrderMovementsView>(DataList.OrderBy(x => x.RowOrder));
-               
+
+                if (nextMovement.ProviderOrderMovement_Id <= 0)
+                {
+                    GlobalViewModel.Instance.HispaniaViewModel.CreateProviderOrderMovement(nextMovement);
+                }
+                else
+                {
+                    GlobalViewModel.Instance.HispaniaViewModel.UpdateProviderOrderMovement(nextMovement);
+                }
+
                 if (currentMovement.ProviderOrderMovement_Id <= 0)
                 {
                     GlobalViewModel.Instance.HispaniaViewModel.CreateProviderOrderMovement(currentMovement);
@@ -2543,14 +2566,7 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                     GlobalViewModel.Instance.HispaniaViewModel.UpdateProviderOrderMovement(currentMovement);
                 }
                 
-                if (nextMovement.ProviderOrderMovement_Id<=0)
-                {
-                    GlobalViewModel.Instance.HispaniaViewModel.CreateProviderOrderMovement(nextMovement);
-                }
-                else
-                {
-                    GlobalViewModel.Instance.HispaniaViewModel.UpdateProviderOrderMovement(nextMovement);
-                }
+                
             }
         }
 

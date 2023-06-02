@@ -141,6 +141,11 @@ namespace HispaniaCommon.ViewModel
 
         private void CreateProviderOrderMovementInDb(HispaniaCompData.ProviderOrderMovement providerOrderMovement)
         {
+            if (providerOrderMovement.ProviderOrderMovement_Id<=0)
+            {
+                providerOrderMovement.ProviderOrderMovement_Id = 0;
+            }
+            
             HispaniaDataAccess.Instance.CreateProviderOrderMovement(providerOrderMovement);
         }
 

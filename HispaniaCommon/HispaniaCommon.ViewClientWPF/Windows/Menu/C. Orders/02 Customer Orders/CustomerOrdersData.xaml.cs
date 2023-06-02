@@ -1838,6 +1838,11 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                 DataChangedManagerActive = false;
                 CustomerOrderMovementsView currentMovement = (CustomerOrderMovementsView)ListItems.Items[Index];
                 CustomerOrderMovementsView previousMovement = (CustomerOrderMovementsView)ListItems.Items[Index - 1];
+                if ((currentMovement._CustomerOrder_Id <= 0 || previousMovement._CustomerOrder_Id <= 0) || ((currentMovement.CustomerOrder.EffectType == null) || (previousMovement.CustomerOrder.EffectType == null)))
+                {
+                    MessageBox.Show("Debe guardar la comanda antes de poder ordenar las líneas");
+                    return;
+                }
                 var ord = currentMovement.RowOrder;
                 currentMovement.RowOrder = previousMovement.RowOrder;
                 previousMovement.RowOrder = ord;
@@ -1873,6 +1878,13 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                 DataChangedManagerActive = false;
                 CustomerOrderMovementsView currentMovement = (CustomerOrderMovementsView)ListItems.Items[Index];
                 CustomerOrderMovementsView nextMovement = (CustomerOrderMovementsView)ListItems.Items[Index + 1];
+
+                if ((currentMovement._CustomerOrder_Id <= 0 || nextMovement._CustomerOrder_Id <= 0)|| ((currentMovement.CustomerOrder.EffectType == null) || (nextMovement.CustomerOrder.EffectType == null)))
+                {
+                    MessageBox.Show("Debe guardar la comanda antes de poder ordenar las líneas");
+                    return;
+                }
+
                 var ord = currentMovement.RowOrder;
                 currentMovement.RowOrder = nextMovement.RowOrder;
                 nextMovement.RowOrder = ord;

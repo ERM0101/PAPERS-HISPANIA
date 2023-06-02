@@ -380,6 +380,7 @@ namespace HispaniaCommon.ViewModel
                 Internal_Remark = Internal_Remark,
                 ProviderOrder_Id = _ProviderOrder_Id,
                 Good_Id = _Good_Id,
+                ProviderOrder = ProviderOrder.GetProviderOrder()
             };
             return (ProviderOrderMovement);
         }
