@@ -181,7 +181,7 @@
                             <TextBlock x:Name="tbViewData" Text="Veure Dades" />
                         </StackPanel>
                     </Button>
-                    <Button Grid.Column="5" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,2,0,0" x:Name="btnAddNewLine" Width="130" Height="23">
+                    <Button Grid.Column="5" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,2,0,0" x:Name="btnAddNewLine" Width="130" Height="23" Visibility="Hidden">
                         <StackPanel x:Name="spAddNewLine"  Margin="2" Orientation="Horizontal">
                             <Image Height="16" Margin="0,0,10,0" Source="{DynamicResource AddDeliveryNote}" Width="16" />
                             <TextBlock x:Name="tbAddNewLine" Text="Afegir nova línia" />

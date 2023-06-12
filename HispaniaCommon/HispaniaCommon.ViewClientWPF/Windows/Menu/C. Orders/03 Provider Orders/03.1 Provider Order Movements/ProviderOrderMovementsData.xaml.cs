@@ -394,9 +394,7 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                 lblUnitBilling,
                 tbUnitBilling,
                 lblRetailPrice,
-                tbRetailPrice,
-                lblComission,
-                tbComission,
+                tbRetailPrice,                
                 lblRemark,
                 tbRemark,
                 lblInternalRemark,
@@ -490,7 +488,6 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                 tbUnitShippingDefinition.Text = movement.Unit_Shipping_Definition;
                 UpdateUnitsDataAndFieldsState(movement);
                 tbRetailPrice.Text = GlobalViewModel.GetStringFromDecimalValue(movement.RetailPrice, DecimalType.Currency);
-                tbComission.Text = GlobalViewModel.GetStringFromDecimalValue(movement.Comission, DecimalType.Percent);
                 chkbAccording.IsChecked = movement.According;
                 tbRemark.Text = movement.Remark;
                 tbInternalRemark.Text = movement.Internal_Remark;
@@ -541,9 +538,7 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                 tbUnitShipping.PreviewTextInput += TBPreviewTextInput;
                 tbUnitShipping.TextChanged += TBUnitDataChanged;
                 tbRetailPrice.PreviewTextInput += TBPreviewTextInput;
-                tbRetailPrice.TextChanged += TBCurrencyDataChanged;
-                tbComission.PreviewTextInput += TBPreviewTextInput;
-                tbComission.TextChanged += TBPercentDataChanged;
+                tbRetailPrice.TextChanged += TBCurrencyDataChanged;                
                 tbRemark.PreviewTextInput += TBPreviewTextInput;
                 tbRemark.TextChanged += TBDataChanged;
                 tbInternalRemark.PreviewTextInput += TBPreviewTextInput;
@@ -605,8 +600,7 @@ namespace HispaniaCommon.ViewClientWPF.Windows
             if (sender == tbRetailPrice)
             {
                 e.Handled = ! GlobalViewModel.IsValidCurrencyChar(e.Text);
-            }
-            else if (sender == tbComission) e.Handled = ! GlobalViewModel.IsValidPercentChar(e.Text);
+            }            
             else if ((sender == tbRemark) || (sender == tbGoodDescription) || (sender == tbInternalRemark))
             {
                 e.Handled = ! GlobalViewModel.IsValidCommentChar(e.Text);
@@ -692,35 +686,7 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                 {
                     GlobalViewModel.NormalizeTextBox(sender, e, DecimalType.Currency);
                     decimal value = GlobalViewModel.GetUIDecimalValue(tbInput.Text);
-                    if (sender == tbRetailPrice) EditedProviderOrderMovement.RetailPrice = value;
-                    else if (sender == tbComission) EditedProviderOrderMovement.Comission = value;
-                }
-                catch (Exception ex)
-                {
-                    MsgManager.ShowMessage(MsgManager.ExcepMsg(ex));
-                    LoadDataInControls(EditedProviderOrderMovement);
-                }
-                AreDataChanged = (EditedProviderOrderMovement != Data);
-                DataChangedManagerActive = true;
-            }
-        }
-
-        /// <summary>
-        /// Manage the change of the Data in the sender object.
-        /// </summary>
-        /// <param name="sender">Object that sends the event.</param>
-        /// <param name="e">Parameters with the event was sended.</param>
-        private void TBPercentDataChanged(object sender, TextChangedEventArgs e)
-        {
-            if (DataChangedManagerActive)
-            {
-                DataChangedManagerActive = false;
-                TextBox tbInput = (TextBox)sender;
-                try
-                {
-                    GlobalViewModel.NormalizeTextBox(sender, e, DecimalType.Percent);
-                    decimal value = GlobalViewModel.GetUIDecimalValue(tbInput.Text);
-                    if (sender == tbComission) EditedProviderOrderMovement.Comission = value;
+                    if (sender == tbRetailPrice) EditedProviderOrderMovement.RetailPrice = value;                    
                 }
                 catch (Exception ex)
                 {
@@ -888,7 +854,7 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                     Data = Provider
                 };
                 HistoProvidersWindow.Closed += HistoProvidersWindow_Closed;
-                HistoProvidersWindow.ShowDialog();
+                HistoProvidersWindow.Show();
             }
             else HistoProvidersWindow.Activate();
         }

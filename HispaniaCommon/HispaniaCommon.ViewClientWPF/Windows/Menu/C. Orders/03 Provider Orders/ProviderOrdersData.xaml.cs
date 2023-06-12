@@ -1472,7 +1472,7 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                             Data = new ProviderOrderMovementsView(Movement)
                         };
                         ProviderOrderMovementsDataWindow.Closed += ProviderOrderMovementsDataWindow_Closed;
-                        ProviderOrderMovementsDataWindow.ShowDialog();
+                        ProviderOrderMovementsDataWindow.Show();
                     }
                     catch (Exception ex)
                     {
@@ -1515,7 +1515,7 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                         Data = newMovement
                     };
                     ProviderOrderMovementsDataWindow.Closed += ProviderOrderMovementsDataWindow_Add_Closed;
-                    ProviderOrderMovementsDataWindow.ShowDialog();
+                    ProviderOrderMovementsDataWindow.Show();
                 }
                 catch (Exception ex)
                 {
@@ -1572,7 +1572,7 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                             Data = new ProviderOrderMovementsView(Movement)
                         };
                         ProviderOrderMovementsDataWindow.Closed += ProviderOrderMovementsDataWindow_Edit_Closed;
-                        ProviderOrderMovementsDataWindow.ShowDialog();
+                        ProviderOrderMovementsDataWindow.Show();
                     }
                     catch (Exception ex)
                     {
@@ -1668,7 +1668,7 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                         Data = EditedProviderOrder.Provider
                     };
                     HistoProvidersWindow.Closed += HistoProvidersWindow_Closed;
-                    HistoProvidersWindow.ShowDialog();
+                    HistoProvidersWindow.Show();
                 }
                 catch (Exception ex)
                 {
@@ -2525,7 +2525,8 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                 else
                 {
                     GlobalViewModel.Instance.HispaniaViewModel.UpdateProviderOrderMovement(previousMovement);
-                }                
+                }
+                AreDataChanged = true;
             }
         }
 
@@ -2565,8 +2566,9 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                 {
                     GlobalViewModel.Instance.HispaniaViewModel.UpdateProviderOrderMovement(currentMovement);
                 }
-                
-                
+
+                AreDataChanged = true;
+
             }
         }
 

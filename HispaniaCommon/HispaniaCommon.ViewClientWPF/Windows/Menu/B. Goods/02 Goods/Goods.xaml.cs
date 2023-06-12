@@ -139,6 +139,12 @@ namespace HispaniaCommon.ViewClientWPF.Windows
             set;
         }
 
+        public bool GoodManagement
+        {
+            get;
+            set;
+        }
+
         #region GUI
 
         /// <summary>
@@ -223,7 +229,8 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                 rdItemPannel.Height = HideComponent;
                 rdSearchPannel.Height = HideComponent;
                 gsSplitter.IsEnabled = false;
-                btnEdit.Visibility = btnDelete.Visibility = btnViewData.Visibility = btnAddNewLine.Visibility =  Visibility.Hidden;
+                btnEdit.Visibility = btnDelete.Visibility = btnViewData.Visibility = Visibility.Hidden;
+                btnAddNewLine.Visibility = Visibility.Hidden;
         }
 
         /// <summary>
@@ -740,9 +747,14 @@ namespace HispaniaCommon.ViewClientWPF.Windows
         {
             if (ListItems.SelectedItem != null)
             {
-                btnEdit.Visibility = btnDelete.Visibility = btnViewData.Visibility = btnAddNewLine.Visibility = Visibility.Visible;
+                btnEdit.Visibility = btnDelete.Visibility = btnViewData.Visibility = Visibility.Visible;
             }
-            else btnEdit.Visibility = btnDelete.Visibility = btnViewData.Visibility = btnAddNewLine.Visibility = Visibility.Hidden;
+            else btnEdit.Visibility = btnDelete.Visibility = btnViewData.Visibility = Visibility.Hidden;
+
+            if (!GoodManagement)
+            {
+                btnAddNewLine.Visibility = Visibility.Visible;
+            }
         }
 
         #endregion

@@ -1535,7 +1535,7 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                         Data = EditedProvider
                     };
                     HistoCumulativeProvidersWindow.Closed += HistoCumulativeProvidersWindow_Closed;
-                    HistoCumulativeProvidersWindow.ShowDialog();
+                    HistoCumulativeProvidersWindow.Show();
 
                 }
                 catch (Exception ex)
@@ -1574,7 +1574,7 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                         DataProv = EditedProvider
                     };
                     BadDebtsWindow.Closed += BadDebtsWindow_Closed;
-                    BadDebtsWindow.ShowDialog();
+                    BadDebtsWindow.Show();
                 }
                 catch (Exception ex)
                 {

@@ -778,7 +778,7 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                 if (ListItems.SelectedItems != null)
                 {
                     DataSelector dsDate = new DataSelector(AppType);
-                    dsDate.ShowDialog();
+                    dsDate.Show();
                     if (dsDate.Result == DataSelector.WindowResult.Accept)
                     {
                         DateTime NewDate = dsDate.Data;
@@ -826,7 +826,7 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                 if (ListItems.SelectedItems != null)
                 {
                     DataSelector dsDate = new DataSelector(AppType);
-                    dsDate.ShowDialog();
+                    dsDate.Show();
                     if (dsDate.Result == DataSelector.WindowResult.Accept)
                     {
                         DateTime NewDate = dsDate.Data;

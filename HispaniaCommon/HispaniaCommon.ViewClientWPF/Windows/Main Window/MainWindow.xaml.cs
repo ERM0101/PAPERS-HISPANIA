@@ -1913,7 +1913,8 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                     GoodsWindow = new Goods(AppType)
                     {
                         Units = GlobalViewModel.Instance.HispaniaViewModel.UnitsDict,
-                        DataList = GlobalViewModel.Instance.HispaniaViewModel.Goods
+                        DataList = GlobalViewModel.Instance.HispaniaViewModel.Goods,
+                        GoodManagement = true
                     };
                     GoodsWindow.Closed += GoodsWindow_Closed;
                     GoodsWindow.Show();

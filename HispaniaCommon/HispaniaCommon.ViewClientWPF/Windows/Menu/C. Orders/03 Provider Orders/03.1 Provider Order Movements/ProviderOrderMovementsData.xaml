@@ -6,7 +6,7 @@
     xmlns:my="clr-namespace:MBCode.Framework.Managers.Culture;assembly=MBCode.Framework"
     x:Class="HispaniaCommon.ViewClientWPF.Windows.ProviderOrderMovementsData" 
         mc:Ignorable="d"
-        Title="Moviments de Comanda de Client" Icon="{DynamicResource WindowDemoDataBaseIcon}"  Width="1145" Height="550" MinWidth="1069" MinHeight="550" Foreground="#FF9B211D"
+        Title="Moviments de Comanda de Proveidor" Icon="{DynamicResource WindowDemoDataBaseIcon}"  Width="1145" Height="550" MinWidth="1069" MinHeight="550" Foreground="#FF9B211D"
         WindowStartupLocation="CenterScreen" ResizeMode="CanResize">
     <Window.Resources>
         <ResourceDictionary >
@@ -17,7 +17,11 @@
         </ResourceDictionary>
     </Window.Resources>
     <Grid>
-        <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="176*"/>
+            <ColumnDefinition Width="969*"/>
+        </Grid.ColumnDefinitions>
+        <Grid Grid.ColumnSpan="2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
                 <RowDefinition Height="50" />
@@ -171,24 +175,29 @@
                         </Grid>
                         <Grid Grid.Row="4">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="180"/>
+                                <ColumnDefinition Width="7"/>
+                                <ColumnDefinition Width="14"/>
+                                <ColumnDefinition Width="12"/>
+                                <ColumnDefinition Width="117"/>
                                 <ColumnDefinition Width="150"/>
-                                <ColumnDefinition Width="80"/>
+                                <ColumnDefinition Width="90"/>
                                 <ColumnDefinition Width="150"/>
                                 <ColumnDefinition Width="85"/>
                                 <ColumnDefinition Width="30"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <Label Grid.Column="0" x:Name="lblRetailPrice" Content="PREU DE VENDA AL PÚBLIC :" Margin="4,4,2,0" FontWeight="Bold" HorizontalAlignment="Center" 
+                            <!--<Label Grid.Column="0" x:Name="lblUnitShippingInput" Content="UNITATS DE EXPEDICIÓ :" Margin="6,4,2,0" FontWeight="Bold" HorizontalAlignment="Center" 
                                    VerticalAlignment="Center" IsEnabled="False"/>
-                            <TextBox Grid.Column="1" x:Name="tbRetailPrice" Height="23" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="0,4,2,0" 
+                            <TextBox Grid.Column="1" x:Name="tbUnitShippingInput" Height="23" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="0,4,2,0" 
+                                 MaxLength="20" HorizontalContentAlignment="Center" IsReadOnly="True" GotFocus="TBGotFocus"/>-->
+                            <Label Grid.Column="0" x:Name="lblRetailPrice" Content="PREU DE COMPRA :" Margin="10,16,0,0" FontWeight="Bold" HorizontalAlignment="Left" 
+                                   VerticalAlignment="Top" IsEnabled="False" Grid.ColumnSpan="4"/>
+                            <TextBox Grid.Column="4" x:Name="tbRetailPrice" Height="23" VerticalAlignment="Top" Margin="0,13,2,0" 
                                      MaxLength="20" HorizontalContentAlignment="Center" IsReadOnly="True" GotFocus="TBGotFocus"/>
-                            <Label Grid.Column="2" x:Name="lblComission" Content="COMISSIÓ :" Margin="0,4,0,0" FontWeight="Bold" HorizontalAlignment="Center" 
-                                   VerticalAlignment="Center" IsEnabled="False"/>
-                            <TextBox Grid.Column="3" x:Name="tbComission" Height="23" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="0,4,2,0" 
-                                     MaxLength="20" HorizontalContentAlignment="Center" IsReadOnly="True" GotFocus="TBGotFocus"/>
-                            <Label Grid.Column="4" x:Name="lblAccording" Content="CONFORME :" Margin="0,4,0,0" FontWeight="Bold" HorizontalAlignment="Center" 
-                                   VerticalAlignment="Center" IsEnabled="False"/>
-                            <CheckBox Grid.Column="5" x:Name="chkbAccording" Height="16" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="0,4,0,0" 
+                            <Label Grid.Column="5" x:Name="lblAccording" Content="CONFORME :" Margin="0,16,0,0" FontWeight="Bold" HorizontalAlignment="Center" 
+                                   VerticalAlignment="Top" IsEnabled="False"/>
+                            <CheckBox Grid.Column="6" x:Name="chkbAccording" Height="16" VerticalAlignment="Top" Margin="0,16,0,0" 
                                       IsEnabled="False"/>
                         </Grid>
                         <Grid Grid.Row="5">
@@ -238,6 +247,6 @@
                 </Button>
             </Grid>
         </Grid>
-        <my:CultureAddInWPF HorizontalAlignment="Left" VerticalAlignment="Top" Height="0" Width="0" Margin="0"/>
+        <my:CultureAddInWPF HorizontalAlignment="Left" VerticalAlignment="Center" Height="0" Width="0"/>
     </Grid>
 </Window>
