@@ -1,5 +1,6 @@
 ﻿#region Librerias usadas por la clase
 
+using HispaniaComptabilitat.Data;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -694,7 +695,7 @@ namespace HispaniaCommon.ViewModel
         /// <summary>
         /// Builder by default of the class.
         /// </summary>
-        public BillsView(CustomersView customer)
+        public BillsView(CustomersView customer, CustomerOrdersView customerOrder )
         {
             Bill_Id = -1;         //  Aquest camp tindrà valor al crear l'Item a la Base de Dades
             Date = DateTime.Now;  //  Aquest camp tindrà valor al crear l'Item a la Base de Dades
@@ -706,19 +707,22 @@ namespace HispaniaCommon.ViewModel
             Company_Cif = customer.Company_Cif;
             Company_Address = customer.Company_Address;
             Company_NumProv = customer.Company_NumProv;
-            DataBank_Bank = customer.DataBank_Bank;
-            DataBank_BankAddress = customer.DataBank_BankAddress;
-            DataBank_NumEffect = customer.DataBank_NumEffect;
-            DataBank_FirstExpirationData = customer.DataBank_FirstExpirationData;
-            DataBank_ExpirationInterval = customer.DataBank_ExpirationInterval;
-            DataBank_Payday_1 = customer.DataBank_Payday_1;
-            DataBank_Payday_2 = customer.DataBank_Payday_2;
-            DataBank_Payday_3 = customer.DataBank_Payday_3;
-            DataBank_IBAN_CountryCode = customer.DataBank_IBAN_CountryCode;
-            DataBank_IBAN_BankCode = customer.DataBank_IBAN_BankCode;
-            DataBank_IBAN_OfficeCode = customer.DataBank_IBAN_OfficeCode;
-            DataBank_IBAN_CheckDigits = customer.DataBank_IBAN_CheckDigits;
-            DataBank_IBAN_AccountNumber = customer.DataBank_IBAN_AccountNumber;
+            //TODO: from Albaran
+            _DataBank_EffectType_Id = customerOrder.EffectType.EffectType_Id;
+            DataBank_Bank = customerOrder.DataBank_Bank;
+            DataBank_BankAddress = customerOrder.DataBank_BankAddress;
+            DataBank_NumEffect = customerOrder.DataBank_NumEffect;
+            DataBank_FirstExpirationData = customerOrder.DataBank_ExpirationDays;
+            DataBank_ExpirationInterval = customerOrder.DataBank_ExpirationInterval;
+            DataBank_Payday_1 = customerOrder.DataBank_Payday_1;
+            DataBank_Payday_2 = customerOrder.DataBank_Payday_2;
+            DataBank_Payday_3 = customerOrder.DataBank_Payday_3;
+            DataBank_IBAN_CountryCode = customerOrder.DataBank_IBAN_CountryCode;
+            DataBank_IBAN_BankCode = customerOrder.DataBank_IBAN_BankCode;
+            DataBank_IBAN_OfficeCode = customerOrder.DataBank_IBAN_OfficeCode;
+            DataBank_IBAN_CheckDigits = customerOrder.DataBank_IBAN_CheckDigits;
+            DataBank_IBAN_AccountNumber = customerOrder.DataBank_IBAN_AccountNumber;
+            //------------
             BillingData_EarlyPaymentDiscount = customer.BillingData_EarlyPaymentDiscount;
             BillingData_NumUnpaid = customer.BillingData_NumUnpaid;
             Customer_Remarks = customer.Several_Remarks;
@@ -729,7 +733,7 @@ namespace HispaniaCommon.ViewModel
             ExpirationDate = string.Empty;
             TotalAmount = GlobalViewModel.DecimalInitValue;
             Company_PostalCode = customer.Company_PostalCode;
-            DataBank_EffectType = customer.DataBank_EffectType;
+            DataBank_EffectType = customerOrder.EffectType;
             IVAPercent = customer.BillingData_IVAType.IVAPercent;
             SurchargePercent = customer.BillingData_IVAType.SurchargePercent;
             BillingData_Agent = customer.BillingData_Agent;
@@ -822,7 +826,7 @@ namespace HispaniaCommon.ViewModel
                 ExpirationDate = ExpirationDate,
                 TotalAmount = TotalAmount,
                 Company_PostalCode_Id = _Company_PostalCode_Id,
-                DataBank_EffectType_Id = _DataBank_EffectType_Id,
+                DataBank_EffectType_Id = DataBank_EffectType.EffectType_Id,
                 IVAPercent = IVAPercent,
                 SurchargePercent = SurchargePercent,
                 BillingData_Agent_Id = _BillingData_Agent_Id

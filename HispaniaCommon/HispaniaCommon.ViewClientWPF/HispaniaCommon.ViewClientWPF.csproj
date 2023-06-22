@@ -63,6 +63,8 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Converters\BoolToHeightConverter.cs" />
+    <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Managers\Manager_IU.cs" />
     <Compile Include="Windows\Common\Class\FocusAdvancement.cs" />
     <Compile Include="Windows\Common\Windows\DataSelector.xaml.cs">

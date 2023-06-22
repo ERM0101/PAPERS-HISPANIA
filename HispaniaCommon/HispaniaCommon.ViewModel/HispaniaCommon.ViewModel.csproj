@@ -113,6 +113,7 @@
     <Compile Include="ViewModel\Menu\A Tables\09 Providers\09.4 Histo Providers\HistoProvidersViewModel.cs" />
     <Compile Include="ViewModel\Menu\A Tables\09 Providers\RelatedProvidersView.cs" />
     <Compile Include="ViewModel\Menu\A Tables\09 Providers\RelatedProvidersViewModel.cs" />
+    <Compile Include="ViewModel\Menu\B Goods\02 Goods\GoodsVM.cs" />
     <Compile Include="ViewModel\Menu\C. Orders\02 Customer Orders\DataForBill.cs" />
     <Compile Include="ViewModel\Menu\C. Orders\03 Provider Orders\03.1 Provider Order Movements\ProviderOrderMovementsView.cs" />
     <Compile Include="ViewModel\Menu\C. Orders\03 Provider Orders\03.1 Provider Order Movements\ProviderOrderMovementsViewModel.cs" />
