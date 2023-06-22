@@ -1913,11 +1913,11 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                     GoodsWindow = new Goods(AppType)
                     {
                         Units = GlobalViewModel.Instance.HispaniaViewModel.UnitsDict,
-                        DataList = GlobalViewModel.Instance.HispaniaViewModel.Goods,
-                        GoodManagement = true
+                        DataList = GlobalViewModel.Instance.HispaniaViewModel.Goods
                     };
                     GoodsWindow.Closed += GoodsWindow_Closed;
                     GoodsWindow.Show();
+                    GoodsWindow.GoodsVM.Managemend = true;
                     Active_Windows.Add(GoodsWindow);
                 }
                 catch (Exception ex)
@@ -1929,6 +1929,9 @@ namespace HispaniaCommon.ViewClientWPF.Windows
             else
             {
                 if (GoodsWindow.WindowState == WindowState.Minimized) GoodsWindow.WindowState = WindowState.Normal;
+
+                GoodsWindow.GoodsVM.Managemend = true;
+
                 GoodsWindow.Activate();
             }
             Mouse.OverrideCursor = Cursors.Arrow;
@@ -2221,7 +2224,10 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                         DataList = GlobalViewModel.Instance.HispaniaViewModel.CustomerOrders
                     };
                     DeliveryNotesPrintWindow.Closed += CustomerOrdersPrintWindow_Closed;
+
                     DeliveryNotesPrintWindow.Show();
+                    DeliveryNotesPrintWindow.Activate();
+                    
                     Active_Windows.Add(DeliveryNotesPrintWindow);
                 }
                 catch (Exception ex)
@@ -2233,7 +2239,10 @@ namespace HispaniaCommon.ViewClientWPF.Windows
             }
             else
             {
-                if (DeliveryNotesPrintWindow.WindowState == WindowState.Minimized) DeliveryNotesPrintWindow.WindowState = WindowState.Normal;
+                if (DeliveryNotesPrintWindow.WindowState == WindowState.Minimized)
+                    DeliveryNotesPrintWindow.WindowState = WindowState.Normal;
+                
+                DeliveryNotesPrintWindow.Show();
                 DeliveryNotesPrintWindow.Activate();
             }
             Mouse.OverrideCursor = Cursors.Arrow;

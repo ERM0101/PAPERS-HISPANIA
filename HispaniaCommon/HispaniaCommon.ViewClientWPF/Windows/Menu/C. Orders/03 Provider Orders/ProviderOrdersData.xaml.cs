@@ -1413,27 +1413,31 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
         /// <param name="e">Parameters with the event was sended.</param>
         private void BtnAddGood_Click(object sender, RoutedEventArgs e)
         {
-            if (GoodsWindow == null)
+            if(GoodsWindow == null)
             {
                 try
                 {
                     GlobalViewModel.Instance.HispaniaViewModel.RefreshUnits();
                     GlobalViewModel.Instance.HispaniaViewModel.RefreshGoods();
-                    GoodsWindow = new Goods(AppType)
+                    GoodsWindow = new Goods( AppType )
                     {
                         Units = GlobalViewModel.Instance.HispaniaViewModel.UnitsDict,
                         DataList = GlobalViewModel.Instance.HispaniaViewModel.Goods
                     };
+                    GoodsWindow.GoodsVM.Managemend = false;
                     GoodsWindow.Closed += GoodsWindow_Closed;
                     GoodsWindow.Show();
-                }
-                catch (Exception ex)
+                } catch(Exception ex)
                 {
                     MsgManager.ShowMessage(
-                       string.Format("Error, al carregar la finestra d'edició d'artícles.\r\nDetalls:{0}", MsgManager.ExcepMsg(ex)));
+                       string.Format( "Error, al carregar la finestra d'edició d'artícles.\r\nDetalls:{0}", MsgManager.ExcepMsg( ex ) ) );
                 }
             }
-            else GoodsWindow.Activate();
+            else
+            {
+                GoodsWindow.GoodsVM.Managemend = false;
+                GoodsWindow.Activate();
+            }
         }
 
         /// <summary>
