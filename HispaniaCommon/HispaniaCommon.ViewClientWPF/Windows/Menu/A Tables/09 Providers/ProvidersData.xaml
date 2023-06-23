@@ -452,7 +452,8 @@
                         <TextBox Grid.Column="7" x:Name="tbBillingDataNumUnpaid" Height="23" HorizontalAlignment="Stretch" VerticalAlignment="Center"  Margin="0,4,4,0" 
                                  MaxLength="3" HorizontalContentAlignment="Center" IsReadOnly="True" GotFocus="TBGotFocus"/>
                     </Grid>
-                    <Grid Grid.Row="4" Grid.ColumnSpan="2">
+                    
+                    <!-- TODO: leo <Grid Grid.Row="4" Grid.ColumnSpan="2">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="150"/>
                             <ColumnDefinition Width="*"/>
@@ -468,8 +469,9 @@
                                 <TextBlock x:Name="tbAdd" Text="Donar d'alta" />
                             </StackPanel>
                         </Button>
-                    </Grid>
-                    <Grid Grid.Row="5" Grid.ColumnSpan="2">
+                    </Grid>-->
+                    <!--<Grid Grid.Row="5" Grid.ColumnSpan="2">-->
+                    <Grid Grid.Row="4" Grid.ColumnSpan="2">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="150"/>
                             <ColumnDefinition Width="*" MinWidth="300"/>
@@ -490,7 +492,8 @@
                     </Grid>
                 </Grid>
             </TabItem>
-            <TabItem Header="Diversos" Name="tiDivers" Style="{DynamicResource NonEditableTabItem}">
+
+            <!--<TabItem Header="Diversos" Name="tiDivers" Style="{DynamicResource NonEditableTabItem}">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="29*"/>
@@ -812,7 +815,8 @@
                         </GroupBox>
                     </Grid>
                 </Grid>
-            </TabItem>
+            </TabItem>-->
+
             <TabItem Header="Consultes" Name="tiConsullation" Margin="-3,0,3,0" Style="{DynamicResource NonEditableTabItem}">
                 <Grid>
                     <Grid.RowDefinitions>
