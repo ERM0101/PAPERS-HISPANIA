@@ -315,7 +315,7 @@
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>
-                                    <GridViewColumn Width="Auto">
+                                    <!--<GridViewColumn Width="Auto">
                                         <GridViewColumnHeader Content="Unit. Facturació" HorizontalContentAlignment="Left"/>
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
@@ -324,7 +324,7 @@
                                                 </Grid>
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
-                                    </GridViewColumn>
+                                    </GridViewColumn>-->
                                     <GridViewColumn Width="Auto">
                                         <GridViewColumnHeader Content="Preu (PVP)" HorizontalContentAlignment="Left"/>
                                         <GridViewColumn.CellTemplate>

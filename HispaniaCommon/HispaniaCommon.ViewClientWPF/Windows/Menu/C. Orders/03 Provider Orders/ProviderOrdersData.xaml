@@ -101,7 +101,7 @@
                                  HorizontalContentAlignment="Center" MaxLength="4" IsEnabled="False" IsTabStop="False"/>
         </Grid>
         <TabControl Grid.Row="3" Margin="15,5,15,5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-            <TabItem Header="Dades de Capçelera" Name="tiHeaderData" Style="{DynamicResource NonEditableTabItem}">
+            <TabItem Header=" 2 Dades de Capçelera" Name="tiHeaderData" Style="{DynamicResource NonEditableTabItem}">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
@@ -243,7 +243,7 @@
                                   IsEnabled="False" IsTabStop="False">
                             <ListView.View>
                                 <GridView>
-                                    <GridViewColumn Width="Auto">
+                                    <!--<GridViewColumn Width="Auto">
                                         <GridViewColumnHeader Content="Num. Comanda" HorizontalContentAlignment="Left"/>
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
@@ -264,7 +264,7 @@
                                                 </Grid>
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
-                                    </GridViewColumn>
+                                    </GridViewColumn>-->
                                     <GridViewColumn Width="Auto">
                                         <GridViewColumnHeader Content="Còdi Artícle" HorizontalContentAlignment="Left"/>
                                         <GridViewColumn.CellTemplate>
@@ -295,7 +295,7 @@
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>
-                                    <GridViewColumn Width="Auto">
+                                    <!--<GridViewColumn Width="Auto">
                                         <GridViewColumnHeader Content="Unit. Expedició" HorizontalContentAlignment="Left"/>
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
@@ -304,7 +304,7 @@
                                                 </Grid>
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
-                                    </GridViewColumn>
+                                    </GridViewColumn>-->
                                     <GridViewColumn Width="Auto">
                                         <GridViewColumnHeader Content="Quantitat (UF)" HorizontalContentAlignment="Left"/>
                                         <GridViewColumn.CellTemplate>
@@ -315,7 +315,7 @@
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>
-                                    <GridViewColumn Width="Auto">
+                                    <!--<GridViewColumn Width="Auto">
                                         <GridViewColumnHeader Content="Unit. Facturació" HorizontalContentAlignment="Left"/>
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
@@ -324,7 +324,7 @@
                                                 </Grid>
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
-                                    </GridViewColumn>
+                                    </GridViewColumn>-->
                                     <GridViewColumn Width="Auto">
                                         <GridViewColumnHeader Content="Preu (PVP)" HorizontalContentAlignment="Left"/>
                                         <GridViewColumn.CellTemplate>
@@ -336,7 +336,7 @@
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>
-                                    <GridViewColumn Width="Auto">
+                                    <!--<GridViewColumn Width="Auto">
                                         <GridViewColumnHeader Content="% Comissió" />
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
@@ -346,8 +346,8 @@
                                                 </Grid>
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
-                                    </GridViewColumn>
-                                    <GridViewColumn Width="Auto">
+                                    </GridViewColumn>-->
+                                    <!--<GridViewColumn Width="Auto">
                                         <GridViewColumnHeader Content="Conforme" HorizontalContentAlignment="Left"/>
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
@@ -356,7 +356,7 @@
                                                 </Grid>
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
-                                    </GridViewColumn>
+                                    </GridViewColumn>-->
                                     <GridViewColumn Width="Auto">
                                         <GridViewColumnHeader Content="TOTAL"/>
                                         <GridViewColumn.CellTemplate>
