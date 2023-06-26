@@ -11,6 +11,7 @@ using System.Linq;
 using System.ServiceModel;
 using HispaniaCompData = HispaniaComptabilitat.Data;
 using System.Configuration;
+using HispaniaComptabilitat.Data.EntitiesEX;
 
 #endregion
 
@@ -4673,7 +4674,12 @@ namespace HispaniaCommon.DataAccess
                 }
                 else // UPDATE
                 {
-                    db.Entry(movement).State = EntityState.Modified;
+                    //TODO: Error
+                    //db.Entry(movement).State = EntityState.Modified;
+                    //TODO: FIX
+                    ProviderOrderMovement entity = db.ProviderOrderMovements.Find( movement.ProviderOrderMovement_Id );
+                    entity.Update( movement );
+
                     db.SaveChanges();
                 }
                 if (movement.According)

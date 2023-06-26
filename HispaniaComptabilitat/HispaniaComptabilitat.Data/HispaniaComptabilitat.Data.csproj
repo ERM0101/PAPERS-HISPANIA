@@ -112,6 +112,7 @@
     <Compile Include="EffectType.cs">
       <DependentUpon>HispaniaComptabilitatModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="EntitiesEX\ProviderOrderMovementEX.cs" />
     <Compile Include="Good.cs">
       <DependentUpon>HispaniaComptabilitatModel.tt</DependentUpon>
     </Compile>
