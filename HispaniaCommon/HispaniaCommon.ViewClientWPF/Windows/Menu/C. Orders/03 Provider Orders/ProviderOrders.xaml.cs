@@ -637,9 +637,6 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                 btnPrint.Click += BtnPrint_Click;
                 btnSendByEmail.Click += BtnSendByEMail_Click;
                 btnCreateBill.Click += BtnCreateBill_Click;
-                //TODO: PH03072023
-                //btnCreateDeliveryNote.Click += BtnCreateDeliveryNote_Click;
-                //btnSplitProviderOrder.Click += BtnSplitProviderOrder_Click;
                 btnRefresh.Click += BtnRefresh_Click;
                 btnChangeDate.Click += BtnChangeDate_Click;
                 btnProforma.Click += BtnProformaPrint_Click;

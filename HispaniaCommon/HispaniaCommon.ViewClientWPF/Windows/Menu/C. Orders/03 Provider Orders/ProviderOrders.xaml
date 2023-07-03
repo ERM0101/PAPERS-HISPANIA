@@ -395,18 +395,6 @@
                             <TextBlock x:Name="tbCreateBill" Text="Crear Factura" />
                         </StackPanel>
                     </Button>
-                    <!--<Button Grid.Column="8" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,2,0,0" x:Name="btnSplitProviderOrder" Width="150" Height="23">
-                        <StackPanel x:Name="spSplitProviderOrder"  Margin="2" Orientation="Horizontal">
-                            <Image Height="16" Margin="0,0,10,0" Source="{DynamicResource SplitProviderOrder}" Width="16" />
-                            <TextBlock x:Name="tbSplitProviderOrder" Text="Preparar per Albarà" />
-                        </StackPanel>
-                    </Button>
-                    <Button Grid.Column="9" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,2,0,0" x:Name="btnCreateDeliveryNote" Width="120" Height="23">
-                        <StackPanel x:Name="spCreateDeliveryNote"  Margin="2" Orientation="Horizontal">
-                            <Image Height="16" Margin="0,0,10,0" Source="{DynamicResource AccordingDeliveryNote}" Width="16" />
-                            <TextBlock x:Name="tbCreateDeliveryNote" Text="Crear Albarà" />
-                        </StackPanel>
-                    </Button>-->
                     <Button Grid.Column="8" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,2,0,0" x:Name="btnChangeDate" Width="120" Height="23">
                         <StackPanel x:Name="spChangeDate"  Margin="2" Orientation="Horizontal">
                             <Image Height="16" Margin="0,0,10,0" Source="{DynamicResource CalendarIcon}" Width="16" />
