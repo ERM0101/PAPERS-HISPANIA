@@ -101,7 +101,7 @@
                                  HorizontalContentAlignment="Center" MaxLength="4" IsEnabled="False" IsTabStop="False"/>
         </Grid>
         <TabControl Grid.Row="3" Margin="15,5,15,5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-            <TabItem Header=" 2 Dades de Capçelera" Name="tiHeaderData" Style="{DynamicResource NonEditableTabItem}">
+            <TabItem Header="Dades de Capçelera" Name="tiHeaderData" Style="{DynamicResource NonEditableTabItem}">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
