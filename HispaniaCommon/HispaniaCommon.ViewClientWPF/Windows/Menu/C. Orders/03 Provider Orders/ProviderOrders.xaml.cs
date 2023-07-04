@@ -631,6 +631,7 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                 tbItemToSearch.TextChanged += TbItemToSearch_TextChanged;
             //  Button 
                 btnAdd.Click += BtnAdd_Click;
+                btnCopy.Click += BtnCopy_Click;
                 btnEdit.Click += BtnEdit_Click;
                 btnDelete.Click += BtnDelete_Click;
                 btnViewData.Click += BtnViewData_Click;
@@ -906,6 +907,34 @@ namespace HispaniaCommon.ViewClientWPF.Windows
             }
         }
 
+        private void BtnCopy_Click( object sender, RoutedEventArgs e )
+        {
+            if(ListItems.SelectedItem != null)
+            {
+                try
+                {
+                    ActualizeProviderOrderFromDb();
+                    if(GlobalViewModel.Instance.HispaniaViewModel.LockRegister( ListItems.SelectedItem, out string ErrMsg ))
+                    {
+                        ProviderOrderDataControl.CtrlOperation = Operation.Copy;
+                        gbEditOrCreateItem.SetResourceReference( Control.StyleProperty, "EditableGroupBox" );
+                        ShowItemPannel();
+                        ProviderOrderDataControl.ShowGoodRemark();                    }
+                    else
+                    {
+                        MsgManager.ShowMessage( ErrMsg );
+                    }
+
+                    //ProviderOrderDataControl.CtrlOperation = Operation.Add;
+                    //gbEditOrCreateItem.SetResourceReference( Control.StyleProperty, "EditableGroupBox" );
+                    //ShowItemPannel();
+                } catch(Exception ex)
+                {
+                    MsgManager.ShowMessage( string.Format( "Error, al afegir una Comanda de Proveidor.\r\nDetalls:{0}", MsgManager.ExcepMsg( ex ) ) );
+                }
+            }
+        }
+
         /// <summary>
         /// Manage the button for edit an Item of the list.
         /// </summary>
@@ -960,6 +989,7 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                 ProviderOrdersView NewProviderOrder = new ProviderOrdersView(NewOrEditedProviderOrder);
                 switch (ProviderOrderDataControl.CtrlOperation)
                 {
+                    case Operation.Copy:
                     case Operation.Add:
                          GlobalViewModel.Instance.HispaniaViewModel.CreateProviderOrder(NewProviderOrder, DataManagementId);
                          DataChangedManagerActive = false;

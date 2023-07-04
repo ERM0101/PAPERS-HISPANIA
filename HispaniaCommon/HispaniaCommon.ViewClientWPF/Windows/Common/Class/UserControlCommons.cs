@@ -10,6 +10,7 @@
         Show,
         Add,
         Edit,
+        Copy,
     }
 
     #endregion
