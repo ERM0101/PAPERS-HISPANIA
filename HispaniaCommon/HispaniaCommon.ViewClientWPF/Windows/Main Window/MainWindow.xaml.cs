@@ -2018,7 +2018,7 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                 try
                 {
                     RefreshDataViewModel.Instance.RefreshData(WindowToRefresh.ProviderOrdersWindow);
-                    ProviderOrdersManagementWindow = new ProviderOrders(AppType, false, true, false)
+                    ProviderOrdersManagementWindow = new ProviderOrders(AppType, false, true, false )
                     {
                         Providers = GlobalViewModel.Instance.HispaniaViewModel.ProvidersActiveDict,
                         SendTypes = GlobalViewModel.Instance.HispaniaViewModel.SendTypesDict,
