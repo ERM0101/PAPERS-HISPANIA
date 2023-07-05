@@ -28,7 +28,8 @@ namespace HispaniaCommon.ViewModel
         CustomQuery,
         CustomerConformedOrders,
         Customers_Full,
-        ProviderConformedOrders
+        ProviderConformedOrders,
+        Providers,
     }
     
     #endregion
@@ -169,7 +170,9 @@ namespace HispaniaCommon.ViewModel
                 {
                     throw new ArgumentException("No s'ha pogut trobar el SQL associat a la consulta.");
                 }
-                if ((queryType == QueryType.HistoCustomerForData) || (queryType == QueryType.HistoCustomerForDataAndAgent))
+                if ( ( queryType == QueryType.HistoCustomerForData) || 
+                     ( queryType == QueryType.HistoCustomerForDataAndAgent ) ||
+                     ( queryType == QueryType.Providers ) )
                 {
                     DateTime DateInit = (DateTime)Params["DateInit"];
                     DateTime DateEnd = (DateTime)Params["DateEnd"];

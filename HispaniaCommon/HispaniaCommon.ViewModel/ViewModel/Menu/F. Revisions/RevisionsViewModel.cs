@@ -36,7 +36,7 @@ namespace HispaniaCommon.ViewModel
                 RevisionsInDb = HispaniaDataAccess.Instance.ReadRevisions((int) FilterOption);
                 _Revisions = new ObservableCollection<RevisionsView>();
                 _RevisionsInDictionary = new Dictionary<string, RevisionsView>();
-                foreach (HispaniaCompData.Revisio Revisio in RevisionsInDb)
+                foreach (HispaniaCompData.Revisions_Result Revisio in RevisionsInDb)
                 {
                     RevisionsView NewRevisionsView = new RevisionsView(Revisio);
                     _Revisions.Add(NewRevisionsView);
@@ -75,9 +75,9 @@ namespace HispaniaCommon.ViewModel
             return GetKeyRevisionView(RevisionsView.GoodCode);
         }
 
-        private string GetKeyRevisionView(HispaniaCompData.Revisio Revisio)
+        private string GetKeyRevisionView(HispaniaCompData.Revisions_Result Revisio)
         {
-            return GetKeyRevisionView(Revisio.GoodCode);
+            return GetKeyRevisionView( Revisio.GoodCode );
         }
 
         private string GetKeyRevisionView(string GoodCode)
@@ -89,14 +89,14 @@ namespace HispaniaCommon.ViewModel
 
         #region DataBase [CRUD]
 
-        private List<HispaniaCompData.Revisio> ReadRevisionsInDb(int FilterOption)
+        private List<HispaniaCompData.Revisions_Result> ReadRevisionsInDb(int FilterOption)
         {
             return (HispaniaDataAccess.Instance.ReadRevisions(FilterOption));
         }
 
-        private List<HispaniaCompData.Revisio> _RevisionsInDb;
+        private List<HispaniaCompData.Revisions_Result> _RevisionsInDb;
 
-        private List<HispaniaCompData.Revisio> RevisionsInDb
+        private List<HispaniaCompData.Revisions_Result> RevisionsInDb
         {
             get
             {

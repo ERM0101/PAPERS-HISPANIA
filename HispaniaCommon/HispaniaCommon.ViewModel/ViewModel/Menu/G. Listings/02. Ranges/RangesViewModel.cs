@@ -20,7 +20,7 @@ namespace HispaniaCommon.ViewModel
             {
                 RangesInDb = HispaniaDataAccess.Instance.ReadRanges(Good_Code_From, Good_Code_Until, Bill_Id_From, Bill_Id_Until, YearQuery);
                 _RangesInDictionary = new Dictionary<string, List<RangesView>>();
-                foreach (HispaniaCompData.Range Range in RangesInDb)
+                foreach (HispaniaCompData.Ranges_Result Range in RangesInDb)
                 {
                     RangesView NewRangesView = new RangesView(Range);
                     if (!_RangesInDictionary.ContainsKey(NewRangesView.Familia))
@@ -51,7 +51,7 @@ namespace HispaniaCommon.ViewModel
             return GetKeyRangeView(RangesView.Good_Code);
         }
 
-        private string GetKeyRangeView(HispaniaCompData.Range Range)
+        private string GetKeyRangeView(HispaniaCompData.Ranges_Result Range)
         {
             return GetKeyRangeView(Range.Good_Code);
         }
@@ -65,15 +65,15 @@ namespace HispaniaCommon.ViewModel
 
         #region DataBase [CRUD]
 
-        private List<HispaniaCompData.Range> ReadRangesInDb(string Good_Code_From, string Good_Code_Until,
+        private List<HispaniaCompData.Ranges_Result> ReadRangesInDb(string Good_Code_From, string Good_Code_Until,
                                                             string Bill_Id_From, string Bill_Id_Until, decimal YearQuery)
         {
             return (HispaniaDataAccess.Instance.ReadRanges(Good_Code_From, Good_Code_Until, Bill_Id_From, Bill_Id_Until, YearQuery));
         }
 
-        private List<HispaniaCompData.Range> _RangesInDb;
+        private List<HispaniaCompData.Ranges_Result> _RangesInDb;
 
-        private List<HispaniaCompData.Range> RangesInDb
+        private List<HispaniaCompData.Ranges_Result> RangesInDb
         {
             get
             {

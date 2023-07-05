@@ -53,6 +53,7 @@ namespace HispaniaCommon.ViewModel
                         { "Nº Client", "Customer_Id_Str" },
                         { "Client", "Customer_Alias" },
                         { "Preu", "Price_Str" },
+                        { "Provedor", "Provider" }
                     };
                 }
                 return (m_Fields);
@@ -168,7 +169,11 @@ namespace HispaniaCommon.ViewModel
                 return IO_State == 1 ? "C" : "A";
             }
         }
-
+        public string Provider
+        {
+            get;
+            set;
+        }
         #endregion
 
         #endregion
@@ -199,7 +204,7 @@ namespace HispaniaCommon.ViewModel
         /// Builder by default of the class.
         /// </summary>
         /// <param name="inputOutput"></param>
-        internal InputsOutputsView(HispaniaCompData.InputOutput inputOutput)
+        internal InputsOutputsView(HispaniaCompData.InputsOutputs_Result inputOutput)
         {
             Good_Code = inputOutput.Good_Code;
             Amount_Shipping = GlobalViewModel.GetDecimalValue(inputOutput.Amount_Shipping);
@@ -214,6 +219,7 @@ namespace HispaniaCommon.ViewModel
             Bill_Year = GlobalViewModel.GetIntValue(inputOutput.Bill_Year);
             Bill_Serie = inputOutput.Bill_Serie;
             IO_State = inputOutput.IO_State;
+            Provider = inputOutput.Provider;
         }
 
         /// <summary>
@@ -243,9 +249,9 @@ namespace HispaniaCommon.ViewModel
         /// <summary>
         /// Builder by default of the class.
         /// </summary>
-        internal HispaniaCompData.InputOutput GetInputOutput()
+        internal HispaniaCompData.InputsOutputs_Result GetInputOutput()
         {
-            HispaniaCompData.InputOutput InputOutput = new HispaniaCompData.InputOutput()
+            HispaniaCompData.InputsOutputs_Result InputOutput = new HispaniaCompData.InputsOutputs_Result()
             {
                 Good_Code = Good_Code,
                 Amount_Shipping = Amount_Shipping,
@@ -259,7 +265,8 @@ namespace HispaniaCommon.ViewModel
                 Bill_Id = Bill_Id,
                 Bill_Year = Bill_Year,
                 Bill_Serie = Bill_Serie,
-                IO_State = IO_State
+                IO_State = IO_State,
+                Provider = Provider
             };
             return (InputOutput);
         }

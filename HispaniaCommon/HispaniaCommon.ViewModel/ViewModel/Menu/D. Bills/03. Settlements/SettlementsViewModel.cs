@@ -24,7 +24,7 @@ namespace HispaniaCommon.ViewModel
                 Dictionary<int, List<SettlementsView>> BillItem;
                 SettlementsInDb = HispaniaDataAccess.Instance.ReadSettlements(Agent_Id, Bill_Id_From, Bill_Id_Until, YearQuery);
                 _SettlementsInDictionary = new SortedDictionary<int, Dictionary<int, List<SettlementsView>>>();
-                foreach (HispaniaCompData.Settlement Settlement in SettlementsInDb)
+                foreach (HispaniaCompData.Settlements_Result Settlement in SettlementsInDb)
                 {
                     SettlementsView NewSettlementsView = new SettlementsView(Settlement);
                     int Agent_Key = NewSettlementsView.Agent_Id;
@@ -65,9 +65,9 @@ namespace HispaniaCommon.ViewModel
             return GetKeySettlementView(SettlementsView.Settlement_Id);
         }
 
-        private string GetKeySettlementView(HispaniaCompData.Settlement Settlement)
+        private string GetKeySettlementView(HispaniaCompData.Settlements_Result Settlement)
         {
-            return GetKeySettlementView((int)Settlement.Settlement_Id);
+            return GetKeySettlementView( Settlement.Settlement_Id );
         }
 
         private string GetKeySettlementView(int Settlement_Id)
@@ -79,14 +79,14 @@ namespace HispaniaCommon.ViewModel
 
         #region DataBase [CRUD]
 
-        private List<HispaniaCompData.Settlement> ReadSettlementsInDb(int? Agent_Id, string Bill_Id_From, string Bill_Id_Until, decimal YearQuery)
+        private List<HispaniaCompData.Settlements_Result> ReadSettlementsInDb(int? Agent_Id, string Bill_Id_From, string Bill_Id_Until, decimal YearQuery)
         {
             return (HispaniaDataAccess.Instance.ReadSettlements(Agent_Id, Bill_Id_From, Bill_Id_Until, YearQuery));
         }
 
-        private List<HispaniaCompData.Settlement> _SettlementsInDb;
+        private List<HispaniaCompData.Settlements_Result> _SettlementsInDb;
 
-        private List<HispaniaCompData.Settlement> SettlementsInDb
+        private List<HispaniaCompData.Settlements_Result> SettlementsInDb
         {
             get
             {

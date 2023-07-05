@@ -187,7 +187,7 @@ namespace HispaniaCommon.ViewModel
         /// <summary>
         /// Builder by default of the class.
         /// </summary>
-        internal RevisionsView(HispaniaCompData.Revisio revisio)
+        internal RevisionsView( HispaniaCompData.Revisions_Result revisio )
         {
             GoodCode = revisio.GoodCode;
             GoodDescription = revisio.GoodDescription;
@@ -229,9 +229,9 @@ namespace HispaniaCommon.ViewModel
         /// <summary>
         /// Builder by default of the class.
         /// </summary>
-        internal HispaniaCompData.Revisio GetRevisio()
+        internal HispaniaCompData.Revisions_Result GetRevisio()
         {
-            HispaniaCompData.Revisio Revisio = new HispaniaCompData.Revisio()
+            HispaniaCompData.Revisions_Result Revisio = new HispaniaCompData.Revisions_Result()
             {
                 GoodCode = GoodCode,
                 GoodDescription = GoodDescription,

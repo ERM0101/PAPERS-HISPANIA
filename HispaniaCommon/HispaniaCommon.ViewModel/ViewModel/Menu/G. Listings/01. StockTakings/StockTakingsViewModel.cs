@@ -20,7 +20,7 @@ namespace HispaniaCommon.ViewModel
             {
                 StockTakingsInDb = HispaniaDataAccess.Instance.ReadStockTakings(Good_Code_From, Good_Code_Until);
                 _StockTakingsInDictionary = new Dictionary<string, List<StockTakingsView>>();
-                foreach (HispaniaCompData.StockTaking StockTaking in StockTakingsInDb)
+                foreach (HispaniaCompData.StockTaking_Result StockTaking in StockTakingsInDb)
                 {
                     StockTakingsView NewStockTakingsView = new StockTakingsView(StockTaking);
                     if (!_StockTakingsInDictionary.ContainsKey(NewStockTakingsView.Familia))
@@ -51,7 +51,7 @@ namespace HispaniaCommon.ViewModel
             return GetKeyStockTakingView(StockTakingsView.GoodCode);
         }
 
-        private string GetKeyStockTakingView(HispaniaCompData.StockTaking StockTaking)
+        private string GetKeyStockTakingView(HispaniaCompData.StockTaking_Result StockTaking)
         {
             return GetKeyStockTakingView(StockTaking.Good_Code);
         }
@@ -65,14 +65,14 @@ namespace HispaniaCommon.ViewModel
 
         #region DataBase [CRUD]
 
-        private List<HispaniaCompData.StockTaking> ReadStockTakingsInDb(string Good_Code_From, string Good_Code_Until)
+        private List<HispaniaCompData.StockTaking_Result> ReadStockTakingsInDb(string Good_Code_From, string Good_Code_Until)
         {
             return (HispaniaDataAccess.Instance.ReadStockTakings(Good_Code_From, Good_Code_Until));
         }
 
-        private List<HispaniaCompData.StockTaking> _StockTakingsInDb;
+        private List<HispaniaCompData.StockTaking_Result> _StockTakingsInDb;
 
-        private List<HispaniaCompData.StockTaking> StockTakingsInDb
+        private List<HispaniaCompData.StockTaking_Result> StockTakingsInDb
         {
             get
             {

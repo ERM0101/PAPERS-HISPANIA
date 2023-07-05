@@ -97,7 +97,7 @@ namespace HispaniaCommon.ViewModel
         /// <summary>
         /// Builder by default of the class.
         /// </summary>
-        internal SettlementsView(HispaniaCompData.Settlement settlement)
+        internal SettlementsView(HispaniaCompData.Settlements_Result settlement )
         {
             Settlement_Id = GlobalViewModel.GetIntValue(settlement.Settlement_Id);
             Agent_Id = GlobalViewModel.GetIntValue(settlement.Agent_Id);
@@ -135,9 +135,9 @@ namespace HispaniaCommon.ViewModel
         /// <summary>
         /// Builder by default of the class.
         /// </summary>
-        internal HispaniaCompData.Settlement GetSettlement()
+        internal HispaniaCompData.Settlements_Result GetSettlement()
         {
-            HispaniaCompData.Settlement settlement = new HispaniaCompData.Settlement()
+            HispaniaCompData.Settlements_Result settlement = new HispaniaCompData.Settlements_Result()
             {
                 Bill_Id = Bill_Id,
                 Bill_Date = Bill_Date,

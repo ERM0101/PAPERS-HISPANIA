@@ -16,7 +16,7 @@ namespace HispaniaCommon.ViewModel
     {
         #region ViewModel
 
-        public List<HispaniaCompData.DeliveryNoteLine> ReadInfoForDeliveryNoteLines()
+        public List<HispaniaCompData.DeliveryNoteLines_Result> ReadInfoForDeliveryNoteLines()
         {
             return ReadDeliveryNoteLinesInDb();
         }
@@ -25,14 +25,14 @@ namespace HispaniaCommon.ViewModel
 
         #region DataBase [CRUD]
 
-        private List<HispaniaCompData.DeliveryNoteLine> ReadDeliveryNoteLinesInDb()
+        private List<HispaniaCompData.DeliveryNoteLines_Result> ReadDeliveryNoteLinesInDb()
         {
             return (HispaniaDataAccess.Instance.ReadDeliveryNoteLines());
         }
 
-        private List<HispaniaCompData.DeliveryNoteLine> _DeliveryNoteLinesInDb;
+        private List<HispaniaCompData.DeliveryNoteLines_Result> _DeliveryNoteLinesInDb;
 
-        private List<HispaniaCompData.DeliveryNoteLine> DeliveryNoteLinesInDb
+        private List<HispaniaCompData.DeliveryNoteLines_Result> DeliveryNoteLinesInDb
         {
             get
             {

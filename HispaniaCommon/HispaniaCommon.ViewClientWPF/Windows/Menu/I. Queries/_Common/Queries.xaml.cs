@@ -548,6 +548,14 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                      cdOperationsBBDD.Width = ViewOperationsBBDDPanel;
                      tbSQLQuery.IsReadOnly = false;
                      break;
+                case QueryType.Providers:
+                    QueryInfo = "COMANDES A PROVEIDORS";
+                    rdParamsPanel.Height = ViewParamsPannel;
+                    rdSQLPanel.Height = HideHeaderPanel;
+                    cdOperationsBBDD.Width = HideComponent;
+                    lblAgent.Visibility = Visibility.Collapsed;
+                    ListItems.Visibility = Visibility.Collapsed;
+                    break;
                 case QueryType.None:
                 default:
                     throw new Exception("Error, tipus de consulta no reconegut.");
@@ -581,7 +589,9 @@ namespace HispaniaCommon.ViewClientWPF.Windows
         private Dictionary<string, object> CreateParams()
         {
             Dictionary<string, object> Params = null;
-            if ((QueryType == QueryType.HistoCustomerForData) || (QueryType == QueryType.HistoCustomerForDataAndAgent))
+            if ( ( QueryType == QueryType.HistoCustomerForData ) || 
+                 ( QueryType == QueryType.HistoCustomerForDataAndAgent ) || 
+                 ( QueryType == QueryType.Providers ) )
             {
                 Params = new Dictionary<string, object>
                          {

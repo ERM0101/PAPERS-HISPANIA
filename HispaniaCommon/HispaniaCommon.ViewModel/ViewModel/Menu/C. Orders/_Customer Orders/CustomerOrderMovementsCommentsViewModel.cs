@@ -20,9 +20,9 @@ namespace HispaniaCommon.ViewModel
         public string CustomerOrderMovementsComments(int CustomerOrder_Id)
         {
             StringBuilder sbComment = new StringBuilder(string.Empty);
-            foreach (HispaniaCompData.CustomerOrderMovementsComment comment in CustomerOrderMovementsCommentsInDb(CustomerOrder_Id))
+            foreach( string comment in CustomerOrderMovementsCommentsInDb(CustomerOrder_Id))
             {
-                sbComment.AppendLine(comment.Comentari.Trim());
+                sbComment.AppendLine( comment.Trim() );
             }
             if (sbComment.Length > 0) return sbComment.ToString().Substring(0, sbComment.Length - 2);
             else return sbComment.ToString() == string.Empty ? null : sbComment.ToString();
@@ -32,9 +32,9 @@ namespace HispaniaCommon.ViewModel
 
         #region DataBase [CRUD]
 
-        private List<HispaniaCompData.CustomerOrderMovementsComment> CustomerOrderMovementsCommentsInDb(int CustomerOrder_Id)
+        private List<string> CustomerOrderMovementsCommentsInDb( int CustomerOrder_Id )
         {
-            return (HispaniaDataAccess.Instance.CustomerOrderMovementsComments(CustomerOrder_Id));
+            return ( HispaniaDataAccess.Instance.CustomerOrderMovementsComments( CustomerOrder_Id ) );
         }
 
         #endregion
