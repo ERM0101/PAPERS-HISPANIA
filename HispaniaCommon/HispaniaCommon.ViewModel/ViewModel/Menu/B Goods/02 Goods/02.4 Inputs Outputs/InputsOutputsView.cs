@@ -169,10 +169,36 @@ namespace HispaniaCommon.ViewModel
                 return IO_State == 1 ? "C" : "A";
             }
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
         public string Provider
         {
             get;
             set;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public int? Provider_Id
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string Provider_Id_Str
+        {
+            get
+            {
+                string result = ( Provider_Id.HasValue ? Provider_Id.ToString() : "" );
+                return result;
+
+            }
         }
         #endregion
 
@@ -220,6 +246,7 @@ namespace HispaniaCommon.ViewModel
             Bill_Serie = inputOutput.Bill_Serie;
             IO_State = inputOutput.IO_State;
             Provider = inputOutput.Provider;
+            Provider_Id = inputOutput.Provider_Id;
         }
 
         /// <summary>
@@ -240,6 +267,8 @@ namespace HispaniaCommon.ViewModel
             Bill_Year = inputOutput.Bill_Year;
             Bill_Serie = inputOutput.Bill_Serie;
             IO_State = inputOutput.IO_State;
+            this.Provider = inputOutput.Provider;
+            this.Provider_Id = inputOutput.Provider_Id;
         }
 
         #endregion
@@ -266,7 +295,8 @@ namespace HispaniaCommon.ViewModel
                 Bill_Year = Bill_Year,
                 Bill_Serie = Bill_Serie,
                 IO_State = IO_State,
-                Provider = Provider
+                Provider = Provider,
+                Provider_Id = Provider_Id
             };
             return (InputOutput);
         }

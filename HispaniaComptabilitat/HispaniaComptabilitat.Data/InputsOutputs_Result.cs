@@ -27,5 +27,6 @@ namespace HispaniaComptabilitat.Data
         public string Bill_Serie { get; set; }
         public int IO_State { get; set; }
         public string Provider { get; set; }
+        public Nullable<int> Provider_Id { get; set; }
     }
 }

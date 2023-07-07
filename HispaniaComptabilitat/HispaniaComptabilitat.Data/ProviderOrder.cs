@@ -68,6 +68,7 @@ namespace HispaniaComptabilitat.Data
         public string TimeTable { get; set; }
         public Nullable<bool> PrevisioLliurament { get; set; }
         public Nullable<System.DateTime> PrevisioLliuramentData { get; set; }
+        public string NameClientAssoc { get; set; }
     
         public virtual Agent Agent { get; set; }
         public virtual Bill Bill { get; set; }

@@ -166,6 +166,15 @@ namespace HispaniaCommon.ViewModel
         public decimal IVAPercent { get; set; }
         public decimal SurchargePercent { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public string NameClientAssoc
+        {
+            get;
+            set; 
+        }
+
         #endregion
 
         #region Bank Data (Bancarios)
@@ -791,6 +800,7 @@ namespace HispaniaCommon.ViewModel
             _BillingData_Agent_Id = GlobalViewModel.GetIntFromIntIdValue(providerOrder.BillingData_Agent_Id);
             PrevisioLliurament = providerOrder.PrevisioLliurament.HasValue ? providerOrder.PrevisioLliurament.Value : false ;
             PrevisioLliuramentData = providerOrder.PrevisioLliuramentData.HasValue ? providerOrder.PrevisioLliuramentData.Value : DateTime.MinValue;
+            NameClientAssoc = providerOrder.NameClientAssoc;
         }
 
         /// <summary>
@@ -845,6 +855,7 @@ namespace HispaniaCommon.ViewModel
             Bill_Serie = providerOrder.Bill_Serie;            
             PrevisioLliurament = providerOrder.PrevisioLliurament;
             PrevisioLliuramentData = providerOrder.PrevisioLliuramentData;
+            NameClientAssoc = providerOrder.NameClientAssoc;
         }
 
         #endregion
@@ -905,7 +916,8 @@ namespace HispaniaCommon.ViewModel
                 IVAPercent = IVAPercent,
                 SurchargePercent = SurchargePercent,
                 PrevisioLliurament = PrevisioLliurament,
-                PrevisioLliuramentData = PrevisioLliuramentData
+                PrevisioLliuramentData = PrevisioLliuramentData,
+                NameClientAssoc = this.NameClientAssoc
             };
             return (ProviderOrder);
         }

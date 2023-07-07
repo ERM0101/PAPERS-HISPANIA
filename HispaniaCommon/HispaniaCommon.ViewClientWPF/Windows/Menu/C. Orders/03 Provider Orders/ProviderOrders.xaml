@@ -163,6 +163,16 @@
                     </GridViewColumn.CellTemplate>
                 </GridViewColumn>
                 <GridViewColumn Width="Auto">
+                    <GridViewColumnHeader Content="Nº Proveidor" HorizontalContentAlignment="Left"/>
+                    <GridViewColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid Background="Transparent" HorizontalAlignment="Stretch" >
+                                <TextBlock Text="{Binding Provider_Id_Str}" TextAlignment="Left" Margin="0,0,2,0"/>
+                            </Grid>
+                        </DataTemplate>
+                    </GridViewColumn.CellTemplate>
+                </GridViewColumn>
+                <GridViewColumn Width="Auto">
                     <GridViewColumnHeader Content="Proveidor" HorizontalContentAlignment="Left"/>
                     <GridViewColumn.CellTemplate>
                         <DataTemplate>

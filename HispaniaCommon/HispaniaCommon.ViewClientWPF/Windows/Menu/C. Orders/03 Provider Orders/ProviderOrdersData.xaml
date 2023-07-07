@@ -169,16 +169,18 @@
                             <ColumnDefinition Width="65"/>
                             <ColumnDefinition Width="165"/>
                             <ColumnDefinition Width="280"/>
-                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="300"/>
                         </Grid.ColumnDefinitions>
                         <Label Grid.Column="0" x:Name="lblCompanyCif"  Content="DNI/CIF :" Margin="0,4,4,0" FontWeight="Bold" HorizontalAlignment="Center" 
                                VerticalAlignment="Center" IsEnabled="False"/>
                         <TextBox Grid.Column="1" x:Name="tbCompanyCif" Height="23" Margin="0,4,4,0" HorizontalAlignment="Stretch" VerticalAlignment="Center" 
                                  HorizontalContentAlignment="Center" MaxLength="20" IsReadOnly="True" IsTabStop="False"/>
-                        <Label Grid.Column="2" x:Name="lblCompanyNumProv"  Content="NOM DEL CLIENT ASSOCIAT A LA COMANDA" Margin="4,4,0,0" FontWeight="Bold" HorizontalAlignment="Center" 
+                        <Label Grid.Column="2" x:Name="lblNameClientAssoc"  Content="NOM DEL CLIENT ASSOCIAT A LA COMANDA" Margin="4,4,0,0" FontWeight="Bold" HorizontalAlignment="Center" 
                                VerticalAlignment="Center" IsEnabled="False"/>
-                        <TextBox Grid.Column="3" x:Name="tbCompanyNumProv" Height="23" MaxLength="10" HorizontalAlignment="Stretch" VerticalAlignment="Center" 
-                                 HorizontalContentAlignment="Center" Margin="4,4,4,0" IsReadOnly="True" IsTabStop="False"/>
+                        <TextBox Grid.Column="3" x:Name="tbNameClientAssoc" Height="23" 
+                                 HorizontalAlignment="Stretch"  
+                                 HorizontalContentAlignment="Left" Margin="4,4,4,0" 
+                                 IsTabStop="True"/>
                     </Grid>
                     <Grid Grid.Row="4">
                         <Grid.ColumnDefinitions>

@@ -654,9 +654,7 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                 lblCompanyName,
                 tbCompanyName,
                 lblCompanyCif,
-                tbCompanyCif,
-                //lblCompanyNumProv,
-                //tbCompanyNumProv,
+                tbCompanyCif,                
                 lblSendAddress,
                 tbSendAddress,
                 lblSendPostalCode,
@@ -682,7 +680,6 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                 tbCompanyMobilePhone,
                 tbCompanyFax,
                 tbCompanyTimeTable,
-                tbCompanyNumProvClient,
                 cbCompanyPostalCode
         };
         }
@@ -763,7 +760,9 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                 chkPrevisioLliurament,
                 dtpPrevisioLliurament,
                 btnUp,
-                btnDown
+                btnDown,
+                tbNameClientAssoc,
+                lblNameClientAssoc
             };
         }
 
@@ -845,7 +844,7 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                     tbProviderAlias.Text = string.Empty;
                     tbCompanyName.Text = string.Empty;
                     tbCompanyCif.Text = string.Empty;
-                    //tbCompanyNumProv.Text = string.Empty;
+                    tbNameClientAssoc.Text = string.Empty;
                     ActualizeProviderAddressData();
                 }
                 else
@@ -860,7 +859,7 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                     tbProviderAlias.Text = ProviderOrder.Provider.Alias;
                     tbCompanyName.Text = ProviderOrder.Provider.Name;
                     tbCompanyCif.Text = ProviderOrder.Provider.NIF;
-                    tbCompanyNumProv.Text = ProviderOrder.Provider.Company_NumProv;
+                    tbNameClientAssoc.Text = ProviderOrder.NameClientAssoc;                
                     //  Dades de Proveidor Tab Controls
                     tbProviderId.Text = ProviderOrder.Provider.Provider_Id.ToString();
                     tbProviderAliasProveidor.Text = ProviderOrder.Provider.Alias;
@@ -988,6 +987,9 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
             //  By default the manager for the Provider Order Data changes is active.
                 DataChangedManagerActive = true;
             //  TextBox
+                tbNameClientAssoc.TextChanged += TBDataChanged;
+                tbNameClientAssoc.PreviewTextInput += TBPreviewTextInput;
+
                 tbBillingDataEarlyPaymentDiscount.PreviewTextInput += TBPreviewTextInput;
                 tbBillingDataEarlyPaymentDiscount.TextChanged += TBPrecentDataChanged;
                 tbProviderOrderRemarks.PreviewTextInput += TBPreviewTextInput;
@@ -1144,6 +1146,7 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                     else if (sender == tbDataBankIBANOfficeCode) EditedProviderOrder.DataBank_IBAN_OfficeCode = value;
                     else if (sender == tbDataBankIBANCheckDigits) EditedProviderOrder.DataBank_IBAN_CheckDigits = value;
                     else if (sender == tbDataBankIBANAccountNumber) EditedProviderOrder.DataBank_IBAN_AccountNumber = value;
+                    else if(sender == tbNameClientAssoc) EditedProviderOrder.NameClientAssoc = value;
                 }
                 catch (Exception ex)
                 {

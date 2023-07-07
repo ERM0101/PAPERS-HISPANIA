@@ -467,6 +467,7 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                 Table.Columns.Add("SÈRIE_DE_FACTURACIÓ", typeof(string));
                 Table.Columns.Add("NUMERO_CLIENT", typeof(string));
                 Table.Columns.Add("CLIENT", typeof(string));
+                Table.Columns.Add( "NUMERO_PROVEDOR", typeof( string ) );
                 Table.Columns.Add( "PROVEDOR", typeof( string ) );
                 foreach (InputsOutputsView inputOutput in CollectionViewSource.GetDefaultView(ListItems.ItemsSource))
                 {
@@ -484,7 +485,9 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                     Row["SÈRIE_DE_FACTURACIÓ"] = inputOutput.Bill_Serie_Str;
                     Row["NUMERO_CLIENT"] = inputOutput.Customer_Id_Str;
                     Row["CLIENT"] = inputOutput.Customer_Alias;
+                    Row["NUMERO_PROVEDOR"] = inputOutput.Provider_Id_Str;
                     Row[ "PROVEDOR" ] = inputOutput.Provider;
+
                     Table.Rows.Add(Row);
                 }
                 ExcelManager.ExportToExcel(Table, "ENTRADES_SORTIDES", ExcelFileName);

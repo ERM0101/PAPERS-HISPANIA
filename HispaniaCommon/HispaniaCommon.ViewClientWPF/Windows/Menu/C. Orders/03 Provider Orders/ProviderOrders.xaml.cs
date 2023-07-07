@@ -1936,7 +1936,7 @@ namespace HispaniaCommon.ViewClientWPF.Windows
 
             bool CanSplitProviderOrder = CanEditOrDelete && !ProviderOrder.HasDeliveryNote && !CanChangeDate;
 
-            btnChangeDate.Visibility = ( CanSplitProviderOrder ? Visibility.Visible : Visibility.Collapsed);
+            btnChangeDate.Visibility = Visibility.Collapsed;  //TODO: !!! ( CanSplitProviderOrder ? Visibility.Visible : Visibility.Collapsed);
 
             btnViewData.Visibility = ( ( HasItemSelected && !CanChangeDate ) ? Visibility.Visible : Visibility.Collapsed);
 

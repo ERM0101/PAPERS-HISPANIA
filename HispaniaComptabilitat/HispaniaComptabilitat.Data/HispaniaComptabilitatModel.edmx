@@ -644,6 +644,7 @@
           <Property Name="TimeTable" Type="nvarchar" MaxLength="50" />
           <Property Name="PrevisioLliurament" Type="bit" />
           <Property Name="PrevisioLliuramentData" Type="date" />
+          <Property Name="NameClientAssoc" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="ProviderOrderMovement">
           <Key>
@@ -1602,6 +1603,12 @@ warning 6002: The table/view 'COMPTABILITAT.dbo.TEMP_DIARY_BANDAGE' does not hav
         </Function>
         <Function Name="ProviderOrderMovementsComments" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="ProviderOrder_Id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="QueryOrdersProvider" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="DateInit" Type="datetime" Mode="In" />
+          <Parameter Name="DateEnd" Type="datetime" Mode="In" />
+          <Parameter Name="Provider_Id" Type="int" Mode="In" />
+          <Parameter Name="Good_Id" Type="int" Mode="In" />
         </Function>
         <Function Name="Ranges" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Good_Id_From" Type="nvarchar" Mode="In" />
@@ -2689,6 +2696,7 @@ warning 6002: The table/view 'COMPTABILITAT.dbo.TEMP_DIARY_BANDAGE' does not hav
           <Property Name="TimeTable" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="PrevisioLliurament" Type="Boolean" />
           <Property Name="PrevisioLliuramentData" Type="DateTime" Precision="0" />
+          <Property Name="NameClientAssoc" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Agent" Relationship="Self.FK_ProviderOrder_Agent" FromRole="ProviderOrder" ToRole="Agent" />
           <NavigationProperty Name="Bill" Relationship="Self.FK_ProviderOrder_Bill" FromRole="ProviderOrder" ToRole="Bill" />
           <NavigationProperty Name="BillingSerie" Relationship="Self.FK_ProviderOrder_BillingSerie" FromRole="ProviderOrder" ToRole="BillingSerie" />
@@ -3969,6 +3977,12 @@ warning 6002: The table/view 'COMPTABILITAT.dbo.TEMP_DIARY_BANDAGE' does not hav
           <FunctionImport Name="ProviderOrderMovementsComments" ReturnType="Collection(String)">
             <Parameter Name="ProviderOrder_Id" Mode="In" Type="Int32" />
           </FunctionImport>
+          <FunctionImport Name="QueryOrdersProvider" ReturnType="Collection(HispaniaComptabilitat.Data.QueryOrdersProvider_Result)">
+            <Parameter Name="DateInit" Mode="In" Type="DateTime" />
+            <Parameter Name="DateEnd" Mode="In" Type="DateTime" />
+            <Parameter Name="Provider_Id" Mode="In" Type="Int32" />
+            <Parameter Name="Good_Id" Mode="In" Type="Int32" />
+          </FunctionImport>
           <FunctionImport Name="Ranges" ReturnType="Collection(HispaniaComptabilitat.Data.Ranges_Result)">
             <Parameter Name="Good_Id_From" Mode="In" Type="String" />
             <Parameter Name="Good_Id_Until" Mode="In" Type="String" />
@@ -4044,6 +4058,7 @@ warning 6002: The table/view 'COMPTABILITAT.dbo.TEMP_DIARY_BANDAGE' does not hav
           <Property Type="String" Name="Bill_Serie" Nullable="true" MaxLength="2" />
           <Property Type="Int32" Name="IO_State" Nullable="false" />
           <Property Type="String" Name="Provider" Nullable="true" />
+          <Property Type="Int32" Name="Provider_Id" Nullable="true" />
         </ComplexType>
         <ComplexType Name="LiniesConformes_Result">
           <Property Type="Int32" Name="CustomerOrder_Id" Nullable="true" />
@@ -4052,6 +4067,20 @@ warning 6002: The table/view 'COMPTABILITAT.dbo.TEMP_DIARY_BANDAGE' does not hav
         <ComplexType Name="LiniesProveidorConformes_Result">
           <Property Type="Int32" Name="ProviderOrder_Id" Nullable="true" />
           <Property Type="Int32" Name="LiniesConformes" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="QueryOrdersProvider_Result">
+          <Property Type="Int32" Name="ProviderOrderId" Nullable="false" />
+          <Property Type="DateTime" Name="Date" Nullable="true" Precision="23" />
+          <Property Type="Boolean" Name="According" Nullable="false" />
+          <Property Type="Boolean" Name="PrevisioLliurament" Nullable="true" />
+          <Property Type="DateTime" Name="PrevisioLliuramentData" Nullable="true" />
+          <Property Type="Int32" Name="ProviderId" Nullable="false" />
+          <Property Type="String" Name="ProviderAlias" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Address" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="PostalCode" Nullable="true" MaxLength="8" />
+          <Property Type="String" Name="City" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="SendTypeDescription" Nullable="true" MaxLength="50" />
+          <Property Type="Decimal" Name="TotalAmount" Nullable="false" Precision="19" Scale="4" />
         </ComplexType>
         <ComplexType Name="Ranges_Result">
           <Property Type="String" Name="Good_Code" Nullable="false" MaxLength="10" />
@@ -4790,6 +4819,7 @@ warning 6002: The table/view 'COMPTABILITAT.dbo.TEMP_DIARY_BANDAGE' does not hav
                 <ScalarProperty Name="TimeTable" ColumnName="TimeTable" />
                 <ScalarProperty Name="PrevisioLliurament" ColumnName="PrevisioLliurament" />
                 <ScalarProperty Name="PrevisioLliuramentData" ColumnName="PrevisioLliuramentData" />
+                <ScalarProperty Name="NameClientAssoc" ColumnName="NameClientAssoc" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -4981,6 +5011,7 @@ warning 6002: The table/view 'COMPTABILITAT.dbo.TEMP_DIARY_BANDAGE' does not hav
                 <ScalarProperty Name="Bill_Serie" ColumnName="Bill_Serie" />
                 <ScalarProperty Name="IO_State" ColumnName="IO_State" />
                 <ScalarProperty Name="Provider" ColumnName="Provider" />
+                <ScalarProperty Name="Provider_Id" ColumnName="Provider_Id" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
@@ -5002,6 +5033,24 @@ warning 6002: The table/view 'COMPTABILITAT.dbo.TEMP_DIARY_BANDAGE' does not hav
             </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="ProviderOrderMovementsComments" FunctionName="HispaniaComptabilitat.Data.Store.ProviderOrderMovementsComments" />
+          <FunctionImportMapping FunctionImportName="QueryOrdersProvider" FunctionName="HispaniaComptabilitat.Data.Store.QueryOrdersProvider">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="HispaniaComptabilitat.Data.QueryOrdersProvider_Result">
+                <ScalarProperty Name="ProviderOrderId" ColumnName="ProviderOrderId" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="According" ColumnName="According" />
+                <ScalarProperty Name="PrevisioLliurament" ColumnName="PrevisioLliurament" />
+                <ScalarProperty Name="PrevisioLliuramentData" ColumnName="PrevisioLliuramentData" />
+                <ScalarProperty Name="ProviderId" ColumnName="ProviderId" />
+                <ScalarProperty Name="ProviderAlias" ColumnName="ProviderAlias" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="PostalCode" ColumnName="PostalCode" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="SendTypeDescription" ColumnName="SendTypeDescription" />
+                <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="Ranges" FunctionName="HispaniaComptabilitat.Data.Store.Ranges">
             <ResultMapping>
               <ComplexTypeMapping TypeName="HispaniaComptabilitat.Data.Ranges_Result">

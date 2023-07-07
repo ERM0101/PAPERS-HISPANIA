@@ -69,7 +69,7 @@ namespace HispaniaComptabilitat.Data.EntitiesEX
                 PrevisioLliuramentData = _This.PrevisioLliuramentData
             };
 
-            foreach( ProviderOrderMovement movement in _This.ProviderOrderMovements)
+            foreach( ProviderOrderMovement movement in _This.ProviderOrderMovements )
             {
                 ProviderOrderMovement new_movement = movement.Clone( 0 );
 

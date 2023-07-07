@@ -161,6 +161,27 @@ namespace HispaniaComptabilitat.Data
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("ProviderOrderMovementsComments", providerOrder_IdParameter);
         }
     
+        public virtual ObjectResult<QueryOrdersProvider_Result> QueryOrdersProvider(Nullable<System.DateTime> dateInit, Nullable<System.DateTime> dateEnd, Nullable<int> provider_Id, Nullable<int> good_Id)
+        {
+            var dateInitParameter = dateInit.HasValue ?
+                new ObjectParameter("DateInit", dateInit) :
+                new ObjectParameter("DateInit", typeof(System.DateTime));
+    
+            var dateEndParameter = dateEnd.HasValue ?
+                new ObjectParameter("DateEnd", dateEnd) :
+                new ObjectParameter("DateEnd", typeof(System.DateTime));
+    
+            var provider_IdParameter = provider_Id.HasValue ?
+                new ObjectParameter("Provider_Id", provider_Id) :
+                new ObjectParameter("Provider_Id", typeof(int));
+    
+            var good_IdParameter = good_Id.HasValue ?
+                new ObjectParameter("Good_Id", good_Id) :
+                new ObjectParameter("Good_Id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<QueryOrdersProvider_Result>("QueryOrdersProvider", dateInitParameter, dateEndParameter, provider_IdParameter, good_IdParameter);
+        }
+    
         public virtual ObjectResult<Ranges_Result> Ranges(string good_Id_From, string good_Id_Until, string bill_Id_From, string bill_Id_Until, Nullable<decimal> year_Query)
         {
             var good_Id_FromParameter = good_Id_From != null ?
