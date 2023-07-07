@@ -9,8 +9,7 @@
     {
         Show,
         Add,
-        Edit,
-        Copy,
+        Edit
     }
 
     #endregion

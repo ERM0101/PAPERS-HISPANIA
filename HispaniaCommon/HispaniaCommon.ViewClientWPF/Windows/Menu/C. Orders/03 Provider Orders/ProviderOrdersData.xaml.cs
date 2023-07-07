@@ -376,23 +376,7 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                          if (ProviderOrder == null) throw new InvalidOperationException("Error, impossible editar una Comanda de Client sense dades.");
                          tbDataBankIBANCountryCode.ContextMenu = ctxmnuIBAN_Initial;
                          tbCancel.Text = "Cancel·lar";
-                         break;
-                    case Operation.Copy:
-                    {
-
-                        if(ProviderOrder == null)
-                            throw new InvalidOperationException( "Error, impossible copyar una Comanda de Client sense dades." );
-                        
-                        ProviderOrdersView new_provider_order = new ProviderOrdersView( this.ProviderOrder );
-                        new_provider_order.ProviderOrder_Id = GlobalViewModel.Instance.HispaniaViewModel.GetNextIdentityValueTable( new_provider_order );
-                        new_provider_order.Date = DateTime.Now;
-                        ProviderOrder = new_provider_order;
-
-                        tbDataBankIBANCountryCode.ContextMenu = ctxmnuIBAN_Initial;
-                        tbCancel.Text = "Cancel·lar";
-
-                        break;
-                    }
+                         break;                    
                 }
                 string properyValue;
                 foreach (Control control in EditableControls)
@@ -1227,8 +1211,7 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
             ProviderOrdersAttributes ErrorField = ProviderOrdersAttributes.None;
             try
             {
-                if ((CtrlOperation == Operation.Add) || (CtrlOperation == Operation.Edit) ||
-                    ( this.CtrlOperation == Operation.Copy ) )
+                if ((CtrlOperation == Operation.Add) || (CtrlOperation == Operation.Edit) )
                 {
                     EditedProviderOrder.Validate(out ErrorField);
                     EvAccept?.Invoke(new ProviderOrdersView(EditedProviderOrder), DataManagementId);

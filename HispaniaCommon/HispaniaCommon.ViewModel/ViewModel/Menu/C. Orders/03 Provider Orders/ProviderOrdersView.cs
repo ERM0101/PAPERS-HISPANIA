@@ -1,8 +1,11 @@
 ﻿#region Librerias usadas por la clase
 
+using HispaniaCommon.DataAccess;
+using HispaniaComptabilitat.Data;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Runtime.CompilerServices;
 using HispaniaCompData = HispaniaComptabilitat.Data;
 
 #endregion
@@ -206,7 +209,9 @@ namespace HispaniaCommon.ViewModel
         {
             get
             {
-                return (According == true)? "Material lliurat" : ((PrevisioLliurament==true) ? "previsio: " + PrevisioLliurament_Str : "Lliurament pendent");
+                return (According == true) ? "Material lliurat" : 
+                            ( (PrevisioLliurament==true) ? "previsio: " + PrevisioLliurament_Str 
+                            : "Lliurament pendent");
             }
         }
         public bool Valued { get; set; }
@@ -1382,5 +1387,19 @@ namespace HispaniaCommon.ViewModel
         }
 
         #endregion
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="providerOrderId"></param>
+        /// <returns></returns>
+        public static ProviderOrdersView CreateCopy( int providerOrderId )
+        {
+            ProviderOrder provider_order = HispaniaDataAccess.Instance.CreateCopyProviderOrderById( providerOrderId );
+
+            ProviderOrdersView result = new ProviderOrdersView( provider_order );            
+
+            return result;
+        }
     }
 }

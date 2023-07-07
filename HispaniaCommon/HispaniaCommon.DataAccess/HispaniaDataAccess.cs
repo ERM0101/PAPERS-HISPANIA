@@ -4260,6 +4260,55 @@ namespace HispaniaCommon.DataAccess
 
         #region ProviderOrders [CRUD]
 
+        #region Create Copy ProviderOrder By Id 
+
+        public ProviderOrder CreateCopyProviderOrderById( int providerOrderId )
+        {
+            ProviderOrder result = null;
+
+            try
+            {
+                using(var db = new HispaniaComptabilitat.Data.Entities())
+                {
+                    using(var transaction = db.Database.BeginTransaction())
+                    {
+                        try
+                        {
+                            ProviderOrder order = db.ProviderOrders.Where( i => i.ProviderOrder_Id == providerOrderId )
+                                                                    .First();
+
+                            result = order.Clone();
+
+                            db.ProviderOrders.Add( result );
+                            
+                            db.SaveChanges();
+
+                            transaction.Commit();  
+                            
+                        } catch(Exception )
+                        {
+                            result = null;
+
+                            transaction.Rollback();
+
+                            throw;
+                        }
+                    }
+                }
+
+            } catch(Exception ex)
+            {
+                string message = $"Error craeate copy ProviderOrder by Id ={providerOrderId}";
+                throw new Exception( message, ex );
+            }
+
+            return result;
+        }
+
+
+        #endregion
+
+
         #region CreateProviderOrder
 
         [OperationContract]
@@ -5857,6 +5906,84 @@ namespace HispaniaCommon.DataAccess
             using (var db = new HispaniaComptabilitat.Data.Entities())
             {
                 return db.Ranges(Good_Code_From, Good_Code_Until, Bill_Id_From, Bill_Id_Until, YearQuery).ToList();
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public class SPParam
+        {
+            /// <summary>
+            /// 
+            /// </summary>
+            public string Name
+            {
+                get;
+            }
+
+            /// <summary>
+            /// 
+            /// </summary>
+            public object Value
+            {
+                get;
+            }
+
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <param name="name"></param>
+            /// <param name="value"></param>
+            /// <exception cref="ArgumentException"></exception>
+            public SPParam( string name, object value )
+            {
+                if(string.IsNullOrWhiteSpace( name ))
+                {
+                    throw new ArgumentException( $"'{nameof( name )}' cannot be null or whitespace.", nameof( name ) );
+                }
+
+                string str = name.Trim();
+                if(str[ 0 ] != '@')
+                {
+                    str = "@" + str;
+                }
+
+                this.Name = str;
+                this.Value = value;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="TEntity"></typeparam>
+        /// <param name="name"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        public IEnumerable<TEntity> ExecuteSP<TEntity>( string name, IEnumerable<SPParam> parameters = null )
+        {
+            object[] query_parameters = null ;
+            string parameters_parte = "";
+
+            if(parameters != null && parameters.Any())
+            {
+                query_parameters = parameters.Select( i => new SqlParameter( i.Name,
+                                                            ( i.Value != null ? i.Value : DBNull.Value  ) ) )
+                                                 .ToArray();
+
+                parameters_parte = string.Join( ", ", parameters.Select( i => i.Name ).ToArray() );
+            }
+            else
+            {
+                query_parameters = Enumerable.Empty<object>().ToArray();
+            }
+
+            string sql_query = $"EXEC {name} {parameters_parte}";
+            
+            using(var db = new HispaniaComptabilitat.Data.Entities())
+            {
+                return db.Database.SqlQuery<TEntity>( sql_query, query_parameters ).ToArray();
             }
         }
 

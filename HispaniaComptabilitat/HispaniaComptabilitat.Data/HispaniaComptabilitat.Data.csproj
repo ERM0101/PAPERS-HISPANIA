@@ -86,7 +86,9 @@
     <Compile Include="EffectType.cs">
       <DependentUpon>HispaniaComptabilitatModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="EntitiesEX\ProviderOrderEX.cs" />
     <Compile Include="EntitiesEX\ProviderOrderMovementEX.cs" />
+    <Compile Include="Entities\QueryOrderProvider.cs" />
     <Compile Include="Good.cs">
       <DependentUpon>HispaniaComptabilitatModel.tt</DependentUpon>
     </Compile>

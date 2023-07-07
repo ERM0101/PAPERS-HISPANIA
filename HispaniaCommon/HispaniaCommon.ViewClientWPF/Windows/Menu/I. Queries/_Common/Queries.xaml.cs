@@ -7,6 +7,9 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Data;
+using System.Linq;
+using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
@@ -257,6 +260,8 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                 CurrentInitFilterData = (DateTime) dtpInitData.SelectedDate;
             //  Activate managers
                 DataChangedManagerActive = true;
+
+            RefreshArticleProviderFilter();
         }
 
         /// <summary>
@@ -294,6 +299,20 @@ namespace HispaniaCommon.ViewClientWPF.Windows
             //  Images
                 imgParamQuery.MouseDown += ImgParamQuery_MouseDown;
                 imgSQLQuery.MouseDown += ImgSQLQuery_MouseDown;
+            
+            // Article Provedores
+            cbArticleFilter.SelectionChanged += CbArticleProviderFilter_SelectionChanged;
+            cbProveforFilter.SelectionChanged += CbArticleProviderFilter_SelectionChanged;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CbArticleProviderFilter_SelectionChanged( object sender, System.Windows.Controls.SelectionChangedEventArgs e )
+        {
+            UpdateDataUI();
         }
 
         #region TextBox
@@ -513,48 +532,63 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                      rdParamsPanel.Height = HideComponent;
                      rdSQLPanel.Height = HideHeaderPanel;
                      cdOperationsBBDD.Width = HideComponent;
-                     break;
+                    filterGrid.ColumnDefinitions[ 2 ].Width = HideComponent;
+                    break;
                 case QueryType.Customers:
                 case QueryType.Customers_Full:
                      QueryInfo = "CLIENTS";
                      rdParamsPanel.Height = HideComponent;
                      rdSQLPanel.Height = HideHeaderPanel;
                      cdOperationsBBDD.Width = HideComponent;
-                     break;
+                    filterGrid.ColumnDefinitions[ 2 ].Width = HideComponent;
+                    break;
                 case QueryType.CustomerOrders:
                      QueryInfo = "COMANDES DE CLIENT";
                      rdParamsPanel.Height = HideComponent;
                      rdSQLPanel.Height = HideHeaderPanel;
                      cdOperationsBBDD.Width = HideComponent;
+                     filterGrid.ColumnDefinitions[ 2 ].Width = HideComponent;
                      break;
                 case QueryType.HistoCustomerForData:
                      QueryInfo = "HISTÒRIC DE CLIENTS PER DATA";
                      rdParamsPanel.Height = ViewParamsPannel;
                      rdSQLPanel.Height = HideHeaderPanel;
-                     cdOperationsBBDD.Width = HideComponent;
-                     lblAgent.Visibility = Visibility.Collapsed;
-                     ListItems.Visibility = Visibility.Collapsed;
-                     break;
+                     cdOperationsBBDD.Width = HideComponent;                    
+                     //lblAgent.Visibility = Visibility.Collapsed;
+                     //ListItems.Visibility = Visibility.Collapsed;                                          
+                     filterGrid.ColumnDefinitions[ 0 ].Width = HideComponent;
+                     filterGrid.ColumnDefinitions[ 1 ].Width = HideComponent;
+                     filterGrid.ColumnDefinitions[ 2 ].Width = HideComponent;
+
+                    break;
                 case QueryType.HistoCustomerForDataAndAgent:
                      QueryInfo = "HISTÒRIC DE CLIENTS PER DATA I REPRESENTANT";
                      rdParamsPanel.Height = ViewExtendedParamsPannel;
                      rdSQLPanel.Height = HideHeaderPanel;
                      cdOperationsBBDD.Width = HideComponent;
-                     break;
+                    filterGrid.ColumnDefinitions[ 2 ].Width = HideComponent;
+                    break;
                 case QueryType.CustomQuery:
                      QueryInfo = "CONSULTA PERSONALITZADA";
                      rdParamsPanel.Height = HideComponent;
                      rdSQLPanel.Height = ViewSQLPannel;
                      cdOperationsBBDD.Width = ViewOperationsBBDDPanel;
                      tbSQLQuery.IsReadOnly = false;
-                     break;
+                    filterGrid.ColumnDefinitions[ 2 ].Width = HideComponent;
+                    break;
+
                 case QueryType.Providers:
                     QueryInfo = "COMANDES A PROVEIDORS";
                     rdParamsPanel.Height = ViewParamsPannel;
                     rdSQLPanel.Height = HideHeaderPanel;
                     cdOperationsBBDD.Width = HideComponent;
-                    lblAgent.Visibility = Visibility.Collapsed;
-                    ListItems.Visibility = Visibility.Collapsed;
+
+                    //lblAgent.Visibility = Visibility.Collapsed;
+                    //ListItems.Visibility = Visibility.Collapsed;
+                    filterGrid.ColumnDefinitions[1].Width = HideComponent;
+                    filterGrid.ColumnDefinitions[0].Width = HideComponent;
+                    //filterGrid.ColumnDefinitions[2].Width = HideComponent;
+
                     break;
                 case QueryType.None:
                 default:
@@ -575,7 +609,8 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                 }
                 if (((QueryType == QueryType.CustomQuery) && (!InitWindow)) || (QueryType != QueryType.CustomQuery))
                 {
-                    dgData.DataContext = QueryViewModel.Instance.GetDataQuery(QueryType, Params).DefaultView;
+                    DataTable table = QueryViewModel.Instance.GetDataQuery( QueryType, Params );
+                    dgData.DataContext = table.DefaultView;                    
                 }
             }
             catch (Exception ex)
@@ -585,6 +620,46 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                 else throw new Exception(ErrMsg);
             }
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="table"></param>
+        private void RefreshArticleProviderFilter( )
+        {
+            RefreshDataViewModel.Instance.RefreshData( WindowToRefresh.GoodsWindow );
+            var goods = GlobalViewModel.Instance.HispaniaViewModel.Goods;
+
+            RefreshDataViewModel.Instance.RefreshData( WindowToRefresh.ProvidersWindow );
+            var providers = GlobalViewModel.Instance.HispaniaViewModel.Providers;
+
+            var goods_items = goods.OrderBy( i=> i.Good_Description )
+                                   .Select( i => new { Text = i.Good_Description, Value = i.Good_Id, } )
+                                   .ToList();
+            goods_items.Insert( 0, new
+            {
+                Text = "--- ALL ---", Value = 0
+            } );
+
+            cbArticleFilter.ItemsSource = goods_items;
+            cbArticleFilter.DisplayMemberPath = "Text";
+            cbArticleFilter.SelectedValuePath = "Value";
+
+            var providers_items = providers.OrderBy( i => i.Name )
+                                            .Select( i => new { Text = i.Name, Value = i.Provider_Id, } )
+                                            .ToList();
+            providers_items.Insert( 0, new
+            {
+                Text = "--- ALL ---", Value = 0
+            } );
+
+            cbProveforFilter.ItemsSource = providers_items;
+            cbProveforFilter.DisplayMemberPath = "Text";
+            cbProveforFilter.SelectedValuePath = "Value";
+
+        }
+
+
 
         private Dictionary<string, object> CreateParams()
         {
@@ -598,6 +673,27 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                             { "DateInit", dtpInitData.SelectedDate },
                             { "DateEnd", (dtpEndData.SelectedDate is null) ? DateTime.Now : dtpEndData.SelectedDate }
                          };
+                
+                if(QueryType == QueryType.Providers)
+                {
+                    if(cbArticleFilter.SelectedIndex != -1)
+                    {
+                        object value = cbArticleFilter.SelectedValue;
+                        if(value is int)
+                        {
+                            Params.Add( "article_id", (int)value );
+                        }
+                    }
+
+                    if( cbProveforFilter.SelectedIndex != -1)
+                    {
+                        object value = cbProveforFilter.SelectedValue;
+                        if(value is int)
+                        {
+                            Params.Add( "provider_id", (int)value );
+                        }
+                    }
+                }
             }
             if (QueryType == QueryType.HistoCustomerForDataAndAgent)
             {

@@ -1,6 +1,9 @@
 ﻿#region Librerias usadas por la clase
 
 using HispaniaCommon.DataAccess;
+using HispaniaCommon.DataAccess.Utils;
+using HispaniaCommon.ViewModel.ViewModel.Queries;
+using HispaniaComptabilitat.Data;
 using MBCode.Framework.Managers;
 using MBCode.Framework.Managers.Messages;
 using System;
@@ -10,6 +13,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Text;
+using static iTextSharp.text.pdf.events.IndexEvents;
 
 #endregion
 
@@ -124,6 +128,41 @@ namespace HispaniaCommon.ViewModel
             }
         }
 
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="TRow"></typeparam>
+        /// <param name="streamData"></param>
+        /// <param name="sheetName"></param>
+        public void GenerateExcelFromStreamData<TRow>( IEnumerable<TRow> streamData, string sheetName )
+        {
+            try
+            {
+                DateTime moment = DateTime.Now;
+                string excel_filename = string.Format( "{0}{1}-{2:0000}_{3:00}_{4:00}-{5:00}_{6:00}.xlsx",
+                                                     GetQueryDirectory,
+                                                     sheetName,
+                                                     moment.Year, moment.Month, moment.Day,
+                                                     moment.Hour, moment.Minute );
+
+                DataTable data_table = streamData.ToDataTable();
+
+                ExcelManager.ExportToExcel( data_table, sheetName, excel_filename );
+
+                Process.Start( excel_filename );
+
+            } catch(Exception ex)
+            {
+                MsgManager.ShowMessage(
+                    string.Format( "Error, al crear l'Excel '{0}'.\r\nDetalls: {1}",
+                                  sheetName,
+                                  MsgManager.ExcepMsg( ex ) ) );
+            }
+
+
+        }
+
         public string GetQuerySQL_UI(QueryType queryType, Dictionary<string, object> Params = null)
         {
             return GetQuerySQL(queryType, Params).Replace("FROM", "\r\nFROM").Replace("WHERE", "\r\nWHERE").Replace("ORDER BY", "\r\nORDER BY");
@@ -132,6 +171,57 @@ namespace HispaniaCommon.ViewModel
         public DataTable GetDataQuery(QueryType queryType, Dictionary<string, object> Params = null)
         {
             return (HispaniaDataAccess.Instance.GetDataTableFromQuerySQL(GetQuerySQL(queryType, Params)));
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="startDate"></param>
+        /// <param name="endDate"></param>
+        /// <param name="articleId"></param>
+        /// <param name="providerId"></param>
+        /// <returns></returns>
+        public IEnumerable<QueryOrderProviderViewModel> GetQueryOrders( DateTime startDate, 
+                                                                        DateTime endDate, 
+                                                                        int? articleId, 
+                                                                        int? providerId )
+        {
+            List<HispaniaDataAccess.SPParam> parameters = new List<HispaniaDataAccess.SPParam>();
+
+            parameters.Add( new HispaniaDataAccess.SPParam( "DateInit", startDate ) );
+            parameters.Add( new HispaniaDataAccess.SPParam( "DateEnd", endDate ) );
+            
+            parameters.Add( new HispaniaDataAccess.SPParam( "Provider_Id",
+                ( providerId.HasValue ? providerId.Value : (object)null ) ) );
+
+            
+            parameters.Add( new HispaniaDataAccess.SPParam( "Good_Id", 
+                    (articleId.HasValue ? articleId.Value : (object)null ) ) );
+            
+
+            IEnumerable<QueryOrderProvider> raw_data = 
+                       HispaniaDataAccess.Instance.ExecuteSP<QueryOrderProvider>( "QueryOrdersProvider",
+                                                                                   parameters );
+
+            foreach(QueryOrderProvider raw_item in raw_data)
+            {
+                yield return new QueryOrderProviderViewModel() {
+                    ProviderOrderId = raw_item.ProviderOrderId,
+                    Date = raw_item.Date,
+                    According = raw_item.According,
+                    PrevisioLliurament = raw_item.PrevisioLliurament,
+                    PrevisioLliuramentData = raw_item.PrevisioLliuramentData,
+                    ProviderId = raw_item.ProviderId,
+                    ProviderAlias = raw_item.ProviderAlias,
+                    Address = raw_item.Address,
+                    PostalCode = raw_item.PostalCode,
+                    City = raw_item.City,
+                    SendTypeDescription = raw_item.SendTypeDescription,
+                    TotalAmount = raw_item.TotalAmount,
+                    LiniesConformes = raw_item.LiniesConformes,
+                };
+            }
         }
 
         #endregion
@@ -160,6 +250,57 @@ namespace HispaniaCommon.ViewModel
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="Params"></param>
+        /// <returns></returns>
+        private string BuildArticleProviderParte( Dictionary<string, object> Params = null )
+        {
+            string result = "";
+
+            if(null != Params && Params.Count != 0)
+            {
+                int? article_id = null;
+                int? provider_id = null;
+
+                if(Params.TryGetValue( "provider_id", out object value ))
+                {
+                    if(value is int)
+                    {
+                        provider_id = (int)value;
+                    }
+                }
+
+                if(Params.TryGetValue( "article_id", out value ))
+                {
+                    if(value is int)
+                    {
+                        article_id = (int)value;
+                    }
+                }
+
+                if(article_id.HasValue && article_id.Value != 0)
+                {
+                    result = $" AND HP.Good_Id = {article_id.Value}";
+                }
+
+                if( provider_id.HasValue && provider_id.Value != 0 )
+                {
+                    result += $" AND HP.Provider_Id = {provider_id.Value}";
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="queryType"></param>
+        /// <param name="Params"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException"></exception>
         private string GetQuerySQL(QueryType queryType, Dictionary<string, object> Params = null)
         {
             string Query;
@@ -178,6 +319,12 @@ namespace HispaniaCommon.ViewModel
                     DateTime DateEnd = (DateTime)Params["DateEnd"];
                     Query = Query.Replace("{DateInit}", $"\'{DateInit.Year:0000}{DateInit.Month:00}{DateInit.Day:00}\'");
                     Query = Query.Replace("{DateEnd}", $"\'{DateEnd.Year:0000}{DateEnd.Month:00}{DateEnd.Day:00}\'");
+                    if(queryType == QueryType.Providers)
+                    {
+                        string article_provider_parte = BuildArticleProviderParte( Params );
+                        Query = Query.Replace( "{ArticleProvider}", article_provider_parte );
+                    }
+
                 }
                 if (queryType == QueryType.HistoCustomerForDataAndAgent)
                 {

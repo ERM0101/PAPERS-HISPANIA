@@ -1,5 +1,6 @@
 ﻿#region Libraries used for the class
 
+using HispaniaCommon.ViewClientWPF.Windows.Menu.I._Queries;
 using HispaniaCommon.ViewModel;
 using MBCode.Framework.Managers.Messages;
 using MBCode.Framework.Managers.Theme;
@@ -7,6 +8,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -846,13 +848,68 @@ namespace HispaniaCommon.ViewClientWPF.Windows
 
             lblConsultaProviders.MouseEnter += Manage_MouseEnter;
             lblConsultaProviders.MouseLeave += Manage_MouseLeave;
-            lblConsultaProviders.MouseDoubleClick += ManageLabel_MouseDoubleClick;
+            lblConsultaProviders.MouseDoubleClick += LblConsultaProviders_MouseDoubleClick;
+            ;
 
 
             //  Option 06 'Consulta Customitzada'
             lblConsultaParam.MouseEnter += Manage_MouseEnter;
             lblConsultaParam.MouseLeave += Manage_MouseLeave;
             lblConsultaParam.MouseDoubleClick += ManageLabel_MouseDoubleClick;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void LblConsultaProviders_MouseDoubleClick( object sender, MouseButtonEventArgs e )
+        {
+            Window window = FindWindow( typeof( QueryOrdersProvider ) );
+            if(null == window)
+            {
+                // Create
+                QueryOrdersProvider query_window = new QueryOrdersProvider();
+
+                this.Active_Windows.Add( query_window );
+                query_window.Closed += UniwersalOnClosedWindow;
+                window = query_window;
+            }
+            else
+            {
+                // Show
+            }
+            window.Show();
+            window.Activate();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void UniwersalOnClosedWindow( object sender, EventArgs e )
+        {
+            QueryOrdersProvider window = (QueryOrdersProvider)sender;
+            if(sender != null)
+            {
+                this.Active_Windows.Remove( window );
+                window.Closed -= UniwersalOnClosedWindow;                    
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="typeWindow"></param>
+        /// <returns></returns>
+        private Window FindWindow( Type typeWindow )
+        {
+
+            Window result = this.Active_Windows.Where( i => i.GetType() == typeWindow )
+                                .FirstOrDefault();           
+
+            return result;
         }
 
         #endregion
@@ -2611,19 +2668,18 @@ namespace HispaniaCommon.ViewClientWPF.Windows
             {
                 try
                 {
-                    RefreshDataViewModel.Instance.RefreshData(WindowToRefresh.QueriesWindow);
-                    QueriesWindow = new Queries(AppType, queryType)
+                    RefreshDataViewModel.Instance.RefreshData( WindowToRefresh.QueriesWindow );
+                    QueriesWindow = new Queries( AppType, queryType )
                     {
                         DataList = GlobalViewModel.Instance.HispaniaViewModel.Agents
                     };
                     QueriesWindow.Closed += QueriesWindow_Closed;
                     QueriesWindow.Show();
-                    Active_Windows.Add(QueriesWindow);
-                }
-                catch (Exception ex)
+                    Active_Windows.Add( QueriesWindow );
+                } catch(Exception ex)
                 {
                     MsgManager.ShowMessage(
-                       string.Format("Error, a l'obrir el formulari de Consultes.\r\nDetalls: {0}", MsgManager.ExcepMsg(ex)));
+                       string.Format( "Error, a l'obrir el formulari de Consultes.\r\nDetalls: {0}", MsgManager.ExcepMsg( ex ) ) );
                 }
             }
             else
