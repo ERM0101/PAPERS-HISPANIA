@@ -4333,7 +4333,11 @@ namespace HispaniaCommon.DataAccess
                             foreach (HispaniaCompData.ProviderOrderMovement movement in movements[DataBaseOp.CREATE])
                             {
                                 movement.ProviderOrder_Id = providerOrder.ProviderOrder_Id;
+
+                                movement.ProviderOrder = null;
+
                                 db.ProviderOrderMovements.Add(movement);
+
                                 db.SaveChanges();
                                 if (movement.According)
                                 {
@@ -4718,6 +4722,7 @@ namespace HispaniaCommon.DataAccess
             {
                 if (!MovementsToUpdate.Contains(movement.ProviderOrderMovement_Id)) // CREATE
                 {
+                    movement.ProviderOrder = null;
                     db.ProviderOrderMovements.Add(movement);
                     db.SaveChanges();
                 }
