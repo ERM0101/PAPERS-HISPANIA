@@ -53,6 +53,7 @@ namespace HispaniaCommon.ViewModel
                         { "Nº Client", "Customer_Id_Str" },
                         { "Client", "Customer_Alias" },
                         { "Preu", "Price_Str" },
+                        { "Nº Provedor", "Provider_Id_Str" },
                         { "Provedor", "Provider" }
                     };
                 }
