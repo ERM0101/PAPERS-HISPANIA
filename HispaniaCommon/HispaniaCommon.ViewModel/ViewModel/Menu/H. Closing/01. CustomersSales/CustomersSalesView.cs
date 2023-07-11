@@ -101,7 +101,7 @@ namespace HispaniaCommon.ViewModel
         /// <summary>
         /// Builder by default of the class.
         /// </summary>
-        internal CustomersSalesView(HispaniaCompData.CustomerSale customersSale)
+        internal CustomersSalesView(HispaniaCompData.CustomerSales_Result customersSale)
         {
             Customer_Id = GlobalViewModel.GetIntValue(customersSale.Customer_Id);
             Company_Name = customersSale.Company_Name;
@@ -139,9 +139,9 @@ namespace HispaniaCommon.ViewModel
         /// <summary>
         /// Builder by default of the class.
         /// </summary>
-        internal HispaniaCompData.CustomerSale GetCustomerSale()
+        internal HispaniaCompData.CustomerSales_Result GetCustomerSale()
         {
-            HispaniaCompData.CustomerSale customersSale = new HispaniaCompData.CustomerSale()
+            HispaniaCompData.CustomerSales_Result customersSale = new HispaniaCompData.CustomerSales_Result()
             {
                 Company_Cif = Company_Cif,
                 Company_Address = Company_Address,

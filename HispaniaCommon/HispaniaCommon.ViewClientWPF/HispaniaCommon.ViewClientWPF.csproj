@@ -285,6 +285,9 @@
     <Compile Include="Windows\Menu\H. Closing\04. RemoveWarehouseMovements\RemoveWarehouseMovements.xaml.cs">
       <DependentUpon>RemoveWarehouseMovements.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\Menu\I. Queries\QueryOrdersProvider.xaml.cs">
+      <DependentUpon>QueryOrdersProvider.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\Menu\I. Queries\_Common\Queries.xaml.cs">
       <DependentUpon>Queries.xaml</DependentUpon>
     </Compile>
@@ -601,6 +604,10 @@
     <Page Include="Windows\Menu\H. Closing\04. RemoveWarehouseMovements\RemoveWarehouseMovements.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\Menu\I. Queries\QueryOrdersProvider.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\Menu\I. Queries\_Common\Queries.xaml">
       <SubType>Designer</SubType>

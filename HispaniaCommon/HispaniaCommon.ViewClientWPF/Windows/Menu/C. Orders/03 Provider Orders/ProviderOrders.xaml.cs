@@ -17,6 +17,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+//using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 
@@ -631,14 +632,13 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                 tbItemToSearch.TextChanged += TbItemToSearch_TextChanged;
             //  Button 
                 btnAdd.Click += BtnAdd_Click;
+                btnCopy.Click += BtnCopy_Click;
                 btnEdit.Click += BtnEdit_Click;
                 btnDelete.Click += BtnDelete_Click;
                 btnViewData.Click += BtnViewData_Click;
                 btnPrint.Click += BtnPrint_Click;
                 btnSendByEmail.Click += BtnSendByEMail_Click;
                 btnCreateBill.Click += BtnCreateBill_Click;
-                btnCreateDeliveryNote.Click += BtnCreateDeliveryNote_Click;
-                btnSplitProviderOrder.Click += BtnSplitProviderOrder_Click;
                 btnRefresh.Click += BtnRefresh_Click;
                 btnChangeDate.Click += BtnChangeDate_Click;
                 btnProforma.Click += BtnProformaPrint_Click;
@@ -895,7 +895,7 @@ namespace HispaniaCommon.ViewClientWPF.Windows
         /// <param name="sender">Object that sends the event.</param>
         /// <param name="e">Parameters with the event was sended.</param>
         private void BtnAdd_Click(object sender, RoutedEventArgs e)
-        {
+        {                        
             try
             {
                 ProviderOrderDataControl.CtrlOperation = Operation.Add;
@@ -905,6 +905,25 @@ namespace HispaniaCommon.ViewClientWPF.Windows
             catch (Exception ex)
             {
                 MsgManager.ShowMessage(string.Format("Error, al afegir una Comanda de Proveidor.\r\nDetalls:{0}", MsgManager.ExcepMsg(ex)));
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BtnCopy_Click( object sender, RoutedEventArgs e )
+        {
+            if(this.ListItems.SelectedItem != null)
+            {
+                ProviderOrdersView selected_order = (ProviderOrdersView)this.ListItems.SelectedItem;
+                
+                ProviderOrdersView new_providerorder = ProviderOrdersView.CreateCopy( selected_order.ProviderOrder_Id );
+                
+                this.DataList.Add( new_providerorder );
+
+                this.ListItems.SelectedItem =  new_providerorder;
             }
         }
 
@@ -1892,6 +1911,51 @@ namespace HispaniaCommon.ViewClientWPF.Windows
             bool NotViewingProvider = Provider is null;
             rdProviderInfo.Height = NotViewingProvider ? HideComponent : ViewProviderPannel;
             rdSearchPannel.Height = (DataList.Count > 0) ? ViewSearchPannel : HideComponent;
+            
+            btnAdd.Visibility = (!Print && !IsEditing && !m_CanShowDeliveryNotes && NotViewingProvider && !CanChangeDate) ?
+                                 Visibility.Visible : Visibility.Collapsed;
+
+            bool HasItemSelected = !(ListItems.SelectedItem is null);
+            ProviderOrdersView ProviderOrder = HasItemSelected ? (ProviderOrdersView)ListItems.SelectedItem : null;
+            bool PrintControlVisibility = ((Print || PrintProviderOrder) && HasItemSelected && !CanChangeDate);
+            
+            btnPrint.Visibility = PrintControlVisibility ? Visibility.Visible : Visibility.Collapsed;
+
+            btnSendByEmail.Visibility = (PrintControlVisibility ? 
+                                Visibility.Visible : Visibility.Collapsed);
+
+            bool CanCreateBill = Print && HasItemSelected && !ProviderOrder.HasBill && !CanChangeDate;
+
+            btnCreateBill.Visibility= ( CanCreateBill ? Visibility.Visible : Visibility.Collapsed );
+
+            bool CanEditOrDelete = !Print && HasItemSelected && !IsEditing && !CanChangeDate;
+            
+            btnEdit.Visibility  = ( CanEditOrDelete ? Visibility.Visible : Visibility.Collapsed);
+
+            btnDelete.Visibility = ( CanEditOrDelete ? Visibility.Visible : Visibility.Collapsed);
+
+            bool CanSplitProviderOrder = CanEditOrDelete && !ProviderOrder.HasDeliveryNote && !CanChangeDate;
+
+            btnChangeDate.Visibility = Visibility.Collapsed;  //TODO: !!! ( CanSplitProviderOrder ? Visibility.Visible : Visibility.Collapsed);
+
+            btnViewData.Visibility = ( ( HasItemSelected && !CanChangeDate ) ? Visibility.Visible : Visibility.Collapsed);
+
+            bool CanCreateDeliveryNote = !Print && HasItemSelected && !ProviderOrder.HasDeliveryNote && !m_CanShowDeliveryNotes && !CanChangeDate;
+
+            btnCreateExcel.Visibility = ( ( CanCreateDeliveryNote) ? Visibility.Visible : Visibility.Collapsed);
+
+            string SelectedFilterField = (string)cbFieldItemToSearch.SelectedValue;
+            bool IsDateFilter = SelectedFilterField == "Date_Str" || SelectedFilterField == "DeliveryNote_Date_Str";
+            cdTextFilter.Width = IsDateFilter ? HideComponent : ViewTextFilterPannel;
+            cdDateFilter.Width = IsDateFilter ? ViewTextFilterPannel : HideComponent;
+
+            //cdChangeDate.Width = (CanChangeDate) ? ViewChangeDateButtonPannel : HideComponent;
+
+
+            /*
+            bool NotViewingProvider = Provider is null;
+            rdProviderInfo.Height = NotViewingProvider ? HideComponent : ViewProviderPannel;
+            rdSearchPannel.Height = (DataList.Count > 0) ? ViewSearchPannel : HideComponent;
             cdAdd.Width = (!Print && !IsEditing && !m_CanShowDeliveryNotes && NotViewingProvider && !CanChangeDate) ? ViewAddButtonPannel : HideComponent;
             bool HasItemSelected = !(ListItems.SelectedItem is null);
             ProviderOrdersView ProviderOrder = HasItemSelected ? (ProviderOrdersView)ListItems.SelectedItem : null;
@@ -1899,7 +1963,7 @@ namespace HispaniaCommon.ViewClientWPF.Windows
             cdPrint.Width = PrintControlVisibility ? ViewPrintButtonPannel : HideComponent;
             cdSendByEMail.Width = PrintControlVisibility ? ViewSendByEMailButtonPannel : HideComponent;
             bool CanCreateBill = Print && HasItemSelected && !ProviderOrder.HasBill && !CanChangeDate;
-            cdCreateBill.Width =  (CanCreateBill) ? ViewCreateBillButtonPannel : HideComponent;
+            cdCreateBill.Width = (CanCreateBill) ? ViewCreateBillButtonPannel : HideComponent;
             bool CanEditOrDelete = !Print && HasItemSelected && !IsEditing && !CanChangeDate;
             cdEdit.Width = CanEditOrDelete ? ViewEditButtonPannel : HideComponent;
             cdDelete.Width = CanEditOrDelete ? ViewEditButtonPannel : HideComponent;
@@ -1913,6 +1977,7 @@ namespace HispaniaCommon.ViewClientWPF.Windows
             cdTextFilter.Width = IsDateFilter ? HideComponent : ViewTextFilterPannel;
             cdDateFilter.Width = IsDateFilter ? ViewTextFilterPannel : HideComponent;
             cdChangeDate.Width = (CanChangeDate) ? ViewChangeDateButtonPannel : HideComponent;
+            */
         }
 
         #endregion

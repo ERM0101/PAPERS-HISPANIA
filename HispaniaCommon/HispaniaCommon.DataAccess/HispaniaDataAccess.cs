@@ -12,6 +12,7 @@ using System.ServiceModel;
 using HispaniaCompData = HispaniaComptabilitat.Data;
 using System.Configuration;
 using HispaniaComptabilitat.Data.EntitiesEX;
+using System.ServiceModel.Dispatcher;
 
 #endregion
 
@@ -24,8 +25,8 @@ namespace HispaniaCommon.DataAccess
         /// <summary>
         /// Store the Connections 
         /// </summary>
-        private Dictionary<HispaniaCompData.HispaniaComptabilitatEntities, DbContextTransaction> Connections =
-                                   new Dictionary<HispaniaCompData.HispaniaComptabilitatEntities, DbContextTransaction>();
+        private Dictionary<HispaniaComptabilitat.Data.Entities, DbContextTransaction> Connections =
+                                   new Dictionary<HispaniaComptabilitat.Data.Entities, DbContextTransaction>();
 
         #endregion
 
@@ -75,7 +76,7 @@ namespace HispaniaCommon.DataAccess
             }
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["HispaniaComptabilitatConnectionString"].ConnectionString))
                     //using (SqlConnection conn = new SqlConnection(db.Database.Connection.ConnectionString + ";Password=Phispania2"))
@@ -118,7 +119,7 @@ namespace HispaniaCommon.DataAccess
                                           TableName, "{0}", "Intentiu de nou, i si el problema persisteix consulti l'administrador");
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     string query;
                     bool IsEmpty = false;
@@ -197,7 +198,7 @@ namespace HispaniaCommon.DataAccess
             string ExcepErrMsg = string.Empty;
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     using (var dbTransaction = db.Database.BeginTransaction())
                     {
@@ -262,11 +263,11 @@ namespace HispaniaCommon.DataAccess
         #region Manage Transactions
 
         [OperationContract]
-        public bool BeginTransaction(out HispaniaCompData.HispaniaComptabilitatEntities db, out string ErrMsg)
+        public bool BeginTransaction(out HispaniaComptabilitat.Data.Entities db, out string ErrMsg)
         {
             try
             {
-                db = new HispaniaCompData.HispaniaComptabilitatEntities();
+                db = new HispaniaComptabilitat.Data.Entities();
                 Connections.Add(db, db.Database.BeginTransaction());
                 ErrMsg = string.Empty;
             }
@@ -278,7 +279,7 @@ namespace HispaniaCommon.DataAccess
             return (string.IsNullOrEmpty(ErrMsg));
         }
 
-        public bool CommitTransaction(HispaniaCompData.HispaniaComptabilitatEntities connection, out string ErrMsg)
+        public bool CommitTransaction( HispaniaComptabilitat.Data.Entities connection, out string ErrMsg)
         {
             try
             {
@@ -292,7 +293,7 @@ namespace HispaniaCommon.DataAccess
             return (string.IsNullOrEmpty(ErrMsg));
         }
 
-        public bool RollbackTransaction(HispaniaCompData.HispaniaComptabilitatEntities connection, out string ErrMsg)
+        public bool RollbackTransaction( HispaniaComptabilitat.Data.Entities connection, out string ErrMsg)
         {
             try
             {
@@ -317,7 +318,7 @@ namespace HispaniaCommon.DataAccess
         [OperationContract]
         public HispaniaCompData.LocalConnection ReadLocalConnection(int LocalConnection_Id)
         {
-            using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+            using (var db = new HispaniaComptabilitat.Data.Entities())
             {
                 return db.LocalConnections.Find(LocalConnection_Id);
             }
@@ -326,7 +327,7 @@ namespace HispaniaCommon.DataAccess
         [OperationContract]
         public List<HispaniaCompData.LocalConnection> ReadLocalConnection(string MachineName)
         {
-            using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+            using (var db = new HispaniaComptabilitat.Data.Entities())
             {
                 return db.LocalConnections.Where(p => (p.MachineName.ToUpper() == MachineName.ToUpper())).ToList();
             }
@@ -341,7 +342,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     HispaniaCompData.Lock LockToSave = db.Locks.Add(newLock);
                     db.SaveChanges();
@@ -361,7 +362,7 @@ namespace HispaniaCommon.DataAccess
         [OperationContract]
         public List<HispaniaCompData.Lock> ReadLock(string TableName, string IdRegister)
         {
-            using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+            using (var db = new HispaniaComptabilitat.Data.Entities() )
             {
                 return db.Locks.Where(p => ((p.TableName == TableName) && (p.IdRegister == IdRegister))).ToList();
             }
@@ -372,7 +373,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     HispaniaCompData.Lock LockToDelete = db.Locks.Find(new object[] { TableName, IdRegister });
                     db.Locks.Remove(LockToDelete);
@@ -394,7 +395,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     foreach (HispaniaCompData.Lock lockToDelete in db.Locks.Where(p => p.LocalConnection_Id == LocalConnection_Id).ToList())
                     {
@@ -420,7 +421,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     List<HispaniaCompData.QueryCustom> queryCustom = db.QueryCustoms.Where(c => c.Key == QueryCustom_Key).ToList();
                     return (queryCustom[0].Query);
@@ -443,7 +444,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     HispaniaCompData.PostalCode postalCodeToSave = db.PostalCodes.Add(postalCode);
                     db.SaveChanges();
@@ -461,7 +462,7 @@ namespace HispaniaCommon.DataAccess
         [OperationContract]
         public List<HispaniaCompData.PostalCode> ReadPostalCodes()
         {
-            using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+            using (var db = new HispaniaComptabilitat.Data.Entities())
             {
                 return db.PostalCodes.ToList();
             }
@@ -472,7 +473,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     db.Entry(postalCode).State = EntityState.Modified;
                     db.SaveChanges();
@@ -491,7 +492,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     HispaniaCompData.PostalCode postalCodeToDelete = db.PostalCodes.Find(postalCode.PostalCode_Id);
                     db.PostalCodes.Remove(postalCodeToDelete);
@@ -511,7 +512,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     return (db.PostalCodes.Find(PostalCode_PostalCode_Id));
                 }
@@ -531,7 +532,7 @@ namespace HispaniaCommon.DataAccess
         [OperationContract]
         public HispaniaCompData.Parameter ReadParameters()
         {
-            using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+            using (var db = new HispaniaComptabilitat.Data.Entities())
             {
                 return db.Parameters.ToList().First<HispaniaCompData.Parameter>();
             }
@@ -542,7 +543,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     db.Entry(parameter).State = EntityState.Modified;
                     db.SaveChanges();
@@ -565,7 +566,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     HispaniaCompData.BillingSerie billingSerieToSave = db.BillingSeries.Add(billingSerie);
                     db.SaveChanges();
@@ -583,7 +584,7 @@ namespace HispaniaCommon.DataAccess
         [OperationContract]
         public List<HispaniaCompData.BillingSerie> ReadBillingSeries()
         {
-            using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+            using (var db = new HispaniaComptabilitat.Data.Entities())
             {
                 return db.BillingSeries.ToList();
             }
@@ -594,7 +595,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     db.Entry(billingSerie).State = EntityState.Modified;
                     db.SaveChanges();
@@ -613,7 +614,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     HispaniaCompData.BillingSerie billingSerieToDelete = db.BillingSeries.Find(billingSerie.Serie_Id);
                     db.BillingSeries.Remove(billingSerieToDelete);
@@ -633,7 +634,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     return (db.BillingSeries.Find(BillingSerie_Id));
                 }
@@ -655,7 +656,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     HispaniaCompData.IVAType IVATypeToSave = db.IVATypes.Add(ivaType);
                     db.SaveChanges();
@@ -674,7 +675,7 @@ namespace HispaniaCommon.DataAccess
         [OperationContract]
         public List<HispaniaCompData.IVAType> ReadIVATypes()
         {
-            using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+            using (var db = new HispaniaComptabilitat.Data.Entities())
             {
                 return db.IVATypes.ToList();
             }
@@ -685,7 +686,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     db.Entry(ivaType).State = EntityState.Modified;
                     db.SaveChanges();
@@ -704,7 +705,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     HispaniaCompData.IVAType ivaTypeToDelete = db.IVATypes.Find(ivaType.IVAType_Id);
                     db.IVATypes.Remove(ivaTypeToDelete);
@@ -725,7 +726,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     return (db.IVATypes.Find(IVAType_Id));
                 }
@@ -747,7 +748,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     HispaniaCompData.SendType SendTypeToSave = db.SendTypes.Add(sendType);
                     db.SaveChanges();
@@ -765,7 +766,7 @@ namespace HispaniaCommon.DataAccess
         [OperationContract]
         public List<HispaniaCompData.SendType> ReadSendTypes()
         {
-            using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+            using (var db = new HispaniaComptabilitat.Data.Entities())
             {
                 return db.SendTypes.ToList();
             }
@@ -776,7 +777,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     db.Entry(sendType).State = EntityState.Modified;
                     db.SaveChanges();
@@ -795,7 +796,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     HispaniaCompData.SendType SendTypeToDelete = db.SendTypes.Find(sendType.SendType_Id);
                     db.SendTypes.Remove(SendTypeToDelete);
@@ -815,7 +816,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     return (db.SendTypes.Find(SendType_Id));
                 }
@@ -837,7 +838,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     HispaniaCompData.Agent AgentToSave = db.Agents.Add(agent);
                     db.SaveChanges();
@@ -855,7 +856,7 @@ namespace HispaniaCommon.DataAccess
         [OperationContract]
         public List<HispaniaCompData.Agent> ReadAgents()
         {
-            using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+            using (var db = new HispaniaComptabilitat.Data.Entities())
             {
                 return db.Agents.ToList();
             }
@@ -866,7 +867,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     db.Entry(agent).State = EntityState.Modified;
                     db.SaveChanges();
@@ -885,7 +886,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     HispaniaCompData.Agent AgentToDelete = db.Agents.Find(agent.Agent_Id);
                     db.Agents.Remove(AgentToDelete);
@@ -905,7 +906,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     return (db.Agents.Find(Agent_Id));
                 }
@@ -927,7 +928,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     HispaniaCompData.EffectType EffectTypeToSave = db.EffectTypes.Add(EffectType);
                     db.SaveChanges();
@@ -945,7 +946,7 @@ namespace HispaniaCommon.DataAccess
         [OperationContract]
         public List<HispaniaCompData.EffectType> ReadEffectTypes()
         {
-            using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+            using (var db = new HispaniaComptabilitat.Data.Entities())
             {
                 return db.EffectTypes.ToList();
             }
@@ -956,7 +957,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     db.Entry(EffectType).State = EntityState.Modified;
                     db.SaveChanges();
@@ -975,7 +976,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     HispaniaCompData.EffectType EffectTypeToDelete = db.EffectTypes.Find(EffectType.EffectType_Id);
                     db.EffectTypes.Remove(EffectTypeToDelete);
@@ -995,7 +996,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     return (db.EffectTypes.Find(EffectType_Id));
                 }
@@ -1015,7 +1016,7 @@ namespace HispaniaCommon.DataAccess
         [OperationContract]
         public List<HispaniaCompData.Customer> ReadCustomers()
         {
-            using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+            using (var db = new HispaniaComptabilitat.Data.Entities())
             {
                 return db.Customers.ToList();
             }
@@ -1026,7 +1027,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     using (var dbTransaction = db.Database.BeginTransaction())
                     {
@@ -1063,7 +1064,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     using (var dbTransaction = db.Database.BeginTransaction())
                     {
@@ -1102,7 +1103,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     using (var dbTransaction = db.Database.BeginTransaction())
                     {
@@ -1139,7 +1140,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     return (db.Customers.Find(Customer_Id));
                 }
@@ -1155,7 +1156,7 @@ namespace HispaniaCommon.DataAccess
         [OperationContract]
         public List<HispaniaCompData.Customer> GetCustomersForAgentReport(int Agent_Id)
         {
-            using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+            using (var db = new HispaniaComptabilitat.Data.Entities())
             {
                 return db.Customers.Where(p => ((p.BillingData_Agent_Id == Agent_Id) && (p.QueryData_Active != true))).ToList();
             }
@@ -1170,7 +1171,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     HispaniaCompData.AddressStore AddressStoreToSave = db.AddressStores.Add(AddressStore);
                     db.SaveChanges();
@@ -1189,7 +1190,7 @@ namespace HispaniaCommon.DataAccess
         [OperationContract]
         public List<HispaniaCompData.AddressStore> ReadAddressStores()
         {
-            using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+            using (var db = new HispaniaComptabilitat.Data.Entities())
             {
                 return db.AddressStores.ToList();
             }
@@ -1198,7 +1199,7 @@ namespace HispaniaCommon.DataAccess
         [OperationContract]
         public List<HispaniaCompData.AddressStore> ReadAddressStores(int Customer_Id)
         {
-            using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+            using (var db = new HispaniaComptabilitat.Data.Entities())
             {
                 return db.AddressStores.Where(p => p.Customer_Id == Customer_Id).ToList();
             }
@@ -1209,7 +1210,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     db.Entry(AddressStore).State = EntityState.Modified;
                     db.SaveChanges();
@@ -1228,7 +1229,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     HispaniaCompData.AddressStore AddressStoreToDelete = db.AddressStores.Find(AddressStore.AddressStore_Id);
                     db.AddressStores.Remove(AddressStoreToDelete);
@@ -1249,7 +1250,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     return (db.AddressStores.Find(AddressStore_Id));
                 }
@@ -1271,7 +1272,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     HispaniaCompData.HistoCumulativeCustomer HistoCumulativeCustomerToSave = db.HistoCumulativeCustomers.Add(histoCumulativeCustomer);
                     db.SaveChanges();
@@ -1290,7 +1291,7 @@ namespace HispaniaCommon.DataAccess
         [OperationContract]
         public List<HispaniaCompData.HistoCumulativeCustomer> ReadHistoCumulativeCustomers()
         {
-            using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+            using (var db = new HispaniaComptabilitat.Data.Entities())
             {
                 return db.HistoCumulativeCustomers.ToList();
             }
@@ -1299,7 +1300,7 @@ namespace HispaniaCommon.DataAccess
         [OperationContract]
         public List<HispaniaCompData.HistoCumulativeCustomer> ReadHistoCumulativeCustomer(int Customer_Id)
         {
-            using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+            using (var db = new HispaniaComptabilitat.Data.Entities())
             {
                 return db.HistoCumulativeCustomers.Where(p => p.Customer_Id == Customer_Id).ToList();
             }
@@ -1310,7 +1311,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     db.Entry(histoCumulativeCustomer).State = EntityState.Modified;
                     db.SaveChanges();
@@ -1329,7 +1330,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     HispaniaCompData.HistoCumulativeCustomer HistoCumulativeCustomerToDelete = db.HistoCumulativeCustomers.Find(histoCumulativeCustomer.Histo_Id);
                     db.HistoCumulativeCustomers.Remove(HistoCumulativeCustomerToDelete);
@@ -1350,7 +1351,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     return (db.HistoCumulativeCustomers.Find(HistoCumulativeCustomer_Id));
                 }
@@ -1372,7 +1373,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     HispaniaCompData.Bill BillToSave = db.Bills.Add(Bill);
                     db.SaveChanges();
@@ -1395,7 +1396,7 @@ namespace HispaniaCommon.DataAccess
         [OperationContract]
         public List<HispaniaCompData.Bill> ReadBills(decimal? Year = null, decimal? Month = null)
         {
-            using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+            using (var db = new HispaniaComptabilitat.Data.Entities())
             {
                 if (Year is null)
                 {
@@ -1424,7 +1425,7 @@ namespace HispaniaCommon.DataAccess
         public List<HispaniaCompData.Bill> ReadBills(out List<HispaniaCompData.CustomerOrderMovement> Movements,
                                                      decimal? Year = null, decimal? Month = null)
         {
-            using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+            using (var db = new HispaniaComptabilitat.Data.Entities())
             {
                 Movements = new List<HispaniaCompData.CustomerOrderMovement>();
                 try
@@ -1466,7 +1467,7 @@ namespace HispaniaCommon.DataAccess
             string ErrMsg;
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     using (var dbTransaction = db.Database.BeginTransaction())
                     {
@@ -1508,7 +1509,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     HispaniaCompData.Bill BillToDelete = db.Bills.Find(Bill.Bill_Id);
                     db.Bills.Remove(BillToDelete);
@@ -1528,7 +1529,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     return (db.Bills.Find(new object[] { Bill_Id, Bill_Year }));
                 }
@@ -1546,7 +1547,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     if (HistoricData)
                     {
@@ -1571,7 +1572,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     return db.CustomerOrders.Where(c => ((c.Daily == true) && (c.Bill_Year == YearQuery))).Select(d => (int)d.Bill_Id).DefaultIfEmpty(0).Max();
                 }
@@ -1593,7 +1594,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     HispaniaCompData.Receipt ReceiptToSave = db.Receipts.Add(Receipt);
                     db.SaveChanges();
@@ -1611,7 +1612,7 @@ namespace HispaniaCommon.DataAccess
         [OperationContract]
         public List<HispaniaCompData.Receipt> ReadReceipts(bool HistoricData = false)
         {
-            using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+            using (var db = new HispaniaComptabilitat.Data.Entities())
             {
                 if (HistoricData)
                 {
@@ -1629,7 +1630,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     db.Entry(Receipt).State = EntityState.Modified;
                     db.SaveChanges();
@@ -1648,7 +1649,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     HispaniaCompData.Receipt ReceiptToDelete = db.Receipts.Find(Receipt.Receipt_Id);
                     db.Receipts.Remove(ReceiptToDelete);
@@ -1668,7 +1669,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     return (db.Receipts.Find(Receipt_Id));
                 }
@@ -1686,7 +1687,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     return (db.Receipts.Where(c => c.Bill_Id == Bill_Id && c.Bill_Year == Bill_Year).ToList());
                 }
@@ -1708,7 +1709,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     HispaniaCompData.Unit UnitToSave = db.Units.Add(unit);
                     db.SaveChanges();
@@ -1726,7 +1727,7 @@ namespace HispaniaCommon.DataAccess
         [OperationContract]
         public List<HispaniaCompData.Unit> ReadUnits()
         {
-            using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+            using (var db = new HispaniaComptabilitat.Data.Entities())
             {
                 return db.Units.ToList();
             }
@@ -1737,7 +1738,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     db.Entry(unit).State = EntityState.Modified;
                     db.SaveChanges();
@@ -1756,7 +1757,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     HispaniaCompData.Unit UnitToDelete = db.Units.Find(unit.Unit_Id);
                     db.Units.Remove(UnitToDelete);
@@ -1776,7 +1777,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     return (db.Units.Find(Unit_Id));
                 }
@@ -1798,7 +1799,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     HispaniaCompData.Good GoodToSave = db.Goods.Add(good);
                     db.SaveChanges();
@@ -1816,7 +1817,7 @@ namespace HispaniaCommon.DataAccess
         [OperationContract]
         public List<HispaniaCompData.Good> ReadGoods()
         {
-            using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+            using (var db = new HispaniaComptabilitat.Data.Entities())
             {
                 return db.Goods.ToList();
             }
@@ -1828,7 +1829,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     return (db.Goods.Find(Good_Id));
                 }
@@ -1846,7 +1847,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     List<HispaniaCompData.Good> Info = db.Goods.Where(g => g.Good_Code == Good_Code).ToList();
                     if (Info.Count > 0) return (Info[0]);
@@ -1866,7 +1867,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     db.Entry(good).State = EntityState.Modified;
                     db.SaveChanges();
@@ -1888,7 +1889,7 @@ namespace HispaniaCommon.DataAccess
                 HispaniaCompData.Good goodToUpdate = GetGood(good.Good_Id);
                 goodToUpdate.Initial = good.Initial;
                 goodToUpdate.Initial_Fact = good.Initial_Fact;
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     db.Entry(goodToUpdate).State = EntityState.Modified;
                     db.SaveChanges();
@@ -1932,7 +1933,7 @@ namespace HispaniaCommon.DataAccess
                 goodToUpdate.Cumulative_Sales_Cost_10 = good.Cumulative_Sales_Cost_10;
                 goodToUpdate.Cumulative_Sales_Cost_11 = good.Cumulative_Sales_Cost_11;
                 goodToUpdate.Cumulative_Sales_Cost_12 = good.Cumulative_Sales_Cost_12;
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     db.Entry(goodToUpdate).State = EntityState.Modified;
                     db.SaveChanges();
@@ -1951,7 +1952,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     HispaniaCompData.Good GoodToDelete = db.Goods.Find(good.Good_Id);
                     db.Goods.Remove(GoodToDelete);
@@ -1975,7 +1976,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     HispaniaCompData.PriceRange PriceRangeToSave = db.PriceRanges.Add(PriceRange);
                     db.SaveChanges();
@@ -1994,7 +1995,7 @@ namespace HispaniaCommon.DataAccess
         [OperationContract]
         public List<HispaniaCompData.PriceRange> ReadPriceRanges()
         {
-            using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+            using (var db = new HispaniaComptabilitat.Data.Entities())
             {
                 return db.PriceRanges.ToList();
             }
@@ -2003,7 +2004,7 @@ namespace HispaniaCommon.DataAccess
         [OperationContract]
         public List<HispaniaCompData.PriceRange> ReadPriceRanges(int Good_Id)
         {
-            using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+            using (var db = new HispaniaComptabilitat.Data.Entities())
             {
                 return db.PriceRanges.Where(p => p.Good_Id == Good_Id).ToList();
             }
@@ -2014,7 +2015,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     db.Entry(PriceRange).State = EntityState.Modified;
                     db.SaveChanges();
@@ -2034,7 +2035,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     HispaniaCompData.PriceRange PriceRangeToDelete = db.PriceRanges.Find(PriceRange.PriceRange_Id);
                     db.PriceRanges.Remove(PriceRangeToDelete);
@@ -2055,7 +2056,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     return (db.PriceRanges.Find(PriceRange_Id));
                 }
@@ -2078,7 +2079,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     HispaniaCompData.HistoGood HistoGoodToSave = db.HistoGoods.Add(histoGood);
                     db.SaveChanges();
@@ -2097,7 +2098,7 @@ namespace HispaniaCommon.DataAccess
         [OperationContract]
         public List<HispaniaCompData.HistoGood> ReadHistoGoods()
         {
-            using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+            using (var db = new HispaniaComptabilitat.Data.Entities())
             {
                 return db.HistoGoods.ToList();
             }
@@ -2106,7 +2107,7 @@ namespace HispaniaCommon.DataAccess
         [OperationContract]
         public List<HispaniaCompData.HistoGood> ReadHistoGoods(int Good_Id)
         {
-            using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+            using (var db = new HispaniaComptabilitat.Data.Entities())
             {
                 return db.HistoGoods.Where(p => p.Good_Id == Good_Id).ToList();
             }
@@ -2117,7 +2118,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     db.Entry(histoGood).State = EntityState.Modified;
                     db.SaveChanges();
@@ -2136,7 +2137,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     HispaniaCompData.HistoGood HistoGoodToDelete = db.HistoGoods.Find(histoGood.Histo_Id);
                     db.HistoGoods.Remove(HistoGoodToDelete);
@@ -2157,7 +2158,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     return (db.HistoGoods.Find(HistoGood_Id));
                 }
@@ -2179,7 +2180,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     HispaniaCompData.Provider ProviderToSave = db.Providers.Add(Provider);
                     db.SaveChanges();
@@ -2197,7 +2198,7 @@ namespace HispaniaCommon.DataAccess
         [OperationContract]
         public List<HispaniaCompData.Provider> ReadProviders()
         {
-            using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+            using (var db = new HispaniaComptabilitat.Data.Entities())
             {
                 return db.Providers.ToList();
             }
@@ -2208,7 +2209,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     using (var dbTransaction = db.Database.BeginTransaction())
                     {
@@ -2247,7 +2248,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     HispaniaCompData.Provider ProviderToDelete = db.Providers.Find(Provider.Provider_Id);
                     db.Providers.Remove(ProviderToDelete);
@@ -2267,7 +2268,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     return (db.Providers.Find(Provider_Id));
                 }
@@ -2289,7 +2290,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     HispaniaCompData.DeliveryNote DeliveryNoteToSave = db.DeliveryNotes.Add(DeliveryNote);
                     db.SaveChanges();
@@ -2307,7 +2308,7 @@ namespace HispaniaCommon.DataAccess
         [OperationContract]
         public List<HispaniaCompData.DeliveryNote> ReadDeliveryNotes()
         {
-            using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+            using (var db = new HispaniaComptabilitat.Data.Entities())
             {
                 return db.DeliveryNotes.ToList();
             }
@@ -2318,7 +2319,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     db.Entry(DeliveryNote).State = EntityState.Modified;
                     db.SaveChanges();
@@ -2333,7 +2334,7 @@ namespace HispaniaCommon.DataAccess
         }
 
         [OperationContract]
-        private void UpdateDeliveryNote(HispaniaCompData.HispaniaComptabilitatEntities db, HispaniaCompData.DeliveryNote DeliveryNote)
+        private void UpdateDeliveryNote( HispaniaComptabilitat.Data.Entities db, HispaniaCompData.DeliveryNote DeliveryNote)
         {
             db.Entry(DeliveryNote).State = EntityState.Modified;
             db.SaveChanges();
@@ -2344,7 +2345,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     HispaniaCompData.DeliveryNote DeliveryNoteToDelete = db.DeliveryNotes.Find(new object[] { DeliveryNote.DeliveryNote_Id, DeliveryNote.Year });
                     db.DeliveryNotes.Remove(DeliveryNoteToDelete);
@@ -2364,7 +2365,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     return (db.DeliveryNotes.Find(new object[] { DeliveryNote_Id, DeliveryNotes_Year }));
                 }
@@ -2386,7 +2387,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     using (var dbTransaction = db.Database.BeginTransaction())
                     {
@@ -2419,7 +2420,7 @@ namespace HispaniaCommon.DataAccess
         /// <param name="db">Connection to use.</param>
         /// <param name="badDebt">Bad Debt to create.</param>
         /// <param name="badDebtMovementsToCreate">Bad Debt Movement to create.</param>
-        private void CreateBadDebt(HispaniaCompData.HispaniaComptabilitatEntities db, HispaniaCompData.BadDebt badDebt,
+        private void CreateBadDebt( HispaniaComptabilitat.Data.Entities db, HispaniaCompData.BadDebt badDebt,
                                    List<HispaniaCompData.BadDebtMovement> badDebtMovementsToCreate, bool Update = false)
         {
             //  Create the register for the new Bad Debt.
@@ -2448,7 +2449,7 @@ namespace HispaniaCommon.DataAccess
         [OperationContract]
         public List<HispaniaCompData.BadDebt> ReadBadDebts()
         {
-            using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+            using (var db = new HispaniaComptabilitat.Data.Entities())
             {
                 return db.BadDebts.ToList();
             }
@@ -2457,7 +2458,7 @@ namespace HispaniaCommon.DataAccess
         [OperationContract]
         public List<HispaniaCompData.BadDebt> GetBadDebtsInDb(int Customer_Id)
         {
-            using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+            using (var db = new HispaniaComptabilitat.Data.Entities())
             {
                 List<HispaniaCompData.BadDebt> res;
                 res = (from b in db.Bills
@@ -2473,7 +2474,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     using (var dbTransaction = db.Database.BeginTransaction())
                     {
@@ -2513,7 +2514,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     using (var dbTransaction = db.Database.BeginTransaction())
                     {
@@ -2546,7 +2547,7 @@ namespace HispaniaCommon.DataAccess
         /// </summary>
         /// <param name="db">Connection to use.</param>
         /// <param name="badDebt">Bad Debt to create.</param>
-        private void DeleteBadDebt(HispaniaCompData.HispaniaComptabilitatEntities db, HispaniaCompData.BadDebt badDebt, bool Update = false)
+        private void DeleteBadDebt( HispaniaComptabilitat.Data.Entities db, HispaniaCompData.BadDebt badDebt, bool Update = false)
         {
             //  Update Customer Bad Debt information.
             if (!Update)
@@ -2574,7 +2575,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     return (db.BadDebts.Find(BadDebt_Id));
                 }
@@ -2592,7 +2593,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     List<HispaniaCompData.BadDebt> BadDebtList = db.BadDebts.Where(bd => (bd.Receipt_Id == Receipt_Id)).ToList();
                     return BadDebtList.Count == 0 ? null : BadDebtList[0];
@@ -2615,7 +2616,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     HispaniaCompData.BadDebtMovement BadDebtMovementToSave = db.BadDebtMovements.Add(badDebtMovement);
                     db.SaveChanges();
@@ -2633,7 +2634,7 @@ namespace HispaniaCommon.DataAccess
         [OperationContract]
         public List<HispaniaCompData.BadDebtMovement> ReadBadDebtMovements()
         {
-            using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+            using (var db = new HispaniaComptabilitat.Data.Entities())
             {
                 return db.BadDebtMovements.ToList();
             }
@@ -2644,7 +2645,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     db.Entry(badDebtMovement).State = EntityState.Modified;
                     db.SaveChanges();
@@ -2663,7 +2664,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     HispaniaCompData.BadDebtMovement BadDebtMovementToDelete = db.BadDebtMovements.Find(badDebtMovement.BadDebt_Id);
                     db.BadDebtMovements.Remove(BadDebtMovementToDelete);
@@ -2684,7 +2685,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     return (db.BadDebtMovements.Find(BadDebtMovement_Id));
                 }
@@ -2700,7 +2701,7 @@ namespace HispaniaCommon.DataAccess
         [OperationContract]
         public List<HispaniaCompData.BadDebtMovement> GetBadDebtMovementsInDb(int BadDebt_Id)
         {
-            using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+            using (var db = new HispaniaComptabilitat.Data.Entities())
             {
                 return db.BadDebtMovements.Where(bdm => bdm.BadDebt_Id == BadDebt_Id).ToList();
             }
@@ -2715,7 +2716,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     HispaniaCompData.HistoCustomer HistoCustomerToSave = db.HistoCustomers.Add(histoCustomer);
                     db.SaveChanges();
@@ -2734,7 +2735,7 @@ namespace HispaniaCommon.DataAccess
         [OperationContract]
         public List<HispaniaCompData.HistoCustomer> ReadHistoCustomers()
         {
-            using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+            using (var db = new HispaniaComptabilitat.Data.Entities())
             {
                 return db.HistoCustomers.ToList();
             }
@@ -2743,7 +2744,7 @@ namespace HispaniaCommon.DataAccess
         [OperationContract]
         public List<HispaniaCompData.HistoCustomer> ReadHistoCustomers(int Customer_Id, bool WithChilds)
         {
-            using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+            using (var db = new HispaniaComptabilitat.Data.Entities())
             {
                 if (WithChilds)
                 {
@@ -2770,7 +2771,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     db.Entry(histoCustomer).State = EntityState.Modified;
                     db.SaveChanges();
@@ -2789,7 +2790,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     HispaniaCompData.HistoCustomer HistoCustomerToDelete = db.HistoCustomers.Find(histoCustomer.HistoCustomer_Id);
                     db.HistoCustomers.Remove(HistoCustomerToDelete);
@@ -2810,7 +2811,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     return (db.HistoCustomers.Find(HistoCustomer_Id));
                 }
@@ -2836,7 +2837,7 @@ namespace HispaniaCommon.DataAccess
             string ErrMsg;
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     using (var dbTransaction = db.Database.BeginTransaction())
                     {
@@ -2892,7 +2893,7 @@ namespace HispaniaCommon.DataAccess
         [OperationContract]
         public List<HispaniaCompData.CustomerOrder> ReadCustomerOrders(bool HistoricData = false)
         {
-            using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+            using (var db = new HispaniaComptabilitat.Data.Entities())
             {
                 if (HistoricData)
                 {
@@ -2917,7 +2918,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     using (var dbTransaction = db.Database.BeginTransaction())
                     {
@@ -2979,7 +2980,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     db.Entry(customerOrder).State = EntityState.Modified;
                     db.SaveChanges();
@@ -3005,7 +3006,7 @@ namespace HispaniaCommon.DataAccess
                     throw new Exception("Error, no hi ha cap Albarà associat a la Comanda de Client número: {0}.");
                 }
                 //  Manage Customer Order information if Delivery Note is defined.
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     using (var dbTransaction = db.Database.BeginTransaction())
                     {
@@ -3085,7 +3086,7 @@ namespace HispaniaCommon.DataAccess
         }
 
         [OperationContract]
-        private void UpdateCustomerOrder(HispaniaCompData.HispaniaComptabilitatEntities db, HispaniaCompData.CustomerOrder customerOrder)
+        private void UpdateCustomerOrder( HispaniaComptabilitat.Data.Entities db, HispaniaCompData.CustomerOrder customerOrder)
         {
             db.Entry(customerOrder).State = EntityState.Modified;
             db.SaveChanges();
@@ -3097,7 +3098,7 @@ namespace HispaniaCommon.DataAccess
             string ErrMsg;
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     using (var dbTransaction = db.Database.BeginTransaction())
                     {
@@ -3189,7 +3190,7 @@ namespace HispaniaCommon.DataAccess
         }
 
         [OperationContract]
-        private void UpdateCustomerOrder(HispaniaCompData.HispaniaComptabilitatEntities db,
+        private void UpdateCustomerOrder( HispaniaComptabilitat.Data.Entities db,
                                          HispaniaCompData.CustomerOrder customerOrder,
                                          Dictionary<DataBaseOp, List<HispaniaCompData.CustomerOrderMovement>> movements)
         {
@@ -3267,7 +3268,7 @@ namespace HispaniaCommon.DataAccess
             string ErrMsg;
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     using (var dbTransaction = db.Database.BeginTransaction())
                     {
@@ -3323,7 +3324,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     return (db.CustomerOrders.Find(CustomerOrder_Id));
                 }
@@ -3345,7 +3346,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     return (db.CustomerOrders.Where(c => c.Bill_Id == Bill_Id && c.Bill_Year == Bill_Year).ToList());
                 }
@@ -3369,7 +3370,7 @@ namespace HispaniaCommon.DataAccess
             string ErrMsg;
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     using (var dbTransaction = db.Database.BeginTransaction())
                     {
@@ -3423,7 +3424,7 @@ namespace HispaniaCommon.DataAccess
             string ErrMsg;
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     using (var dbTransaction = db.Database.BeginTransaction())
                     {
@@ -3539,7 +3540,7 @@ namespace HispaniaCommon.DataAccess
             string ErrMsg;
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     using (var dbTransaction = db.Database.BeginTransaction())
                     {
@@ -3569,7 +3570,7 @@ namespace HispaniaCommon.DataAccess
             }
         }
 
-        private void RemoveCustomerOrdersFromBill(HispaniaCompData.HispaniaComptabilitatEntities db,
+        private void RemoveCustomerOrdersFromBill( HispaniaComptabilitat.Data.Entities db,
                                                    HispaniaCompData.Bill Bill, HispaniaCompData.Customer Customer,
                                                    List<HispaniaCompData.CustomerOrder> CustomerOrdersList,
                                                    List<HispaniaCompData.CustomerOrderMovement> MovementsList,
@@ -3663,7 +3664,7 @@ namespace HispaniaCommon.DataAccess
             string ErrMsg;
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     using (var dbTransaction = db.Database.BeginTransaction())
                     {
@@ -3693,7 +3694,7 @@ namespace HispaniaCommon.DataAccess
             }
         }
 
-        private void AddCustomerOrdersFromBill(HispaniaCompData.HispaniaComptabilitatEntities db,
+        private void AddCustomerOrdersFromBill( HispaniaComptabilitat.Data.Entities db,
                                                HispaniaCompData.Bill Bill, HispaniaCompData.Customer Customer,
                                                List<HispaniaCompData.CustomerOrder> CustomerOrdersList,
                                                List<HispaniaCompData.CustomerOrderMovement> MovementsList,
@@ -3779,7 +3780,7 @@ namespace HispaniaCommon.DataAccess
         [OperationContract]
         public List<HispaniaCompData.CustomerOrder> GetCustomerOrdersFilteredByCustormerId(int Customer_Id)
         {
-            using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+            using (var db = new HispaniaComptabilitat.Data.Entities())
             {
                 return (db.CustomerOrders.Where(c => c.Customer_Id == Customer_Id &&
                                                      c.Bill_Id != -1 && c.Bill_Year != -1 &&
@@ -3901,7 +3902,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     HispaniaCompData.CustomerOrderMovement CustomerOrderMovementToSave = db.CustomerOrderMovements.Add(customerOrderMovement);
                     db.SaveChanges();
@@ -3920,7 +3921,7 @@ namespace HispaniaCommon.DataAccess
         [OperationContract]
         public List<HispaniaCompData.CustomerOrderMovement> ReadCustomerOrderMovements()
         {
-            using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+            using (var db = new HispaniaComptabilitat.Data.Entities())
             {
                 return db.CustomerOrderMovements.ToList();
             }
@@ -3929,7 +3930,7 @@ namespace HispaniaCommon.DataAccess
         [OperationContract]
         public List<HispaniaCompData.CustomerOrderMovement> ReadCustomerOrderMovements(int CustomerOrder_Id)
         {
-            using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+            using (var db = new HispaniaComptabilitat.Data.Entities())
             {
                 return db.CustomerOrderMovements.Where(p => p.CustomerOrder_Id == CustomerOrder_Id).ToList();
             }
@@ -3940,7 +3941,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     db.Entry(customerOrderMovement).State = EntityState.Modified;
                     db.SaveChanges();
@@ -3959,7 +3960,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     HispaniaCompData.CustomerOrderMovement CustomerOrderMovementToDelete =
                                      db.CustomerOrderMovements.Find(customerOrderMovement.CustomerOrderMovement_Id);
@@ -3981,7 +3982,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     return (db.CustomerOrderMovements.Find(CustomerOrderMovement_Id));
                 }
@@ -4001,7 +4002,7 @@ namespace HispaniaCommon.DataAccess
             string ErrMsg;
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     using (var dbTransaction = db.Database.BeginTransaction())
                     {
@@ -4047,7 +4048,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     HispaniaCompData.HistoProvider HistoProviderToSave = db.HistoProviders.Add(histoProvider);
                     db.SaveChanges();
@@ -4066,7 +4067,7 @@ namespace HispaniaCommon.DataAccess
         [OperationContract]
         public List<HispaniaCompData.HistoProvider> ReadHistoProviders()
         {
-            using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+            using (var db = new HispaniaComptabilitat.Data.Entities())
             {
                 return db.HistoProviders.ToList();
             }
@@ -4075,7 +4076,7 @@ namespace HispaniaCommon.DataAccess
         [OperationContract]
         public List<HispaniaCompData.HistoProvider> ReadHistoProviders(int Provider_Id, bool WithChilds)
         {
-            using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+            using (var db = new HispaniaComptabilitat.Data.Entities())
             {
                 if (WithChilds)
                 {
@@ -4102,7 +4103,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     db.Entry(histoProvider).State = EntityState.Modified;
                     db.SaveChanges();
@@ -4121,7 +4122,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     HispaniaCompData.HistoProvider HistoProviderToDelete = db.HistoProviders.Find(histoProvider.HistoProvider_Id);
                     db.HistoProviders.Remove(HistoProviderToDelete);
@@ -4142,7 +4143,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     return (db.HistoProviders.Find(HistoProvider_Id));
                 }
@@ -4164,7 +4165,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     HispaniaCompData.HistoCumulativeProvider HistoCumulativeProviderToSave = db.HistoCumulativeProviders.Add(histoCumulativeProvider);
                     db.SaveChanges();
@@ -4183,7 +4184,7 @@ namespace HispaniaCommon.DataAccess
         [OperationContract]
         public List<HispaniaCompData.HistoCumulativeProvider> ReadHistoCumulativeProviders()
         {
-            using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+            using (var db = new HispaniaComptabilitat.Data.Entities())
             {
                 return db.HistoCumulativeProviders.ToList();
             }
@@ -4192,7 +4193,7 @@ namespace HispaniaCommon.DataAccess
         [OperationContract]
         public List<HispaniaCompData.HistoCumulativeProvider> ReadHistoCumulativeProvider(int Provider_Id)
         {
-            using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+            using (var db = new HispaniaComptabilitat.Data.Entities())
             {
                 return db.HistoCumulativeProviders.Where(p => p.Provider_Id == Provider_Id).ToList();
             }
@@ -4203,7 +4204,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     db.Entry(histoCumulativeProvider).State = EntityState.Modified;
                     db.SaveChanges();
@@ -4222,7 +4223,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     HispaniaCompData.HistoCumulativeProvider HistoCumulativeProviderToDelete = db.HistoCumulativeProviders.Find(histoCumulativeProvider.Histo_Id);
                     db.HistoCumulativeProviders.Remove(HistoCumulativeProviderToDelete);
@@ -4243,7 +4244,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     return (db.HistoCumulativeProviders.Find(HistoCumulativeProvider_Id));
                 }
@@ -4260,6 +4261,55 @@ namespace HispaniaCommon.DataAccess
 
         #region ProviderOrders [CRUD]
 
+        #region Create Copy ProviderOrder By Id 
+
+        public ProviderOrder CreateCopyProviderOrderById( int providerOrderId )
+        {
+            ProviderOrder result = null;
+
+            try
+            {
+                using(var db = new HispaniaComptabilitat.Data.Entities())
+                {
+                    using(var transaction = db.Database.BeginTransaction())
+                    {
+                        try
+                        {
+                            ProviderOrder order = db.ProviderOrders.Where( i => i.ProviderOrder_Id == providerOrderId )
+                                                                    .First();
+
+                            result = order.Clone();
+
+                            db.ProviderOrders.Add( result );
+                            
+                            db.SaveChanges();
+
+                            transaction.Commit();  
+                            
+                        } catch(Exception )
+                        {
+                            result = null;
+
+                            transaction.Rollback();
+
+                            throw;
+                        }
+                    }
+                }
+
+            } catch(Exception ex)
+            {
+                string message = $"Error craeate copy ProviderOrder by Id ={providerOrderId}";
+                throw new Exception( message, ex );
+            }
+
+            return result;
+        }
+
+
+        #endregion
+
+
         #region CreateProviderOrder
 
         [OperationContract]
@@ -4269,7 +4319,7 @@ namespace HispaniaCommon.DataAccess
             string ErrMsg;
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     using (var dbTransaction = db.Database.BeginTransaction())
                     {
@@ -4284,7 +4334,11 @@ namespace HispaniaCommon.DataAccess
                             foreach (HispaniaCompData.ProviderOrderMovement movement in movements[DataBaseOp.CREATE])
                             {
                                 movement.ProviderOrder_Id = providerOrder.ProviderOrder_Id;
+
+                                movement.ProviderOrder = null;
+
                                 db.ProviderOrderMovements.Add(movement);
+
                                 db.SaveChanges();
                                 if (movement.According)
                                 {
@@ -4325,7 +4379,7 @@ namespace HispaniaCommon.DataAccess
         [OperationContract]
         public List<HispaniaCompData.ProviderOrder> ReadProviderOrders(bool HistoricData = false)
         {
-            using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+            using (var db = new HispaniaComptabilitat.Data.Entities())
             {
                 if (HistoricData)
                 {
@@ -4350,7 +4404,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     using (var dbTransaction = db.Database.BeginTransaction())
                     {
@@ -4412,7 +4466,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     db.Entry(providerOrder).State = EntityState.Modified;
                     db.SaveChanges();
@@ -4438,7 +4492,7 @@ namespace HispaniaCommon.DataAccess
                     throw new Exception("Error, no hi ha cap Albarà associat a la Comanda de Proveidor número: {0}.");
                 }
                 //  Manage Provider Order information if Delivery Note is defined.
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     using (var dbTransaction = db.Database.BeginTransaction())
                     {
@@ -4518,7 +4572,7 @@ namespace HispaniaCommon.DataAccess
         }
 
         [OperationContract]
-        private void UpdateProviderOrder(HispaniaCompData.HispaniaComptabilitatEntities db, HispaniaCompData.ProviderOrder providerOrder)
+        private void UpdateProviderOrder( HispaniaComptabilitat.Data.Entities db, HispaniaCompData.ProviderOrder providerOrder)
         {
             db.Entry(providerOrder).State = EntityState.Modified;
             db.SaveChanges();
@@ -4530,7 +4584,7 @@ namespace HispaniaCommon.DataAccess
             string ErrMsg;
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     using (var dbTransaction = db.Database.BeginTransaction())
                     {
@@ -4622,7 +4676,7 @@ namespace HispaniaCommon.DataAccess
         }
 
         [OperationContract]
-        private void UpdateProviderOrder(HispaniaCompData.HispaniaComptabilitatEntities db,
+        private void UpdateProviderOrder( HispaniaComptabilitat.Data.Entities db,
                                          HispaniaCompData.ProviderOrder providerOrder,
                                          Dictionary<DataBaseOp, List<HispaniaCompData.ProviderOrderMovement>> movements)
         {
@@ -4669,6 +4723,7 @@ namespace HispaniaCommon.DataAccess
             {
                 if (!MovementsToUpdate.Contains(movement.ProviderOrderMovement_Id)) // CREATE
                 {
+                    movement.ProviderOrder = null;
                     db.ProviderOrderMovements.Add(movement);
                     db.SaveChanges();
                 }
@@ -4705,7 +4760,7 @@ namespace HispaniaCommon.DataAccess
             string ErrMsg;
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     using (var dbTransaction = db.Database.BeginTransaction())
                     {
@@ -4763,7 +4818,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     return (db.ProviderOrders.Find(ProviderOrder_Id));
                 }
@@ -4785,7 +4840,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     return (db.ProviderOrders.Where(c => c.Bill_Id == Bill_Id && c.Bill_Year == Bill_Year).ToList());
                 }
@@ -4809,7 +4864,7 @@ namespace HispaniaCommon.DataAccess
             string ErrMsg;
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     using (var dbTransaction = db.Database.BeginTransaction())
                     {
@@ -4863,7 +4918,7 @@ namespace HispaniaCommon.DataAccess
             string ErrMsg;
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     using (var dbTransaction = db.Database.BeginTransaction())
                     {
@@ -4979,7 +5034,7 @@ namespace HispaniaCommon.DataAccess
             string ErrMsg;
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     using (var dbTransaction = db.Database.BeginTransaction())
                     {
@@ -5009,7 +5064,7 @@ namespace HispaniaCommon.DataAccess
             }
         }
 
-        private void RemoveProviderOrdersFromBill(HispaniaCompData.HispaniaComptabilitatEntities db,
+        private void RemoveProviderOrdersFromBill( HispaniaComptabilitat.Data.Entities db,
                                                    HispaniaCompData.Bill Bill, HispaniaCompData.Provider Provider,
                                                    List<HispaniaCompData.ProviderOrder> ProviderOrdersList,
                                                    List<HispaniaCompData.ProviderOrderMovement> MovementsList,
@@ -5103,7 +5158,7 @@ namespace HispaniaCommon.DataAccess
             string ErrMsg;
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     using (var dbTransaction = db.Database.BeginTransaction())
                     {
@@ -5133,7 +5188,7 @@ namespace HispaniaCommon.DataAccess
             }
         }
 
-        private void AddProviderOrdersFromBill(HispaniaCompData.HispaniaComptabilitatEntities db,
+        private void AddProviderOrdersFromBill( HispaniaComptabilitat.Data.Entities db,
                                                HispaniaCompData.Bill Bill, HispaniaCompData.Provider Provider,
                                                List<HispaniaCompData.ProviderOrder> ProviderOrdersList,
                                                List<HispaniaCompData.ProviderOrderMovement> MovementsList,
@@ -5219,7 +5274,7 @@ namespace HispaniaCommon.DataAccess
         [OperationContract]
         public List<HispaniaCompData.ProviderOrder> GetProviderOrdersFilteredByCustormerId(int Provider_Id)
         {
-            using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+            using (var db = new HispaniaComptabilitat.Data.Entities())
             {
                 return (db.ProviderOrders.Where(c => c.Provider_Id == Provider_Id &&
                                                      c.Bill_Id != -1 && c.Bill_Year != -1 &&
@@ -5286,7 +5341,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     HispaniaCompData.ProviderOrderMovement ProviderOrderMovementToSave = db.ProviderOrderMovements.Add(providerOrderMovement);
                     db.SaveChanges();
@@ -5305,7 +5360,7 @@ namespace HispaniaCommon.DataAccess
         [OperationContract]
         public List<HispaniaCompData.ProviderOrderMovement> ReadProviderOrderMovements()
         {
-            using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+            using (var db = new HispaniaComptabilitat.Data.Entities())
             {
                 return db.ProviderOrderMovements.ToList();
             }
@@ -5314,7 +5369,7 @@ namespace HispaniaCommon.DataAccess
         [OperationContract]
         public List<HispaniaCompData.ProviderOrderMovement> ReadProviderOrderMovements(int ProviderOrder_Id)
         {
-            using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+            using (var db = new HispaniaComptabilitat.Data.Entities())
             {
                 return db.ProviderOrderMovements.Where(p => p.ProviderOrder_Id == ProviderOrder_Id).ToList();
             }
@@ -5325,7 +5380,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     db.Entry(providerOrderMovement).State = EntityState.Modified;
                     db.SaveChanges();
@@ -5344,7 +5399,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     HispaniaCompData.ProviderOrderMovement ProviderOrderMovementToDelete =
                                      db.ProviderOrderMovements.Find(providerOrderMovement.ProviderOrderMovement_Id);
@@ -5366,7 +5421,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     return (db.ProviderOrderMovements.Find(ProviderOrderMovement_Id));
                 }
@@ -5386,7 +5441,7 @@ namespace HispaniaCommon.DataAccess
             string ErrMsg;
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     using (var dbTransaction = db.Database.BeginTransaction())
                     {
@@ -5432,7 +5487,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     db.RelatedProviders.Add(relatedProvider);
                     db.SaveChanges();
@@ -5450,7 +5505,7 @@ namespace HispaniaCommon.DataAccess
         [OperationContract]
         public List<HispaniaCompData.RelatedProvider> ReadRelatedProviders(int Provider_Id)
         {
-            using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+            using (var db = new HispaniaComptabilitat.Data.Entities())
             {
                 return db.RelatedProviders.Where(d => (d.Provider_Id == Provider_Id)).ToList();
             }
@@ -5461,7 +5516,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     db.Entry(relatedProvider).State = EntityState.Modified;
                     db.SaveChanges();
@@ -5481,7 +5536,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     HispaniaCompData.RelatedProvider RelatedProviderToDelete =
                                                         db.RelatedProviders.Find(new object[] { relatedProvider.Provider_Id, relatedProvider.Provider_Canceled_Id });
@@ -5503,7 +5558,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     return (db.RelatedProviders.Find(new object[] { Provider_Id, Provider_Canceled_Id }));
                 }
@@ -5526,7 +5581,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     using (var dbTransaction = db.Database.BeginTransaction())
                     {
@@ -5567,7 +5622,7 @@ namespace HispaniaCommon.DataAccess
         [OperationContract]
         public List<HispaniaCompData.WarehouseMovement> ReadWarehouseMovements()
         {
-            using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+            using (var db = new HispaniaComptabilitat.Data.Entities())
             {
                 return db.WarehouseMovements.Where(c => c.Date.Value.Year == DateTime.Now.Year).ToList();
             }
@@ -5576,7 +5631,7 @@ namespace HispaniaCommon.DataAccess
         [OperationContract]
         public List<HispaniaCompData.WarehouseMovement> ReadWarehouseMovements(int WarehouseMovement_Id)
         {
-            using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+            using (var db = new HispaniaComptabilitat.Data.Entities())
             {
                 return db.WarehouseMovements.Where(p => p.WarehouseMovement_Id == WarehouseMovement_Id).ToList();
             }
@@ -5589,7 +5644,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     using (var dbTransaction = db.Database.BeginTransaction())
                     {
@@ -5637,7 +5692,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     using (var dbTransaction = db.Database.BeginTransaction())
                     {
@@ -5682,7 +5737,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     return (db.WarehouseMovements.Find(WarehouseMovement_Id));
                 }
@@ -5705,7 +5760,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     db.RelatedCustomers.Add(relatedCustomer);
                     db.SaveChanges();
@@ -5723,7 +5778,7 @@ namespace HispaniaCommon.DataAccess
         [OperationContract]
         public List<HispaniaCompData.RelatedCustomer> ReadRelatedCustomers(int Customer_Id)
         {
-            using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+            using (var db = new HispaniaComptabilitat.Data.Entities())
             {
                 return db.RelatedCustomers.Where(d => (d.Customer_Id == Customer_Id)).ToList();
             }
@@ -5734,7 +5789,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     db.Entry(relatedCustomer).State = EntityState.Modified;
                     db.SaveChanges();
@@ -5754,7 +5809,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     HispaniaCompData.RelatedCustomer RelatedCustomerToDelete =
                                                         db.RelatedCustomers.Find(new object[] { relatedCustomer.Customer_Id, relatedCustomer.Customer_Canceled_Id });
@@ -5776,7 +5831,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     return (db.RelatedCustomers.Find(new object[] { Customer_Id, Customer_Canceled_Id }));
                 }
@@ -5799,11 +5854,11 @@ namespace HispaniaCommon.DataAccess
         #region Revisions [EXECUTE]
 
         [OperationContract]
-        public List<HispaniaCompData.Revisio> ReadRevisions(int FilterOption)
+        public List<HispaniaCompData.Revisions_Result> ReadRevisions(int FilterOption)
         {
-            using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+            using (var db = new HispaniaComptabilitat.Data.Entities())
             {
-                return db.SP_Revisions(FilterOption).ToList();
+                return db.Revisions(FilterOption).ToList();
             }
         }
 
@@ -5812,11 +5867,11 @@ namespace HispaniaCommon.DataAccess
         #region DeliveryNoteLines [EXECUTE]
 
         [OperationContract]
-        public List<HispaniaCompData.DeliveryNoteLine> ReadDeliveryNoteLines()
+        public List<HispaniaCompData.DeliveryNoteLines_Result> ReadDeliveryNoteLines()
         {
-            using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+            using (var db = new HispaniaComptabilitat.Data.Entities())
             {
-                return db.SP_DeliveryNoteLines().ToList();
+                return db.DeliveryNoteLines().ToList();
             }
         }
 
@@ -5825,11 +5880,11 @@ namespace HispaniaCommon.DataAccess
         #region InputsOutputs [EXECUTE]
 
         [OperationContract]
-        public List<HispaniaCompData.InputOutput> ReadInputOutputs(int Good_Id)
+        public List<HispaniaCompData.InputsOutputs_Result> ReadInputOutputs( int Good_Id )
         {
-            using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+            using (var db = new HispaniaComptabilitat.Data.Entities())
             {
-                return db.SP_InputsOutputs(Good_Id).ToList();
+                return db.InputsOutputs( Good_Id ).ToList();
             }
         }
 
@@ -5838,11 +5893,11 @@ namespace HispaniaCommon.DataAccess
         #region StockTakings [EXECUTE]
 
         [OperationContract]
-        public List<HispaniaCompData.StockTaking> ReadStockTakings(string Good_Code_From, string Good_Code_Until)
+        public List<HispaniaCompData.StockTaking_Result> ReadStockTakings(string Good_Code_From, string Good_Code_Until)
         {
-            using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+            using (var db = new HispaniaComptabilitat.Data.Entities())
             {
-                return db.SP_StockTaking(Good_Code_From, Good_Code_Until).ToList();
+                return db.StockTaking( Good_Code_From, Good_Code_Until ).ToList();
             }
         }
 
@@ -5851,12 +5906,118 @@ namespace HispaniaCommon.DataAccess
         #region Ranges [EXECUTE]
 
         [OperationContract]
-        public List<HispaniaCompData.Range> ReadRanges(string Good_Code_From, string Good_Code_Until,
+        public List<HispaniaCompData.Ranges_Result> ReadRanges(string Good_Code_From, string Good_Code_Until,
                                                        string Bill_Id_From, string Bill_Id_Until, decimal YearQuery)
         {
-            using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+            using (var db = new HispaniaComptabilitat.Data.Entities())
             {
-                return db.SP_Ranges(Good_Code_From, Good_Code_Until, Bill_Id_From, Bill_Id_Until, YearQuery).ToList();
+                return db.Ranges(Good_Code_From, Good_Code_Until, Bill_Id_From, Bill_Id_Until, YearQuery).ToList();
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public class SPParam
+        {
+            /// <summary>
+            /// 
+            /// </summary>
+            public string Name
+            {
+                get;
+            }
+
+            /// <summary>
+            /// 
+            /// </summary>
+            public object Value
+            {
+                get;
+            }
+
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <param name="name"></param>
+            /// <param name="value"></param>
+            /// <exception cref="ArgumentException"></exception>
+            public SPParam( string name, object value )
+            {
+                if(string.IsNullOrWhiteSpace( name ))
+                {
+                    throw new ArgumentException( $"'{nameof( name )}' cannot be null or whitespace.", nameof( name ) );
+                }
+
+                string str = name.Trim();
+                if(str[ 0 ] != '@')
+                {
+                    str = "@" + str;
+                }
+
+                this.Name = str;
+                this.Value = value;
+            }
+        }
+
+        public IEnumerable<ProviderOrder> GetQueryOrders( DateTime startDate, DateTime endDate, int? articleId, int? providerId )
+        {
+            using(var db = new HispaniaComptabilitat.Data.Entities())
+            {
+
+                var query = db.ProviderOrders.Include( "Provider").Include("PostalCode")
+                                             .Include("SendType" ).Include( "ProviderOrderMovements" )
+                                             .Where( i => i.Date >= startDate && i.Date <= endDate );
+
+                if(providerId.HasValue)
+                {
+                    query = query.Where( i => i.Provider_Id == providerId.Value );
+                }
+
+                if(articleId.HasValue)
+                {
+                    query = query.Where( i => i.ProviderOrderMovements.Any( j => j.Good_Id == articleId.Value ) );
+                }
+
+                // Sort
+                query = query.OrderByDescending( i => i.Date );
+
+                // result;
+                return query.ToArray();
+            }
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="TEntity"></typeparam>
+        /// <param name="name"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        public IEnumerable<TEntity> ExecuteSP<TEntity>( string name, IEnumerable<SPParam> parameters = null )
+        {
+            object[] query_parameters = null ;
+            string parameters_parte = "";
+
+            if(parameters != null && parameters.Any())
+            {
+                query_parameters = parameters.Select( i => new SqlParameter( i.Name,
+                                                            ( i.Value != null ? i.Value : DBNull.Value  ) ) )
+                                                 .ToArray();
+
+                parameters_parte = string.Join( ", ", parameters.Select( i => i.Name ).ToArray() );
+            }
+            else
+            {
+                query_parameters = Enumerable.Empty<object>().ToArray();
+            }
+
+            string sql_query = $"EXEC {name} {parameters_parte}";
+            
+            using(var db = new HispaniaComptabilitat.Data.Entities())
+            {
+                return db.Database.SqlQuery<TEntity>( sql_query, query_parameters ).ToArray();
             }
         }
 
@@ -5865,11 +6026,11 @@ namespace HispaniaCommon.DataAccess
         #region DiaryBandages [EXECUTE]
 
         [OperationContract]
-        public List<HispaniaCompData.DiaryBandage> ReadDiaryBandages(string Bill_Id_From, string Bill_Id_Until, decimal YearQuery)
+        public List<HispaniaCompData.DiaryBandages_Result> ReadDiaryBandages(string Bill_Id_From, string Bill_Id_Until, decimal YearQuery)
         {
-            using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+            using (var db = new HispaniaComptabilitat.Data.Entities())
             {
-                return db.SP_DiaryBandages(Bill_Id_From, Bill_Id_Until, YearQuery).ToList();
+                return db.DiaryBandages(Bill_Id_From, Bill_Id_Until, YearQuery).ToList();
             }
         }
 
@@ -5878,11 +6039,11 @@ namespace HispaniaCommon.DataAccess
         #region CustomerSales [EXECUTE]
 
         [OperationContract]
-        public List<HispaniaCompData.CustomerSale> ReadCustomersSales(decimal Upper_Limit_Sales)
+        public List<HispaniaCompData.CustomerSales_Result> ReadCustomersSales(decimal Upper_Limit_Sales)
         {
-            using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+            using (var db = new HispaniaComptabilitat.Data.Entities())
             {
-                return db.SP_CustomerSales(Upper_Limit_Sales).ToList();
+                return db.CustomerSales( Upper_Limit_Sales ).ToList();
             }
         }
 
@@ -5891,21 +6052,23 @@ namespace HispaniaCommon.DataAccess
         #region Settlements [EXECUTE]
 
         [OperationContract]
-        public List<HispaniaCompData.Settlement> ReadSettlements(int? Agent_Id, string Bill_Id_From, string Bill_Id_Until, decimal YearQuery)
+        public List<HispaniaCompData.Settlements_Result> ReadSettlements(int? Agent_Id, string Bill_Id_From, string Bill_Id_Until, decimal YearQuery)
         {
-            using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+            using (var db = new HispaniaComptabilitat.Data.Entities())
             {
-                return db.SP_Settlements(Agent_Id, Bill_Id_From, Bill_Id_Until, YearQuery).ToList();
+                return db.Settlements(Agent_Id, Bill_Id_From, Bill_Id_Until, YearQuery).ToList();
             }
         }
+
+        //TODO: probar
 
         [OperationContract]
         public int GetLastBillSetteled()
         {
-            using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+            using (var db = new HispaniaComptabilitat.Data.Entities())
             {
-                HispaniaCompData.LastBillSetteled lastBillSetteled = db.SP_LastBillSetteleds().ToList()[0];
-                return (int)lastBillSetteled.LastBillSetteled_Id;
+                int? LastBillSetteled_Id = db.LastBillSetteleds().ToList()[0];
+                return ( LastBillSetteled_Id.HasValue ? LastBillSetteled_Id.Value : 0 );
             }
         }
 
@@ -5917,14 +6080,14 @@ namespace HispaniaCommon.DataAccess
         public bool HistoricAcumCustomers(int Year, out string ErrMsg)
         {
             ErrMsg = string.Empty;
-            using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+            using (var db = new HispaniaComptabilitat.Data.Entities())
             {
                 using (var dbTransaction = db.Database.BeginTransaction())
                 {
                     try
                     {
                         //  Return the number of registers afecteds
-                        int Result = db.SP_HistoricAcumCustomers(Year);
+                        int Result = db.HistoricAcumCustomers( Year );
                         if (Result < 0)
                         {
                             dbTransaction.Rollback();
@@ -5953,14 +6116,14 @@ namespace HispaniaCommon.DataAccess
         public bool HistoricAcumGoods(int Year, out string ErrMsg)
         {
             ErrMsg = string.Empty;
-            using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+            using (var db = new HispaniaComptabilitat.Data.Entities())
             {
                 using (var dbTransaction = db.Database.BeginTransaction())
                 {
                     try
                     {
                         //  Return the number of registers afecteds
-                        int Result = db.SP_HistoricAcumGoods(Year);
+                        int Result = db.HistoricAcumGoods( Year );
                         if (Result < 0)
                         {
                             dbTransaction.Rollback();
@@ -5989,13 +6152,13 @@ namespace HispaniaCommon.DataAccess
         public bool RemoveWarehouseMovements(out string ErrMsg)
         {
             ErrMsg = string.Empty;
-            using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+            using (var db = new HispaniaComptabilitat.Data.Entities())
             {
                 int Result = -1;
                 try
                 {
                     //  Return the number of registers afecteds
-                    Result = db.SP_RemoveWarehouseMovements();
+                    Result = db.RemoveWarehouseMovements();
                     if (Result < 0)
                     {
                         ErrMsg = string.Format("Error, a l'esborrar els moviments de magatzem.\r\nDetalls:{0}",
@@ -6019,9 +6182,9 @@ namespace HispaniaCommon.DataAccess
         [OperationContract]
         public bool? LiniesConformes(int CustomerOrder_Id)
         {
-            using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+            using (var db = new HispaniaComptabilitat.Data.Entities())
             {
-                List<HispaniaCompData.LiniesConforme> LiniesConformes = db.SP_LiniesConformes(CustomerOrder_Id).ToList();
+                List<HispaniaCompData.LiniesConformes_Result> LiniesConformes = db.LiniesConformes( CustomerOrder_Id ).ToList();
                 if (LiniesConformes.Count == 1)
                 {
                     return LiniesConformes[0].LiniesConformes == 0 ? false : true;
@@ -6040,9 +6203,9 @@ namespace HispaniaCommon.DataAccess
         [OperationContract]
         public bool? LiniesProveidorConformes(int ProviderOrder_Id)
         {
-            using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+            using (var db = new HispaniaComptabilitat.Data.Entities())
             {
-                List<HispaniaCompData.LiniesProveidorConformes_Result> LiniesConformes = db.LiniesConformesProveidor(ProviderOrder_Id).ToList();
+                List<HispaniaCompData.LiniesProveidorConformes_Result> LiniesConformes = db.LiniesProveidorConformes(ProviderOrder_Id).ToList();
                 if (LiniesConformes.Count == 1)
                 {
                     return LiniesConformes[0].LiniesConformes == 0 ? false : true;
@@ -6059,11 +6222,11 @@ namespace HispaniaCommon.DataAccess
         #region CustomerOrderMovementsComments [EXECUTE]
 
         [OperationContract]
-        public List<HispaniaCompData.CustomerOrderMovementsComment> CustomerOrderMovementsComments(int CustomerOrder_Id)
+        public List<string> CustomerOrderMovementsComments(int CustomerOrder_Id)
         {
-            using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+            using (var db = new HispaniaCompData.Entities())
             {
-                return db.SP_CustomerOrderMovementsComments(CustomerOrder_Id).ToList();
+                return db.CustomerOrderMovementsComments(CustomerOrder_Id).ToList();
             }
         }
 
@@ -6072,11 +6235,11 @@ namespace HispaniaCommon.DataAccess
         #region ProviderOrderMovementsComments [EXECUTE]
 
         [OperationContract]
-        public List<HispaniaCompData.ProviderOrderMovementsComments> ProviderOrderMovementsComments(int ProviderOrder_Id)
+        public List<string> ProviderOrderMovementsComments( int ProviderOrder_Id )
         {
-            using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+            using( var db = new HispaniaCompData.Entities() )
             {
-                return db.SP_ProviderOrderMovementsComments(ProviderOrder_Id).ToList();
+                return db.ProviderOrderMovementsComments( ProviderOrder_Id ).ToList();
             }
         }
 
@@ -6091,7 +6254,7 @@ namespace HispaniaCommon.DataAccess
         {
             try
             {
-                using (var db = new HispaniaCompData.HispaniaComptabilitatEntities())
+                using (var db = new HispaniaComptabilitat.Data.Entities())
                 {
                     using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["HispaniaComptabilitatConnectionString"].ConnectionString))
                     //using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["HispaniaComptabilitatEntities"].ConnectionString))  //db.Database.Connection.ConnectionString + ";Password=Phispania2"))

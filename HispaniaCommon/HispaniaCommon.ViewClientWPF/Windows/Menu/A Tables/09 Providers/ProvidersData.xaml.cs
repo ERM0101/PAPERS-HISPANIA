@@ -772,9 +772,6 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
             {
                 btnHistoric,
                 btnHistoricAcum,
-                btnPendentProviderOrders,
-                btnPendentDeliveryNotes,
-                btnBadDebt,
                 gbQueries
             };
         }
@@ -1101,9 +1098,7 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
             btnCancel.Click += BtnCancel_Click;
             btnHistoricAcum.Click += BtnHistoricAcum_Click;
             btnHistoric.Click += BtnHistoric_Click;
-            btnBadDebt.Click += BtnBadDebt_Click;
-            btnPendentProviderOrders.Click += BtnPendentProviderOrders_Click;
-            btnPendentDeliveryNotes.Click += BtnPendentDeliveryNotes_Click;
+            
         }
 
         #region TextBox
@@ -1400,39 +1395,6 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
 
         #region Delivery Notes (Update data)
 
-        private void BtnPendentDeliveryNotes_Click(object sender, RoutedEventArgs e)
-        {
-            if (ProviderOrdersWindow == null)
-            {
-                Mouse.OverrideCursor = Cursors.Wait;
-                try
-                {
-                    RefreshDataViewModel.Instance.RefreshData(WindowToRefresh.DeliveryNotesWindow);
-                    ProviderOrdersWindow = new ProviderOrders(AppType, false, false, true)
-                    {
-                        FilterByProvider = true,
-                        Provider = Provider,
-                        Providers = GlobalViewModel.Instance.HispaniaViewModel.ProvidersActiveDict,
-                        SendTypes = GlobalViewModel.Instance.HispaniaViewModel.SendTypesDict,
-                        EffectTypes = GlobalViewModel.Instance.HispaniaViewModel.EffectTypesDict,
-                        Parameters = GlobalViewModel.Instance.HispaniaViewModel.Parameters,
-                        DataList = GlobalViewModel.Instance.HispaniaViewModel.ProviderOrders
-                    };
-                    ProviderOrdersWindow.Closed += ProviderOrdersWindow_Closed;
-                    ProviderOrdersWindow.Show();
-
-                }
-                catch (Exception ex)
-                {
-                    MsgManager.ShowMessage(string.Format("Error, al carregar la finestra de gestió d'Albarans.\r\nDetalls: {0}", MsgManager.ExcepMsg(ex)));
-                }
-                finally
-                {
-                    Mouse.OverrideCursor = Cursors.Arrow;
-                }
-            }
-            else ProviderOrdersWindow.Activate();
-        }
 
         /// <summary>
         /// When the Provider Window is closed we actualize the ProvidersWindow attribute value.
@@ -1449,38 +1411,6 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
 
         #region Provider Orders (Update data)
 
-        private void BtnPendentProviderOrders_Click(object sender, RoutedEventArgs e)
-        {
-            if (ProviderOrders2Window == null)
-            {
-                Mouse.OverrideCursor = Cursors.Wait;
-                try
-                {
-                    RefreshDataViewModel.Instance.RefreshData(WindowToRefresh.ProviderOrdersWindow);
-                    ProviderOrders2Window = new ProviderOrders(AppType, false, true, false)
-                    {
-                        FilterByProvider = true,
-                        Provider = Provider,
-                        Providers = GlobalViewModel.Instance.HispaniaViewModel.ProvidersActiveDict,
-                        SendTypes = GlobalViewModel.Instance.HispaniaViewModel.SendTypesDict,
-                        EffectTypes = GlobalViewModel.Instance.HispaniaViewModel.EffectTypesDict,
-                        Parameters = GlobalViewModel.Instance.HispaniaViewModel.Parameters,
-                        DataList = GlobalViewModel.Instance.HispaniaViewModel.ProviderOrders
-                    };
-                    ProviderOrders2Window.Closed += ProviderOrders2Window_Closed;
-                    ProviderOrders2Window.Show();
-                }
-                catch (Exception ex)
-                {
-                    MsgManager.ShowMessage(string.Format("Error, al carregar la finestra de gestió de Comandes de Proveidor.\r\nDetalls: {0}", MsgManager.ExcepMsg(ex)));
-                }
-                finally
-                {
-                    Mouse.OverrideCursor = Cursors.Arrow;
-                }
-            }
-            else ProviderOrders2Window.Activate();
-        }
 
         /// <summary>
         /// When the Provider Window is closed we actualize the ProvidersWindow attribute value.
@@ -1534,34 +1464,6 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
         #endregion
 
         #region Data Debt (Query data)
-
-        private void BtnBadDebt_Click(object sender, RoutedEventArgs e)
-        {
-            if (BadDebtsWindow == null)
-            {
-                Mouse.OverrideCursor = Cursors.Wait;
-                try
-                {
-                    BadDebtsWindow = new BadDebts(AppType)
-                    {
-                        Print = false,
-                        DataList = GlobalViewModel.Instance.HispaniaViewModel.GetBadDebts(EditedProvider.Provider_Id),
-                        DataProv = EditedProvider
-                    };
-                    BadDebtsWindow.Closed += BadDebtsWindow_Closed;
-                    BadDebtsWindow.Show();
-                }
-                catch (Exception ex)
-                {
-                    MsgManager.ShowMessage(string.Format("Error, al carregar la finestra de gestió d'Impagats.\r\nDetalls: {0}", MsgManager.ExcepMsg(ex)));
-                }
-                finally
-                {
-                    Mouse.OverrideCursor = Cursors.Arrow;
-                }
-            }
-            else BadDebtsWindow.Activate();
-        }
 
         private void BadDebtsWindow_Closed(object sender, EventArgs e)
         {

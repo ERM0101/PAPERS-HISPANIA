@@ -295,7 +295,7 @@ namespace HispaniaCommon.ViewModel
         //public string Company_EMail3 { get; set; }
         //public string Company_ContactPerson { get; set; }
         //public string Company_TimeTable { get; set; }
-        //public string Company_NumProv { get; set; }
+        public string Company_NumProv { get; set; }
         //public string Company_Cif { get; set; }
 
         //#endregion

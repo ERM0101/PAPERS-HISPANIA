@@ -25,7 +25,7 @@ namespace HispaniaCommon.ViewModel
                 InputsOutputsInDb = HispaniaDataAccess.Instance.ReadInputOutputs(Good_Id);
                 _InputsOutputs = new ObservableCollection<InputsOutputsView>();
                 _InputsOutputsInDictionary = new Dictionary<string, InputsOutputsView>();
-                foreach (HispaniaCompData.InputOutput InputOutput in InputsOutputsInDb)
+                foreach (HispaniaCompData.InputsOutputs_Result InputOutput in InputsOutputsInDb)
                 {
                     InputsOutputsView NewInputsOutputsView = new InputsOutputsView(InputOutput);
                     _InputsOutputs.Add(NewInputsOutputsView);
@@ -64,9 +64,9 @@ namespace HispaniaCommon.ViewModel
             return GetKeyInputOutputView(InputsOutputsView.GetHashCode().ToString());
         }
 
-        private string GetKeyInputOutputView(HispaniaCompData.InputOutput InputOutput)
+        private string GetKeyInputOutputView(HispaniaCompData.InputsOutputs_Result InputOutput )
         {
-            return GetKeyInputOutputView(InputOutput.GetHashCode().ToString());
+            return GetKeyInputOutputView( InputOutput.GetHashCode().ToString() );
         }
 
         private string GetKeyInputOutputView(string InputOutputCode)
@@ -78,14 +78,14 @@ namespace HispaniaCommon.ViewModel
 
         #region DataBase [CRUD]
 
-        private List<HispaniaCompData.InputOutput> ReadInputsOutputsInDb(int Good_Id)
+        private List<HispaniaCompData.InputsOutputs_Result> ReadInputsOutputsInDb( int Good_Id )
         {
-            return (HispaniaDataAccess.Instance.ReadInputOutputs(Good_Id));
+            return (HispaniaDataAccess.Instance.ReadInputOutputs( Good_Id ) );
         }
 
-        private List<HispaniaCompData.InputOutput> _InputsOutputsInDb;
+        private List<HispaniaCompData.InputsOutputs_Result> _InputsOutputsInDb;
 
-        private List<HispaniaCompData.InputOutput> InputsOutputsInDb
+        private List<HispaniaCompData.InputsOutputs_Result> InputsOutputsInDb
         {
             get
             {

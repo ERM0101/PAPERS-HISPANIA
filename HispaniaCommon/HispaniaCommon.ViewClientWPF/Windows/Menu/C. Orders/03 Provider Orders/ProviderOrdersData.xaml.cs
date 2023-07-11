@@ -376,7 +376,7 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                          if (ProviderOrder == null) throw new InvalidOperationException("Error, impossible editar una Comanda de Client sense dades.");
                          tbDataBankIBANCountryCode.ContextMenu = ctxmnuIBAN_Initial;
                          tbCancel.Text = "Cancel·lar";
-                         break;
+                         break;                    
                 }
                 string properyValue;
                 foreach (Control control in EditableControls)
@@ -432,7 +432,7 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
             set
             {
                 m_AreDataChanged = value;
-                if (m_AreDataChanged)
+                if (m_AreDataChanged && !this._ProcessLoadDataInControls )
                 {
                     cbAcceptButton.Width = ViewAcceptButton;
                     cbMiddleColumn.Width = ViewMiddleColumn;
@@ -654,9 +654,7 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                 lblCompanyName,
                 tbCompanyName,
                 lblCompanyCif,
-                tbCompanyCif,
-                //lblCompanyNumProv,
-                //tbCompanyNumProv,
+                tbCompanyCif,                
                 lblSendAddress,
                 tbSendAddress,
                 lblSendPostalCode,
@@ -682,7 +680,6 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                 tbCompanyMobilePhone,
                 tbCompanyFax,
                 tbCompanyTimeTable,
-                tbCompanyNumProvClient,
                 cbCompanyPostalCode
         };
         }
@@ -699,6 +696,7 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                 lblProvider,
                 cbProvider,
                 lblAccording,
+                lblPrevisioLliurament,
                 chkbAccording,
                 lblValued,
                 chkbValued,
@@ -762,7 +760,9 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                 chkPrevisioLliurament,
                 dtpPrevisioLliurament,
                 btnUp,
-                btnDown
+                btnDown,
+                tbNameClientAssoc,
+                lblNameClientAssoc
             };
         }
 
@@ -807,11 +807,15 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                 DataChangedManagerActive = true;
         }
 
+        private bool _ProcessLoadDataInControls = false;
+
         /// <summary>
         /// Method that loads the Data in the controls of the Window
         /// </summary>
         private void LoadDataInControls(ProviderOrdersView ProviderOrder, bool Actualize = true, int ThrowException = 0)
         {
+            this._ProcessLoadDataInControls = true;
+
             //  Deactivate managers
                 DataChangedManagerActive = false;
             //  Actualize Main Controls
@@ -840,7 +844,7 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                     tbProviderAlias.Text = string.Empty;
                     tbCompanyName.Text = string.Empty;
                     tbCompanyCif.Text = string.Empty;
-                    //tbCompanyNumProv.Text = string.Empty;
+                    tbNameClientAssoc.Text = string.Empty;
                     ActualizeProviderAddressData();
                 }
                 else
@@ -855,7 +859,7 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                     tbProviderAlias.Text = ProviderOrder.Provider.Alias;
                     tbCompanyName.Text = ProviderOrder.Provider.Name;
                     tbCompanyCif.Text = ProviderOrder.Provider.NIF;
-                    //tbCompanyNumProv.Text = ProviderOrder.Provider.Company_NumProv;
+                    tbNameClientAssoc.Text = ProviderOrder.NameClientAssoc;                
                     //  Dades de Proveidor Tab Controls
                     tbProviderId.Text = ProviderOrder.Provider.Provider_Id.ToString();
                     tbProviderAliasProveidor.Text = ProviderOrder.Provider.Alias;
@@ -904,7 +908,9 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
             //  Update historic button
                 btnHistoric.IsEnabled = true;
             //  Activate managers
-                DataChangedManagerActive = true;                
+                DataChangedManagerActive = true;
+
+            this._ProcessLoadDataInControls = false;
         }
 
         /// <summary>
@@ -981,6 +987,9 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
             //  By default the manager for the Provider Order Data changes is active.
                 DataChangedManagerActive = true;
             //  TextBox
+                tbNameClientAssoc.TextChanged += TBDataChanged;
+                tbNameClientAssoc.PreviewTextInput += TBPreviewTextInput;
+
                 tbBillingDataEarlyPaymentDiscount.PreviewTextInput += TBPreviewTextInput;
                 tbBillingDataEarlyPaymentDiscount.TextChanged += TBPrecentDataChanged;
                 tbProviderOrderRemarks.PreviewTextInput += TBPreviewTextInput;
@@ -1018,7 +1027,7 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                 tbItemToSearch.TextChanged += TBItemToSearchDataChanged;
             //  DatePiker
                 dtpDeliveryNoteDate.SelectedDateChanged += DtpDeliveryNoteDate_SelectedDateChanged;
-            dtpPrevisioLliurament.SelectedDateChanged += DtpPrevisioLliurament_SelectedDateChanged;
+                dtpPrevisioLliurament.SelectedDateChanged += DtpPrevisioLliurament_SelectedDateChanged;
             //  CheckBox
                 chkbAccording.Checked += ChkbAccording_Checked;
                 chkbAccording.Unchecked += ChkbAccording_Unchecked;
@@ -1137,6 +1146,7 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                     else if (sender == tbDataBankIBANOfficeCode) EditedProviderOrder.DataBank_IBAN_OfficeCode = value;
                     else if (sender == tbDataBankIBANCheckDigits) EditedProviderOrder.DataBank_IBAN_CheckDigits = value;
                     else if (sender == tbDataBankIBANAccountNumber) EditedProviderOrder.DataBank_IBAN_AccountNumber = value;
+                    else if(sender == tbNameClientAssoc) EditedProviderOrder.NameClientAssoc = value;
                 }
                 catch (Exception ex)
                 {
@@ -1204,7 +1214,7 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
             ProviderOrdersAttributes ErrorField = ProviderOrdersAttributes.None;
             try
             {
-                if ((CtrlOperation == Operation.Add) || (CtrlOperation == Operation.Edit))
+                if ((CtrlOperation == Operation.Add) || (CtrlOperation == Operation.Edit) )
                 {
                     EditedProviderOrder.Validate(out ErrorField);
                     EvAccept?.Invoke(new ProviderOrdersView(EditedProviderOrder), DataManagementId);
@@ -1938,12 +1948,14 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
         {
             this.dtpPrevisioLliurament.Visibility = Visibility.Visible;
             EditedProviderOrder.PrevisioLliurament = true;
+            this.AreDataChanged = true;
         }
 
         private void ChkPrevisioLliurament_Unchecked(object sender, RoutedEventArgs e)
         {
             this.dtpPrevisioLliurament.Visibility = Visibility.Hidden;
             EditedProviderOrder.PrevisioLliurament = false;
+            this.AreDataChanged = true;
         }
 
         #endregion

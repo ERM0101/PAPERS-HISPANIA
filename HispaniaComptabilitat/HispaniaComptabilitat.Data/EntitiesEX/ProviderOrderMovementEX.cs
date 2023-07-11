@@ -40,5 +40,26 @@ namespace HispaniaComptabilitat.Data.EntitiesEX
             return _This;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="_This"></param>
+        /// <param name="newId"></param>
+        /// <returns></returns>
+        public static ProviderOrderMovement Clone( this ProviderOrderMovement _This, int? newId = null )
+        {
+
+            ProviderOrderMovement result = new ProviderOrderMovement();
+            
+            result.Update( _This );
+
+            if( newId.HasValue )
+            {
+                result.ProviderOrderMovement_Id = newId.Value;                
+            }
+            
+            return result;
+        }
+
     }
 }

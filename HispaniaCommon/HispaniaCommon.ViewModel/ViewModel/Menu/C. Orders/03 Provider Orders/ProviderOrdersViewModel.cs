@@ -788,6 +788,7 @@ namespace HispaniaCommon.ViewModel
             HispaniaDataAccess.Instance.UpdateMarkedFlagProviderOrder(Bill_From_Id, Bill_Until_Id, DateToMark, YearQuery);
         }
 
-        #endregion
+        #endregion                
+
     }
 }

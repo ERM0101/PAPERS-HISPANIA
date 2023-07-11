@@ -848,32 +848,11 @@
                                 <ColumnDefinition Width="130" />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
-                            <Button Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,2,0,0" x:Name="btnPendentProviderOrders" 
-                                    Width="165" Height="23" IsEnabled="False">
-                                <StackPanel x:Name="spPendentProviderOrders" Margin="2" Orientation="Horizontal">
-                                    <Image Height="16" Margin="0,0,10,0" Source="{DynamicResource ReportData}" Width="16"/>
-                                    <TextBlock x:Name="tbPendentProviderOrders" Text="Comandes Pendents" />
-                                </StackPanel>
-                            </Button>
-                            <Button Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,2,0,0" x:Name="btnPendentDeliveryNotes" 
-                                    Width="155" Height="23" IsEnabled="False">
-                                <StackPanel x:Name="spPendentDeliveryNotes" Margin="2" Orientation="Horizontal">
-                                    <Image Height="16" Margin="0,0,10,0" Source="{DynamicResource ReportData}" Width="16"/>
-                                    <TextBlock x:Name="tbPendentDeliveryNotes" Text="Albarans Pendents" />
-                                </StackPanel>
-                            </Button>
-                            <Button Grid.Row="0" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,2,0,0" x:Name="btnHistoricAcum"  
+                            <Button Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,2,0,0" x:Name="btnHistoricAcum"  
                                     Width="155" Height="23" IsEnabled="False">
                                 <StackPanel x:Name="spHistoricAcum" Margin="2" Orientation="Horizontal">
                                     <Image Height="16" Margin="0,0,10,0" Source="{DynamicResource ReportData}" Width="16"/>
                                     <TextBlock x:Name="tbHistoricAcum" Text="Historics Acumulats" />
-                                </StackPanel>
-                            </Button>
-                            <Button Grid.Row="0" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,2,0,0" x:Name="btnBadDebt" 
-                                    Width="100" Height="23" IsEnabled="False">
-                                <StackPanel x:Name="spBadDebt" Margin="2" Orientation="Horizontal">
-                                    <Image Height="16" Margin="0,0,10,0" Source="{DynamicResource ReportData}" Width="16"/>
-                                    <TextBlock x:Name="tbBadDebt" Text="Impagats" />
                                 </StackPanel>
                             </Button>
                         </Grid>

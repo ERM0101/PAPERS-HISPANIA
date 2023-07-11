@@ -23,7 +23,7 @@ namespace HispaniaCommon.ViewModel
             {
                 DiaryBandagesAndAccountingsInDb = HispaniaDataAccess.Instance.ReadDiaryBandages(Bill_Id_From, Bill_Id_Until, YearQuery);
                 _DiaryBandagesAndAccountingsInDictionary = new SortedDictionary<int, DiaryBandagesAndAccountingsView>();
-                foreach (HispaniaCompData.DiaryBandage DiaryBandagesAndAccounting in DiaryBandagesAndAccountingsInDb)
+                foreach (HispaniaCompData.DiaryBandages_Result DiaryBandagesAndAccounting in DiaryBandagesAndAccountingsInDb)
                 {
                     DiaryBandagesAndAccountingsView NewDiaryBandagesAndAccountingsView = new DiaryBandagesAndAccountingsView(DiaryBandagesAndAccounting);
                     _DiaryBandagesAndAccountingsInDictionary.Add(NewDiaryBandagesAndAccountingsView.Bill_Id, NewDiaryBandagesAndAccountingsView);
@@ -50,7 +50,7 @@ namespace HispaniaCommon.ViewModel
             return GetKeyDiaryBandageView(DiaryBandagesAndAccountingsView.Bill_Id);
         }
 
-        private string GetKeyDiaryBandagesAndAccountingView(HispaniaCompData.DiaryBandage DiaryBandage)
+        private string GetKeyDiaryBandagesAndAccountingView(HispaniaCompData.DiaryBandages_Result DiaryBandage)
         {
             return GetKeyDiaryBandagesAndAccountingView((int)DiaryBandage.Bill_Id);
         }
@@ -64,14 +64,14 @@ namespace HispaniaCommon.ViewModel
 
         #region DataBase [CRUD]
 
-        private List<HispaniaCompData.DiaryBandage> ReadDiaryBandagesAndAccountingsInDb(string Bill_Id_From, string Bill_Id_Until, decimal YearQuery)
+        private List<HispaniaCompData.DiaryBandages_Result> ReadDiaryBandagesAndAccountingsInDb(string Bill_Id_From, string Bill_Id_Until, decimal YearQuery)
         {
             return (HispaniaDataAccess.Instance.ReadDiaryBandages(Bill_Id_From, Bill_Id_Until, YearQuery));
         }
 
-        private List<HispaniaCompData.DiaryBandage> _DiaryBandagesAndAccountingsInDb;
+        private List<HispaniaCompData.DiaryBandages_Result> _DiaryBandagesAndAccountingsInDb;
 
-        private List<HispaniaCompData.DiaryBandage> DiaryBandagesAndAccountingsInDb
+        private List<HispaniaCompData.DiaryBandages_Result> DiaryBandagesAndAccountingsInDb
         {
             get
             {
