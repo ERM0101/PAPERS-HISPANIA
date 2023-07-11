@@ -9,6 +9,7 @@ using System.Linq;
 using System.Reflection.Emit;
 using System.Security.Policy;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace HispaniaCommon.ViewModel.ViewModel.Queries
@@ -255,7 +256,7 @@ namespace HispaniaCommon.ViewModel.ViewModel.Queries
         /// </summary>
         private void Refresh()
         {
-            
+
             StartWait();
 
             int? article_id = (this.SelectedGood.HasValue ?
@@ -271,7 +272,6 @@ namespace HispaniaCommon.ViewModel.ViewModel.Queries
             IEnumerable<QueryOrderProviderViewModel> items = null;
             try
             {
-                StartWait();
 
                 items =  QueryViewModel.Instance.GetQueryOrders( this.StartDate, this.EndDate,
                                                                  article_id, provider_id );

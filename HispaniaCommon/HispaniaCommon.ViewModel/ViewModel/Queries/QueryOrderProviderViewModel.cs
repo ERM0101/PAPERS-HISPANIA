@@ -3,16 +3,31 @@ using HispaniaComptabilitat.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace HispaniaCommon.ViewModel.ViewModel.Queries
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class QueryOrderProviderViewModel
     {
+
         /// <summary>
-		/// 
-		/// </summary>
+        /// 
+        /// </summary>
+        [ExcelColumnAttribute( 10, "Article" )]
+        public string Good
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         [ExcelColumnAttribute(1, "Nº Comanda" )]
 		public int ProviderOrderId
         {
@@ -23,7 +38,7 @@ namespace HispaniaCommon.ViewModel.ViewModel.Queries
         /// <summary>
         /// 
         /// </summary>        
-        public DateTime Date
+        public DateTime? Date
         {
             get;
             set;
@@ -50,7 +65,7 @@ namespace HispaniaCommon.ViewModel.ViewModel.Queries
         /// <summary>
         /// 
         /// </summary>
-        public DateTime PrevisioLliuramentData
+        public DateTime? PrevisioLliuramentData
         {
             get;
             set;
@@ -122,14 +137,6 @@ namespace HispaniaCommon.ViewModel.ViewModel.Queries
             set;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public int? LiniesConformes
-        {
-            get;
-            set;
-        }
 
         /// <summary>
         /// 
@@ -177,7 +184,9 @@ namespace HispaniaCommon.ViewModel.ViewModel.Queries
         {
             get
             {
-                return (PrevisioLliurament == true) ? PrevisioLliuramentData.ToShortDateString() : "";
+                return (PrevisioLliurament == true) ? 
+                                            ( PrevisioLliuramentData.HasValue ? PrevisioLliuramentData.Value.ToShortDateString(): "" ) 
+                                            : "";
             }
         }
 

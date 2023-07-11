@@ -12,6 +12,7 @@ using System.ServiceModel;
 using HispaniaCompData = HispaniaComptabilitat.Data;
 using System.Configuration;
 using HispaniaComptabilitat.Data.EntitiesEX;
+using System.ServiceModel.Dispatcher;
 
 #endregion
 
@@ -5958,6 +5959,34 @@ namespace HispaniaCommon.DataAccess
                 this.Value = value;
             }
         }
+
+        public IEnumerable<ProviderOrder> GetQueryOrders( DateTime startDate, DateTime endDate, int? articleId, int? providerId )
+        {
+            using(var db = new HispaniaComptabilitat.Data.Entities())
+            {
+
+                var query = db.ProviderOrders.Include( "Provider").Include("PostalCode")
+                                             .Include("SendType" ).Include( "ProviderOrderMovements" )
+                                             .Where( i => i.Date >= startDate && i.Date <= endDate );
+
+                if(providerId.HasValue)
+                {
+                    query = query.Where( i => i.Provider_Id == providerId.Value );
+                }
+
+                if(articleId.HasValue)
+                {
+                    query = query.Where( i => i.ProviderOrderMovements.Any( j => j.Good_Id == articleId.Value ) );
+                }
+
+                // Sort
+                query = query.OrderByDescending( i => i.Date );
+
+                // result;
+                return query.ToArray();
+            }
+        }
+
 
         /// <summary>
         /// 

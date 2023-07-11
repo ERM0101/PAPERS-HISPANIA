@@ -11,8 +11,11 @@ using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Windows.Controls.Primitives;
+using static iTextSharp.text.pdf.AcroFields;
 using static iTextSharp.text.pdf.events.IndexEvents;
 
 #endregion
@@ -173,6 +176,33 @@ namespace HispaniaCommon.ViewModel
             return (HispaniaDataAccess.Instance.GetDataTableFromQuerySQL(GetQuerySQL(queryType, Params)));
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="providerOrder"></param>
+        /// <param name="articleName"></param>
+        /// <returns></returns>
+        private QueryOrderProviderViewModel CreateQueryOrderProviderViewModel( ProviderOrder providerOrder, string articleName )
+        {
+            QueryOrderProviderViewModel result = new QueryOrderProviderViewModel()
+            {
+                ProviderOrderId = providerOrder.ProviderOrder_Id,
+                Date = providerOrder.Date,
+                According = providerOrder.According,
+                PrevisioLliurament = (providerOrder.PrevisioLliurament.HasValue ? providerOrder.PrevisioLliurament.Value : false),
+                PrevisioLliuramentData = providerOrder.PrevisioLliuramentData,
+                ProviderId = providerOrder.Provider_Id,
+                ProviderAlias = (providerOrder.Provider == null ? string.Empty : providerOrder.Provider.Alias),
+                Address = providerOrder.Address,
+                PostalCode = (providerOrder.PostalCode != null ? providerOrder.PostalCode.Postal_Code : string.Empty),
+                City = (providerOrder.PostalCode != null ? providerOrder.PostalCode.City : string.Empty),
+                SendTypeDescription = (providerOrder.SendType != null ? providerOrder.SendType.Description : string.Empty),
+                TotalAmount = providerOrder.TotalAmount,
+                Good = articleName
+            };
+
+            return result;
+        }
 
         /// <summary>
         /// 
@@ -187,40 +217,45 @@ namespace HispaniaCommon.ViewModel
                                                                         int? articleId, 
                                                                         int? providerId )
         {
-            List<HispaniaDataAccess.SPParam> parameters = new List<HispaniaDataAccess.SPParam>();
 
-            parameters.Add( new HispaniaDataAccess.SPParam( "DateInit", startDate ) );
-            parameters.Add( new HispaniaDataAccess.SPParam( "DateEnd", endDate ) );
-            
-            parameters.Add( new HispaniaDataAccess.SPParam( "Provider_Id",
-                ( providerId.HasValue ? providerId.Value : (object)null ) ) );
-
-            
-            parameters.Add( new HispaniaDataAccess.SPParam( "Good_Id", 
-                    (articleId.HasValue ? articleId.Value : (object)null ) ) );
-            
-
-            IEnumerable<QueryOrderProvider> raw_data = 
-                       HispaniaDataAccess.Instance.ExecuteSP<QueryOrderProvider>( "QueryOrdersProvider",
-                                                                                   parameters );
-
-            foreach(QueryOrderProvider raw_item in raw_data)
+            IEnumerable<ProviderOrder> raw_data =
+                        HispaniaDataAccess.Instance.GetQueryOrders( startDate, endDate, articleId, providerId );
+                        
+            foreach( ProviderOrder raw_item in raw_data)
             {
-                yield return new QueryOrderProviderViewModel() {
-                    ProviderOrderId = raw_item.ProviderOrderId,
-                    Date = raw_item.Date,
-                    According = raw_item.According,
-                    PrevisioLliurament = raw_item.PrevisioLliurament,
-                    PrevisioLliuramentData = raw_item.PrevisioLliuramentData,
-                    ProviderId = raw_item.ProviderId,
-                    ProviderAlias = raw_item.ProviderAlias,
-                    Address = raw_item.Address,
-                    PostalCode = raw_item.PostalCode,
-                    City = raw_item.City,
-                    SendTypeDescription = raw_item.SendTypeDescription,
-                    TotalAmount = raw_item.TotalAmount,
-                    LiniesConformes = raw_item.LiniesConformes,
-                };
+                List<QueryOrderProviderViewModel> items = new List<QueryOrderProviderViewModel>();
+
+                IEnumerable<ProviderOrderMovement> movemients = Enumerable.Empty<ProviderOrderMovement>();
+
+                if( null != raw_item.ProviderOrderMovements && raw_item.ProviderOrderMovements.Any() )
+                {
+                    if(articleId.HasValue)
+                    {
+                        if(null != raw_item.ProviderOrderMovements)
+                            movemients = raw_item.ProviderOrderMovements.Where( i => i.Good_Id == articleId.Value );
+                    }
+                    else
+                    {
+                        if(null != raw_item.ProviderOrderMovements)
+                        {
+                            movemients = raw_item.ProviderOrderMovements.ToArray();
+                        }
+                    }
+
+                    foreach(ProviderOrderMovement movement in movemients)
+                    {
+                        QueryOrderProviderViewModel item = CreateQueryOrderProviderViewModel( raw_item, movement.Description );
+                        yield return item;
+                    }
+                }
+                else
+                {
+                    if(articleId.HasValue == false)
+                    {
+                        QueryOrderProviderViewModel item = CreateQueryOrderProviderViewModel( raw_item, "" );
+                        yield return item;
+                    }
+                }
             }
         }
 

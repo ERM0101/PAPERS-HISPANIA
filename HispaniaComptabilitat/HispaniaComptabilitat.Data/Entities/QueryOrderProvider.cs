@@ -52,7 +52,7 @@ namespace HispaniaComptabilitat.Data
 		/// <summary>
 		/// 
 		/// </summary>
-        public DateTime PrevisioLliuramentData
+        public DateTime? PrevisioLliuramentData
 		{
 			get;
 			set;
