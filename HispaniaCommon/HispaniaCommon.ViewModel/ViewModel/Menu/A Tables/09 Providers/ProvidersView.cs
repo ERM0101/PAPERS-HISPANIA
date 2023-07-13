@@ -1000,6 +1000,12 @@ namespace HispaniaCommon.ViewModel
                 ErrorField = ProvidersAttributes.BillingData_SendType;
                 throw new FormatException("Error, manca seleccionar el Tipus d'Enviament.");
             }
+
+            if( this.Data_Agent == null )
+            {
+                ErrorField = ProvidersAttributes.Data_Agent;
+                throw new FormatException("Error, manca seleccionar el Representant.");
+            }
         }
 
         /// <summary>
