@@ -3,6 +3,7 @@
 using HispaniaCommon.ViewClientWPF.Managers;
 using HispaniaCommon.ViewClientWPF.UserControls;
 using HispaniaCommon.ViewModel;
+using HispaniaCommon.ViewModel.ViewModel.Menu.B_Goods._02_Goods;
 using MBCode.Framework.Managers.Messages;
 using MBCode.Framework.Managers.Theme;
 using System;
@@ -63,12 +64,7 @@ namespace HispaniaCommon.ViewClientWPF.Windows
         #endregion
 
         #region Attributes
-
-        /// <summary>
-        /// Store the data to show in List of Items.
-        /// </summary>
-        private ObservableCollection<GoodsView> m_DataList = new ObservableCollection<GoodsView>();
-
+                
         #region GUI
 
         /// <summary>
@@ -81,6 +77,11 @@ namespace HispaniaCommon.ViewClientWPF.Windows
         #endregion
 
         #region Properties
+
+        public GoodsVM GoodsVM
+        {
+            get;
+        }
 
         /// <summary>
         /// Store the type of Application with the user want open.
@@ -98,18 +99,16 @@ namespace HispaniaCommon.ViewClientWPF.Windows
         {
             get
             {
-                return (m_DataList);
+                return this.GoodsVM.ListItems;
             }
             set
             {
-                if (value != null) m_DataList = value;
-                else m_DataList = new ObservableCollection<GoodsView>();
-                ListItems.ItemsSource = m_DataList;
-                ListItems.DataContext = this;
+                this.GoodsVM.ListItems = value;               
                 CollectionViewSource.GetDefaultView(ListItems.ItemsSource).Filter = UserFilter;
-                CollectionViewSource.GetDefaultView(ListItems.ItemsSource).SortDescriptions.Add(new SortDescription("Good_Code", ListSortDirection.Ascending));
-                if (m_DataList.Count > 0) rdSearchPannel.Height = ViewSearchPannel;
-                else rdSearchPannel.Height = HideComponent;
+                CollectionViewSource.GetDefaultView(ListItems.ItemsSource)
+                                    .SortDescriptions
+                                    .Add(new SortDescription("Good_Code", ListSortDirection.Ascending));
+                
             }
         }
 
@@ -134,12 +133,6 @@ namespace HispaniaCommon.ViewClientWPF.Windows
         /// Get or Set if the manager of the data change for the Customer has active.
         /// </summary>
         private bool DataChangedManagerActive
-        {
-            get;
-            set;
-        }
-
-        public bool GoodManagement
         {
             get;
             set;
@@ -192,6 +185,9 @@ namespace HispaniaCommon.ViewClientWPF.Windows
         /// <param name="AppType">Defines the type of Application with the user want open.</param>
         public Goods(ApplicationType AppType)
         {
+            this.GoodsVM = new GoodsVM();
+            this.DataContext = this.GoodsVM;
+
             InitializeComponent();
             Initialize(AppType);
         }
@@ -227,10 +223,8 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                 GoodDataControl.AppType = AppType;
             //  Initialize state of Window components.
                 rdItemPannel.Height = HideComponent;
-                rdSearchPannel.Height = HideComponent;
                 gsSplitter.IsEnabled = false;
                 btnEdit.Visibility = btnDelete.Visibility = btnViewData.Visibility = Visibility.Hidden;
-                btnAddNewLine.Visibility = Visibility.Hidden;
         }
 
         /// <summary>
@@ -240,14 +234,12 @@ namespace HispaniaCommon.ViewClientWPF.Windows
         {
             //  Deactivate managers
                 DataChangedManagerActive = false;
+                
             //  Set Data into the Window.
-                ListItems.ItemsSource = m_DataList;
-                DataContext = DataList;
+
                 CollectionViewSource.GetDefaultView(ListItems.ItemsSource).Filter = UserFilter;
-                cbFieldItemToSearch.ItemsSource = GoodsView.Fields;
-                cbFieldItemToSearch.DisplayMemberPath = "Key";
-                cbFieldItemToSearch.SelectedValuePath = "Value";
-                if (GoodsView.Fields.Count > 0) cbFieldItemToSearch.SelectedIndex = 0;
+           
+
             //  Deactivate managers
                 DataChangedManagerActive = true;
         }
@@ -260,26 +252,30 @@ namespace HispaniaCommon.ViewClientWPF.Windows
         private bool UserFilter(object item)
         {
             //  Determine if is needed aplicate one filter.
-                if (cbFieldItemToSearch.SelectedIndex == -1) return (true);
+            if(string.IsNullOrWhiteSpace( this.GoodsVM.FieldEntry ))
+            {
+                return true;
+            }
             //  Get Acces to the object and the property name To Filter.
-                GoodsView ItemData = (GoodsView)item;
-                String ProperyName = (string) cbFieldItemToSearch.SelectedValue;
+            GoodsView ItemData = (GoodsView)item;
+            string ProperyName = this.GoodsVM.FieldEntry;
+
             //  Apply the filter by selected field value
-                if (!String.IsNullOrEmpty(tbItemToSearch.Text))
+            if(!string.IsNullOrEmpty( tbItemToSearch.Text ))
+            {
+                object valueToTest = ItemData.GetType().GetProperty( ProperyName ).GetValue( ItemData );
+                if((valueToTest is null) ||
+                    (!(valueToTest.ToString().ToUpper()).Contains( tbItemToSearch.Text.ToUpper() )))
                 {
-                    object valueToTest = ItemData.GetType().GetProperty(ProperyName).GetValue(ItemData);
-                    if ((valueToTest is null) || 
-                        (!(valueToTest.ToString().ToUpper()).Contains(tbItemToSearch.Text.ToUpper())))
-                    {
-                        return false;
-                    }
+                    return false;
                 }
+            }
             //  Get the value of the properties "According", "Has_Bill" and "HasDeliveryNote"
-                object valueCanceledToTest = ItemData.GetType().GetProperty("Canceled").GetValue(ItemData);
-                if (valueCanceledToTest is null)
-                {
-                    return (false);
-                }
+            object valueCanceledToTest = ItemData.GetType().GetProperty("Canceled").GetValue(ItemData);
+            if(valueCanceledToTest is null)
+            {
+                return (false);
+            }
             //  Calculate the Visibility value with properties values.
                 return (chkbCanceled.IsChecked == (bool)valueCanceledToTest);
         }
@@ -730,13 +726,16 @@ namespace HispaniaCommon.ViewClientWPF.Windows
             rdOperationPannel.Height = ViewOperationPannel;
             gsSplitter.IsEnabled = false;
             btnAdd.Visibility = Visibility.Visible;
-            if (DataList.Count > 0)
+            if(DataList.Count > 0)
             {
                 cdAdd.Width = ViewReportButtonPannel;
-                rdSearchPannel.Height = ViewSearchPannel;
+                //rdSearchPannel.Height = ViewSearchPannel;
                 ActualizeButtonBar();
             }
-            else rdSearchPannel.Height = HideComponent;
+            else
+            {
+                //rdSearchPannel.Height = HideComponent;
+            }
             GridList.IsEnabled = true;
         }
 
@@ -751,10 +750,7 @@ namespace HispaniaCommon.ViewClientWPF.Windows
             }
             else btnEdit.Visibility = btnDelete.Visibility = btnViewData.Visibility = Visibility.Hidden;
 
-            if (!GoodManagement)
-            {
-                btnAddNewLine.Visibility = Visibility.Visible;
-            }
+            //btnAddNewLine.Visibility = ( this.GoodManagement ? Visibility.Visible : Visibility.Hidden );
         }
 
         #endregion

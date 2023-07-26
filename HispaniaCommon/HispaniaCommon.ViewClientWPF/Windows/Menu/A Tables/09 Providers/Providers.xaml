@@ -7,7 +7,7 @@
     xmlns:my="clr-namespace:MBCode.Framework.Managers.Culture;assembly=MBCode.Framework"
     x:Class="HispaniaCommon.ViewClientWPF.Windows.Providers" 
         mc:Ignorable="d"
-        Title="Proveïdors" Icon="{DynamicResource WindowDemoDataBaseIcon}"  Width="1280" Height="1024" MinWidth="1280" MinHeight="1024" Foreground="#FF9B211D"
+        Title="Proveïdors" Icon="{DynamicResource WindowDemoDataBaseIcon}"  Width="1280" Height="1024" MinWidth="1280" MinHeight="900" Foreground="#FF9B211D"
         WindowStartupLocation="CenterScreen" ResizeMode="CanResize">
     <Window.Resources>
         <ResourceDictionary >

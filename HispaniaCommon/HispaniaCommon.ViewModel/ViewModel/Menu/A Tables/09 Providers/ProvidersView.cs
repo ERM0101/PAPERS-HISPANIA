@@ -295,7 +295,7 @@ namespace HispaniaCommon.ViewModel
         //public string Company_EMail3 { get; set; }
         //public string Company_ContactPerson { get; set; }
         //public string Company_TimeTable { get; set; }
-        //public string Company_NumProv { get; set; }
+        public string Company_NumProv { get; set; }
         //public string Company_Cif { get; set; }
 
         //#endregion
@@ -758,8 +758,27 @@ namespace HispaniaCommon.ViewModel
                 Comment = Comment,
                 Canceled = Canceled,
                 PostalCode_Id = _PostalCode_Id,
-                Agent_Id = _Data_Agent_Id
+                Agent_Id = _Data_Agent_Id,
+
+                DataBank_EffectType_Id = this.DataBank_EffectType.EffectType_Id,
+                BillingData_Agent_Id = this.Data_Agent.Agent_Id,
+                BillingData_IVAType_Id = this.BillingData_IVAType.IVAType_Id,
+                BillingData_SendType_Id = this.BillingData_SendType.SendType_Id,
+
+                DataBank_ExpirationInterval = this.DataBank_ExpirationInterval,
+                DataBank_FirstExpirationData = this.DataBank_FirstExpirationData,
+                DataBank_NumEffect = this.DataBank_NumEffect,
+                DataBank_Payday_1 = this.DataBank_Payday_1,
+                DataBank_Payday_2 = this.DataBank_Payday_2,
+                DataBank_Payday_3 = this.DataBank_Payday_3,
+                DataBank_Bank = this.DataBank_Bank,
+
+                DataBank_BankAddress = this.DataBank_BankAddress,
+                DataBank_IBAN_BankCode = this.DataBank_IBAN_BankCode,
+                DataBank_IBAN_OfficeCode = this.DataBank_IBAN_OfficeCode,
+                DataBank_IBAN_CheckDigits = this.DataBank_IBAN_CheckDigits
             };
+
             return (provider);
         }
 
@@ -980,6 +999,12 @@ namespace HispaniaCommon.ViewModel
             {
                 ErrorField = ProvidersAttributes.BillingData_SendType;
                 throw new FormatException("Error, manca seleccionar el Tipus d'Enviament.");
+            }
+
+            if( this.Data_Agent == null )
+            {
+                ErrorField = ProvidersAttributes.Data_Agent;
+                throw new FormatException("Error, manca seleccionar el Representant.");
             }
         }
 

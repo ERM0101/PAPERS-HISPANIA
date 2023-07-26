@@ -1510,7 +1510,8 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                             if (!SourceCustomerOrders.ContainsKey(customerOrder.Customer.Customer_Id))
                             {
                                 List<CustomerOrdersView> ListCustomerOrders = new List<CustomerOrdersView> { customerOrder };
-                                SourceCustomerOrders.Add(Customer.Customer_Id, new DataForBill(DeliveryNoteDate, Customer, ListCustomerOrders));
+                                DataForBill new_item = new DataForBill( DeliveryNoteDate, Customer, ListCustomerOrders );
+                                SourceCustomerOrders.Add(Customer.Customer_Id, new_item );
                             }
                             else
                             {

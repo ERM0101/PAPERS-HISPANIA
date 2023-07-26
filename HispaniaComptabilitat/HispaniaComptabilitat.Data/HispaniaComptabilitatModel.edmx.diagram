@@ -4,110 +4,108 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="6b084ffb0a84466e89802b0e37f8bc95" Name="Diagram1" ZoomLevel="77">
-        <EntityTypeShape EntityType="HispaniaComptabilitatModel.LocalConnection" Width="2" PointX="0.5" PointY="0.5" />
-        <EntityTypeShape EntityType="HispaniaComptabilitatModel.Lock" Width="2" PointX="0.5" PointY="2.625" />
-        <EntityTypeShape EntityType="HispaniaComptabilitatModel.PostalCode" Width="2.125" PointX="14.75" PointY="10.75" />
-        <AssociationConnector Association="HispaniaComptabilitatModel.FK_Lock_LocalConnection" />
-        <EntityTypeShape EntityType="HispaniaComptabilitatModel.BillingSerie" Width="2" PointX="5.875" PointY="19.625" />
-        <EntityTypeShape EntityType="HispaniaComptabilitatModel.SendType" Width="1.875" PointX="11.125" PointY="18.5" />
-        <EntityTypeShape EntityType="HispaniaComptabilitatModel.EffectType" Width="1.875" PointX="8.875" PointY="18.5" />
-        <EntityTypeShape EntityType="HispaniaComptabilitatModel.AddressStore" Width="2.125" PointX="12.125" PointY="7.75" />
-        <AssociationConnector Association="HispaniaComptabilitatModel.FK_AddressStore_PostalCode" />
-        <EntityTypeShape EntityType="HispaniaComptabilitatModel.Good" Width="2.625" PointX="3.25" PointY="0.5" />
-        <EntityTypeShape EntityType="HispaniaComptabilitatModel.Unit" Width="2.25" PointX="6.375" PointY="0.5" />
-        <AssociationConnector Association="HispaniaComptabilitatModel.FK_Good_Unit" />
-        <EntityTypeShape EntityType="HispaniaComptabilitatModel.HistoCumulativeCustomer" Width="2.25" PointX="6.375" PointY="6.5" />
-        <EntityTypeShape EntityType="HispaniaComptabilitatModel.HistoGood" Width="2" PointX="0.5" PointY="4.625" />
-        <AssociationConnector Association="HispaniaComptabilitatModel.FK_HistoGood_Good" />
-        <EntityTypeShape EntityType="HispaniaComptabilitatModel.PriceRange" Width="2.25" PointX="6.375" PointY="3.875" />
-        <AssociationConnector Association="HispaniaComptabilitatModel.FK_PriceRange_Good" />
-        <EntityTypeShape EntityType="HispaniaComptabilitatModel.Parameter" Width="2.25" PointX="17.5" PointY="10.75" />
-        <AssociationConnector Association="HispaniaComptabilitatModel.FK_GeneralParams_PostalCode" />
-        <EntityTypeShape EntityType="HispaniaComptabilitatModel.DeliveryNote" Width="1.875" PointX="0.5" PointY="16.375" />
-        <EntityTypeShape EntityType="HispaniaComptabilitatModel.CustomerOrderMovement" Width="2.25" PointX="2.625" PointY="19.5" />
-        <AssociationConnector Association="HispaniaComptabilitatModel.FK_CustomerOrderMovement_Good" />
-        <EntityTypeShape EntityType="HispaniaComptabilitatModel.WarehouseMovement" Width="1.5" PointX="15" PointY="6.75" />
-        <AssociationConnector Association="HispaniaComptabilitatModel.FK_WarehouseMovement_Good" />
-        <EntityTypeShape EntityType="HispaniaComptabilitatModel.QueryCustom" Width="1.5" PointX="9.375" PointY="0.75" />
-        <EntityTypeShape EntityType="HispaniaComptabilitatModel.IVAType" Width="1.5" PointX="12.375" PointY="1" />
-        <EntityTypeShape EntityType="HispaniaComptabilitatModel.BadDebtMovement" Width="1.5" PointX="22.625" PointY="25.5" />
-        <EntityTypeShape EntityType="HispaniaComptabilitatModel.BadDebt" Width="1.5" PointX="25.875" PointY="16" />
-        <EntityTypeShape EntityType="HispaniaComptabilitatModel.Bill" Width="1.5" PointX="20.625" PointY="11.625" />
-        <EntityTypeShape EntityType="HispaniaComptabilitatModel.HistoCustomer" Width="1.5" PointX="25.875" PointY="8.5" />
-        <EntityTypeShape EntityType="HispaniaComptabilitatModel.Receipt" Width="1.5" PointX="24.875" PointY="21" />
-        <AssociationConnector Association="HispaniaComptabilitatModel.FK_BadDebt_Bill" />
-        <AssociationConnector Association="HispaniaComptabilitatModel.FK_BadDebt_BillingSerie" />
-        <AssociationConnector Association="HispaniaComptabilitatModel.FK_BadDebt_Receipt" />
-        <AssociationConnector Association="HispaniaComptabilitatModel.FK_BadDebtMovement_BadDebt" />
-        <AssociationConnector Association="HispaniaComptabilitatModel.FK_Bill_BillingSerie" />
-        <AssociationConnector Association="HispaniaComptabilitatModel.FK_Bill_EffectType" />
-        <AssociationConnector Association="HispaniaComptabilitatModel.FK_Bill_PostalCode" />
-        <AssociationConnector Association="HispaniaComptabilitatModel.FK_HistoCustomer_Bill" />
-        <AssociationConnector Association="HispaniaComptabilitatModel.FK_Receipt_Bill" />
-        <AssociationConnector Association="HispaniaComptabilitatModel.FK_HistoCustomer_BillingSerie" />
-        <AssociationConnector Association="HispaniaComptabilitatModel.FK_Receipt_BillingSerie" />
-        <AssociationConnector Association="HispaniaComptabilitatModel.FK_HistoCustomer_DeliveryNote" />
-        <AssociationConnector Association="HispaniaComptabilitatModel.FK_HistoCustomer_Good" />
-        <EntityTypeShape EntityType="HispaniaComptabilitatModel.Provider" Width="1.5" PointX="17.625" PointY="17.125" />
-        <AssociationConnector Association="HispaniaComptabilitatModel.FK_Provider_PostalCode" />
-        <AssociationConnector Association="HispaniaComptabilitatModel.FK_WarehouseMovement_Provider" />
-        <EntityTypeShape EntityType="HispaniaComptabilitatModel.Agent" Width="1.5" PointX="17.625" PointY="5.25" />
-        <AssociationConnector Association="HispaniaComptabilitatModel.FK_Agent_PostalCode" />
-        <AssociationConnector Association="HispaniaComptabilitatModel.FK_Bill_Agent" />
-        <AssociationConnector Association="HispaniaComptabilitatModel.FK_Provider_Agent" />
-        <EntityTypeShape EntityType="HispaniaComptabilitatModel.Customer" Width="1.5" PointX="22.875" PointY="3.5" />
-        <EntityTypeShape EntityType="HispaniaComptabilitatModel.RelatedCustomer" Width="1.5" PointX="25.125" PointY="4.875" />
-        <AssociationConnector Association="HispaniaComptabilitatModel.FK_AddressStore_Customer" />
-        <AssociationConnector Association="HispaniaComptabilitatModel.FK_Customer_Agent" />
-        <AssociationConnector Association="HispaniaComptabilitatModel.FK_Customer_EffectType" />
-        <AssociationConnector Association="HispaniaComptabilitatModel.FK_Customer_IVAType" />
-        <AssociationConnector Association="HispaniaComptabilitatModel.FK_Customer_PostalCode" />
-        <AssociationConnector Association="HispaniaComptabilitatModel.FK_Customer_SendType" />
-        <AssociationConnector Association="HispaniaComptabilitatModel.FK_HistoCumulativeCustomer_Customer" />
-        <AssociationConnector Association="HispaniaComptabilitatModel.FK_HistoCustomer_Customer" />
-        <AssociationConnector Association="HispaniaComptabilitatModel.FK_RelatedCustomer_Customer" />
-        <AssociationConnector Association="HispaniaComptabilitatModel.FK_RelatedCustomer_Customer1" />
-        <EntityTypeShape EntityType="HispaniaComptabilitatModel.CustomerOrder" Width="1.5" PointX="28.125" PointY="8" />
-        <AssociationConnector Association="HispaniaComptabilitatModel.FK_CustomerOrder_Agent" />
-        <AssociationConnector Association="HispaniaComptabilitatModel.FK_CustomerOrder_Bill" />
-        <AssociationConnector Association="HispaniaComptabilitatModel.FK_CustomerOrder_BillingSerie" />
-        <AssociationConnector Association="HispaniaComptabilitatModel.FK_CustomerOrder_Customer" />
-        <AssociationConnector Association="HispaniaComptabilitatModel.FK_CustomerOrder_DeliveryNote" />
-        <AssociationConnector Association="HispaniaComptabilitatModel.FK_CustomerOrder_EffectType" />
-        <AssociationConnector Association="HispaniaComptabilitatModel.FK_CustomerOrder_PostalCode" />
-        <AssociationConnector Association="HispaniaComptabilitatModel.FK_CustomerOrder_SendType" />
-        <AssociationConnector Association="HispaniaComptabilitatModel.FK_CustomerOrderMovement_CustomerOrder" />
-        <EntityTypeShape EntityType="HispaniaComptabilitatModel.sysdiagram" Width="1.5" PointX="9.375" PointY="3.75" />
-        <EntityTypeShape EntityType="HispaniaComptabilitatModel.TEMP_DIARY_BANDAGE" Width="1.5" PointX="9.375" PointY="6.75" />
-        <EntityTypeShape EntityType="HispaniaComptabilitatModel.HistoProvider" Width="1.5" PointX="30.875" PointY="2.25" />
-        <EntityTypeShape EntityType="HispaniaComptabilitatModel.ProviderOrder" Width="1.5" PointX="30.875" PointY="9.5" />
-        <EntityTypeShape EntityType="HispaniaComptabilitatModel.ProviderOrderMovement" Width="1.5" PointX="33.375" PointY="8.125" />
-        <EntityTypeShape EntityType="HispaniaComptabilitatModel.RelatedProvider" Width="1.5" PointX="19.875" PointY="23.375" />
-        <AssociationConnector Association="HispaniaComptabilitatModel.FK_ProviderOrder_Agent" />
-        <AssociationConnector Association="HispaniaComptabilitatModel.FK_HistoProvider_Bill" />
-        <AssociationConnector Association="HispaniaComptabilitatModel.FK_ProviderOrder_Bill" />
-        <AssociationConnector Association="HispaniaComptabilitatModel.FK_HistoProvider_BillingSerie" />
-        <AssociationConnector Association="HispaniaComptabilitatModel.FK_ProviderOrder_BillingSerie" />
-        <AssociationConnector Association="HispaniaComptabilitatModel.FK_ProviderOrderMovement_ProviderOrder" />
-        <AssociationConnector Association="HispaniaComptabilitatModel.FK_HistoProvider_DeliveryNote" />
-        <AssociationConnector Association="HispaniaComptabilitatModel.FK_ProviderOrder_DeliveryNote" />
-        <AssociationConnector Association="HispaniaComptabilitatModel.FK_ProviderOrder_EffectType" />
-        <AssociationConnector Association="HispaniaComptabilitatModel.FK_HistoProvider_Good" />
-        <AssociationConnector Association="HispaniaComptabilitatModel.FK_ProviderOrderMovement_Good" />
-        <AssociationConnector Association="HispaniaComptabilitatModel.FK_HistoProvider_Provider" />
-        <AssociationConnector Association="HispaniaComptabilitatModel.FK_ProviderOrder_PostalCode" />
-        <AssociationConnector Association="HispaniaComptabilitatModel.FK_ProviderOrder_Provider" />
-        <AssociationConnector Association="HispaniaComptabilitatModel.FK_RelatedProvider_Provider" />
-        <AssociationConnector Association="HispaniaComptabilitatModel.FK_RelatedProvider_Provider1" />
-        <AssociationConnector Association="HispaniaComptabilitatModel.FK_ProviderOrder_SendType" />
-        <AssociationConnector Association="HispaniaComptabilitatModel.FK_Provider_EffectType" />
-        <AssociationConnector Association="HispaniaComptabilitatModel.FK_Provider_IVAType" />
-        <AssociationConnector Association="HispaniaComptabilitatModel.FK_Provider_SendType" />
-        <EntityTypeShape EntityType="HispaniaComptabilitatModel.HistoCumulativeProvider" Width="1.5" PointX="19.875" PointY="26.25" />
-        <AssociationConnector Association="HispaniaComptabilitatModel.FK_HistoCumulativeProvider_Provider" />
-        <AssociationConnector Association="HispaniaComptabilitatModel.FK_ProviderOrderMovement_ProviderOrder1" />
-        </Diagram>
+      <Diagram DiagramId="e8209dee2d0b47a7b0804b28b0381060" Name="Diagram1">
+        <EntityTypeShape EntityType="HispaniaComptabilitat.Data.AddressStore" Width="1.5" PointX="6" PointY="48.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="HispaniaComptabilitat.Data.Agent" Width="1.5" PointX="3" PointY="48.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="HispaniaComptabilitat.Data.BadDebt" Width="1.5" PointX="16.5" PointY="43" IsExpanded="true" />
+        <EntityTypeShape EntityType="HispaniaComptabilitat.Data.BadDebtMovement" Width="1.5" PointX="18.75" PointY="36.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="HispaniaComptabilitat.Data.Bill" Width="1.5" PointX="8.25" PointY="45.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="HispaniaComptabilitat.Data.BillingSerie" Width="1.5" PointX="6" PointY="53.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="HispaniaComptabilitat.Data.Customer" Width="1.5" PointX="11.25" PointY="43.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="HispaniaComptabilitat.Data.CustomerOrder" Width="1.5" PointX="19.5" PointY="44.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="HispaniaComptabilitat.Data.CustomerOrderMovement" Width="1.5" PointX="21.75" PointY="54.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="HispaniaComptabilitat.Data.DeliveryNote" Width="1.5" PointX="17.25" PointY="61.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="HispaniaComptabilitat.Data.EffectType" Width="1.5" PointX="9" PointY="42.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="HispaniaComptabilitat.Data.Good" Width="1.5" PointX="19.5" PointY="65.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="HispaniaComptabilitat.Data.HistoCumulativeCustomer" Width="1.5" PointX="13.5" PointY="37.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="HispaniaComptabilitat.Data.HistoCumulativeProvider" Width="1.5" PointX="16.5" PointY="47.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="HispaniaComptabilitat.Data.HistoCustomer" Width="1.5" PointX="16.5" PointY="55" IsExpanded="true" />
+        <EntityTypeShape EntityType="HispaniaComptabilitat.Data.HistoGood" Width="1.5" PointX="21.75" PointY="67.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="HispaniaComptabilitat.Data.HistoProvider" Width="1.5" PointX="22.5" PointY="48" IsExpanded="true" />
+        <EntityTypeShape EntityType="HispaniaComptabilitat.Data.IVAType" Width="1.5" PointX="9" PointY="56.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="HispaniaComptabilitat.Data.LocalConnection" Width="1.5" PointX="0.75" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="HispaniaComptabilitat.Data.Lock" Width="1.5" PointX="3" PointY="0.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="HispaniaComptabilitat.Data.Parameter" Width="1.5" PointX="3" PointY="53.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="HispaniaComptabilitat.Data.PostalCode" Width="1.5" PointX="0.75" PointY="48.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="HispaniaComptabilitat.Data.PriceRange" Width="1.5" PointX="21.75" PointY="74.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="HispaniaComptabilitat.Data.Provider" Width="1.5" PointX="14.25" PointY="42.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="HispaniaComptabilitat.Data.ProviderOrder" Width="1.5" PointX="25.5" PointY="44.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="HispaniaComptabilitat.Data.ProviderOrderMovement" Width="1.5" PointX="27.75" PointY="48.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="HispaniaComptabilitat.Data.QueryCustom" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="HispaniaComptabilitat.Data.Receipt" Width="1.5" PointX="19.5" PointY="39.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="HispaniaComptabilitat.Data.RelatedCustomer" Width="1.5" PointX="13.5" PointY="60.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="HispaniaComptabilitat.Data.RelatedProvider" Width="1.5" PointX="16.5" PointY="52.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="HispaniaComptabilitat.Data.SendType" Width="1.5" PointX="9" PointY="60" IsExpanded="true" />
+        <EntityTypeShape EntityType="HispaniaComptabilitat.Data.Unit" Width="1.5" PointX="17.25" PointY="70.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="HispaniaComptabilitat.Data.WarehouseMovement" Width="1.5" PointX="22.5" PointY="43.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="HispaniaComptabilitat.Data.TEMP_DIARY_BANDAGE" Width="1.5" PointX="2.75" PointY="3.75" IsExpanded="true" />
+        <AssociationConnector Association="HispaniaComptabilitat.Data.FK_AddressStore_Customer" ManuallyRouted="false" />
+        <AssociationConnector Association="HispaniaComptabilitat.Data.FK_AddressStore_PostalCode" ManuallyRouted="false" />
+        <AssociationConnector Association="HispaniaComptabilitat.Data.FK_Agent_PostalCode" ManuallyRouted="false" />
+        <AssociationConnector Association="HispaniaComptabilitat.Data.FK_Bill_Agent" ManuallyRouted="false" />
+        <AssociationConnector Association="HispaniaComptabilitat.Data.FK_Customer_Agent" ManuallyRouted="false" />
+        <AssociationConnector Association="HispaniaComptabilitat.Data.FK_CustomerOrder_Agent" ManuallyRouted="false" />
+        <AssociationConnector Association="HispaniaComptabilitat.Data.FK_Provider_Agent" ManuallyRouted="false" />
+        <AssociationConnector Association="HispaniaComptabilitat.Data.FK_ProviderOrder_Agent" ManuallyRouted="false" />
+        <AssociationConnector Association="HispaniaComptabilitat.Data.FK_BadDebt_Bill" ManuallyRouted="false" />
+        <AssociationConnector Association="HispaniaComptabilitat.Data.FK_BadDebt_BillingSerie" ManuallyRouted="false" />
+        <AssociationConnector Association="HispaniaComptabilitat.Data.FK_BadDebt_Receipt" ManuallyRouted="false" />
+        <AssociationConnector Association="HispaniaComptabilitat.Data.FK_BadDebtMovement_BadDebt" ManuallyRouted="false" />
+        <AssociationConnector Association="HispaniaComptabilitat.Data.FK_Bill_BillingSerie" ManuallyRouted="false" />
+        <AssociationConnector Association="HispaniaComptabilitat.Data.FK_Bill_EffectType" ManuallyRouted="false" />
+        <AssociationConnector Association="HispaniaComptabilitat.Data.FK_Bill_PostalCode" ManuallyRouted="false" />
+        <AssociationConnector Association="HispaniaComptabilitat.Data.FK_CustomerOrder_Bill" ManuallyRouted="false" />
+        <AssociationConnector Association="HispaniaComptabilitat.Data.FK_HistoCustomer_Bill" ManuallyRouted="false" />
+        <AssociationConnector Association="HispaniaComptabilitat.Data.FK_HistoProvider_Bill" ManuallyRouted="false" />
+        <AssociationConnector Association="HispaniaComptabilitat.Data.FK_ProviderOrder_Bill" ManuallyRouted="false" />
+        <AssociationConnector Association="HispaniaComptabilitat.Data.FK_Receipt_Bill" ManuallyRouted="false" />
+        <AssociationConnector Association="HispaniaComptabilitat.Data.FK_CustomerOrder_BillingSerie" ManuallyRouted="false" />
+        <AssociationConnector Association="HispaniaComptabilitat.Data.FK_HistoCustomer_BillingSerie" ManuallyRouted="false" />
+        <AssociationConnector Association="HispaniaComptabilitat.Data.FK_HistoProvider_BillingSerie" ManuallyRouted="false" />
+        <AssociationConnector Association="HispaniaComptabilitat.Data.FK_ProviderOrder_BillingSerie" ManuallyRouted="false" />
+        <AssociationConnector Association="HispaniaComptabilitat.Data.FK_Receipt_BillingSerie" ManuallyRouted="false" />
+        <AssociationConnector Association="HispaniaComptabilitat.Data.FK_Customer_EffectType" ManuallyRouted="false" />
+        <AssociationConnector Association="HispaniaComptabilitat.Data.FK_Customer_IVAType" ManuallyRouted="false" />
+        <AssociationConnector Association="HispaniaComptabilitat.Data.FK_Customer_PostalCode" ManuallyRouted="false" />
+        <AssociationConnector Association="HispaniaComptabilitat.Data.FK_Customer_SendType" ManuallyRouted="false" />
+        <AssociationConnector Association="HispaniaComptabilitat.Data.FK_CustomerOrder_Customer" ManuallyRouted="false" />
+        <AssociationConnector Association="HispaniaComptabilitat.Data.FK_HistoCumulativeCustomer_Customer" ManuallyRouted="false" />
+        <AssociationConnector Association="HispaniaComptabilitat.Data.FK_HistoCustomer_Customer" ManuallyRouted="false" />
+        <AssociationConnector Association="HispaniaComptabilitat.Data.FK_RelatedCustomer_Customer" ManuallyRouted="false" />
+        <AssociationConnector Association="HispaniaComptabilitat.Data.FK_RelatedCustomer_Customer1" ManuallyRouted="false" />
+        <AssociationConnector Association="HispaniaComptabilitat.Data.FK_CustomerOrder_DeliveryNote" ManuallyRouted="false" />
+        <AssociationConnector Association="HispaniaComptabilitat.Data.FK_CustomerOrder_EffectType" ManuallyRouted="false" />
+        <AssociationConnector Association="HispaniaComptabilitat.Data.FK_CustomerOrder_PostalCode" ManuallyRouted="false" />
+        <AssociationConnector Association="HispaniaComptabilitat.Data.FK_CustomerOrder_SendType" ManuallyRouted="false" />
+        <AssociationConnector Association="HispaniaComptabilitat.Data.FK_CustomerOrderMovement_CustomerOrder" ManuallyRouted="false" />
+        <AssociationConnector Association="HispaniaComptabilitat.Data.FK_CustomerOrderMovement_Good" ManuallyRouted="false" />
+        <AssociationConnector Association="HispaniaComptabilitat.Data.FK_HistoCustomer_DeliveryNote" ManuallyRouted="false" />
+        <AssociationConnector Association="HispaniaComptabilitat.Data.FK_HistoProvider_DeliveryNote" ManuallyRouted="false" />
+        <AssociationConnector Association="HispaniaComptabilitat.Data.FK_ProviderOrder_DeliveryNote" ManuallyRouted="false" />
+        <AssociationConnector Association="HispaniaComptabilitat.Data.FK_Provider_EffectType" ManuallyRouted="false" />
+        <AssociationConnector Association="HispaniaComptabilitat.Data.FK_ProviderOrder_EffectType" ManuallyRouted="false" />
+        <AssociationConnector Association="HispaniaComptabilitat.Data.FK_Good_Unit" ManuallyRouted="false" />
+        <AssociationConnector Association="HispaniaComptabilitat.Data.FK_HistoCustomer_Good" ManuallyRouted="false" />
+        <AssociationConnector Association="HispaniaComptabilitat.Data.FK_HistoGood_Good" ManuallyRouted="false" />
+        <AssociationConnector Association="HispaniaComptabilitat.Data.FK_HistoProvider_Good" ManuallyRouted="false" />
+        <AssociationConnector Association="HispaniaComptabilitat.Data.FK_PriceRange_Good" ManuallyRouted="false" />
+        <AssociationConnector Association="HispaniaComptabilitat.Data.FK_ProviderOrderMovement_Good" ManuallyRouted="false" />
+        <AssociationConnector Association="HispaniaComptabilitat.Data.FK_WarehouseMovement_Good" ManuallyRouted="false" />
+        <AssociationConnector Association="HispaniaComptabilitat.Data.FK_HistoCumulativeProvider_Provider" ManuallyRouted="false" />
+        <AssociationConnector Association="HispaniaComptabilitat.Data.FK_HistoProvider_Provider" ManuallyRouted="false" />
+        <AssociationConnector Association="HispaniaComptabilitat.Data.FK_Provider_IVAType" ManuallyRouted="false" />
+        <AssociationConnector Association="HispaniaComptabilitat.Data.FK_Lock_LocalConnection" ManuallyRouted="false" />
+        <AssociationConnector Association="HispaniaComptabilitat.Data.FK_GeneralParams_PostalCode" ManuallyRouted="false" />
+        <AssociationConnector Association="HispaniaComptabilitat.Data.FK_Provider_PostalCode" ManuallyRouted="false" />
+        <AssociationConnector Association="HispaniaComptabilitat.Data.FK_ProviderOrder_PostalCode" ManuallyRouted="false" />
+        <AssociationConnector Association="HispaniaComptabilitat.Data.FK_Provider_SendType" ManuallyRouted="false" />
+        <AssociationConnector Association="HispaniaComptabilitat.Data.FK_ProviderOrder_Provider" ManuallyRouted="false" />
+        <AssociationConnector Association="HispaniaComptabilitat.Data.FK_RelatedProvider_Provider" ManuallyRouted="false" />
+        <AssociationConnector Association="HispaniaComptabilitat.Data.FK_RelatedProvider_Provider1" ManuallyRouted="false" />
+        <AssociationConnector Association="HispaniaComptabilitat.Data.FK_WarehouseMovement_Provider" ManuallyRouted="false" />
+        <AssociationConnector Association="HispaniaComptabilitat.Data.FK_ProviderOrder_SendType" ManuallyRouted="false" />
+        <AssociationConnector Association="HispaniaComptabilitat.Data.FK_ProviderOrderMovement_ProviderOrder" ManuallyRouted="false" />
+      </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

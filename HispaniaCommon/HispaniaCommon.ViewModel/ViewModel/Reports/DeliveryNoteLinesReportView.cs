@@ -29,7 +29,7 @@ namespace HispaniaCommon.ViewModel
             PdfWriter writer = null;
             try
             {
-                List<HispaniaCompData.DeliveryNoteLine> info = GlobalViewModel.Instance.HispaniaViewModel.ReadInfoForDeliveryNoteLines();
+                List<HispaniaCompData.DeliveryNoteLines_Result> info = GlobalViewModel.Instance.HispaniaViewModel.ReadInfoForDeliveryNoteLines();
                 doc = ReportView.CreateDocument(iTextSharp.text.PageSize.A4, PDF_Orientation.Horizontal, 0, 0, 15, ReportView.MinBottomMarginDoc);
                 writer = ReportView.GetPDF_PdfWriter(doc, PDF_Report_Types.Listing, "LiniesAlbara", out string PDF_FileName);
                 doc.AddTitle("Llistat de línies d'albarà");
@@ -54,7 +54,7 @@ namespace HispaniaCommon.ViewModel
                     {new Tuple<string, int, PDF_Align>("DATA", 1, PDF_Align.Center) },
                 };
                 List<List<Tuple<string, PDF_Align>>> Items = new List<List<Tuple<string, PDF_Align>>>(info.Count);
-                foreach (HispaniaCompData.DeliveryNoteLine deliveryNoteLine in info)
+                foreach (HispaniaCompData.DeliveryNoteLines_Result deliveryNoteLine in info)
                 {
                     List<Tuple<string, PDF_Align>> item = new List<Tuple<string, PDF_Align>>(10)
                     {

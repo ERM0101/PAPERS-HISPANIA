@@ -19,7 +19,7 @@ namespace HispaniaCommon.ViewModel
             {
                 CustomersSalesInDb = HispaniaDataAccess.Instance.ReadCustomersSales(Upper_Limit_Sales);
                 _CustomersSalesInDictionary = new SortedDictionary<int, CustomersSalesView>();
-                foreach (HispaniaCompData.CustomerSale CustomerSale in CustomersSalesInDb)
+                foreach (HispaniaCompData.CustomerSales_Result CustomerSale in CustomersSalesInDb)
                 {
                     CustomersSalesView NewCustomersSalesView = new CustomersSalesView(CustomerSale);
                     _CustomersSalesInDictionary.Add(NewCustomersSalesView.Customer_Id, NewCustomersSalesView);
@@ -46,28 +46,28 @@ namespace HispaniaCommon.ViewModel
             return GetKeyCustomersSaleView(CustomersSalesView.Customer_Id);
         }
 
-        private string GetKeyCustomersSaleView(HispaniaCompData.CustomerSale CustomerSale)
+        private string GetKeyCustomersSaleView( HispaniaCompData.CustomerSales_Result CustomerSale )
         {
-            return GetKeyCustomersSaleView(CustomerSale.Customer_Id);
+            return GetKeyCustomersSaleView( CustomerSale.Customer_Id );
         }
 
-        private string GetKeyCustomersSaleView(int Customer_Id)
+        private string GetKeyCustomersSaleView( int Customer_Id )
         {
-            return string.Format("{0}", Customer_Id);
+            return string.Format( "{0}", Customer_Id );
         }
         
         #endregion
 
         #region DataBase [CRUD]
 
-        private List<HispaniaCompData.CustomerSale> ReadCustomersSalesInDb(decimal Upper_Limit_Sales)
+        private List<HispaniaCompData.CustomerSales_Result> ReadCustomersSalesInDb(decimal Upper_Limit_Sales)
         {
             return (HispaniaDataAccess.Instance.ReadCustomersSales(Upper_Limit_Sales));
         }
 
-        private List<HispaniaCompData.CustomerSale> _CustomersSalesInDb;
+        private List<HispaniaCompData.CustomerSales_Result> _CustomersSalesInDb;
 
-        private List<HispaniaCompData.CustomerSale> CustomersSalesInDb
+        private List<HispaniaCompData.CustomerSales_Result> CustomersSalesInDb
         {
             get
             {

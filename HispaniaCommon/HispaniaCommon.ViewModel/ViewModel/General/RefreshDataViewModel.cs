@@ -292,6 +292,9 @@ namespace HispaniaCommon.ViewModel
         /// </summary>
         private void RefreshProvidersData()
         {
+            GlobalViewModel.Instance.HispaniaViewModel.RefreshSendTypes();
+            GlobalViewModel.Instance.HispaniaViewModel.RefreshIVATypes();
+            GlobalViewModel.Instance.HispaniaViewModel.RefreshEffectTypes();
             GlobalViewModel.Instance.HispaniaViewModel.RefreshPostalCodes();
             GlobalViewModel.Instance.HispaniaViewModel.RefreshAgents();
             GlobalViewModel.Instance.HispaniaViewModel.RefreshProviders();

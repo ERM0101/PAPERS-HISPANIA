@@ -39,6 +39,16 @@
                     </GridViewColumn.CellTemplate>
                 </GridViewColumn>
                 <GridViewColumn Width="Auto">
+                    <GridViewColumnHeader Content="Estat lliurament" HorizontalContentAlignment="Left"/>
+                    <GridViewColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid Background="Transparent" HorizontalAlignment="Stretch" >
+                                <TextBlock Text="{Binding According_Str}" TextAlignment="Left" Margin="0,0,2,0"/>
+                            </Grid>
+                        </DataTemplate>
+                    </GridViewColumn.CellTemplate>
+                </GridViewColumn>
+                <GridViewColumn Width="Auto">
                     <GridViewColumnHeader Content="Nº Proveidor" HorizontalContentAlignment="Left"/>
                     <GridViewColumn.CellTemplate>
                         <DataTemplate>
@@ -144,6 +154,16 @@
                 </GridViewColumn>
                 <GridViewColumn Width="Auto">
                     <GridViewColumnHeader Content="Nº Client" HorizontalContentAlignment="Left"/>
+                    <GridViewColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid Background="Transparent" HorizontalAlignment="Stretch" >
+                                <TextBlock Text="{Binding Provider_Id_Str}" TextAlignment="Left" Margin="0,0,2,0"/>
+                            </Grid>
+                        </DataTemplate>
+                    </GridViewColumn.CellTemplate>
+                </GridViewColumn>
+                <GridViewColumn Width="Auto">
+                    <GridViewColumnHeader Content="Nº Proveidor" HorizontalContentAlignment="Left"/>
                     <GridViewColumn.CellTemplate>
                         <DataTemplate>
                             <Grid Background="Transparent" HorizontalAlignment="Stretch" >
@@ -279,7 +299,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="30" Name="rdSearchPannel"/>
                     <RowDefinition Height="*" />
-                    <RowDefinition Height="30" Name="rdOperationPannel"/>
+                    <RowDefinition Height="40" Name="rdOperationPannel"/>
                 </Grid.RowDefinitions>
                 <Grid Grid.Row="0">
                     <Grid.ColumnDefinitions>
@@ -338,19 +358,85 @@
                               View="{StaticResource GridViewForProviderOrders}">
                     </ListView>
                 </GroupBox>
-                <Grid Grid.Row="2">
+                
+                <StackPanel Grid.Row="2" Orientation="Horizontal">
+                    <Button  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,5,5,5" x:Name="btnAdd">
+                        <StackPanel x:Name="spAdd" Margin="4,2,10,2" Orientation="Horizontal">
+                            <Image Height="16" Margin="0,0,10,0" Source="{DynamicResource Add}" Width="16"/>
+                            <TextBlock x:Name="tbAdd" Text="Donar d'alta" />
+                        </StackPanel>
+                    </Button>
+                    <Button HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,5,5,5" x:Name="btnCopy" >
+                        <StackPanel x:Name="spCopy" Margin="4,2,10,2" Orientation="Horizontal">
+                            <Image Height="16" Margin="0,0,10,0" Source="{DynamicResource Add}" Width="16"/>
+                            <TextBlock x:Name="tbCopy" Text="Copiar comanda" />
+                        </StackPanel>
+                    </Button>
+                    <Button HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,5,5,5" x:Name="btnEdit" Width="105" Height="23">
+                        <StackPanel x:Name="spEdit"  Margin="2" Orientation="Horizontal">
+                            <Image Height="16" Margin="4,2,10,2" Source="{DynamicResource Edit}" Width="16" />
+                            <TextBlock x:Name="tbEdit" Text="Modificar" />
+                        </StackPanel>
+                    </Button>
+                    <Button HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,5,5,5" x:Name="btnDelete" Width="105" Height="23">
+                        <StackPanel x:Name="spDelete"  Margin="2" Orientation="Horizontal">
+                            <Image Height="16" Margin="4,2,10,2" Source="{DynamicResource Delete}" Width="16" />
+                            <TextBlock x:Name="tbDelete" Text="Esborrar" />
+                        </StackPanel>
+                    </Button>
+                    <Button HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,5,5,5" x:Name="btnViewData" Width="115" Height="23">
+                        <StackPanel x:Name="spViewData"  Margin="2" Orientation="Horizontal">
+                            <Image Height="16" Margin="4,2,10,2" Source="{DynamicResource DetailsItem}" Width="16" />
+                            <TextBlock x:Name="tbViewData" Text="Veure Dades" />
+                        </StackPanel>
+                    </Button>
+                    <Button HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,5,5,5" x:Name="btnPrint" Width="105" Height="23">
+                        <StackPanel x:Name="spPrint"  Margin="2" Orientation="Horizontal">
+                            <Image Height="16" Margin="4,2,10,2" Source="{DynamicResource Printer}" Width="16" />
+                            <TextBlock x:Name="tbPrint" Text="Imprimir" />
+                        </StackPanel>
+                    </Button>
+                    <Button HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,5,5,5" x:Name="btnSendByEmail" Width="135" Height="23">
+                        <StackPanel x:Name="spSendByEmail"  Margin="2" Orientation="Horizontal">
+                            <Image Height="16" Margin="4,2,10,2" Source="{DynamicResource SendByEMail}" Width="16" />
+                            <TextBlock x:Name="tbSendByEmail" Text="Enviar per E-Mail" />
+                        </StackPanel>
+                    </Button>
+                    <Button HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,5,5,5" x:Name="btnCreateBill" Width="125" Height="23">
+                        <StackPanel x:Name="spCreateBill"  Margin="2" Orientation="Horizontal">
+                            <Image Height="16" Margin="4,2,10,2" Source="{DynamicResource CreateBill}" Width="16" />
+                            <TextBlock x:Name="tbCreateBill" Text="Crear Factura" />
+                        </StackPanel>
+                    </Button>
+                    <Button HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,5,5,5" x:Name="btnChangeDate" Width="120" Height="23">
+                        <StackPanel x:Name="spChangeDate"  Margin="2" Orientation="Horizontal">
+                            <Image Height="16" Margin="4,2,10,2" Source="{DynamicResource CalendarIcon}" Width="16" />
+                            <TextBlock x:Name="tbChangeDate" Text="Canviar Data" />
+                        </StackPanel>
+                    </Button>
+                    <Button HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,5,5,5" x:Name="btnCreateExcel" Width="115" Height="23">
+                        <StackPanel x:Name="spCreateExcel" Margin="2" Orientation="Horizontal">
+                            <Image Height="16" Margin="4,2,10,2" Source="{DynamicResource Excel}" Width="16"/>
+                            <TextBlock x:Name="tbCreateExcel" Text="Crear Excel" />
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+                
+                <!--
+                <Grid Grid.Row="3">                    
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="5"/>
                         <ColumnDefinition Width="120" Name="cdAdd"/>
+                        <ColumnDefinition Width="130" Name="cdCopy"/>
                         <ColumnDefinition Width="110" Name="cdEdit"/>
                         <ColumnDefinition Width="110" Name="cdDelete"/>
                         <ColumnDefinition Width="120" Name="cdView"/>
                         <ColumnDefinition Width="110" Name="cdPrint"/>
                         <ColumnDefinition Width="140" Name="cdSendByEMail"/>
                         <ColumnDefinition Width="130" Name="cdCreateBill"/>
-                        <ColumnDefinition Width="155" Name="cdSplitProviderOrder"/>
-                        <ColumnDefinition Width="125" Name="cdCreateDeliveryNote"/>
-                        <ColumnDefinition Width="125" Name="cdChangeDate"/>
+                        <ColumnDefinition Width="125" Name="cdSplitProviderOrder"/>
+                        <ColumnDefinition Width="125" Name="cdCreateDeliveryNote" /> 
+                        <ColumnDefinition Width="auto" Name="cdChangeDate"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Button Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,2,0,0" x:Name="btnAdd" Width="115" Height="23">
@@ -359,67 +445,62 @@
                             <TextBlock x:Name="tbAdd" Text="Donar d'alta" />
                         </StackPanel>
                     </Button>
-                    <Button Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,2,0,0" x:Name="btnEdit" Width="105" Height="23">
+                    <Button Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,2,0,0" x:Name="btnCopy" Width="125" Height="23">
+                        <StackPanel x:Name="spCopy" Margin="2" Orientation="Horizontal">
+                            <Image Height="16" Margin="0,0,10,0" Source="{DynamicResource Add}" Width="16"/>
+                            <TextBlock x:Name="tbCopy" Text="Copiar comanda" />
+                        </StackPanel>
+                    </Button>
+                    <Button Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,2,0,0" x:Name="btnEdit" Width="105" Height="23">
                         <StackPanel x:Name="spEdit"  Margin="2" Orientation="Horizontal">
                             <Image Height="16" Margin="0,0,10,0" Source="{DynamicResource Edit}" Width="16" />
                             <TextBlock x:Name="tbEdit" Text="Modificar" />
                         </StackPanel>
                     </Button>
-                    <Button Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,2,0,0" x:Name="btnDelete" Width="105" Height="23">
+                    <Button Grid.Column="4" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,2,0,0" x:Name="btnDelete" Width="105" Height="23">
                         <StackPanel x:Name="spDelete"  Margin="2" Orientation="Horizontal">
                             <Image Height="16" Margin="0,0,10,0" Source="{DynamicResource Delete}" Width="16" />
                             <TextBlock x:Name="tbDelete" Text="Esborrar" />
                         </StackPanel>
                     </Button>
-                    <Button Grid.Column="4" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,2,0,0" x:Name="btnViewData" Width="115" Height="23">
+                    <Button Grid.Column="5" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,2,0,0" x:Name="btnViewData" Width="115" Height="23">
                         <StackPanel x:Name="spViewData"  Margin="2" Orientation="Horizontal">
                             <Image Height="16" Margin="0,0,10,0" Source="{DynamicResource DetailsItem}" Width="16" />
                             <TextBlock x:Name="tbViewData" Text="Veure Dades" />
                         </StackPanel>
                     </Button>
-                    <Button Grid.Column="5" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,2,0,0" x:Name="btnPrint" Width="105" Height="23">
+                    <Button Grid.Column="6" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,2,0,0" x:Name="btnPrint" Width="105" Height="23">
                         <StackPanel x:Name="spPrint"  Margin="2" Orientation="Horizontal">
                             <Image Height="16" Margin="0,0,10,0" Source="{DynamicResource Printer}" Width="16" />
                             <TextBlock x:Name="tbPrint" Text="Imprimir" />
                         </StackPanel>
                     </Button>
-                    <Button Grid.Column="6" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,2,0,0" x:Name="btnSendByEmail" Width="135" Height="23">
+                    <Button Grid.Column="7" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,2,0,0" x:Name="btnSendByEmail" Width="135" Height="23">
                         <StackPanel x:Name="spSendByEmail"  Margin="2" Orientation="Horizontal">
                             <Image Height="16" Margin="0,0,10,0" Source="{DynamicResource SendByEMail}" Width="16" />
                             <TextBlock x:Name="tbSendByEmail" Text="Enviar per E-Mail" />
                         </StackPanel>
                     </Button>
-                    <Button Grid.Column="7" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,2,0,0" x:Name="btnCreateBill" Width="125" Height="23">
+                    <Button Grid.Column="8" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,2,0,0" x:Name="btnCreateBill" Width="125" Height="23">
                         <StackPanel x:Name="spCreateBill"  Margin="2" Orientation="Horizontal">
                             <Image Height="16" Margin="0,0,10,0" Source="{DynamicResource CreateBill}" Width="16" />
                             <TextBlock x:Name="tbCreateBill" Text="Crear Factura" />
                         </StackPanel>
                     </Button>
-                    <Button Grid.Column="8" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,2,0,0" x:Name="btnSplitProviderOrder" Width="150" Height="23">
-                        <StackPanel x:Name="spSplitProviderOrder"  Margin="2" Orientation="Horizontal">
-                            <Image Height="16" Margin="0,0,10,0" Source="{DynamicResource SplitProviderOrder}" Width="16" />
-                            <TextBlock x:Name="tbSplitProviderOrder" Text="Preparar per Albarà" />
-                        </StackPanel>
-                    </Button>
-                    <Button Grid.Column="9" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,2,0,0" x:Name="btnCreateDeliveryNote" Width="120" Height="23">
-                        <StackPanel x:Name="spCreateDeliveryNote"  Margin="2" Orientation="Horizontal">
-                            <Image Height="16" Margin="0,0,10,0" Source="{DynamicResource AccordingDeliveryNote}" Width="16" />
-                            <TextBlock x:Name="tbCreateDeliveryNote" Text="Crear Albarà" />
-                        </StackPanel>
-                    </Button>
-                    <Button Grid.Column="10" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,2,0,0" x:Name="btnChangeDate" Width="120" Height="23">
+                    <Button Grid.Column="9" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,2,0,0" x:Name="btnChangeDate" Width="120" Height="23">
                         <StackPanel x:Name="spChangeDate"  Margin="2" Orientation="Horizontal">
                             <Image Height="16" Margin="0,0,10,0" Source="{DynamicResource CalendarIcon}" Width="16" />
                             <TextBlock x:Name="tbChangeDate" Text="Canviar Data" />
                         </StackPanel>
                     </Button>
-                    <Button Grid.Column="11" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,2,0,0" x:Name="btnCreateExcel" Width="115" Height="23">
+                    <Button Grid.Column="10" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,2,0,0" x:Name="btnCreateExcel" Width="115" Height="23">
                         <StackPanel x:Name="spCreateExcel" Margin="2" Orientation="Horizontal">
                             <Image Height="16" Margin="0,0,10,0" Source="{DynamicResource Excel}" Width="16"/>
                             <TextBlock x:Name="tbCreateExcel" Text="Crear Excel" />
                         </StackPanel>
                     </Button>
                 </Grid>
+                -->
             </Grid>
             <GridSplitter Grid.Row="2" Name="gsSplitter" Background="#FF62676A" ShowsPreview="True" 
                           HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="5" />

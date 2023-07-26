@@ -23,7 +23,7 @@ namespace HispaniaCommon.ViewModel
             {
                 DiaryBandagesInDb = HispaniaDataAccess.Instance.ReadDiaryBandages(Bill_Id_From, Bill_Id_Until, YearQuery);
                 _DiaryBandagesInDictionary = new SortedDictionary<int, DiaryBandagesView>();
-                foreach (HispaniaCompData.DiaryBandage DiaryBandage in DiaryBandagesInDb)
+                foreach (HispaniaCompData.DiaryBandages_Result DiaryBandage in DiaryBandagesInDb)
                 {
                     DiaryBandagesView NewDiaryBandagesView = new DiaryBandagesView(DiaryBandage);
                     _DiaryBandagesInDictionary.Add(NewDiaryBandagesView.Bill_Id, NewDiaryBandagesView);
@@ -50,7 +50,7 @@ namespace HispaniaCommon.ViewModel
             return GetKeyDiaryBandageView(DiaryBandagesView.Bill_Id);
         }
 
-        private string GetKeyDiaryBandageView(HispaniaCompData.DiaryBandage DiaryBandage)
+        private string GetKeyDiaryBandageView(HispaniaCompData.DiaryBandages_Result DiaryBandage)
         {
             return GetKeyDiaryBandageView((int)DiaryBandage.Bill_Id);
         }
@@ -64,14 +64,14 @@ namespace HispaniaCommon.ViewModel
 
         #region DataBase [CRUD]
 
-        private List<HispaniaCompData.DiaryBandage> ReadDiaryBandagesInDb(string Bill_Id_From, string Bill_Id_Until, decimal YearQuery)
+        private List<HispaniaCompData.DiaryBandages_Result> ReadDiaryBandagesInDb(string Bill_Id_From, string Bill_Id_Until, decimal YearQuery)
         {
             return (HispaniaDataAccess.Instance.ReadDiaryBandages(Bill_Id_From, Bill_Id_Until, YearQuery));
         }
 
-        private List<HispaniaCompData.DiaryBandage> _DiaryBandagesInDb;
+        private List<HispaniaCompData.DiaryBandages_Result> _DiaryBandagesInDb;
 
-        private List<HispaniaCompData.DiaryBandage> DiaryBandagesInDb
+        private List<HispaniaCompData.DiaryBandages_Result> DiaryBandagesInDb
         {
             get
             {

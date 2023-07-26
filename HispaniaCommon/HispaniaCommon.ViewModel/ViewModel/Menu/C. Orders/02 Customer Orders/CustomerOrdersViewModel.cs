@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using HispaniaCompData = HispaniaComptabilitat.Data;
 using System.Text;
+using HispaniaComptabilitat.Data;
 
 #endregion
 
@@ -230,11 +231,13 @@ namespace HispaniaCommon.ViewModel
             {
                 LogViewModel.Instance.WriteLog("Create Bill - CreateBillForCustomer({0}, {1}, {2})",
                                                CustomerOrderInfo.Bill_Date, CustomerOrderInfo.Customer.Customer_Id, CustomerOrderInfo.Movements.Count);
-                CreateBillForCustomer(CustomerOrderInfo.Bill_Date, CustomerOrderInfo.Customer, CustomerOrderInfo.Movements);
+                CreateBillForCustomer( CustomerOrderInfo.Bill_Date, CustomerOrderInfo.Customer,
+                                       CustomerOrderInfo.Movements );
             }
         }
 
-        private void CreateBillForCustomer(DateTime Bill_Date, CustomersView Customer, List<CustomerOrdersView> SourceCustomerOrders)
+        private void CreateBillForCustomer( DateTime Bill_Date, CustomersView Customer, 
+                                            List<CustomerOrdersView> SourceCustomerOrders )
         {
             //  Data Validation
                 LogViewModel.Instance.WriteLog("Create Bill - ValidateBillForCustomer({0}, {1})", Customer.Customer_Id, SourceCustomerOrders.Count);
@@ -263,7 +266,7 @@ namespace HispaniaCommon.ViewModel
                 LogViewModel.Instance.WriteLog("Create Bill - Step 3 - CalculateGoodsAmountValue({0})", Movements.Count);
                 Dictionary<int, Pair> GoodsAmountValue = CalculateGoodsAmountValue(Movements);
             //  Step 4 : Create Bill Info from Customer.
-                HispaniaCompData.Bill Bill = (new BillsView(Customer)).GetBill();
+                HispaniaCompData.Bill Bill = (new BillsView(Customer, SourceCustomerOrders[0] )).GetBill();
                 Bill.TotalAmount = TotalAmount;
                 Bill.Date = Bill_Date;
                 StringBuilder sbExpirationDateInfo = new StringBuilder(string.Empty);
@@ -277,17 +280,23 @@ namespace HispaniaCommon.ViewModel
                 }
                 Bill.ExpirationDate = sbExpirationDateInfo.ToString();
                 LogViewModel.Instance.WriteLog("Create Bill - Step 4.1 - Bill.ExpirationDate = {0}", Bill.ExpirationDate);
-                if (SourceCustomerOrders[0].EffectType.EffectType_Id == 6)
-                {
-                    Bill.DataBank_EffectType_Id = SourceCustomerOrders[0].EffectType.EffectType_Id;
-                    Bill.DataBank_Bank = SourceCustomerOrders[0].DataBank_Bank;
-                    Bill.DataBank_BankAddress = SourceCustomerOrders[0].DataBank_BankAddress;
-                    Bill.DataBank_IBAN_CountryCode = SourceCustomerOrders[0].DataBank_IBAN_CountryCode;
-                    Bill.DataBank_IBAN_BankCode = SourceCustomerOrders[0].DataBank_IBAN_BankCode;
-                    Bill.DataBank_IBAN_OfficeCode = SourceCustomerOrders[0].DataBank_IBAN_OfficeCode;
-                    Bill.DataBank_IBAN_CheckDigits = SourceCustomerOrders[0].DataBank_IBAN_CheckDigits;
-                    Bill.DataBank_IBAN_AccountNumber = SourceCustomerOrders[0].DataBank_IBAN_AccountNumber;
-                }
+
+                #region //TODO: In the past it was like this - now the data from the CustomerOrder
+                
+                //if(SourceCustomerOrders[0].EffectType.EffectType_Id == 6)
+                //{
+                //    Bill.DataBank_EffectType_Id = SourceCustomerOrders[0].EffectType.EffectType_Id;
+                //    Bill.DataBank_Bank = SourceCustomerOrders[0].DataBank_Bank;
+                //    Bill.DataBank_BankAddress = SourceCustomerOrders[0].DataBank_BankAddress;
+                //    Bill.DataBank_IBAN_CountryCode = SourceCustomerOrders[0].DataBank_IBAN_CountryCode;
+                //    Bill.DataBank_IBAN_BankCode = SourceCustomerOrders[0].DataBank_IBAN_BankCode;
+                //    Bill.DataBank_IBAN_OfficeCode = SourceCustomerOrders[0].DataBank_IBAN_OfficeCode;
+                //    Bill.DataBank_IBAN_CheckDigits = SourceCustomerOrders[0].DataBank_IBAN_CheckDigits;
+                //    Bill.DataBank_IBAN_AccountNumber = SourceCustomerOrders[0].DataBank_IBAN_AccountNumber;
+                //}
+                
+                #endregion
+
                 LogViewModel.Instance.WriteLog("Create Bill - Step 4.2 - EffectType_Id = {0}, Bill.DataBank_Bank = {1}, Bill.DataBank_BankAddress = {2}, IBAN = {3}", 
                                                Bill.DataBank_EffectType_Id, Bill.DataBank_Bank, Bill.DataBank_BankAddress,
                                                string.Format("{0} {1} {2} {3} {4}", Bill.DataBank_IBAN_CountryCode, Bill.DataBank_IBAN_BankCode,

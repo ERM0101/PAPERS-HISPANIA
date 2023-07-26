@@ -63,6 +63,8 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Converters\BoolToHeightConverter.cs" />
+    <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Managers\Manager_IU.cs" />
     <Compile Include="Windows\Common\Class\FocusAdvancement.cs" />
     <Compile Include="Windows\Common\Windows\DataSelector.xaml.cs">
@@ -282,6 +284,9 @@
     </Compile>
     <Compile Include="Windows\Menu\H. Closing\04. RemoveWarehouseMovements\RemoveWarehouseMovements.xaml.cs">
       <DependentUpon>RemoveWarehouseMovements.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\Menu\I. Queries\QueryOrdersProvider.xaml.cs">
+      <DependentUpon>QueryOrdersProvider.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\Menu\I. Queries\_Common\Queries.xaml.cs">
       <DependentUpon>Queries.xaml</DependentUpon>
@@ -599,6 +604,10 @@
     <Page Include="Windows\Menu\H. Closing\04. RemoveWarehouseMovements\RemoveWarehouseMovements.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\Menu\I. Queries\QueryOrdersProvider.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\Menu\I. Queries\_Common\Queries.xaml">
       <SubType>Designer</SubType>
