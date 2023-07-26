@@ -380,6 +380,11 @@ namespace HispaniaCommon.ViewClientWPF.Windows
             }
         }
 
+        private bool LineasOrdenadas
+        {
+            get;set;
+        }
+
         #region GUI
 
         /// <summary>
@@ -1039,18 +1044,27 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                      MsgManager.ShowMessage("Operació cancel·lada per l'usuari.", MsgType.Information);
                      break;
                 case Operation.Edit:
-                     MsgManager.ShowMessage("Operació cancel·lada per l'usuari.", MsgType.Information);
-                     if (!GlobalViewModel.Instance.HispaniaViewModel.UnlockRegister(CustomerOrderDataControl.CustomerOrder, out string ErrMsg))
+                     if (CustomerOrderDataControl.CustomerOrder.LineasOrdenadas)
                      {
-                         MsgManager.ShowMessage(ErrMsg);
+                        MsgManager.ShowMessage("Operació cancel·lada per l'usuari. Les línies mantenen l'ordre definit.", MsgType.Information);
                      }
-                     if (CustomerOrderDataControl.CustomerOrder.HasBill)
+                     else
                      {
-                         if (!GlobalViewModel.Instance.HispaniaViewModel.UnlockRegister(CustomerOrderDataControl.CustomerOrder.Bill, out ErrMsg))
-                         {
-                             MsgManager.ShowMessage(ErrMsg);
-                         }
+                        MsgManager.ShowMessage("Operació cancel·lada per l'usuari. ", MsgType.Information);
                      }
+                    
+                    if (!GlobalViewModel.Instance.HispaniaViewModel.UnlockRegister(CustomerOrderDataControl.CustomerOrder, out string ErrMsg))
+                    {
+                        MsgManager.ShowMessage(ErrMsg);
+                    }
+                    if (CustomerOrderDataControl.CustomerOrder.HasBill)
+                    {
+                        if (!GlobalViewModel.Instance.HispaniaViewModel.UnlockRegister(CustomerOrderDataControl.CustomerOrder.Bill, out ErrMsg))
+                        {
+                            MsgManager.ShowMessage(ErrMsg);
+                        }
+                    }
+                                          
                      break;
                 case Operation.Show:
                      break;
@@ -1130,7 +1144,11 @@ namespace HispaniaCommon.ViewClientWPF.Windows
         /// <param name="e">Parameters with the event was sended.</param>
         private void BtnPrint_Click(object sender, RoutedEventArgs e)
         {
-            ShowOrderOrProformaPannel();           
+            if (PrintCustomerOrder)
+            {
+                ShowOrderOrProformaPannel();
+            }
+            else PrintReportDeliveryNote();
         }
 
         /// <summary>
@@ -1152,7 +1170,7 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                         PrintReportCustomerOrder(false);
                     }
                 }
-                else PrintReportDeliveryNote();
+               
                 DataList = GlobalViewModel.Instance.HispaniaViewModel.CustomerOrders;
                 ListItems.UpdateLayout();
                 HideOrderOrProformaPannel();
@@ -1183,8 +1201,7 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                     {
                         PrintReportCustomerOrder(true);
                     }
-                }
-                else PrintReportDeliveryNote();
+                }               
                 DataList = GlobalViewModel.Instance.HispaniaViewModel.CustomerOrders;
                 ListItems.UpdateLayout();
                 HideOrderOrProformaPannel();

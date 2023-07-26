@@ -186,11 +186,7 @@
                                 <ColumnDefinition Width="30"/>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <!--<Label Grid.Column="0" x:Name="lblUnitShippingInput" Content="UNITATS DE EXPEDICIÓ :" Margin="6,4,2,0" FontWeight="Bold" HorizontalAlignment="Center" 
-                                   VerticalAlignment="Center" IsEnabled="False"/>
-                            <TextBox Grid.Column="1" x:Name="tbUnitShippingInput" Height="23" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="0,4,2,0" 
-                                 MaxLength="20" HorizontalContentAlignment="Center" IsReadOnly="True" GotFocus="TBGotFocus"/>-->
+                            </Grid.ColumnDefinitions>                            
                             <Label Grid.Column="0" x:Name="lblRetailPrice" Content="PREU DE COMPRA :" Margin="10,16,0,0" FontWeight="Bold" HorizontalAlignment="Left" 
                                    VerticalAlignment="Top" IsEnabled="False" Grid.ColumnSpan="4"/>
                             <TextBox Grid.Column="4" x:Name="tbRetailPrice" Height="23" VerticalAlignment="Top" Margin="0,13,2,0" 
