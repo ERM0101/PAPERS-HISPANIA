@@ -86,6 +86,16 @@
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
                                 <GridViewColumn Width="Auto">
+                                    <GridViewColumnHeader Content="NIF" HorizontalContentAlignment="Left"/>
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Grid Background="Transparent" HorizontalAlignment="Stretch" >
+                                                <TextBlock Text="{Binding Company_Cif}" TextAlignment="Left" Margin="0,0,2,0"/>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Width="Auto">
                                     <GridViewColumnHeader Content="Nom" HorizontalContentAlignment="Left"/>
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
