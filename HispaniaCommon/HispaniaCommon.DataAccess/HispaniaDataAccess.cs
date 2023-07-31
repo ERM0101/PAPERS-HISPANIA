@@ -5019,6 +5019,49 @@ namespace HispaniaCommon.DataAccess
             }
         }
 
+        [OperationContract]
+        public void CreateHistoProvider(List<HispaniaCompData.HistoProvider> HistoricMovementsList)
+        {
+            string ErrMsg;
+            try
+            {
+                using (var db = new HispaniaComptabilitat.Data.Entities())
+                {
+                    using (var dbTransaction = db.Database.BeginTransaction())
+                    {
+                        try
+                        {
+                            foreach (HispaniaCompData.HistoProvider HistoricMovement in HistoricMovementsList)
+                            {                                
+                                if (HistoricMovement.HistoProvider_Id<=0)
+                                {
+                                    db.HistoProviders.Add(HistoricMovement);
+                                    db.SaveChanges();
+                                    LogDataAccess.Instance.WriteLog("Create HistoricMovement -> {0}.", HistoricMovement.HistoProvider_Id);
+                                }                                
+                            }
+                            dbTransaction.Commit();
+                        }
+                        catch (Exception ex)
+                        {
+                            dbTransaction.Rollback();
+                            ErrMsg = "No es poden crear les historic movements de comandes de proveidor seleccionades.\r\n" +
+                                     "Intentiu de nou, i si el problema persisteix consulti l'administrador";
+                            LogDataAccess.Instance.WriteLog("Create HistoricMovement Error -> {0}.\r\nDetalls:{1}.", ErrMsg, MsgManager.ExcepMsg(ex));
+                            throw new Exception(ErrMsg, ex);
+                        }
+                    }
+                }
+            }
+            catch (DataException ex)
+            {
+                ErrMsg = "No es poden crear les historic movements de comandes de proveidor seleccionades.\r\n" +
+                         "Intentiu de nou, i si el problema persisteix consulti l'administrador";
+                LogDataAccess.Instance.WriteLog("Create HistoricMovement - Error -> {0}.\r\nDetalls:{1}.", ErrMsg, MsgManager.ExcepMsg(ex));
+                throw new Exception(ErrMsg, ex);
+            }
+        }
+
         #endregion
 
         #region RemoveProviderOrdersFromBill

@@ -446,6 +446,14 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
         }
 
         /// <summary>
+        /// Get or Set if the according of the movement has changed.
+        /// </summary>
+        private bool AreAccordingChanged
+        {
+            get; set;
+        }
+
+        /// <summary>
         /// Gets or Set the Data Management associated at Provider Order Movements of this Provider Order
         /// </summary>
         private Guid DataManagementId
@@ -1218,6 +1226,13 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                 {
                     EditedProviderOrder.Validate(out ErrorField);
                     EvAccept?.Invoke(new ProviderOrdersView(EditedProviderOrder), DataManagementId);
+                                     
+                    if (AreAccordingChanged)
+                    {
+                        var providerOrders = new List<ProviderOrdersView>();
+                        providerOrders.Add(EditedProviderOrder);
+                        GlobalViewModel.Instance.HispaniaViewModel.CreateHistoProviders(EditedProviderOrder.Provider, providerOrders);
+                    }
                 }
             }
             catch (Exception ex)
@@ -1923,7 +1938,7 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                 AreDataChanged = (EditedProviderOrder != ProviderOrder);
             }
             lblPrevisioLliurament.Visibility = Visibility.Hidden;
-            chkPrevisioLliurament.Visibility = Visibility.Hidden;
+            chkPrevisioLliurament.Visibility = Visibility.Hidden;             
         }
 
         private void ChkbValued_Unchecked(object sender, RoutedEventArgs e)
@@ -2109,6 +2124,7 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
             ListItems.SelectedItem = newMovement;
             ActualizeAmountInfo(EditedProviderOrder);
             AreDataChanged = AreNotEquals(DataList, SourceDataList);
+            AreAccordingChanged = AreNotEquals(DataList, SourceDataList);
         }
 
         private void ActualizeGoodsData()
