@@ -8,6 +8,7 @@ using System.Data;
 using System.Data.OleDb;
 using System.Drawing;
 using MBCode.Framework.Managers.Messages;
+using MBCode.Framework.OFFICE;
 
 #endregion
 
@@ -30,7 +31,9 @@ namespace MBCode.Framework.Managers
         /// </summary>
         /// <param name="dtData">Datatable with data to export to Excel.</param>
         /// <param name="FileExcelPath">Filename associated of new Excel.</param>
-        public static void ExportToExcel(this DataTable dtData, string WorsheetName = "Data", string FileExcelPath = null)
+        public static void ExportToExcel( this DataTable dtData, string WorsheetName = "Data", 
+                                          string FileExcelPath = null,
+                                          IEnumerable<ExcelColumnInfo> columnsInfos = null )
         {
             try
             {
@@ -59,12 +62,19 @@ namespace MBCode.Framework.Managers
                         ((Excel.Range) workSheet.Cells[1, i + 1]).Interior.Color = ColorTranslator.ToOle(Color.LightGray);
                 }
                 //  Rows : insert data.
-                    for (var i = 0; i < dtData.Rows.Count; i++)
+                    for (var row_idx = 0; row_idx < dtData.Rows.Count; row_idx++ )
                     {
                         //  To do: format datetime values before printing
-                            for (var j = 0; j < dtData.Columns.Count; j++)
+                            for (var col_idx = 0; col_idx < dtData.Columns.Count; col_idx++ )
                             {
-                                workSheet.Cells[i + 2, j + 1] = dtData.Rows[i][j];
+                                DataColumn column = dtData.Columns[ col_idx ];
+
+                                ExcelColumnInfo column_info = columnsInfos.FindByName( column.ColumnName );
+                                if(column_info != null && !string.IsNullOrEmpty( column_info.NumberFormat ))
+                                {
+                                    workSheet.Cells[ row_idx + 2, col_idx + 1 ].NumberFormat = column_info.NumberFormat;
+                                }
+                                workSheet.Cells[ row_idx + 2, col_idx + 1] = dtData.Rows[row_idx][col_idx];
                             }
                     }
                 //  Check file path

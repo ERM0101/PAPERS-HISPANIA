@@ -193,7 +193,7 @@ namespace HispaniaCommon.ViewModel.ViewModel.Queries
         /// <summary>
         /// 
         /// </summary>
-        [ExcelColumnAttribute( 2, "Data Comanda" )]
+        [ExcelColumnAttribute( 2, "Data Comanda", "@" )]
         public string DateStr
         {
             get

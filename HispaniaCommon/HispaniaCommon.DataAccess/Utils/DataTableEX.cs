@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MBCode.Framework.OFFICE;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -23,11 +24,9 @@ namespace HispaniaCommon.DataAccess.Utils
         /// <returns></returns>
         public static DataTable ToDataTable<TRow>( this IEnumerable<TRow> _This )
         {
-            IEnumerable<ExcelColumnInfo> columns_infos = LoadColumnInfosByType( typeof( TRow ) );
-
-            columns_infos = columns_infos.OrderBy( i => i.Position );
-
-            DataTable result = BuildDataTable<TRow>( _This, columns_infos );
+            IEnumerable<ExcelColumnInfo> columns_infos = typeof( TRow ).LoadColumnInfos();
+                        
+            DataTable result = ToDataTable<TRow>( _This, columns_infos );
 
             return result;
         }
@@ -41,12 +40,20 @@ namespace HispaniaCommon.DataAccess.Utils
         /// <param name="dataStrean"></param>
         /// <param name="columnsInfo"></param>
         /// <returns></returns>
-        private static DataTable BuildDataTable<TRow>( IEnumerable<TRow> dataStrean, IEnumerable<ExcelColumnInfo> columnsInfo )
+        public static DataTable ToDataTable<TRow>( this IEnumerable<TRow> _This, 
+                                                   IEnumerable<ExcelColumnInfo> columnsInfo )
         {
+            if(columnsInfo is null)
+            {
+                throw new ArgumentNullException( nameof( columnsInfo ) );
+            }
+
+            IEnumerable<ExcelColumnInfo> columns_info = columnsInfo.OrderBy( i => i.Position );
+
             DataTable result = new DataTable();
 
             // Generate columns
-            foreach(ExcelColumnInfo column_info in columnsInfo)
+            foreach(ExcelColumnInfo column_info in columns_info)
             {
                 Type column_yupe = column_info.PropertyInfo.PropertyType;
                 DataColumn column = new DataColumn( column_info.Name, column_yupe );
@@ -54,10 +61,10 @@ namespace HispaniaCommon.DataAccess.Utils
             }
 
             // Export data
-            foreach(TRow row_data in dataStrean)
+            foreach(TRow row_data in _This )
             {
                 DataRow new_row = result.NewRow();
-                foreach(ExcelColumnInfo column_info in columnsInfo)
+                foreach(ExcelColumnInfo column_info in columns_info )
                 {
                     object value = column_info.PropertyInfo.GetValue( row_data );
                     new_row[ column_info.Name ] = value;
@@ -73,11 +80,16 @@ namespace HispaniaCommon.DataAccess.Utils
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        private static IEnumerable<ExcelColumnInfo> LoadColumnInfosByType( Type type )
+        public static IEnumerable<ExcelColumnInfo> LoadColumnInfos( this Type _This )
         {
+            if(_This is null)
+            {
+                throw new ArgumentNullException( nameof( _This ) );
+            }
+
             List<ExcelColumnInfo> result = new List<ExcelColumnInfo>();
 
-            PropertyInfo[] properties = type.GetProperties();
+            PropertyInfo[] properties = _This.GetProperties();
             
             IEnumerable<PropertyInfo> excel_properties = properties.Where( p => p.GetCustomAttribute<ExcelColumnAttribute>() != null );
 
@@ -85,59 +97,14 @@ namespace HispaniaCommon.DataAccess.Utils
             {
                 ExcelColumnAttribute attribute = excel_prop.GetCustomAttribute<ExcelColumnAttribute>();
 
-                ExcelColumnInfo column_info = new ExcelColumnInfo( attribute.Name, attribute.Position, excel_prop );
+                ExcelColumnInfo column_info = new ExcelColumnInfo( attribute.Name, attribute.Position, 
+                                                                   attribute.NumberFormat, excel_prop );
                 result.Add( column_info );
             }
 
             return result;
         }
 
-        #endregion
-
-        #region classes
-
-        /// <summary>
-        /// 
-        /// </summary>
-        private class ExcelColumnInfo
-        {
-            /// <summary>
-            /// 
-            /// </summary>
-            public string Name
-            {
-                get;
-            } 
-
-            /// <summary>
-            /// 
-            /// </summary>
-            public int Position
-            {
-               get;
-            }
-
-            /// <summary>
-            /// 
-            /// </summary>
-            public PropertyInfo PropertyInfo
-            {
-                get;
-            }
-
-            /// <summary>
-            /// 
-            /// </summary>
-            /// <param name="name"></param>
-            /// <param name="position"></param>
-            /// <param name="propertyInfo"></param>
-            public ExcelColumnInfo( string name, int position, PropertyInfo propertyInfo )
-            {            
-                this.Name = name;
-                this.Position = position;
-                this.PropertyInfo = propertyInfo;
-            }
-        }
         #endregion
     }
 }
