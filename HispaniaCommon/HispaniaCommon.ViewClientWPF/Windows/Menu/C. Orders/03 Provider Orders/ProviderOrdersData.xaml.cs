@@ -2212,18 +2212,24 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                 if ((currentMovement.According) && (!newMovement.According))
                 {
                     //  Es treu l'actual i no es comptabilitza el nou moviment.
-                        ActualizeGoodInfo(currentMovement, MovementOp.Remove, false);
+                    
+                    //TODO: Terminacion de la actualizacion (Tarea:119)      
+                    //ActualizeGoodInfo(currentMovement, MovementOp.Remove, false);
                 }
                 else if ((!currentMovement.According) && (newMovement.According))
                 {
                     //  Si no estaba comptabilitzat l'anterior no s'ha de treure
-                        ActualizeGoodInfo(newMovement, MovementOp.Add, true);
+                    
+                    //TODO: Terminacion de la actualizacion (Tarea:119)   
+                    //ActualizeGoodInfo(newMovement, MovementOp.Add, true);
                 }
                 else if ((currentMovement.According) && (newMovement.According)) 
                 {
                     //  Si estaba compatibilitzat s'ha de seguir compatbilitzant
-                        ActualizeGoodInfo(currentMovement, MovementOp.Remove, false);
-                        ActualizeGoodInfo(newMovement, MovementOp.Add, true);
+                    
+                    //TODO: Terminacion de la actualizacion (Tarea:119)   
+                    //ActualizeGoodInfo(currentMovement, MovementOp.Remove, false);
+                    //ActualizeGoodInfo(newMovement, MovementOp.Add, true);
                 }
                 // else :- Si no es comptabilitzaba i no es comptabilitza no caldrà fer res.
             //  Si el nou article no existeix el creem per futures comptabilitzacions.
