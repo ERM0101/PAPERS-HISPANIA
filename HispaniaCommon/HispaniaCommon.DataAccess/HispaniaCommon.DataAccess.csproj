@@ -55,6 +55,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\DataTableEX.cs" />
     <Compile Include="Utils\ExcelColumnAttribute.cs" />
+    <Compile Include="Utils\ExcelColumnInfoEX.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\HispaniaComptabilitat\HispaniaComptabilitat.Data\HispaniaComptabilitat.Data.csproj">
