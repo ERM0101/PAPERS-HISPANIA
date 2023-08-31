@@ -9,6 +9,8 @@ using System.Data.OleDb;
 using System.Drawing;
 using MBCode.Framework.Managers.Messages;
 using MBCode.Framework.OFFICE;
+using Microsoft.Office.Interop.Excel;
+using System.Globalization;
 
 #endregion
 
@@ -31,7 +33,7 @@ namespace MBCode.Framework.Managers
         /// </summary>
         /// <param name="dtData">Datatable with data to export to Excel.</param>
         /// <param name="FileExcelPath">Filename associated of new Excel.</param>
-        public static void ExportToExcel( this DataTable dtData, string WorsheetName = "Data", 
+        public static void ExportToExcel( this System.Data.DataTable dtData, string WorsheetName = "Data", 
                                           string FileExcelPath = null,
                                           IEnumerable<ExcelColumnInfo> columnsInfos = null )
         {
@@ -64,18 +66,23 @@ namespace MBCode.Framework.Managers
                 //  Rows : insert data.
                     for (var row_idx = 0; row_idx < dtData.Rows.Count; row_idx++ )
                     {
-                        //  To do: format datetime values before printing
-                            for (var col_idx = 0; col_idx < dtData.Columns.Count; col_idx++ )
-                            {
-                                DataColumn column = dtData.Columns[ col_idx ];
+                        for (var col_idx = 0; col_idx < dtData.Columns.Count; col_idx++ )
+                        {                                
+                            DataColumn column = dtData.Columns[ col_idx ];
+                                
+                            ExcelColumnInfo column_info = columnsInfos.FindByName( column.ColumnName );
+                            Excel.Range range = (Excel.Range)workSheet.Cells[ row_idx + 2, col_idx + 1 ];
 
-                                ExcelColumnInfo column_info = columnsInfos.FindByName( column.ColumnName );
-                                if(column_info != null && !string.IsNullOrEmpty( column_info.NumberFormat ))
-                                {
-                                    workSheet.Cells[ row_idx + 2, col_idx + 1 ].NumberFormat = column_info.NumberFormat;
-                                }
-                                workSheet.Cells[ row_idx + 2, col_idx + 1] = dtData.Rows[row_idx][col_idx];
-                            }
+                            var value = dtData.Rows[ row_idx ][ col_idx ];                            
+
+                            if(column_info != null && !string.IsNullOrEmpty( column_info.NumberFormat ))
+                            {
+                                //TODO: format datetime values before printing
+                                range.NumberFormat = column_info.NumberFormat;
+                            } 
+
+                            range.Value = value;
+                        }
                     }
                 //  Check file path
                     //if (!string.IsNullOrEmpty(FileExcelPath))

@@ -37,7 +37,8 @@ namespace HispaniaCommon.ViewModel.ViewModel.Queries
 
         /// <summary>
         /// 
-        /// </summary>        
+        /// </summary> 
+        [ExcelColumnAttribute( 2, "Data Comanda1", "dd/MM/yyyy" )]
         public DateTime? Date
         {
             get;
@@ -191,9 +192,8 @@ namespace HispaniaCommon.ViewModel.ViewModel.Queries
         }
 
         /// <summary>
-        /// 
+        /// [ExcelColumnAttribute( 2, "Data Comanda", "@" )]
         /// </summary>
-        [ExcelColumnAttribute( 2, "Data Comanda", "@" )]
         public string DateStr
         {
             get

@@ -55,8 +55,10 @@ namespace HispaniaCommon.DataAccess.Utils
             // Generate columns
             foreach(ExcelColumnInfo column_info in columns_info)
             {
-                Type column_yupe = column_info.PropertyInfo.PropertyType;
-                DataColumn column = new DataColumn( column_info.Name, column_yupe );
+                Type column_type = column_info.DataType();
+
+                DataColumn column = new DataColumn( column_info.Name, column_type );
+
                 result.Columns.Add( column );
             }
 
