@@ -13,6 +13,9 @@ using System.Windows.Media;
 using System.Windows.Data;
 using System.ComponentModel;
 using System.Linq;
+using System.Diagnostics;
+using HispaniaCommon.ViewModel.ViewModel.Paymets;
+using HispaniaCommon.ViewModel.ViewModel;
 
 #endregion
 
@@ -615,6 +618,8 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
 
         #endregion
 
+        private PaymentInfoViewModel _PaymentInfoViewModel = new PaymentInfoViewModel();
+
         #region Builders
 
         /// <summary>
@@ -633,6 +638,8 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                 LoadDataInWindowComponents();
             //  Load the managers of the controls of the UserControl.
                 LoadManagers();
+
+                this.spPaymentInfo.DataContext = this._PaymentInfoViewModel;
         }
 
         #endregion
@@ -918,7 +925,9 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
             //  Activate managers
                 DataChangedManagerActive = true;
 
-            this._ProcessLoadDataInControls = false;
+                this._ProcessLoadDataInControls = false;
+
+            RefreshPayment();
         }
 
         /// <summary>
@@ -1068,14 +1077,52 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                 btnCancel.Click += BtnCancel_Click;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void DtpPrevisioLliurament_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
             AreDataChanged = true;
-            if (((DatePicker)sender).SelectedDate.HasValue)
+
+            DateTime? date = ((DatePicker)sender).SelectedDate;
+
+            if( date.HasValue)
             {
-                EditedProviderOrder.PrevisioLliuramentData = ((DatePicker)sender).SelectedDate.Value;
+                EditedProviderOrder.PrevisioLliuramentData = date.Value;
             }
+
+            this._PaymentInfoViewModel.DeliveryDate = date;
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void RefreshPayment()
+        {
+            // Delivery data
+            this._PaymentInfoViewModel.DeliveryDate = this.dtpPrevisioLliurament.SelectedDate;
+
+            // payment days
+            int? bank_pay_day_1 = this.tbDataBankPayday_1.Text.ToPaymentDay();
+            int? bank_pay_day_2 = this.tbDataBankPayday_2.Text.ToPaymentDay();
+            int? bank_pay_day_3 = this.tbDataBankPayday_3.Text.ToPaymentDay();
+
+            List<int> days = new List<int>();
+            if(bank_pay_day_1.HasValue)
+               days.Add( bank_pay_day_1.Value );
+
+            if(bank_pay_day_2.HasValue)
+                days.Add( bank_pay_day_2.Value );
+
+            if(bank_pay_day_3.HasValue)
+               days.Add( bank_pay_day_3.Value );
+
+            this._PaymentInfoViewModel.PaymentDays = days;
+        }
+
+
 
         #region TextBox
 
@@ -1130,25 +1177,37 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                 string value = ((TextBox)sender).Text;
                 try
                 {
-                    if (sender == tbNumEffect) EditedProviderOrder.DataBank_NumEffect = GlobalViewModel.GetDecimalValue(value);
-                    else if ((sender == tbDataBank_Bank) || (sender == tbBilling_DataBank_Bank))
+                    if(sender == tbNumEffect) EditedProviderOrder.DataBank_NumEffect = GlobalViewModel.GetDecimalValue( value );
+                    else if((sender == tbDataBank_Bank) || (sender == tbBilling_DataBank_Bank))
                     {
-                        if (sender == tbDataBank_Bank) tbBilling_DataBank_Bank.Text = value;
+                        if(sender == tbDataBank_Bank) tbBilling_DataBank_Bank.Text = value;
                         else tbDataBank_Bank.Text = value;
                         EditedProviderOrder.DataBank_Bank = value;
                     }
-                    else if ((sender == tbDataBank_BankAddress) || (sender == tbBilling_DataBank_BankAddress))
+                    else if((sender == tbDataBank_BankAddress) || (sender == tbBilling_DataBank_BankAddress))
                     {
-                        if (sender == tbDataBank_BankAddress) tbBilling_DataBank_BankAddress.Text = value;
+                        if(sender == tbDataBank_BankAddress) tbBilling_DataBank_BankAddress.Text = value;
                         else tbDataBank_BankAddress.Text = value;
                         EditedProviderOrder.DataBank_BankAddress = value;
                     }
-                    else if (sender == tbProviderOrderRemarks) EditedProviderOrder.Remarks = value;
-                    else if (sender == tbDataBankFirstExpirationData) EditedProviderOrder.DataBank_ExpirationDays = GlobalViewModel.GetDecimalValue(value);
-                    else if (sender == tbDataBankExpirationInterval) EditedProviderOrder.DataBank_ExpirationInterval = GlobalViewModel.GetDecimalValue(value);
-                    else if (sender == tbDataBankPayday_1) EditedProviderOrder.DataBank_Payday_1 = GlobalViewModel.GetDecimalValue(value);
-                    else if (sender == tbDataBankPayday_2) EditedProviderOrder.DataBank_Payday_2 = GlobalViewModel.GetDecimalValue(value);
-                    else if (sender == tbDataBankPayday_3) EditedProviderOrder.DataBank_Payday_3 = GlobalViewModel.GetDecimalValue(value);
+                    else if(sender == tbProviderOrderRemarks) EditedProviderOrder.Remarks = value;
+                    else if(sender == tbDataBankFirstExpirationData) EditedProviderOrder.DataBank_ExpirationDays = GlobalViewModel.GetDecimalValue( value );
+                    else if(sender == tbDataBankExpirationInterval) EditedProviderOrder.DataBank_ExpirationInterval = GlobalViewModel.GetDecimalValue( value );
+                    else if(sender == tbDataBankPayday_1)
+                    {
+                        EditedProviderOrder.DataBank_Payday_1 = GlobalViewModel.GetDecimalValue( value );
+                        RefreshPayment();
+                    }
+                    else if(sender == tbDataBankPayday_2)
+                    {                    
+                        EditedProviderOrder.DataBank_Payday_2 = GlobalViewModel.GetDecimalValue(value);
+                        RefreshPayment();
+                    }
+                    else if (sender == tbDataBankPayday_3)
+                    { 
+                        EditedProviderOrder.DataBank_Payday_3 = GlobalViewModel.GetDecimalValue(value);
+                        RefreshPayment();
+                    }
                     else if (sender == tbDataBankIBANCountryCode) EditedProviderOrder.DataBank_IBAN_CountryCode = value;
                     else if (sender == tbDataBankIBANBankCode) EditedProviderOrder.DataBank_IBAN_BankCode = value;
                     else if (sender == tbDataBankIBANOfficeCode) EditedProviderOrder.DataBank_IBAN_OfficeCode = value;
@@ -1928,6 +1987,8 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
             }
             lblPrevisioLliurament.Visibility = Visibility.Visible;
             chkPrevisioLliurament.Visibility = Visibility.Visible;
+            this._PaymentInfoViewModel.Visible = true;
+            
         }
 
         private void ChkbAccording_Checked(object sender, RoutedEventArgs e)
@@ -1938,7 +1999,9 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                 AreDataChanged = (EditedProviderOrder != ProviderOrder);
             }
             lblPrevisioLliurament.Visibility = Visibility.Hidden;
-            chkPrevisioLliurament.Visibility = Visibility.Hidden;             
+            chkPrevisioLliurament.Visibility = Visibility.Hidden;
+
+            //this._PaymentInfoViewModel.Visible = false;
         }
 
         private void ChkbValued_Unchecked(object sender, RoutedEventArgs e)
@@ -1962,13 +2025,18 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
         private void ChkPrevisioLliurament_Checked(object sender, RoutedEventArgs e)
         {
             this.dtpPrevisioLliurament.Visibility = Visibility.Visible;
+            this._PaymentInfoViewModel.Visible = true;
+
             EditedProviderOrder.PrevisioLliurament = true;
             this.AreDataChanged = true;
+
         }
 
         private void ChkPrevisioLliurament_Unchecked(object sender, RoutedEventArgs e)
         {
             this.dtpPrevisioLliurament.Visibility = Visibility.Hidden;
+            this._PaymentInfoViewModel.Visible = false;
+
             EditedProviderOrder.PrevisioLliurament = false;
             this.AreDataChanged = true;
         }
