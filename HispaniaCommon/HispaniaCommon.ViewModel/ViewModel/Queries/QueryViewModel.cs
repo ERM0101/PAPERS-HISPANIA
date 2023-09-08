@@ -15,6 +15,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Windows.Controls.Primitives;
+using static HispaniaCommon.DataAccess.Utils.DataTableEX;
 using static iTextSharp.text.pdf.AcroFields;
 using static iTextSharp.text.pdf.events.IndexEvents;
 
@@ -149,6 +150,8 @@ namespace HispaniaCommon.ViewModel
                                                      moment.Year, moment.Month, moment.Day,
                                                      moment.Hour, moment.Minute );
 
+                //IEnumerable<ExcelColumnInfo> column_infos = DataTableEX.LoadColumnInfosByType( typeof( TRow ) );
+
                 DataTable data_table = streamData.ToDataTable();
 
                 ExcelManager.ExportToExcel( data_table, sheetName, excel_filename );
@@ -179,6 +182,27 @@ namespace HispaniaCommon.ViewModel
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="recipient"></param>
+        /// <returns></returns>
+        private QueryPaymentForecastItemModel CreateQueryPaymentForecastItemModel( ProviderOrder order, DateTime date )
+        {
+            QueryPaymentForecastItemModel result = new QueryPaymentForecastItemModel()
+            {
+                OrderId = order.ProviderOrder_Id,
+                ProviderId = order.Provider.Provider_Id,
+                ProviderName = order.Provider.Name,
+                Total = order.ProviderOrderMovements
+                              .Select( i => (i.Unit_Billing * i.RetailPrice) )
+                              .Sum( i => (i.HasValue ? i.Value : 0) ),
+                PaymentDate = date
+            };
+
+            return result;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="providerOrder"></param>
         /// <param name="articleName"></param>
         /// <returns></returns>
@@ -202,6 +226,26 @@ namespace HispaniaCommon.ViewModel
             };
 
             return result;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="startDate"></param>
+        /// <param name="endDate"></param>
+        /// <returns></returns>
+        public IEnumerable<QueryPaymentForecastItemModel> GetQueryPaymentForecast( DateTime startDate, DateTime endDate )
+        {
+            IEnumerable<Tuple<ProviderOrder,DateTime>> raw_result = 
+                                    HispaniaDataAccess.Instance.GetQueryPaymentForecast( startDate, endDate );
+
+            foreach(Tuple<ProviderOrder, DateTime> item in raw_result )
+            {
+                QueryPaymentForecastItemModel result = CreateQueryPaymentForecastItemModel( item.Item1, item.Item2 );
+
+                yield return result;
+            }
+
         }
 
         /// <summary>

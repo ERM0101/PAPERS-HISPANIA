@@ -6003,6 +6003,112 @@ namespace HispaniaCommon.DataAccess
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="startDate"></param>
+        /// <param name="endDate"></param>
+        /// <returns></returns>
+        public IEnumerable<Tuple<ProviderOrder,DateTime>> GetQueryPaymentForecast( DateTime startDate, DateTime endDate )
+        {
+            using(var db = new HispaniaComptabilitat.Data.Entities())
+            {
+                foreach(ProviderOrder order in db.ProviderOrders )
+                {
+                    DateTime? date = ((order.PrevisioLliurament.HasValue && order.PrevisioLliurament.Value)
+                                        ? (order.PrevisioLliuramentData.HasValue ? order.PrevisioLliuramentData.Value : (DateTime?)null)
+                                        : (order.Date.HasValue ? order.Date.Value : (DateTime?)null));
+                    if(date.HasValue)
+                    {
+                        // Calc date payment
+                        DateTime date_payment = date.Value.AddDays( (double)order.DataBank_ExpirationDays );
+
+                        List<decimal> days = BuildDays( order.DataBank_Paydays1,
+                                                        order.DataBank_Paydays2,
+                                                        order.DataBank_Paydays3 );
+
+                        days = NormalizeDays( date_payment, days );
+                        int day = (int)FindDayPayment( days, date_payment.Day );                        
+                        date_payment = new DateTime( date_payment.Year, date_payment.Month, day );
+
+                        if(date_payment >= startDate && date_payment <= endDate)
+                        {
+                            yield return new Tuple<ProviderOrder, DateTime>( order, date_payment );
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="days"></param>
+        /// <param name="day"></param>
+        /// <returns></returns>
+        private decimal FindDayPayment( IEnumerable<decimal> days, decimal day )
+        {
+            decimal result = 0;
+
+            if(days.Any())
+            {
+                result = days.Where( i => i >= day ).OrderBy( i => i ).FirstOrDefault();
+            }
+            
+            return ( result == 0 ? day : result );
+        }
+
+        private List<decimal> NormalizeDays( DateTime date, List<decimal> days )
+        {
+            int last_day = DateTime.DaysInMonth( date.Year, date.Month );
+
+            List<decimal> result = days.OrderBy( i => i ).ToList();
+
+            // delete days == 0 || days > last_day ( if feb -> delete 30-31 or 29 )
+            result = days.Where( d => d != 0 && d < last_day ).ToList();
+
+            // if last element < last_day -> add last_day
+            if(result.Count > 0)
+            {
+                if(result[ result.Count - 1 ] < last_day)
+                {
+                    result.Add( last_day );
+                }
+            }
+            else
+            {
+                result.Add( last_day );
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="day1"></param>
+        /// <param name="day2"></param>
+        /// <param name="day3"></param>
+        /// <returns></returns>
+        private List<decimal> BuildDays( decimal day1, decimal day2, decimal day3 )
+        {
+            List<decimal> result = new List<decimal>();
+
+            result.Add( day1 );
+
+            if(!result.Contains( day2 ))
+            {
+                result.Add( day2 );
+            }
+
+            if(!result.Contains( day3 ))
+            {
+                result.Add( day3 );
+            }
+
+            return result;
+        }
+
         public IEnumerable<ProviderOrder> GetQueryOrders( DateTime startDate, DateTime endDate, int? articleId, int? providerId )
         {
             using(var db = new HispaniaComptabilitat.Data.Entities())

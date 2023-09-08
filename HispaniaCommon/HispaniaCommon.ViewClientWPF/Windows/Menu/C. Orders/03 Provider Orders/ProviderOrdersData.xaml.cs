@@ -618,8 +618,6 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
 
         #endregion
 
-        private PaymentInfoViewModel _PaymentInfoViewModel = new PaymentInfoViewModel();
-
         #region Builders
 
         /// <summary>
@@ -638,8 +636,6 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                 LoadDataInWindowComponents();
             //  Load the managers of the controls of the UserControl.
                 LoadManagers();
-
-                this.spPaymentInfo.DataContext = this._PaymentInfoViewModel;
         }
 
         #endregion
@@ -925,9 +921,7 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
             //  Activate managers
                 DataChangedManagerActive = true;
 
-                this._ProcessLoadDataInControls = false;
-
-            RefreshPayment();
+                this._ProcessLoadDataInControls = false;            
         }
 
         /// <summary>
@@ -1092,37 +1086,7 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
             {
                 EditedProviderOrder.PrevisioLliuramentData = date.Value;
             }
-
-            this._PaymentInfoViewModel.DeliveryDate = date;
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        private void RefreshPayment()
-        {
-            // Delivery data
-            this._PaymentInfoViewModel.DeliveryDate = this.dtpPrevisioLliurament.SelectedDate;
-
-            // payment days
-            int? bank_pay_day_1 = this.tbDataBankPayday_1.Text.ToPaymentDay();
-            int? bank_pay_day_2 = this.tbDataBankPayday_2.Text.ToPaymentDay();
-            int? bank_pay_day_3 = this.tbDataBankPayday_3.Text.ToPaymentDay();
-
-            List<int> days = new List<int>();
-            if(bank_pay_day_1.HasValue)
-               days.Add( bank_pay_day_1.Value );
-
-            if(bank_pay_day_2.HasValue)
-                days.Add( bank_pay_day_2.Value );
-
-            if(bank_pay_day_3.HasValue)
-               days.Add( bank_pay_day_3.Value );
-
-            this._PaymentInfoViewModel.PaymentDays = days;
-        }
-
-
 
         #region TextBox
 
@@ -1195,18 +1159,15 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                     else if(sender == tbDataBankExpirationInterval) EditedProviderOrder.DataBank_ExpirationInterval = GlobalViewModel.GetDecimalValue( value );
                     else if(sender == tbDataBankPayday_1)
                     {
-                        EditedProviderOrder.DataBank_Payday_1 = GlobalViewModel.GetDecimalValue( value );
-                        RefreshPayment();
+                        EditedProviderOrder.DataBank_Payday_1 = GlobalViewModel.GetDecimalValue( value );                        
                     }
                     else if(sender == tbDataBankPayday_2)
                     {                    
                         EditedProviderOrder.DataBank_Payday_2 = GlobalViewModel.GetDecimalValue(value);
-                        RefreshPayment();
                     }
                     else if (sender == tbDataBankPayday_3)
                     { 
                         EditedProviderOrder.DataBank_Payday_3 = GlobalViewModel.GetDecimalValue(value);
-                        RefreshPayment();
                     }
                     else if (sender == tbDataBankIBANCountryCode) EditedProviderOrder.DataBank_IBAN_CountryCode = value;
                     else if (sender == tbDataBankIBANBankCode) EditedProviderOrder.DataBank_IBAN_BankCode = value;
@@ -1987,8 +1948,6 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
             }
             lblPrevisioLliurament.Visibility = Visibility.Visible;
             chkPrevisioLliurament.Visibility = Visibility.Visible;
-            this._PaymentInfoViewModel.Visible = true;
-            
         }
 
         private void ChkbAccording_Checked(object sender, RoutedEventArgs e)
@@ -2025,7 +1984,6 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
         private void ChkPrevisioLliurament_Checked(object sender, RoutedEventArgs e)
         {
             this.dtpPrevisioLliurament.Visibility = Visibility.Visible;
-            this._PaymentInfoViewModel.Visible = true;
 
             EditedProviderOrder.PrevisioLliurament = true;
             this.AreDataChanged = true;
@@ -2035,7 +1993,6 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
         private void ChkPrevisioLliurament_Unchecked(object sender, RoutedEventArgs e)
         {
             this.dtpPrevisioLliurament.Visibility = Visibility.Hidden;
-            this._PaymentInfoViewModel.Visible = false;
 
             EditedProviderOrder.PrevisioLliurament = false;
             this.AreDataChanged = true;

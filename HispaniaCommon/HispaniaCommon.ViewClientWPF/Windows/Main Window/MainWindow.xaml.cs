@@ -849,7 +849,10 @@ namespace HispaniaCommon.ViewClientWPF.Windows
             lblConsultaProviders.MouseEnter += Manage_MouseEnter;
             lblConsultaProviders.MouseLeave += Manage_MouseLeave;
             lblConsultaProviders.MouseDoubleClick += LblConsultaProviders_MouseDoubleClick;
-            ;
+
+            lblQueryPaymentForecast.MouseEnter += Manage_MouseEnter;
+            lblQueryPaymentForecast.MouseLeave += Manage_MouseLeave;
+            lblQueryPaymentForecast.MouseDoubleClick += LblQueryPaimentForecast_MouseDoubleClick;
 
 
             //  Option 06 'Consulta Customitzada'
@@ -883,6 +886,27 @@ namespace HispaniaCommon.ViewClientWPF.Windows
             window.Activate();
         }
 
+        private void LblQueryPaimentForecast_MouseDoubleClick( object sender, MouseButtonEventArgs e )
+        {
+            Window window = FindWindow( typeof( PaymentForecast ) );
+            if(null == window)
+            {
+                // Create
+                PaymentForecast query_window = new PaymentForecast();
+
+                this.Active_Windows.Add( query_window );
+                query_window.Closed += UniwersalOnClosedWindow;
+                window = query_window;
+            }
+            else
+            {
+                // Show
+            }
+            window.Show();
+            window.Activate();
+        }
+
+
         /// <summary>
         /// 
         /// </summary>
@@ -890,7 +914,7 @@ namespace HispaniaCommon.ViewClientWPF.Windows
         /// <param name="e"></param>
         private void UniwersalOnClosedWindow( object sender, EventArgs e )
         {
-            QueryOrdersProvider window = (QueryOrdersProvider)sender;
+            Window window = (Window)sender;
             if(sender != null)
             {
                 this.Active_Windows.Remove( window );
