@@ -6,6 +6,7 @@ using HispaniaCommon.ViewModel.ViewModel.Queries;
 using HispaniaComptabilitat.Data;
 using MBCode.Framework.Managers;
 using MBCode.Framework.Managers.Messages;
+using MBCode.Framework.OFFICE;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -150,11 +151,11 @@ namespace HispaniaCommon.ViewModel
                                                      moment.Year, moment.Month, moment.Day,
                                                      moment.Hour, moment.Minute );
 
-                //IEnumerable<ExcelColumnInfo> column_infos = DataTableEX.LoadColumnInfosByType( typeof( TRow ) );
+                IEnumerable<ExcelColumnInfo> columns_infos = typeof( TRow ).LoadColumnInfos();
 
-                DataTable data_table = streamData.ToDataTable();
+                DataTable data_table = streamData.ToDataTable( columns_infos );
 
-                ExcelManager.ExportToExcel( data_table, sheetName, excel_filename );
+                ExcelManager.ExportToExcel( data_table, sheetName, excel_filename, columns_infos );
 
                 Process.Start( excel_filename );
 

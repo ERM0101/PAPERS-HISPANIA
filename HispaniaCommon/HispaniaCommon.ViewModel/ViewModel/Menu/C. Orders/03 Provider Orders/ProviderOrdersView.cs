@@ -74,6 +74,7 @@ namespace HispaniaCommon.ViewModel
                     {
                         { "Numero de Comanda", "ProviderOrder_Id" },
                         { "Data de Comanda", "Date_Str" },
+                        { "Nam de Client","NameClientAssoc"},
                         { "Numero de Client", "Provider_Id_Str" },
                         { "Client", "Provider_Alias" },
                         { "Adreça d'Enviament", "Address" },
@@ -104,6 +105,7 @@ namespace HispaniaCommon.ViewModel
                     {
                         { "Numero d'Albarà", "DeliveryNote_Id_Str" },
                         { "Data de l'Albarà", "DeliveryNote_Date_Str" },
+                        { "Nam de Client","NameClientAssoc"},
                         { "Numero de Client", "Provider_Id_Str" },
                         { "Client", "Provider_Alias" },
                         { "Numero de Comanda", "ProviderOrder_Id" },

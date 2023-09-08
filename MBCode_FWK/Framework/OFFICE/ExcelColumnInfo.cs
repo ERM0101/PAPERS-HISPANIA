@@ -1,21 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HispaniaCommon.DataAccess.Utils
+namespace MBCode.Framework.OFFICE
 {
     /// <summary>
     /// 
     /// </summary>
-    public class ExcelColumnAttribute:
-                 Attribute
+    public class ExcelColumnInfo
     {
         /// <summary>
         /// 
         /// </summary>
-        public int Position
+        public string Name
         {
             get;
         }
@@ -23,7 +23,7 @@ namespace HispaniaCommon.DataAccess.Utils
         /// <summary>
         /// 
         /// </summary>
-        public string Name
+        public int Position
         {
             get;
         }
@@ -39,14 +39,24 @@ namespace HispaniaCommon.DataAccess.Utils
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="position"></param>
-        /// <param name="name"></param>
-        /// <param name="numberFormat"></param>
-        public ExcelColumnAttribute( int position, string name, string numberFormat = null )
+        public PropertyInfo PropertyInfo
         {
-            this.Position = position;
+            get;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="position"></param>
+        /// <param name="numberFormat"></param>
+        /// <param name="propertyInfo"></param>
+        public ExcelColumnInfo( string name, int position, string numberFormat, PropertyInfo propertyInfo )
+        {
             this.Name = name;
+            this.Position = position;
             this.NumberFormat = numberFormat;
+            this.PropertyInfo = propertyInfo;
         }
     }
 }
