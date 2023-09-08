@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.Remoting.Metadata.W3cXsd2001;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -137,6 +138,79 @@ namespace HispaniaCommon.ViewModel.ViewModel.Queries
 
         #endregion
 
+        #region FILTERNAMES
+        public ObservableCollection<ComboBoxViewModel<string>> _FilterCriteriaNames = new ObservableCollection<ComboBoxViewModel<string>>();
+
+        public ObservableCollection<ComboBoxViewModel<string>> FilterCriteriaNames
+        {
+            get
+            {
+                return this._FilterCriteriaNames;
+            }
+            set
+            {
+                this._FilterCriteriaNames = value;
+                OnPropertyChanged( nameof( FilterCriteriaNames ) );
+                ApplyFilter();
+            }
+        }
+
+        #region SelectedFilter
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private string _SelectedFilter = "";
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string SelectedFilter
+        {
+            get
+            {
+                return this._SelectedFilter;
+            }
+            set
+            {
+                this._SelectedFilter = value;
+                OnPropertyChanged( nameof( SelectedFilter ) );
+                ApplyFilter();
+            }
+        }
+
+        #endregion
+
+
+        #endregion
+
+        #region FilterText
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private string _FilterText = string.Empty;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string FilterText
+        {
+            get
+            {
+                return this._FilterText;
+            }
+
+            set
+            {
+                this._FilterText = value;
+                OnPropertyChanged( nameof( FilterText ) );
+                ApplyFilter();
+            }
+        }
+
+        #endregion
+
         #endregion
 
         #region COMMANDS
@@ -211,22 +285,61 @@ namespace HispaniaCommon.ViewModel.ViewModel.Queries
 
         #endregion
 
+        private Action<string, Dictionary<string, string>> _FilterAction = null;
+        
         /// <summary>
         /// CTOR
         /// </summary>
-        public QueryPaymentForecastViewModel() :
+        public QueryPaymentForecastViewModel( Dictionary<string, Dictionary<string, string>> gridHeadInfos = null,
+                                              Action<string, Dictionary<string, string>> filterAction = null ):
                             base()
         {
+            if(gridHeadInfos.TryGetValue( "dgListItem", out Dictionary<string,string> name2property ))
+            {
+                InitFilterCriteriaNames( name2property );
+            }
+
+            this._FilterAction = filterAction;
+
             this._ListItems = new ObservableCollection<QueryPaymentForecastItemModel>();
 
             DateTime moment = DateTime.Now;
 
-            this._StartDate = moment.AddMonths( -1 );
-            this._EndDate = moment;
+            int month = moment.Month;
+            int year = moment.Year;
+            int start_day = 1;
+            int end_day = 0;
+
+            month += 1;
+            if(month == 13)
+            {
+                month = 1;
+                year++;
+            }
+
+            end_day = DateTime.DaysInMonth( year, month );
+            
+            this._StartDate = new DateTime( year, month, start_day );
+            this._EndDate = new DateTime( year, month, end_day );
 
             this._TextStartDate = GlobalViewModel.GetStringFromDateTimeValue( this._StartDate );
             this._TextEndDate = GlobalViewModel.GetStringFromDateTimeValue( this._EndDate );
 
+        }
+
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name2Prorties"></param>
+        private void InitFilterCriteriaNames( Dictionary<string,string> name2Prorties )
+        {
+            this._FilterCriteriaNames.Clear();
+
+            foreach(KeyValuePair<string, string> pair in name2Prorties)
+            {
+                this._FilterCriteriaNames.Add( new ComboBoxViewModel<string>( pair.Value, pair.Key ) );
+            }
         }
 
         /// <summary>
@@ -249,7 +362,7 @@ namespace HispaniaCommon.ViewModel.ViewModel.Queries
                     this._ListItems.Add( item );
                 };
 
-                StopWait();
+                StopWait();                
 
             } catch(Exception ex)
             {
@@ -259,5 +372,40 @@ namespace HispaniaCommon.ViewModel.ViewModel.Queries
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        private void ApplyFilter()
+        {
+            if(null != this._FilterAction)
+            {
+                Dictionary<string, string> filter_criterias = new Dictionary<string, string>();
+
+                try
+                {
+                    StartWait();
+
+                    if(!string.IsNullOrWhiteSpace( this._SelectedFilter ) &&
+                        !string.IsNullOrWhiteSpace( this._FilterText ))
+                    {
+
+                        filter_criterias.Add( this._SelectedFilter, this._FilterText.Trim() );
+
+                        this._FilterAction( "dgListItem", filter_criterias );
+                    }
+                    else
+                    {
+                        this._FilterAction( "dgListItem", filter_criterias );
+                    }
+                }catch(Exception ex)
+                {
+                    Debug.WriteLine( $"Sort error:{ex.Message}" );
+                }
+                finally 
+                { 
+                    StopWait(); 
+                }
+            }
+        }
     }
 }

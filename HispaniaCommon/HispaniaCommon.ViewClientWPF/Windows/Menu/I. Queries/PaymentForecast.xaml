@@ -6,7 +6,7 @@
         xmlns:convs="clr-namespace:HispaniaCommon.ViewClientWPF.Converters"
         xmlns:local="clr-namespace:HispaniaCommon.ViewClientWPF.Windows.Menu.I._Queries"
         mc:Ignorable="d"
-        Title="PaymentForecast" Height="450" Width="800">
+        Title="Previsión de pago" Height="450" Width="800" MinWidth="500">
     <Window.Resources>
         <ResourceDictionary>
             <convs:DecimalToStringConverter x:Key="DecimalToStringConverter"/>
@@ -37,7 +37,7 @@
                             <Image Name="imgParamQuery" Width="16" Source="{DynamicResource FilterQuery}"/>
                         </BulletDecorator.Bullet>
                     </BulletDecorator>
-                    <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="10,0"><Run Text="Previsió de pagament"/></TextBlock>
+                    <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="10,0"><Run Text="Filtro previsió de pago"/></TextBlock>
                     <Button Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center" 
                     Margin="0,-2,5,0" x:Name="btnRefresh"                                 
                     Background="{DynamicResource RefreshBrush}" ToolTip="Refrescar Dades"
@@ -50,13 +50,16 @@
 
             </GroupBox.Header>
 
-            <Grid HorizontalAlignment="Center">
+            <Grid HorizontalAlignment="Left">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto" ></RowDefinition>
                 </Grid.RowDefinitions>
+                
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="auto"></ColumnDefinition>
+                    <ColumnDefinition Width="auto"></ColumnDefinition>                    
                 </Grid.ColumnDefinitions>
+                
                 <Grid Grid.Row="0" Grid.Column="0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"></RowDefinition>
@@ -90,7 +93,22 @@
                             Margin="5,5,5,5"
                             SelectedDate="{Binding Path=EndDate, Mode=TwoWay}" Width="30" />
                     </StackPanel>
-                </Grid>                
+                </Grid>
+                <StackPanel Grid.Row="1" Width="auto" Orientation="Horizontal" >
+                    <Grid Width="200">
+                        <ComboBox Name="cbProveforFilter" Margin="5,5,5,5"
+                        HorizontalAlignment="Stretch" VerticalAlignment= "Center"
+                        ItemsSource="{Binding Path=FilterCriteriaNames}"
+                        DisplayMemberPath="Text"
+                        SelectedValuePath="Value"
+                        SelectedValue="{Binding Path=SelectedFilter, Mode=TwoWay}"/>
+                    </Grid>
+                    <Grid Width="200">
+                        <TextBox x:Name="tbStrFilter" Height="23" 
+                                 Text="{Binding Path=FilterText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                        </TextBox>
+                    </Grid>
+                </StackPanel>
             </Grid>
         </GroupBox>
 
@@ -105,7 +123,7 @@
             </GroupBox.Header>
             <ScrollViewer VerticalScrollBarVisibility="Disabled">
                 <DataGrid ItemsSource="{Binding Path=ListItems}" AutoGenerateColumns="false" 
-                  CanUserAddRows="false" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                  CanUserAddRows="false" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Name="dgListItems">                    
                     <DataGrid.Resources>
                         <Style TargetType="{x:Type TextBlock}" x:Key="TotalCell">
                             <Setter Property="HorizontalAlignment" Value="Stretch"/>

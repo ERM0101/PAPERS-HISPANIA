@@ -6013,7 +6013,7 @@ namespace HispaniaCommon.DataAccess
         {
             using(var db = new HispaniaComptabilitat.Data.Entities())
             {
-                foreach(ProviderOrder order in db.ProviderOrders )
+                foreach(ProviderOrder order in db.ProviderOrders/*.Where( i=> i.ProviderOrder_Id == 69 )*/ )
                 {
                     DateTime? date = ((order.PrevisioLliurament.HasValue && order.PrevisioLliurament.Value)
                                         ? (order.PrevisioLliuramentData.HasValue ? order.PrevisioLliuramentData.Value : (DateTime?)null)
@@ -6048,9 +6048,9 @@ namespace HispaniaCommon.DataAccess
         /// <returns></returns>
         private decimal FindDayPayment( IEnumerable<decimal> days, decimal day )
         {
-            decimal result = 0;
+            decimal result = day;
 
-            if(days.Any())
+            if( days.Any() )
             {
                 result = days.Where( i => i >= day ).OrderBy( i => i ).FirstOrDefault();
             }
@@ -6074,11 +6074,7 @@ namespace HispaniaCommon.DataAccess
                 {
                     result.Add( last_day );
                 }
-            }
-            else
-            {
-                result.Add( last_day );
-            }
+            }           
 
             return result;
         }

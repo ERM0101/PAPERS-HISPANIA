@@ -1,6 +1,7 @@
 ﻿using HispaniaCommon.ViewModel.ViewModel.Queries;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +13,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using HispaniaCommon.ViewClientWPF.Extensions;
 
 namespace HispaniaCommon.ViewClientWPF.Windows.Menu.I._Queries
 {
@@ -24,21 +26,40 @@ namespace HispaniaCommon.ViewClientWPF.Windows.Menu.I._Queries
         {   
             InitializeComponent();
 
-            QueryPaymentForecastViewModel model = new QueryPaymentForecastViewModel();
+            Dictionary<string,string> name2path = this.dgListItems.GetName2Property();
+            Dictionary<string, Dictionary<string, string>> name_name2name = new Dictionary<string, Dictionary<string, string>>();
+            name_name2name.Add  ("dgListItem", name2path );
+
+
+            QueryPaymentForecastViewModel model = new QueryPaymentForecastViewModel( name_name2name, this.OnFilter );
 
             model.SetWaitSystem( OnStartWait, OnStopWait );
 
             this.DataContext = model;
 
             model.Refresh();
-            
+
+        }
+
+        private void OnFilter(string filterName, Dictionary<string,string> filterCriterias )
+        {
+            var data = (CollectionViewSource.GetDefaultView( this.dgListItems.ItemsSource ) as ICollectionView);
+
+            if(null != data)
+            {
+                Dictionary<string, string> name2converters = this.dgListItems.GetName2Converter();
+                data.SmartFilter( filterCriterias, name2converters );
+
+            }
+
         }
 
         /// <summary>
         /// 
         /// </summary>
         private void OnStartWait()
-        {
+        {           
+
             Mouse.OverrideCursor = Cursors.Wait;
         }
 
