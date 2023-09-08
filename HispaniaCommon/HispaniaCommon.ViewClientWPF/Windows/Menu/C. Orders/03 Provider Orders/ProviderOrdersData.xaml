@@ -4,10 +4,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:Culture="clr-namespace:MBCode.Framework.Managers.Culture;assembly=MBCode.Framework"
+             xmlns:convs="clr-namespace:HispaniaCommon.ViewClientWPF.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="1075" MinWidth="1075">
     <UserControl.Resources>
         <ResourceDictionary >
+            <convs:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/HispaniaCommon.ViewClientWPF;component/Recursos/Resources/HispaniaCommon.ViewClientWPF.es.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/HispaniaCommon.ViewClientWPF;component/Recursos/Themes/HispaniaComptabilitat.xaml" />
@@ -20,6 +22,7 @@
             <RowDefinition Height="40" Name="rdDeliveryNote"/>
             <RowDefinition Height="40" Name="rdBill"/>
             <RowDefinition Height="40" Name="rdDeliveryNote1"/>
+            <RowDefinition Height="auto" Name="rdPaymentInfo"/>
             <RowDefinition Height="*" />
             <RowDefinition Height="30" Name="cdButtons"/>
         </Grid.RowDefinitions>
@@ -109,9 +112,14 @@
             <CheckBox Grid.Column="3" x:Name="chkPrevisioLliurament" Height="23" HorizontalAlignment="Stretch" 
                       VerticalAlignment="Center" Margin="0,12,4,0" IsEnabled="False"/>
             <DatePicker Grid.Column="5" Name="dtpPrevisioLliurament" SelectedDateFormat="Long" 
-                        HorizontalAlignment="Left" VerticalAlignment="Center" IsEnabled="False" />
+                        HorizontalAlignment="Left" VerticalAlignment="Center" IsEnabled="False" />            
         </StackPanel>
-        <TabControl Grid.Row="4" Margin="15,5,15,5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <StackPanel Grid.Row="4" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" 
+                    Name="spPaymentInfo"
+                    Visibility="{ Binding Visible, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
+            <Label Name="lbPaymentInfo" Content="{Binding PaymentsInfoText}"></Label>
+        </StackPanel>
+        <TabControl Grid.Row="5" Margin="15,5,15,5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <TabItem Header="Dades de Capçelera" Name="tiHeaderData" Style="{DynamicResource NonEditableTabItem}">
                 <Grid>
                     <Grid.RowDefinitions>
@@ -915,7 +923,7 @@
                 </Grid>
             </TabItem>
         </TabControl>
-        <Grid Grid.Row="5" Margin="15,0,15,0">
+        <Grid Grid.Row="6" Margin="15,0,15,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="3*"/>
                 <ColumnDefinition Width="120" Name="cbAcceptButton"/>

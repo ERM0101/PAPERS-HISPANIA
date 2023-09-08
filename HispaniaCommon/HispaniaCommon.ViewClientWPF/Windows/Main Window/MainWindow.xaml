@@ -770,6 +770,8 @@
                         <RowDefinition Height="*" MinHeight="35"/>
                         <RowDefinition Height="1"/>
                         <RowDefinition Height="*" MinHeight="35"/>
+                        <RowDefinition Height="1"/>
+                        <RowDefinition Height="*" MinHeight="35"/>
                     </Grid.RowDefinitions>
                     <Grid Grid.Row="0" Name="grdConsultaArticles" Margin="0,2,0,2">
                         <Grid.ColumnDefinitions>
@@ -847,6 +849,18 @@
                                VerticalAlignment="Center" HorizontalAlignment="Stretch" Height="30" Margin="10,0,0,0" 
                                VerticalContentAlignment="Center" HorizontalContentAlignment="Left" FontSize="14" />
                     </Grid>
+                    <Canvas Grid.Row="13" Background="#FF62676A"/>
+                    <Grid Grid.Row="14" Name="grdQueryPaymentForecast" Margin="0,2,0,2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="32"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Image Grid.Column="0" Source="{DynamicResource Tables}" Width="16" Height="16" Margin="0" />
+                        <Label Grid.Column="1" Content="Previsión de pago" Foreground="#FF62676A" Name="lblQueryPaymentForecast" 
+                                VerticalAlignment="Center" HorizontalAlignment="Stretch" Height="30" Margin="10,0,0,0" 
+                                VerticalContentAlignment="Center" HorizontalContentAlignment="Left" FontSize="14" />
+                    </Grid>                    
+
                 </Grid>
             </GroupBox>
             <GroupBox Grid.Row="1" Name="gbTancament" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="4">

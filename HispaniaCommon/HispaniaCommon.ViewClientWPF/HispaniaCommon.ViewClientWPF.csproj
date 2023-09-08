@@ -45,8 +45,14 @@
       <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime, Version=4.1.1.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Runtime.4.3.1\lib\net462\System.Runtime.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -65,6 +71,11 @@
   <ItemGroup>
     <Compile Include="Converters\BoolToHeightConverter.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
+    <Compile Include="Converters\ConvectorException.cs" />
+    <Compile Include="Converters\DateTimeToStringConverter.cs" />
+    <Compile Include="Converters\DecimalToStringConverter.cs" />
+    <Compile Include="Extensions\DataGridEX.cs" />
+    <Compile Include="Extensions\ICollectionViewEX.cs" />
     <Compile Include="Managers\Manager_IU.cs" />
     <Compile Include="Windows\Common\Class\FocusAdvancement.cs" />
     <Compile Include="Windows\Common\Windows\DataSelector.xaml.cs">
@@ -285,6 +296,9 @@
     <Compile Include="Windows\Menu\H. Closing\04. RemoveWarehouseMovements\RemoveWarehouseMovements.xaml.cs">
       <DependentUpon>RemoveWarehouseMovements.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\Menu\I. Queries\PaymentForecast.xaml.cs">
+      <DependentUpon>PaymentForecast.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\Menu\I. Queries\QueryOrdersProvider.xaml.cs">
       <DependentUpon>QueryOrdersProvider.xaml</DependentUpon>
     </Compile>
@@ -296,6 +310,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -604,6 +619,10 @@
     <Page Include="Windows\Menu\H. Closing\04. RemoveWarehouseMovements\RemoveWarehouseMovements.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\Menu\I. Queries\PaymentForecast.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\Menu\I. Queries\QueryOrdersProvider.xaml">
       <SubType>Designer</SubType>
