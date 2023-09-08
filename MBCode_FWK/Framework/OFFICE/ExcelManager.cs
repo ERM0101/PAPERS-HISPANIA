@@ -30,8 +30,7 @@ namespace MBCode.Framework.Managers
         /// </summary>
         /// <param name="dtData">Datatable with data to export to Excel.</param>
         /// <param name="FileExcelPath">Filename associated of new Excel.</param>
-        public static void ExportToExcel( this DataTable dtData, string WorsheetName = "Data", 
-                                          string FileExcelPath = null )
+        public static void ExportToExcel( this DataTable dtData, string WorsheetName = "Data", string FileExcelPath = null )
         {
             try
             {
