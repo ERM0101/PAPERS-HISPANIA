@@ -14,7 +14,11 @@ namespace HispaniaComptabilitat.Data
     
     public partial class ProviderOrderMovement
     {
-        public int ProviderOrderMovement_Id { get; set; }
+        public int ProviderOrderMovement_Id 
+        { 
+            get; 
+            set; 
+        }
         public Nullable<int> ProviderOrder_Id { get; set; }
         public Nullable<int> Good_Id { get; set; }
         public string Description { get; set; }
@@ -22,7 +26,11 @@ namespace HispaniaComptabilitat.Data
         public Nullable<decimal> Unit_Billing { get; set; }
         public Nullable<decimal> RetailPrice { get; set; }
         public Nullable<decimal> Comission { get; set; }
-        public string Remark { get; set; }
+        public string Remark 
+        { 
+            get; 
+            set; 
+        }
         public bool According { get; set; }
         public bool Comi { get; set; }
         public bool Historic { get; set; }
@@ -30,8 +38,15 @@ namespace HispaniaComptabilitat.Data
         public string Unit_Billing_Definition { get; set; }
         public string Internal_Remark { get; set; }
         public Nullable<int> RowOrder { get; set; }
-    
+        
+        public string ClientName
+        {
+            get;
+            set; 
+        }
+
         public virtual Good Good { get; set; }
         public virtual ProviderOrder ProviderOrder { get; set; }
+
     }
 }

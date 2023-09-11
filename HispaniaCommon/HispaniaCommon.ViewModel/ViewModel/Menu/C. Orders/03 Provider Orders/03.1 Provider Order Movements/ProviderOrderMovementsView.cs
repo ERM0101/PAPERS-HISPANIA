@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using HispaniaCompData = HispaniaComptabilitat.Data;
 
 #endregion
@@ -134,7 +135,10 @@ namespace HispaniaCommon.ViewModel
                 return GlobalViewModel.GetStringFromDecimalValue(Comission, DecimalType.Percent, true);
             }
         }
-        public string Remark { get; set; }
+        public string Remark { 
+            get; 
+            set; 
+        }
         public bool According { get; set; }
         public string According_Str
         {
@@ -195,6 +199,16 @@ namespace HispaniaCommon.ViewModel
         }
 
         #endregion
+
+        /// <summary>
+        /// Client name
+        /// </summary>
+        public string ClientName
+        {
+            get;
+            set;
+        }
+
 
         #region Good
 
@@ -306,6 +320,7 @@ namespace HispaniaCommon.ViewModel
             Internal_Remark = string.Empty;
             ProviderOrder = null;
             Good = null;
+            this.ClientName = string.Empty;
         }
 
         /// <summary>
@@ -329,6 +344,7 @@ namespace HispaniaCommon.ViewModel
             RowOrder = Convert.ToInt32(providerOrderMovement.RowOrder);
             _ProviderOrder_Id = GlobalViewModel.GetIntFromIntIdValue(providerOrderMovement.ProviderOrder_Id);
             _Good_Id = GlobalViewModel.GetIntFromIntIdValue(providerOrderMovement.Good_Id);
+            this.ClientName = providerOrderMovement.ClientName;
         }
 
         /// <summary>
@@ -351,6 +367,8 @@ namespace HispaniaCommon.ViewModel
             Internal_Remark = providerOrderMovement.Internal_Remark;
             ProviderOrder = providerOrderMovement.ProviderOrder;
             Good = providerOrderMovement.Good;
+
+            this.ClientName = providerOrderMovement.ClientName;
         }
 
         #endregion
@@ -380,7 +398,8 @@ namespace HispaniaCommon.ViewModel
                 Internal_Remark = Internal_Remark,
                 ProviderOrder_Id = _ProviderOrder_Id,
                 Good_Id = _Good_Id,
-                ProviderOrder = ProviderOrder.GetProviderOrder()
+                ProviderOrder = ProviderOrder.GetProviderOrder(),
+                ClientName = this.ClientName
             };
             return (ProviderOrderMovement);
         }
@@ -552,7 +571,8 @@ namespace HispaniaCommon.ViewModel
                        (Comi == providerOrderMovement.Comi) &&
                        (Internal_Remark == providerOrderMovement.Internal_Remark) &&
                        (Unit_Shipping_Definition == providerOrderMovement.Unit_Shipping_Definition) &&
-                       (Unit_Billing_Definition == providerOrderMovement.Unit_Billing_Definition);
+                       (Unit_Billing_Definition == providerOrderMovement.Unit_Billing_Definition) &&
+                       (ClientName == providerOrderMovement.ClientName );
         }
 
         /// <summary>
@@ -579,7 +599,8 @@ namespace HispaniaCommon.ViewModel
                        (Comi == providerOrderMovement.Comi) &&
                        (Internal_Remark == providerOrderMovement.Internal_Remark) &&
                        (Unit_Shipping_Definition == providerOrderMovement.Unit_Shipping_Definition) &&
-                       (Unit_Billing_Definition == providerOrderMovement.Unit_Billing_Definition);
+                       (Unit_Billing_Definition == providerOrderMovement.Unit_Billing_Definition) &&
+                       (this.ClientName == providerOrderMovement.ClientName );
         }
 
         /// <summary>
@@ -610,7 +631,8 @@ namespace HispaniaCommon.ViewModel
                        (providerOrderMovement_1.Comi == providerOrderMovement_2.Comi) &&
                        (providerOrderMovement_1.Internal_Remark == providerOrderMovement_2.Internal_Remark) &&
                        (providerOrderMovement_1.Unit_Shipping_Definition == providerOrderMovement_2.Unit_Shipping_Definition) &&
-                       (providerOrderMovement_1.Unit_Billing_Definition == providerOrderMovement_2.Unit_Billing_Definition);
+                       (providerOrderMovement_1.Unit_Billing_Definition == providerOrderMovement_2.Unit_Billing_Definition) &&
+                       (providerOrderMovement_1.ClientName == providerOrderMovement_2.ClientName );
         }
 
         /// <summary>
