@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="HispaniaComptabilitat.Data.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="HispaniaComptabilitat.Data.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AddressStore">
           <Key>
             <PropertyRef Name="AddressStore_Id" />
@@ -666,6 +666,7 @@
           <Property Name="Unit_Billing_Definition" Type="nvarchar" MaxLength="25" />
           <Property Name="Internal_Remark" Type="nvarchar(max)" />
           <Property Name="RowOrder" Type="int" />
+          <Property Name="ClientName" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="QueryCustom">
           <Key>
@@ -718,8 +719,8 @@
           <Property Name="Code" Type="nvarchar" MaxLength="2" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="50" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'COMPTABILITAT.dbo.TEMP_DIARY_BANDAGE' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <!--Ошибки, обнаруженные при создании:
+предупреждение 6002: В таблице или представлении "COMPTABILITAT.dbo.TEMP_DIARY_BANDAGE" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.-->
         <EntityType Name="TEMP_DIARY_BANDAGE">
           <Key>
             <PropertyRef Name="Bill_Id" />
@@ -1202,46 +1203,6 @@ warning 6002: The table/view 'COMPTABILITAT.dbo.TEMP_DIARY_BANDAGE' does not hav
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_HistoProvider_Bill">
-          <End Role="Bill" Type="Self.Bill" Multiplicity="0..1" />
-          <End Role="HistoProvider" Type="Self.HistoProvider" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Bill">
-              <PropertyRef Name="Bill_Id" />
-              <PropertyRef Name="Year" />
-            </Principal>
-            <Dependent Role="HistoProvider">
-              <PropertyRef Name="Bill_Id" />
-              <PropertyRef Name="Bill_Year" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_HistoProvider_BillingSerie">
-          <End Role="BillingSerie" Type="Self.BillingSerie" Multiplicity="0..1" />
-          <End Role="HistoProvider" Type="Self.HistoProvider" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="BillingSerie">
-              <PropertyRef Name="Serie_Id" />
-            </Principal>
-            <Dependent Role="HistoProvider">
-              <PropertyRef Name="Bill_Serie_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_HistoProvider_DeliveryNote">
-          <End Role="DeliveryNote" Type="Self.DeliveryNote" Multiplicity="0..1" />
-          <End Role="HistoProvider" Type="Self.HistoProvider" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="DeliveryNote">
-              <PropertyRef Name="DeliveryNote_Id" />
-              <PropertyRef Name="Year" />
-            </Principal>
-            <Dependent Role="HistoProvider">
-              <PropertyRef Name="DeliveryNote_Id" />
-              <PropertyRef Name="DeliveryNote_Year" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_HistoProvider_Good">
           <End Role="Good" Type="Self.Good" Multiplicity="0..1" />
           <End Role="HistoProvider" Type="Self.HistoProvider" Multiplicity="*" />
@@ -1604,12 +1565,6 @@ warning 6002: The table/view 'COMPTABILITAT.dbo.TEMP_DIARY_BANDAGE' does not hav
         <Function Name="ProviderOrderMovementsComments" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="ProviderOrder_Id" Type="int" Mode="In" />
         </Function>
-        <Function Name="QueryOrdersProvider" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="DateInit" Type="datetime" Mode="In" />
-          <Parameter Name="DateEnd" Type="datetime" Mode="In" />
-          <Parameter Name="Provider_Id" Type="int" Mode="In" />
-          <Parameter Name="Good_Id" Type="int" Mode="In" />
-        </Function>
         <Function Name="Ranges" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Good_Id_From" Type="nvarchar" Mode="In" />
           <Parameter Name="Good_Id_Until" Type="nvarchar" Mode="In" />
@@ -1824,18 +1779,6 @@ warning 6002: The table/view 'COMPTABILITAT.dbo.TEMP_DIARY_BANDAGE' does not hav
             <End Role="Good" EntitySet="Good" />
             <End Role="HistoGood" EntitySet="HistoGood" />
           </AssociationSet>
-          <AssociationSet Name="FK_HistoProvider_Bill" Association="Self.FK_HistoProvider_Bill">
-            <End Role="Bill" EntitySet="Bill" />
-            <End Role="HistoProvider" EntitySet="HistoProvider" />
-          </AssociationSet>
-          <AssociationSet Name="FK_HistoProvider_BillingSerie" Association="Self.FK_HistoProvider_BillingSerie">
-            <End Role="BillingSerie" EntitySet="BillingSerie" />
-            <End Role="HistoProvider" EntitySet="HistoProvider" />
-          </AssociationSet>
-          <AssociationSet Name="FK_HistoProvider_DeliveryNote" Association="Self.FK_HistoProvider_DeliveryNote">
-            <End Role="DeliveryNote" EntitySet="DeliveryNote" />
-            <End Role="HistoProvider" EntitySet="HistoProvider" />
-          </AssociationSet>
           <AssociationSet Name="FK_HistoProvider_Good" Association="Self.FK_HistoProvider_Good">
             <End Role="Good" EntitySet="Good" />
             <End Role="HistoProvider" EntitySet="HistoProvider" />
@@ -1945,8 +1888,7 @@ warning 6002: The table/view 'COMPTABILITAT.dbo.TEMP_DIARY_BANDAGE' does not hav
             <End Role="WarehouseMovement" EntitySet="WarehouseMovement" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="HispaniaComptabilitat.Data" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -2729,6 +2671,7 @@ warning 6002: The table/view 'COMPTABILITAT.dbo.TEMP_DIARY_BANDAGE' does not hav
           <Property Name="RowOrder" Type="Int32" />
           <NavigationProperty Name="Good" Relationship="Self.FK_ProviderOrderMovement_Good" FromRole="ProviderOrderMovement" ToRole="Good" />
           <NavigationProperty Name="ProviderOrder" Relationship="Self.FK_ProviderOrderMovement_ProviderOrder" FromRole="ProviderOrderMovement" ToRole="ProviderOrder" />
+          <Property Name="ClientName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="QueryCustom">
           <Key>
@@ -3947,10 +3890,10 @@ warning 6002: The table/view 'COMPTABILITAT.dbo.TEMP_DIARY_BANDAGE' does not hav
             <End Role="ProviderOrderMovement" EntitySet="ProviderOrderMovements" />
           </AssociationSet>
           <FunctionImport Name="CustomerOrderMovementsComments" ReturnType="Collection(String)">
-            <Parameter Name="CustomerOrder_Id" Mode="In" Type="Int32" />
+          <Parameter Name="CustomerOrder_Id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="CustomerSales" ReturnType="Collection(HispaniaComptabilitat.Data.CustomerSales_Result)">
-            <Parameter Name="Upper_Limit_Sales" Mode="In" Type="Decimal" />
+          <Parameter Name="Upper_Limit_Sales" Mode="In" Type="Decimal" />
           </FunctionImport>
           <FunctionImport Name="DeliveryNoteLines" ReturnType="Collection(HispaniaComptabilitat.Data.DeliveryNoteLines_Result)" />
           <FunctionImport Name="DiaryBandages" ReturnType="Collection(HispaniaComptabilitat.Data.DiaryBandages_Result)">
@@ -3959,23 +3902,23 @@ warning 6002: The table/view 'COMPTABILITAT.dbo.TEMP_DIARY_BANDAGE' does not hav
             <Parameter Name="Year_Query" Mode="In" Type="Decimal" />
           </FunctionImport>
           <FunctionImport Name="HistoricAcumCustomers">
-            <Parameter Name="Data_Year" Mode="In" Type="Int32" />
+          <Parameter Name="Data_Year" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="HistoricAcumGoods">
-            <Parameter Name="Data_Year" Mode="In" Type="Int32" />
+          <Parameter Name="Data_Year" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="InputsOutputs" ReturnType="Collection(HispaniaComptabilitat.Data.InputsOutputs_Result)">
-            <Parameter Name="Good_Id" Mode="In" Type="Int32" />
+          <Parameter Name="Good_Id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="LastBillSetteleds" ReturnType="Collection(Int32)" />
           <FunctionImport Name="LiniesConformes" ReturnType="Collection(HispaniaComptabilitat.Data.LiniesConformes_Result)">
-            <Parameter Name="CustomerOrder_Id" Mode="In" Type="Int32" />
+          <Parameter Name="CustomerOrder_Id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="LiniesProveidorConformes" ReturnType="Collection(HispaniaComptabilitat.Data.LiniesProveidorConformes_Result)">
-            <Parameter Name="ProviderOrder_Id" Mode="In" Type="Int32" />
+          <Parameter Name="ProviderOrder_Id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="ProviderOrderMovementsComments" ReturnType="Collection(String)">
-            <Parameter Name="ProviderOrder_Id" Mode="In" Type="Int32" />
+          <Parameter Name="ProviderOrder_Id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="QueryOrdersProvider" ReturnType="Collection(HispaniaComptabilitat.Data.QueryOrdersProvider_Result)">
             <Parameter Name="DateInit" Mode="In" Type="DateTime" />
@@ -3992,7 +3935,7 @@ warning 6002: The table/view 'COMPTABILITAT.dbo.TEMP_DIARY_BANDAGE' does not hav
           </FunctionImport>
           <FunctionImport Name="RemoveWarehouseMovements" />
           <FunctionImport Name="Revisions" ReturnType="Collection(HispaniaComptabilitat.Data.Revisions_Result)">
-            <Parameter Name="Operation_Type" Mode="In" Type="Int32" />
+          <Parameter Name="Operation_Type" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="Settlements" ReturnType="Collection(HispaniaComptabilitat.Data.Settlements_Result)">
             <Parameter Name="Agent_Id" Mode="In" Type="Int32" />
@@ -4826,6 +4769,7 @@ warning 6002: The table/view 'COMPTABILITAT.dbo.TEMP_DIARY_BANDAGE' does not hav
           <EntitySetMapping Name="ProviderOrderMovements">
             <EntityTypeMapping TypeName="HispaniaComptabilitat.Data.ProviderOrderMovement">
               <MappingFragment StoreEntitySet="ProviderOrderMovement">
+                <ScalarProperty Name="ClientName" ColumnName="ClientName" />
                 <ScalarProperty Name="ProviderOrderMovement_Id" ColumnName="ProviderOrderMovement_Id" />
                 <ScalarProperty Name="ProviderOrder_Id" ColumnName="ProviderOrder_Id" />
                 <ScalarProperty Name="Good_Id" ColumnName="Good_Id" />
@@ -5033,24 +4977,6 @@ warning 6002: The table/view 'COMPTABILITAT.dbo.TEMP_DIARY_BANDAGE' does not hav
             </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="ProviderOrderMovementsComments" FunctionName="HispaniaComptabilitat.Data.Store.ProviderOrderMovementsComments" />
-          <FunctionImportMapping FunctionImportName="QueryOrdersProvider" FunctionName="HispaniaComptabilitat.Data.Store.QueryOrdersProvider">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="HispaniaComptabilitat.Data.QueryOrdersProvider_Result">
-                <ScalarProperty Name="ProviderOrderId" ColumnName="ProviderOrderId" />
-                <ScalarProperty Name="Date" ColumnName="Date" />
-                <ScalarProperty Name="According" ColumnName="According" />
-                <ScalarProperty Name="PrevisioLliurament" ColumnName="PrevisioLliurament" />
-                <ScalarProperty Name="PrevisioLliuramentData" ColumnName="PrevisioLliuramentData" />
-                <ScalarProperty Name="ProviderId" ColumnName="ProviderId" />
-                <ScalarProperty Name="ProviderAlias" ColumnName="ProviderAlias" />
-                <ScalarProperty Name="Address" ColumnName="Address" />
-                <ScalarProperty Name="PostalCode" ColumnName="PostalCode" />
-                <ScalarProperty Name="City" ColumnName="City" />
-                <ScalarProperty Name="SendTypeDescription" ColumnName="SendTypeDescription" />
-                <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="Ranges" FunctionName="HispaniaComptabilitat.Data.Store.Ranges">
             <ResultMapping>
               <ComplexTypeMapping TypeName="HispaniaComptabilitat.Data.Ranges_Result">
