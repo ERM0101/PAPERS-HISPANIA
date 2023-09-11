@@ -771,9 +771,7 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                 chkPrevisioLliurament,
                 dtpPrevisioLliurament,
                 btnUp,
-                btnDown,
-                tbNameClientAssoc,
-                lblNameClientAssoc
+                btnDown
             };
         }
 
@@ -854,8 +852,7 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                     tbItemToSearch.Text = string.Empty;
                     tbProviderAlias.Text = string.Empty;
                     tbCompanyName.Text = string.Empty;
-                    tbCompanyCif.Text = string.Empty;
-                    tbNameClientAssoc.Text = string.Empty;
+                    tbCompanyCif.Text = string.Empty;                    
                     ActualizeProviderAddressData();
                 }
                 else
@@ -869,8 +866,7 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                     cbProvider.SelectedValue = Providers[Key];
                     tbProviderAlias.Text = ProviderOrder.Provider.Alias;
                     tbCompanyName.Text = ProviderOrder.Provider.Name;
-                    tbCompanyCif.Text = ProviderOrder.Provider.NIF;
-                    tbNameClientAssoc.Text = ProviderOrder.NameClientAssoc;                
+                    tbCompanyCif.Text = ProviderOrder.Provider.NIF;                    
                     //  Dades de Proveidor Tab Controls
                     tbProviderId.Text = ProviderOrder.Provider.Provider_Id.ToString();
                     tbProviderAliasProveidor.Text = ProviderOrder.Provider.Alias;
@@ -998,8 +994,6 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
             //  By default the manager for the Provider Order Data changes is active.
                 DataChangedManagerActive = true;
             //  TextBox
-                tbNameClientAssoc.TextChanged += TBDataChanged;
-                tbNameClientAssoc.PreviewTextInput += TBPreviewTextInput;
 
                 tbBillingDataEarlyPaymentDiscount.PreviewTextInput += TBPreviewTextInput;
                 tbBillingDataEarlyPaymentDiscount.TextChanged += TBPrecentDataChanged;
@@ -1174,7 +1168,6 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                     else if (sender == tbDataBankIBANOfficeCode) EditedProviderOrder.DataBank_IBAN_OfficeCode = value;
                     else if (sender == tbDataBankIBANCheckDigits) EditedProviderOrder.DataBank_IBAN_CheckDigits = value;
                     else if (sender == tbDataBankIBANAccountNumber) EditedProviderOrder.DataBank_IBAN_AccountNumber = value;
-                    else if(sender == tbNameClientAssoc) EditedProviderOrder.NameClientAssoc = value;
                 }
                 catch (Exception ex)
                 {
@@ -1751,7 +1744,8 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                             Unit_Shipping_Definition = histoProvider.Unit_Shipping_Definition,
                             Remark = string.Empty,
                             According = false,
-                            Comi = false
+                            Comi = false,
+                            ClientName = histoProvider.ClientName                            
                         };
                         DataList.Add(newMovement);
                         if (!Goods.ContainsKey(newMovement.Good_Key))

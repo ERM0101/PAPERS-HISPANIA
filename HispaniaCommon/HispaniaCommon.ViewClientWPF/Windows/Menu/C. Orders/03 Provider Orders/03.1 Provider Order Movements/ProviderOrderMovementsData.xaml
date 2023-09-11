@@ -181,12 +181,12 @@
                                 <ColumnDefinition Width="117"/>
                                 <ColumnDefinition Width="150"/>
                                 <ColumnDefinition Width="90"/>
-                                <ColumnDefinition Width="150"/>
-                                <ColumnDefinition Width="85"/>
-                                <ColumnDefinition Width="30"/>
+                                <ColumnDefinition Width="80"/>
+                                <ColumnDefinition Width="125"/>
+                                <ColumnDefinition Width="250"/>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>                            
+                            </Grid.ColumnDefinitions>
                             <Label Grid.Column="0" x:Name="lblRetailPrice" Content="PREU DE COMPRA :" Margin="10,16,0,0" FontWeight="Bold" HorizontalAlignment="Left" 
                                    VerticalAlignment="Top" IsEnabled="False" Grid.ColumnSpan="4"/>
                             <TextBox Grid.Column="4" x:Name="tbRetailPrice" Height="23" VerticalAlignment="Top" Margin="0,13,2,0" 
@@ -195,17 +195,27 @@
                                    VerticalAlignment="Top" IsEnabled="False"/>
                             <CheckBox Grid.Column="6" x:Name="chkbAccording" Height="16" VerticalAlignment="Top" Margin="0,16,0,0" 
                                       IsEnabled="False"/>
+
+                            <Label Grid.Column="7" x:Name="lblNameClientAssoc"  Content="NOM DEL CLIENT" Margin="0,16,0,0" 
+                                   FontWeight="Bold" HorizontalAlignment="Right" 
+                                   VerticalAlignment="Top" IsEnabled="False"/>
+                            <TextBox Grid.Column="8" x:Name="tbNameClientAssoc" Height="23" 
+                                HorizontalAlignment="Stretch"  
+                                HorizontalContentAlignment="Left" Margin="4,4,4,0" 
+                            IsTabStop="True"/>
+
                         </Grid>
                         <Grid Grid.Row="5">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="100"/>
-                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="9*"/>
+                                <ColumnDefinition Width="22*"/>
                             </Grid.ColumnDefinitions>
-                            <Label Grid.Column="0" x:Name="lblRemark"  Content="COMENTARI :" Margin="2,8,4,0" FontWeight="Bold" HorizontalAlignment="Center" 
+                            <Label x:Name="lblRemark"  Content="COMENTARI :" Margin="0,8,0,0" FontWeight="Bold" HorizontalAlignment="Center" 
                                VerticalAlignment="Top" IsEnabled="False"/>
                             <TextBox Grid.Column="1" x:Name="tbRemark" TextWrapping="Wrap" AcceptsReturn="True" Margin="0,8,4,8" 
-                                     HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
-                                     IsReadOnly="True"/>
+                                     HorizontalContentAlignment="Stretch" 
+                                     IsReadOnly="True" Grid.ColumnSpan="2"/>
                         </Grid>
                         <Grid Grid.Row="6">
                             <Grid.ColumnDefinitions>

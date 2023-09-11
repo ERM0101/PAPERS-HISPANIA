@@ -5414,7 +5414,9 @@ namespace HispaniaCommon.DataAccess
         {
             using (var db = new HispaniaComptabilitat.Data.Entities())
             {
-                return db.ProviderOrderMovements.Where(p => p.ProviderOrder_Id == ProviderOrder_Id).ToList();
+                List<HispaniaCompData.ProviderOrderMovement> result = null;
+                result =  db.ProviderOrderMovements.Where(p => p.ProviderOrder_Id == ProviderOrder_Id).ToList();
+                return result;
             }
         }
 

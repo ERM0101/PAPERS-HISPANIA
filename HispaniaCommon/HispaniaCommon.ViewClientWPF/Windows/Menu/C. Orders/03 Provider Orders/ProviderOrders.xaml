@@ -37,17 +37,7 @@
                             </Grid>
                         </DataTemplate>
                     </GridViewColumn.CellTemplate>
-                </GridViewColumn>
-                <GridViewColumn Width="Auto">
-                    <GridViewColumnHeader Content="Client" HorizontalContentAlignment="Left"/>
-                    <GridViewColumn.CellTemplate>
-                        <DataTemplate>
-                            <Grid Background="Transparent" HorizontalAlignment="Stretch" >
-                                <TextBlock Text="{Binding NameClientAssoc}" TextAlignment="Left" Margin="0,0,2,0"/>
-                            </Grid>
-                        </DataTemplate>
-                    </GridViewColumn.CellTemplate>
-                </GridViewColumn>
+                </GridViewColumn>                
                 <GridViewColumn Width="Auto">
                     <GridViewColumnHeader Content="Estat lliurament" HorizontalContentAlignment="Left"/>
                     <GridViewColumn.CellTemplate>
