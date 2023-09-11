@@ -69,8 +69,13 @@ namespace MBCode.Framework.Managers
                         for (var col_idx = 0; col_idx < dtData.Columns.Count; col_idx++ )
                         {                                
                             DataColumn column = dtData.Columns[ col_idx ];
-                                
-                            ExcelColumnInfo column_info = columnsInfos.FindByName( column.ColumnName );
+
+                            ExcelColumnInfo column_info = null;
+                            if( null != columnsInfos )
+                            {
+                                column_info = columnsInfos.FindByName( column.ColumnName );
+                            }
+
                             Excel.Range range = (Excel.Range)workSheet.Cells[ row_idx + 2, col_idx + 1 ];
 
                             var value = dtData.Rows[ row_idx ][ col_idx ];                            
