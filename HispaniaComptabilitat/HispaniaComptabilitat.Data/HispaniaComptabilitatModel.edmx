@@ -645,7 +645,6 @@
           <Property Name="TimeTable" Type="nvarchar" MaxLength="50" />
           <Property Name="PrevisioLliurament" Type="bit" />
           <Property Name="PrevisioLliuramentData" Type="date" />
-          <Property Name="NameClientAssoc" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="ProviderOrderMovement">
           <Key>
@@ -2640,7 +2639,6 @@ warning 6002: The table/view 'COMPTABILITAT.dbo.TEMP_DIARY_BANDAGE' does not hav
           <Property Name="TimeTable" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="PrevisioLliurament" Type="Boolean" />
           <Property Name="PrevisioLliuramentData" Type="DateTime" Precision="0" />
-          <Property Name="NameClientAssoc" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Agent" Relationship="Self.FK_ProviderOrder_Agent" FromRole="ProviderOrder" ToRole="Agent" />
           <NavigationProperty Name="Bill" Relationship="Self.FK_ProviderOrder_Bill" FromRole="ProviderOrder" ToRole="Bill" />
           <NavigationProperty Name="BillingSerie" Relationship="Self.FK_ProviderOrder_BillingSerie" FromRole="ProviderOrder" ToRole="BillingSerie" />
@@ -4765,7 +4763,6 @@ warning 6002: The table/view 'COMPTABILITAT.dbo.TEMP_DIARY_BANDAGE' does not hav
                 <ScalarProperty Name="TimeTable" ColumnName="TimeTable" />
                 <ScalarProperty Name="PrevisioLliurament" ColumnName="PrevisioLliurament" />
                 <ScalarProperty Name="PrevisioLliuramentData" ColumnName="PrevisioLliuramentData" />
-                <ScalarProperty Name="NameClientAssoc" ColumnName="NameClientAssoc" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

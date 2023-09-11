@@ -802,7 +802,6 @@ namespace HispaniaCommon.ViewModel
             _BillingData_Agent_Id = GlobalViewModel.GetIntFromIntIdValue(providerOrder.BillingData_Agent_Id);
             PrevisioLliurament = providerOrder.PrevisioLliurament.HasValue ? providerOrder.PrevisioLliurament.Value : false ;
             PrevisioLliuramentData = providerOrder.PrevisioLliuramentData.HasValue ? providerOrder.PrevisioLliuramentData.Value : DateTime.MinValue;
-            NameClientAssoc = providerOrder.NameClientAssoc;
         }
 
         /// <summary>
@@ -919,7 +918,6 @@ namespace HispaniaCommon.ViewModel
                 SurchargePercent = SurchargePercent,
                 PrevisioLliurament = PrevisioLliurament,
                 PrevisioLliuramentData = PrevisioLliuramentData,
-                NameClientAssoc = this.NameClientAssoc
             };
             return (ProviderOrder);
         }

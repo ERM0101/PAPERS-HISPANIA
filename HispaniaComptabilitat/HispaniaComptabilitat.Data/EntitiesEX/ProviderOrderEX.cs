@@ -67,8 +67,6 @@ namespace HispaniaComptabilitat.Data.EntitiesEX
                 //TimeTable = _This.TimeTable,
                 PrevisioLliurament = _This.PrevisioLliurament,
                 PrevisioLliuramentData = _This.PrevisioLliuramentData,
-                NameClientAssoc = _This.NameClientAssoc
-                
             };
 
             foreach( ProviderOrderMovement movement in _This.ProviderOrderMovements )

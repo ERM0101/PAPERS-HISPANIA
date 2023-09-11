@@ -466,7 +466,8 @@ namespace HispaniaCommon.ViewModel
                 ProviderOrderMovement_Id = ProviderOrderMovement_Id,
                 Good_Code = Good_Code,
                 Good_Description = Good_Description,
-                Good_Id = _Good_Id
+                Good_Id = _Good_Id,
+                ClientName = ClientName,
             };
             return (histoProvider);
         }
