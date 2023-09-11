@@ -1751,7 +1751,8 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                             Unit_Shipping_Definition = histoProvider.Unit_Shipping_Definition,
                             Remark = string.Empty,
                             According = false,
-                            Comi = false
+                            Comi = false,
+                            ClientName = histoProvider.ClientName                            
                         };
                         DataList.Add(newMovement);
                         if (!Goods.ContainsKey(newMovement.Good_Key))
