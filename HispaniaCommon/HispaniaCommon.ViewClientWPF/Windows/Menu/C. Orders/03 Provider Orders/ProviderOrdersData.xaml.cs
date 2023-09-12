@@ -1578,7 +1578,10 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                         ProviderOrderMovementsView newMovement = ProviderOrderMovementsDataWindow.EditedProviderOrderMovement;
                         GlobalViewModel.Instance.HispaniaViewModel.CreateItemInDataManaged(DataManagementId, newMovement);
                         DataList.Add(newMovement);
+                    
+                        //TODO: tarea 119
                         ActualizeGoodInfo(newMovement, MovementOp.Add);
+
                         ListItems.SelectedItem = newMovement;
                         ActualizeAmountInfo(EditedProviderOrder);
                         AreDataChanged = AreNotEquals(DataList, SourceDataList);
@@ -1643,7 +1646,10 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                         DataChangedManagerActive = true;
                         DataList.Remove(currentMovement);
                         DataList.Insert(Index, newMovement);
+                        
+                        //TODO tarea 119
                         ActualizeGoodInfo(currentMovement, newMovement);
+                    
                         ListItems.SelectedItem = newMovement;
                         ActualizeAmountInfo(EditedProviderOrder);
                         AreDataChanged = AreNotEquals(DataList, SourceDataList);
@@ -1678,7 +1684,10 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                         GlobalViewModel.Instance.HispaniaViewModel.DeleteItemInDataManaged(DataManagementId, Movement);
                         ListItems.SelectedItem = null;
                         DataList.Remove(Movement);
+                        
+                        //TODO: tarea 119
                         ActualizeGoodInfo(Movement, MovementOp.Remove, false);
+
                         ListItems.SelectedItem = null;
                         ActualizeAmountInfo(EditedProviderOrder);
                         AreDataChanged = AreNotEquals(DataList, SourceDataList);
@@ -2139,7 +2148,10 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
             DataChangedManagerActive = true;
             DataList.Remove(currentMovement);
             DataList.Insert(Index, newMovement);
+            
+            //TOFO: tarea 110
             ActualizeGoodInfo(currentMovement, newMovement);
+
             ListItems.SelectedItem = newMovement;
             ActualizeAmountInfo(EditedProviderOrder);
             AreDataChanged = AreNotEquals(DataList, SourceDataList);
@@ -2265,9 +2277,10 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
             {
                 Goods.Add(Movement.Good_Key, Movement.Good);
             }
-            ActualizeBillingAndShippingUnits(Movement.Good_CodArt_Str, Movement.Good_Key, Movement.According, 
-                                             Movement.Unit_Billing, Movement.Unit_Shipping, Action,
-                                             NotifyStatus);
+            //TODO: tarea 119
+            //ActualizeBillingAndShippingUnits(Movement.Good_CodArt_Str, Movement.Good_Key, Movement.According, 
+            //                                 Movement.Unit_Billing, Movement.Unit_Shipping, Action,
+            //                                 NotifyStatus);
         }
 
         private void ActualizeBillingAndShippingUnits(string GoodCode, string GoodKey, bool According,
@@ -2452,7 +2465,10 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                     //newMovement.BillingUnitAvailable = good.Billing_Unit_Available_Str;
                     GlobalViewModel.Instance.HispaniaViewModel.CreateItemInDataManaged(DataManagementId, newMovement);
                     DataList.Add(newMovement);
+                    
+                    //TODO: tarea 119
                     ActualizeGoodInfo(newMovement, MovementOp.Add);
+
                     ListItems.SelectedItem = newMovement;
                     //ActualizeAmountInfo(EditedProviderOrder);
                     AreDataChanged = AreNotEquals(DataList, SourceDataList);

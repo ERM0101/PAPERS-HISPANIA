@@ -4340,6 +4340,9 @@ namespace HispaniaCommon.DataAccess
                                 db.ProviderOrderMovements.Add(movement);
 
                                 db.SaveChanges();
+                                
+                                //TODO: tarea 119
+                                /*
                                 if (movement.According)
                                 {
                                     MovementGood = db.Goods.Find(movement.Good_Id);
@@ -4350,6 +4353,7 @@ namespace HispaniaCommon.DataAccess
                                     db.Entry(MovementGood).State = EntityState.Modified;
                                     db.SaveChanges();
                                 }
+                                */
                             }
                             //  Accept the operations realised.
                             dbTransaction.Commit();
@@ -4708,13 +4712,14 @@ namespace HispaniaCommon.DataAccess
                 }
                 if (movement.According)
                 {
-                    MovementGood = db.Goods.Find(movement.Good_Id);
+                    //TODO: Tarea 119
+                    /* MovementGood = db.Goods.Find(movement.Good_Id);
                     MovementGood.Billing_Unit_Available += movement.Unit_Billing;
                     MovementGood.Shipping_Unit_Available += movement.Unit_Shipping;
                     MovementGood.Billing_Unit_Departure -= movement.Unit_Billing;
                     MovementGood.Shipping_Unit_Departure -= movement.Unit_Shipping;
                     db.Entry(MovementGood).State = EntityState.Modified;
-                    db.SaveChanges();
+                    db.SaveChanges(); */
                 }
             }
             //  Second execute CREATE queries
@@ -4739,6 +4744,8 @@ namespace HispaniaCommon.DataAccess
                 }
                 if (movement.According)
                 {
+                    //TODO: Tarea 119
+                    /*
                     MovementGood = db.Goods.Find(movement.Good_Id);
                     MovementGood.Billing_Unit_Available -= movement.Unit_Billing;
                     MovementGood.Shipping_Unit_Available -= movement.Unit_Shipping;
@@ -4746,6 +4753,7 @@ namespace HispaniaCommon.DataAccess
                     MovementGood.Shipping_Unit_Departure += movement.Unit_Shipping;
                     db.Entry(MovementGood).State = EntityState.Modified;
                     db.SaveChanges();
+                    */
                 }
             }
         }
