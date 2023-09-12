@@ -22,9 +22,14 @@ namespace HispaniaCommon.ViewClientWPF.Windows.Menu.I._Queries
     /// </summary>
     public partial class PaymentForecast:Window
     {
+        /// <summary>
+        /// 
+        /// </summary>
         public PaymentForecast()
         {   
             InitializeComponent();
+
+            this.btnExit.Click += BtnExit_Click;
 
             Dictionary<string,string> name2path = this.dgListItems.GetName2Property();
             Dictionary<string, Dictionary<string, string>> name_name2name = new Dictionary<string, Dictionary<string, string>>();
@@ -41,6 +46,21 @@ namespace HispaniaCommon.ViewClientWPF.Windows.Menu.I._Queries
 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BtnExit_Click( object sender, RoutedEventArgs e )
+        {
+            Close();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="filterName"></param>
+        /// <param name="filterCriterias"></param>
         private void OnFilter(string filterName, Dictionary<string,string> filterCriterias )
         {
             var data = (CollectionViewSource.GetDefaultView( this.dgListItems.ItemsSource ) as ICollectionView);
