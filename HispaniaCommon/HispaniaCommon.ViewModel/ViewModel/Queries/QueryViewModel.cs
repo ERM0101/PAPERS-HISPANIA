@@ -187,20 +187,23 @@ namespace HispaniaCommon.ViewModel
         /// <returns></returns>
         private QueryPaymentForecastItemModel CreateQueryPaymentForecastItemModel( ProviderOrder order, DateTime date )
         {
-            decimal importe = order.ProviderOrderMovements
+            decimal base_imposable = order.ProviderOrderMovements
                                    .Select( i => (i.Unit_Billing * i.RetailPrice) )
                                    .Sum( i => (i.HasValue ? i.Value : 0) );
 
-            decimal iva = (importe / 100.000m) * order.IVAPercent;
+            decimal iva = ( (base_imposable / 100.000m ) * order.IVAPercent );
+            decimal surcahge = ( (base_imposable / 100.0m) * order.SurchargePercent );
 
-            decimal total = Math.Round( importe + iva , 2 );
+            decimal tasas = Math.Round( (iva + surcahge), 2 );
 
             QueryPaymentForecastItemModel result = new QueryPaymentForecastItemModel()
             {
                 OrderId = order.ProviderOrder_Id,
                 ProviderId = order.Provider.Provider_Id,
-                ProviderName = order.Provider.Name,
-                Total = total,
+                ProviderName = order.Provider.Name,                
+                BaseImposable = base_imposable,
+                IVARecarrec = tasas,
+                Total = base_imposable + tasas,
                 PaymentDate = date
             };
 
