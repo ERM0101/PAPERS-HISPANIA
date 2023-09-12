@@ -58,11 +58,12 @@ namespace MBCode.Framework.Managers
                     Excel._Worksheet workSheet = excelApp.ActiveSheet;
                     workSheet.Name = WorsheetName;
                 //  Columns : create headings.
-                    for (var i = 0; i < dtData.Columns.Count; i++)
-                    {
-                        workSheet.Cells[1, i + 1] = dtData.Columns[i].ColumnName.ToUpper();
-                        ((Excel.Range) workSheet.Cells[1, i + 1]).Interior.Color = ColorTranslator.ToOle(Color.LightGray);
+                for(var i = 0; i < dtData.Columns.Count; i++)
+                {
+                    workSheet.Cells[ 1, i + 1 ] = dtData.Columns[ i ].ColumnName.ToUpper();
+                    ((Excel.Range)workSheet.Cells[ 1, i + 1 ]).Interior.Color = ColorTranslator.ToOle( Color.LightGray );
                 }
+
                 //  Rows : insert data.
                     for (var row_idx = 0; row_idx < dtData.Rows.Count; row_idx++ )
                     {
@@ -76,9 +77,12 @@ namespace MBCode.Framework.Managers
                                 column_info = columnsInfos.FindByName( column.ColumnName );
                             }
 
-                            Excel.Range range = (Excel.Range)workSheet.Cells[ row_idx + 2, col_idx + 1 ];
+                            Excel.Range range = //(Excel.Range)
+                                                workSheet.Cells[ row_idx + 2, col_idx + 1 ];
 
                             var value = dtData.Rows[ row_idx ][ col_idx ];                            
+
+                            range.Value = value;
 
                             if(column_info != null && !string.IsNullOrEmpty( column_info.NumberFormat ))
                             {
@@ -86,7 +90,7 @@ namespace MBCode.Framework.Managers
                                 range.NumberFormat = column_info.NumberFormat;
                             } 
 
-                            range.Value = value;
+                            //range.Value = value;
                         }
                     }
                 //  Check file path

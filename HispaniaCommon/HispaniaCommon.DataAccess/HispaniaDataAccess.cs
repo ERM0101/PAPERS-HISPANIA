@@ -6023,7 +6023,7 @@ namespace HispaniaCommon.DataAccess
         {
             using(var db = new HispaniaComptabilitat.Data.Entities())
             {
-                foreach(ProviderOrder order in db.ProviderOrders/*.Where( i=> i.ProviderOrder_Id == 69 )*/ )
+                foreach(ProviderOrder order in db.ProviderOrders /*.Where( i=> i.ProviderOrder_Id == 81 )*/ )
                 {
                     DateTime? date = ((order.PrevisioLliurament.HasValue && order.PrevisioLliurament.Value)
                                         ? (order.PrevisioLliuramentData.HasValue ? order.PrevisioLliuramentData.Value : (DateTime?)null)
@@ -6043,7 +6043,11 @@ namespace HispaniaCommon.DataAccess
 
                         if(date_payment >= startDate && date_payment <= endDate)
                         {
-                            yield return new Tuple<ProviderOrder, DateTime>( order, date_payment );
+                            bool? confornes = LiniesProveidorConformes( order.ProviderOrder_Id );
+                            if(confornes.HasValue && confornes.Value)
+                            {   // conformes
+                                yield return new Tuple<ProviderOrder, DateTime>( order, date_payment );
+                            }
                         }
                     }
                 }
