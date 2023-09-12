@@ -131,6 +131,14 @@
                             <Setter Property="Background" Value="Green"/>
                             <Setter Property="Foreground" Value="White"/>
                         </Style>
+                        <Style TargetType="{x:Type TextBlock}" x:Key="BaseImposable">
+                            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                            <Setter Property="TextAlignment" Value="Right"/>
+                        </Style>
+                        <Style TargetType="{x:Type TextBlock}" x:Key="IVARecarrecCell">
+                            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                            <Setter Property="TextAlignment" Value="Right"/>
+                        </Style>
                         <Style TargetType="{x:Type TextBlock}" x:Key="PaymentDateCell">
                             <Setter Property="HorizontalAlignment" Value="Stretch"/>
                             <Setter Property="TextAlignment" Value="Center"/>                            
@@ -148,9 +156,17 @@
                         <DataGridTextColumn Binding="{Binding Path = PaymentDate, Converter={StaticResource DateTimeToStringConverter }}" 
                                             Header="Data de Venciment" IsReadOnly="True" />
                         
+                        <DataGridTextColumn Binding="{Binding Path = BaseImposable, Converter={StaticResource DecimalToStringConverter }}" 
+                                            ElementStyle="{StaticResource BaseImposable}"
+                                            Header="Base Imposable" IsReadOnly="True" />
+                        
+                        <DataGridTextColumn Binding="{Binding Path = IVARecarrec, Converter={StaticResource DecimalToStringConverter }}" 
+                                            ElementStyle="{StaticResource IVARecarrecCell}"
+                                            Header="IVA+Recarrec" IsReadOnly="True" />
+
                         <DataGridTextColumn Binding="{Binding Path = Total, Converter={StaticResource DecimalToStringConverter }}" 
                                             ElementStyle="{StaticResource TotalCell}"
-                                            Header="Import" IsReadOnly="True" />
+                                            Header="Total" IsReadOnly="True" />
                        
                     </DataGrid.Columns>
                 </DataGrid>

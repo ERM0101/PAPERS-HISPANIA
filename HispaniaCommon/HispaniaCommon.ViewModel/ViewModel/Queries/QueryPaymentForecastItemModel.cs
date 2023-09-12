@@ -42,7 +42,21 @@ namespace HispaniaCommon.ViewModel.ViewModel.Queries
         /// <summary>
         /// 
         /// </summary>
-        [ExcelColumnAttribute( 5, "Import", "#,##0.00 €" )]
+        [ExcelColumnAttribute( 5, "Base Imposable", "#,##0.00 €" )]
+        public decimal BaseImposable
+        {
+            get;
+            set;
+        }
+
+        [ExcelColumnAttribute( 6, "IVA+Recarrec", "#,##0.00 €" )]
+        public decimal IVARecarrec
+        {
+            get;
+            set;
+        }
+
+        [ExcelColumnAttribute( 7, "Total", "#,##0.00 €" )]
         public decimal Total
         {
             get;

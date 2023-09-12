@@ -6023,7 +6023,7 @@ namespace HispaniaCommon.DataAccess
         {
             using(var db = new HispaniaComptabilitat.Data.Entities())
             {
-                foreach(ProviderOrder order in db.ProviderOrders /*.Where( i=> i.ProviderOrder_Id == 81 )*/ )
+                foreach(ProviderOrder order in db.ProviderOrders /*.Where( i=> i.ProviderOrder_Id == 83 )*/ )
                 {
                     DateTime? date = ((order.PrevisioLliurament.HasValue && order.PrevisioLliurament.Value)
                                         ? (order.PrevisioLliuramentData.HasValue ? order.PrevisioLliuramentData.Value : (DateTime?)null)
