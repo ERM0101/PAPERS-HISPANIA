@@ -18,6 +18,58 @@ namespace HispaniaCommon.ViewModel.ViewModel.Queries
         /// <summary>
         /// 
         /// </summary>
+        [ExcelColumnAttribute(14, "Ud. Facturacion")]
+        public decimal FacturationUnits
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [ExcelColumnAttribute(13, "Ud. Expedicion")]
+        public decimal ExpeditionUnits
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [ExcelColumnAttribute(12, "Cliente Destino")]
+        public string Client
+        {
+            get;
+            set;
+        }
+
+
+        /// </summary>
+        public decimal LineAmount
+        {
+            get;
+            set;
+        }
+
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [ExcelColumnAttribute(11, "Linea Import")]
+        public string LineAmountStr
+        {
+            get
+            {
+                return GlobalViewModel.GetStringFromDecimalValue(this.LineAmount,
+                                                                  DecimalType.Currency, true);
+            }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
         [ExcelColumnAttribute( 10, "Article" )]
         public string Good
         {

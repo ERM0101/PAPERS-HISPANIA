@@ -299,6 +299,10 @@ namespace HispaniaCommon.ViewModel
                     foreach(ProviderOrderMovement movement in movemients)
                     {
                         QueryOrderProviderViewModel item = CreateQueryOrderProviderViewModel( raw_item, movement.Description );
+                        item.LineAmount = movement.RetailPrice.Value;
+                        item.Client = movement.ClientName;
+                        item.FacturationUnits = movement.Unit_Billing.Value;
+                        item.ExpeditionUnits = movement.Unit_Shipping.Value;
                         yield return item;
                     }
                 }
