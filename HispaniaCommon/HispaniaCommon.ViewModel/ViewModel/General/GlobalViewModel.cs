@@ -174,22 +174,33 @@ namespace HispaniaCommon.ViewModel
 
         public static string GetStringFromDateTimeValue(DateTime? DateTimeInput, DateTimeFormat Format = DateTimeFormat.UI)
         {
-            string Pattern;
-            switch (Format)
+            string pattern;
+
+            switch( Format )
             {
                 case DateTimeFormat.Report:
-                     Pattern = "dd-MM-yyyy";
+                     pattern = "dd-MM-yyyy";
                      break;
                 case DateTimeFormat.LongFormat:
-                     Pattern = "dddd, dd MMMM yyyy";
+                     pattern = "dddd, dd MMMM yyyy";
                      break;
                 case DateTimeFormat.UI:
                 default:
-                     Pattern = "dd/MM/yyyy";
+                     pattern = "dd/MM/yyyy";
                      break;
             }
-            return DateTimeInput is null || DateTimeInput == DateTime.MinValue ? Format == DateTimeFormat.UI ? "No Informat" : string.Empty
-                                                                               : ((DateTime)DateTimeInput).ToString(Pattern, UICulture);
+            string result;
+
+            if(DateTimeInput is null || DateTimeInput == DateTime.MinValue )
+            {
+                result = (Format == DateTimeFormat.UI ? "No Informat" : string.Empty);
+            }
+            else
+            {
+                result = DateTimeInput.Value.ToString( pattern ); //, UICulture );
+            }
+
+            return result;
         }
 
         public static string GetStringFromPostalCode(PostalCodesView PostalCode)

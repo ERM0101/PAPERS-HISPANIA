@@ -229,7 +229,7 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
         /// Store the list of Editable Controls.
         /// </summary>
         private List<Control> OnlyQueryControls = null;
-
+                
      
         #region GUI
 
@@ -1282,7 +1282,7 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
         /// <param name="sender">Object that sends the event.</param>
         /// <param name="e">Parameters with the event was sended.</param>
         private void BtnCancel_Click(object sender, RoutedEventArgs e)
-        {
+        {            
             //  Send the event that indicates at the observer that the operation is cancelled.
                 EvCancel?.Invoke();
         }
@@ -1727,7 +1727,7 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                         Data = EditedCustomerOrder.Customer
                     };
                     HistoCustomersWindow.Closed += HistoCustomersWindow_Closed;
-                    HistoCustomersWindow.ShowDialog();
+                    HistoCustomersWindow.Show();
                 }
                 catch (Exception ex)
                 {
@@ -1844,7 +1844,7 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                 DataChangedManagerActive = false;
                 CustomerOrderMovementsView currentMovement = (CustomerOrderMovementsView)ListItems.Items[Index];
                 CustomerOrderMovementsView previousMovement = (CustomerOrderMovementsView)ListItems.Items[Index - 1];
-                if ((currentMovement._CustomerOrder_Id <= 0 || previousMovement._CustomerOrder_Id <= 0) || ((currentMovement.CustomerOrder.EffectType == null) || (previousMovement.CustomerOrder.EffectType == null)))
+                if ((currentMovement._CustomerOrder_Id <= 0 || previousMovement._CustomerOrder_Id <= 0) || ((currentMovement.CustomerOrder.EffectType == null) || (previousMovement.CustomerOrder.EffectType == null) || currentMovement.CustomerOrderMovement_Id<0 || previousMovement.CustomerOrderMovement_Id < 0))
                 {
                     MessageBox.Show("Debe guardar la comanda antes de poder ordenar las líneas");
                     return;
@@ -1855,21 +1855,24 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                 DataList = new ObservableCollection<CustomerOrderMovementsView>(DataList.OrderBy(x => x.RowOrder));
                 if (currentMovement.CustomerOrderMovement_Id<=0)
                 {
-                    GlobalViewModel.Instance.HispaniaViewModel.CreateCustomerOrderMovement(currentMovement);
+                    GlobalViewModel.Instance.HispaniaViewModel.CreateCustomerOrderMovement(currentMovement);                    
                 }
                 else
                 {
-                    GlobalViewModel.Instance.HispaniaViewModel.UpdateCustomerOrderMovement(currentMovement);
+                    GlobalViewModel.Instance.HispaniaViewModel.UpdateCustomerOrderMovement(currentMovement);                    
                 }
 
                 if (previousMovement.CustomerOrderMovement_Id <= 0)
                 {
-                    GlobalViewModel.Instance.HispaniaViewModel.CreateCustomerOrderMovement(previousMovement);
+                    GlobalViewModel.Instance.HispaniaViewModel.CreateCustomerOrderMovement(previousMovement);                    
                 }
                 else
                 {
                     GlobalViewModel.Instance.HispaniaViewModel.UpdateCustomerOrderMovement(previousMovement);
-                }               
+                }
+                this.CustomerOrder.LineasOrdenadas = true;
+                this.EditedCustomerOrder.LineasOrdenadas = true;
+                AreDataChanged = true;
             }
         }
 
@@ -1885,7 +1888,7 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                 CustomerOrderMovementsView currentMovement = (CustomerOrderMovementsView)ListItems.Items[Index];
                 CustomerOrderMovementsView nextMovement = (CustomerOrderMovementsView)ListItems.Items[Index + 1];
 
-                if ((currentMovement._CustomerOrder_Id <= 0 || nextMovement._CustomerOrder_Id <= 0)|| ((currentMovement.CustomerOrder.EffectType == null) || (nextMovement.CustomerOrder.EffectType == null)))
+                if ((currentMovement._CustomerOrder_Id <= 0 || nextMovement._CustomerOrder_Id <= 0)|| ((currentMovement.CustomerOrder.EffectType == null) || (nextMovement.CustomerOrder.EffectType == null) || currentMovement.CustomerOrderMovement_Id<0 || nextMovement.CustomerOrderMovement_Id < 0))
                 {
                     MessageBox.Show("Debe guardar la comanda antes de poder ordenar las líneas");
                     return;
@@ -1913,6 +1916,8 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                 {
                     GlobalViewModel.Instance.HispaniaViewModel.UpdateCustomerOrderMovement(nextMovement);
                 }
+                this.CustomerOrder.LineasOrdenadas = true;
+                AreDataChanged = true;
             }
         }
         private void CheckRowOrder()

@@ -37,7 +37,7 @@
                             </Grid>
                         </DataTemplate>
                     </GridViewColumn.CellTemplate>
-                </GridViewColumn>
+                </GridViewColumn>                
                 <GridViewColumn Width="Auto">
                     <GridViewColumnHeader Content="Estat lliurament" HorizontalContentAlignment="Left"/>
                     <GridViewColumn.CellTemplate>

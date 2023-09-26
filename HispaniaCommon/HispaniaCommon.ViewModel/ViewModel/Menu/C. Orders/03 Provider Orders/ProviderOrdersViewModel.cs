@@ -330,6 +330,38 @@ namespace HispaniaCommon.ViewModel
                 RefreshProviderOrders();
         }
 
+        public void CreateHistoProviders(ProvidersView Provider, List<ProviderOrdersView> SourceProviderOrders)
+        {
+            CalculateAmountInfo(Provider, SourceProviderOrders, out ObservableCollection<ProviderOrderMovementsView> Movements,
+                                    out decimal GrossAmount, out decimal EarlyPayementDiscountAmount, out decimal TaxableBaseAmount,
+                                    out decimal IVAAmount, out decimal SurchargeAmount, out decimal TotalAmount);
+            foreach (ProviderOrderMovementsView Movement in Movements)
+            {
+                if (!Movement.According)
+                {
+                    return;
+                }
+            }
+
+            int Historic_Id = -1;
+            List<HispaniaCompData.HistoProvider> HistoricMovementsList = new List<HispaniaCompData.HistoProvider>(Movements.Count);
+            foreach (ProviderOrderMovementsView Movement in Movements)
+            {
+                HistoProvidersView HistoProviderView = new HistoProvidersView(Movement)
+                {
+                    HistoProvider_Id = Historic_Id,
+                    Good_Description = Movement.Description,
+                    Bill_Date = DateTime.Today,
+                    DeliveryNote_Date = DateTime.Today
+
+                };
+                Historic_Id--;
+                HistoricMovementsList.Add(HistoProviderView.GetHistoProvider());
+            }
+
+            HispaniaDataAccess.Instance.CreateHistoProvider(HistoricMovementsList);
+        }
+
         private bool ValidateBillForProvider(ProvidersView Provider, List<ProviderOrdersView> SourceProviderOrders)
         {
             decimal IVAPercent = SourceProviderOrders[0].IVAPercent;

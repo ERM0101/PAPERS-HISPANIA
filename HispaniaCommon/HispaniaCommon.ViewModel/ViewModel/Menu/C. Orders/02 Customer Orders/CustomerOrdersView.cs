@@ -674,6 +674,8 @@ namespace HispaniaCommon.ViewModel
             }
         }
 
+        public bool LineasOrdenadas { get; set; }
+
         #endregion
 
         #endregion

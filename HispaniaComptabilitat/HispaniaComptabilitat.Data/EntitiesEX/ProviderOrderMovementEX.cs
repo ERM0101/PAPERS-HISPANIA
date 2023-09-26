@@ -36,6 +36,7 @@ namespace HispaniaComptabilitat.Data.EntitiesEX
             _This.Unit_Billing_Definition = other.Unit_Billing_Definition;
             _This.Internal_Remark = other.Internal_Remark;
             _This.RowOrder = other.RowOrder;
+            _This.ClientName = other.ClientName;
     
             return _This;
         }

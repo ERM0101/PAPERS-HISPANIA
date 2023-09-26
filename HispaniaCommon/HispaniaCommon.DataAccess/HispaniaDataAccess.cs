@@ -4340,6 +4340,9 @@ namespace HispaniaCommon.DataAccess
                                 db.ProviderOrderMovements.Add(movement);
 
                                 db.SaveChanges();
+                                
+                                //TODO: tarea 119
+                                /*
                                 if (movement.According)
                                 {
                                     MovementGood = db.Goods.Find(movement.Good_Id);
@@ -4350,6 +4353,7 @@ namespace HispaniaCommon.DataAccess
                                     db.Entry(MovementGood).State = EntityState.Modified;
                                     db.SaveChanges();
                                 }
+                                */
                             }
                             //  Accept the operations realised.
                             dbTransaction.Commit();
@@ -4708,13 +4712,14 @@ namespace HispaniaCommon.DataAccess
                 }
                 if (movement.According)
                 {
-                    MovementGood = db.Goods.Find(movement.Good_Id);
+                    //TODO: Tarea 119
+                    /* MovementGood = db.Goods.Find(movement.Good_Id);
                     MovementGood.Billing_Unit_Available += movement.Unit_Billing;
                     MovementGood.Shipping_Unit_Available += movement.Unit_Shipping;
                     MovementGood.Billing_Unit_Departure -= movement.Unit_Billing;
                     MovementGood.Shipping_Unit_Departure -= movement.Unit_Shipping;
                     db.Entry(MovementGood).State = EntityState.Modified;
-                    db.SaveChanges();
+                    db.SaveChanges(); */
                 }
             }
             //  Second execute CREATE queries
@@ -4739,6 +4744,8 @@ namespace HispaniaCommon.DataAccess
                 }
                 if (movement.According)
                 {
+                    //TODO: Tarea 119
+                    /*
                     MovementGood = db.Goods.Find(movement.Good_Id);
                     MovementGood.Billing_Unit_Available -= movement.Unit_Billing;
                     MovementGood.Shipping_Unit_Available -= movement.Unit_Shipping;
@@ -4746,6 +4753,7 @@ namespace HispaniaCommon.DataAccess
                     MovementGood.Shipping_Unit_Departure += movement.Unit_Shipping;
                     db.Entry(MovementGood).State = EntityState.Modified;
                     db.SaveChanges();
+                    */
                 }
             }
         }
@@ -5015,6 +5023,49 @@ namespace HispaniaCommon.DataAccess
                 ErrMsg = "No es poden associar les factures a les comandes de proveidor seleccionades.\r\n" +
                          "Intentiu de nou, i si el problema persisteix consulti l'administrador";
                 LogDataAccess.Instance.WriteLog("Create Bill DA - Error -> {0}.\r\nDetalls:{1}.", ErrMsg, MsgManager.ExcepMsg(ex));
+                throw new Exception(ErrMsg, ex);
+            }
+        }
+
+        [OperationContract]
+        public void CreateHistoProvider(List<HispaniaCompData.HistoProvider> HistoricMovementsList)
+        {
+            string ErrMsg;
+            try
+            {
+                using (var db = new HispaniaComptabilitat.Data.Entities())
+                {
+                    using (var dbTransaction = db.Database.BeginTransaction())
+                    {
+                        try
+                        {
+                            foreach (HispaniaCompData.HistoProvider HistoricMovement in HistoricMovementsList)
+                            {                                
+                                if (HistoricMovement.HistoProvider_Id<=0)
+                                {
+                                    db.HistoProviders.Add(HistoricMovement);
+                                    db.SaveChanges();
+                                    LogDataAccess.Instance.WriteLog("Create HistoricMovement -> {0}.", HistoricMovement.HistoProvider_Id);
+                                }                                
+                            }
+                            dbTransaction.Commit();
+                        }
+                        catch (Exception ex)
+                        {
+                            dbTransaction.Rollback();
+                            ErrMsg = "No es poden crear les historic movements de comandes de proveidor seleccionades.\r\n" +
+                                     "Intentiu de nou, i si el problema persisteix consulti l'administrador";
+                            LogDataAccess.Instance.WriteLog("Create HistoricMovement Error -> {0}.\r\nDetalls:{1}.", ErrMsg, MsgManager.ExcepMsg(ex));
+                            throw new Exception(ErrMsg, ex);
+                        }
+                    }
+                }
+            }
+            catch (DataException ex)
+            {
+                ErrMsg = "No es poden crear les historic movements de comandes de proveidor seleccionades.\r\n" +
+                         "Intentiu de nou, i si el problema persisteix consulti l'administrador";
+                LogDataAccess.Instance.WriteLog("Create HistoricMovement - Error -> {0}.\r\nDetalls:{1}.", ErrMsg, MsgManager.ExcepMsg(ex));
                 throw new Exception(ErrMsg, ex);
             }
         }
@@ -5371,7 +5422,9 @@ namespace HispaniaCommon.DataAccess
         {
             using (var db = new HispaniaComptabilitat.Data.Entities())
             {
-                return db.ProviderOrderMovements.Where(p => p.ProviderOrder_Id == ProviderOrder_Id).ToList();
+                List<HispaniaCompData.ProviderOrderMovement> result = null;
+                result =  db.ProviderOrderMovements.Where(p => p.ProviderOrder_Id == ProviderOrder_Id).ToList();
+                return result;
             }
         }
 
@@ -5958,6 +6011,112 @@ namespace HispaniaCommon.DataAccess
                 this.Name = str;
                 this.Value = value;
             }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="startDate"></param>
+        /// <param name="endDate"></param>
+        /// <returns></returns>
+        public IEnumerable<Tuple<ProviderOrder,DateTime>> GetQueryPaymentForecast( DateTime startDate, DateTime endDate )
+        {
+            using(var db = new HispaniaComptabilitat.Data.Entities())
+            {
+                foreach(ProviderOrder order in db.ProviderOrders /*.Where( i=> i.ProviderOrder_Id == 83 )*/ )
+                {
+                    DateTime? date = ((order.PrevisioLliurament.HasValue && order.PrevisioLliurament.Value)
+                                        ? (order.PrevisioLliuramentData.HasValue ? order.PrevisioLliuramentData.Value : (DateTime?)null)
+                                        : (order.Date.HasValue ? order.Date.Value : (DateTime?)null));
+                    if(date.HasValue)
+                    {
+                        // Calc date payment
+                        DateTime date_payment = date.Value.AddDays( (double)order.DataBank_ExpirationDays );
+
+                        List<decimal> days = BuildDays( order.DataBank_Paydays1,
+                                                        order.DataBank_Paydays2,
+                                                        order.DataBank_Paydays3 );
+
+                        days = NormalizeDays( date_payment, days );
+                        int day = (int)FindDayPayment( days, date_payment.Day );                        
+                        date_payment = new DateTime( date_payment.Year, date_payment.Month, day );
+
+                        if(date_payment >= startDate && date_payment <= endDate)
+                        {
+                            bool? confornes = LiniesProveidorConformes( order.ProviderOrder_Id );
+                            if(confornes.HasValue && confornes.Value)
+                            {   // conformes
+                                yield return new Tuple<ProviderOrder, DateTime>( order, date_payment );
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="days"></param>
+        /// <param name="day"></param>
+        /// <returns></returns>
+        private decimal FindDayPayment( IEnumerable<decimal> days, decimal day )
+        {
+            decimal result = day;
+
+            if( days.Any() )
+            {
+                result = days.Where( i => i >= day ).OrderBy( i => i ).FirstOrDefault();
+            }
+            
+            return ( result == 0 ? day : result );
+        }
+
+        private List<decimal> NormalizeDays( DateTime date, List<decimal> days )
+        {
+            int last_day = DateTime.DaysInMonth( date.Year, date.Month );
+
+            List<decimal> result = days.OrderBy( i => i ).ToList();
+
+            // delete days == 0 || days > last_day ( if feb -> delete 30-31 or 29 )
+            result = days.Where( d => d != 0 && d < last_day ).ToList();
+
+            // if last element < last_day -> add last_day
+            if(result.Count > 0)
+            {
+                if(result[ result.Count - 1 ] < last_day)
+                {
+                    result.Add( last_day );
+                }
+            }           
+
+            return result;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="day1"></param>
+        /// <param name="day2"></param>
+        /// <param name="day3"></param>
+        /// <returns></returns>
+        private List<decimal> BuildDays( decimal day1, decimal day2, decimal day3 )
+        {
+            List<decimal> result = new List<decimal>();
+
+            result.Add( day1 );
+
+            if(!result.Contains( day2 ))
+            {
+                result.Add( day2 );
+            }
+
+            if(!result.Contains( day3 ))
+            {
+                result.Add( day3 );
+            }
+
+            return result;
         }
 
         public IEnumerable<ProviderOrder> GetQueryOrders( DateTime startDate, DateTime endDate, int? articleId, int? providerId )

@@ -6,6 +6,7 @@ using HispaniaCommon.ViewModel.ViewModel.Queries;
 using HispaniaComptabilitat.Data;
 using MBCode.Framework.Managers;
 using MBCode.Framework.Managers.Messages;
+using MBCode.Framework.OFFICE;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -15,6 +16,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Windows.Controls.Primitives;
+using static HispaniaCommon.DataAccess.Utils.DataTableEX;
 using static iTextSharp.text.pdf.AcroFields;
 using static iTextSharp.text.pdf.events.IndexEvents;
 
@@ -149,9 +151,11 @@ namespace HispaniaCommon.ViewModel
                                                      moment.Year, moment.Month, moment.Day,
                                                      moment.Hour, moment.Minute );
 
-                DataTable data_table = streamData.ToDataTable();
+                IEnumerable<ExcelColumnInfo> columns_infos = typeof( TRow ).LoadColumnInfos();
 
-                ExcelManager.ExportToExcel( data_table, sheetName, excel_filename );
+                DataTable data_table = streamData.ToDataTable( columns_infos );
+
+                ExcelManager.ExportToExcel( data_table, sheetName, excel_filename, columns_infos );
 
                 Process.Start( excel_filename );
 
@@ -174,6 +178,36 @@ namespace HispaniaCommon.ViewModel
         public DataTable GetDataQuery(QueryType queryType, Dictionary<string, object> Params = null)
         {
             return (HispaniaDataAccess.Instance.GetDataTableFromQuerySQL(GetQuerySQL(queryType, Params)));
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="recipient"></param>
+        /// <returns></returns>
+        private QueryPaymentForecastItemModel CreateQueryPaymentForecastItemModel( ProviderOrder order, DateTime date )
+        {
+            decimal base_imposable = order.ProviderOrderMovements
+                                   .Select( i => (i.Unit_Billing * i.RetailPrice) )
+                                   .Sum( i => (i.HasValue ? i.Value : 0) );
+
+            decimal iva = ( (base_imposable / 100.000m ) * order.IVAPercent );
+            decimal surcahge = ( (base_imposable / 100.0m) * order.SurchargePercent );
+
+            decimal tasas = Math.Round( (iva + surcahge), 2 );
+
+            QueryPaymentForecastItemModel result = new QueryPaymentForecastItemModel()
+            {
+                OrderId = order.ProviderOrder_Id,
+                ProviderId = order.Provider.Provider_Id,
+                ProviderName = order.Provider.Name,                
+                BaseImposable = base_imposable,
+                IVARecarrec = tasas,
+                Total = base_imposable + tasas,
+                PaymentDate = date
+            };
+
+            return result;
         }
 
         /// <summary>
@@ -202,6 +236,26 @@ namespace HispaniaCommon.ViewModel
             };
 
             return result;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="startDate"></param>
+        /// <param name="endDate"></param>
+        /// <returns></returns>
+        public IEnumerable<QueryPaymentForecastItemModel> GetQueryPaymentForecast( DateTime startDate, DateTime endDate )
+        {
+            IEnumerable<Tuple<ProviderOrder,DateTime>> raw_result = 
+                                    HispaniaDataAccess.Instance.GetQueryPaymentForecast( startDate, endDate );
+
+            foreach(Tuple<ProviderOrder, DateTime> item in raw_result )
+            {
+                QueryPaymentForecastItemModel result = CreateQueryPaymentForecastItemModel( item.Item1, item.Item2 );
+
+                yield return result;
+            }
+
         }
 
         /// <summary>

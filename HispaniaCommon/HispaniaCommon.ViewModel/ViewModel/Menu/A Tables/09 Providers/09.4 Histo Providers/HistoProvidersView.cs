@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using HispaniaCompData = HispaniaComptabilitat.Data;
 
 #endregion
@@ -31,19 +32,21 @@ namespace HispaniaCommon.ViewModel
                 {
                     m_Fields = new Dictionary<string, string>
                     {
-                        { "Numero de Factura", "Bill_Id_Str" },
-                        { "Any de la Factura", "Bill_Year_Str" },
-                        { "Sèrie de Facturació de la Factura", "Bill_Serie_Str" },
-                        { "Data de la Factura", "Bill_Date_Str" },
-                        { "Numero d'Albarà", "DeliveryNote_Id_Str" },
-                        { "Any de l'Albarà", "DeliveryNote_Year_Str" },
-                        { "Data de l'Albarà", "DeliveryNote_Date_Str" },
+                        //{ "Numero de Factura", "Bill_Id_Str" },
+                        //{ "Any de la Factura", "Bill_Year_Str" },
+                        //{ "Sèrie de Facturació de la Factura", "Bill_Serie_Str" },
+                        //{ "Data de la Factura", "Bill_Date_Str" },
+                        //{ "Numero d'Albarà", "DeliveryNote_Id_Str" },
+                        //{ "Any de l'Albarà", "DeliveryNote_Year_Str" },
+                        //{ "Data de l'Albarà", "DeliveryNote_Date_Str" },
+                        { "Client", "ClientName" },
                         { "Codi d'Article", "Good_Code" },
                         { "Descripció de l'Article", "Good_Description" },
                         { "Unitat d'Expedició", "Shipping_Units_Str" },
                         { "Unitat de Facturació", "Billing_Units_Str" },
+                        { "Percentatge Comissió", "Comission_Str" },
                         { "Preu Venta al Public", "Retail_Price_Str" },
-                        { "Percentatge Comissió", "Comission_Str" }
+                        { "Total", "Total_Price_Str" }
                     };
                 }
                 return (m_Fields);
@@ -226,6 +229,12 @@ namespace HispaniaCommon.ViewModel
 
         #endregion
 
+        public string ClientName
+        {
+            get;
+            set;
+        }
+
         #region  DeliveryNote
 
         public int DeliveryNote_Id
@@ -373,6 +382,7 @@ namespace HispaniaCommon.ViewModel
             Good_Code = histoProvider.Good_Code;
             Good_Description = histoProvider.Good_Description;
             _Good_Id = histoProvider.Good_Id;
+            this.ClientName = histoProvider.ClientName;
         }
         
         /// <summary>
@@ -398,6 +408,7 @@ namespace HispaniaCommon.ViewModel
             _Good_Id = ProviderOrderMovement.Good.Good_Id;
             Good_Code = ProviderOrderMovement.Good.Good_Code;
             Good_Description = String.IsNullOrEmpty(ProviderOrderMovement.Description) ? ProviderOrderMovement.Good.Good_Description : ProviderOrderMovement.Description;
+            this.ClientName = ProviderOrderMovement.ClientName; 
         }
 
         /// <summary>
@@ -455,7 +466,8 @@ namespace HispaniaCommon.ViewModel
                 ProviderOrderMovement_Id = ProviderOrderMovement_Id,
                 Good_Code = Good_Code,
                 Good_Description = Good_Description,
-                Good_Id = _Good_Id
+                Good_Id = _Good_Id,
+                ClientName = ClientName,
             };
             return (histoProvider);
         }

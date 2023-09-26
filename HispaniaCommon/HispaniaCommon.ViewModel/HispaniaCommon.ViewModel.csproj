@@ -206,8 +206,15 @@
     <Compile Include="ViewModel\Menu\B Goods\02 Goods\GoodsViewModel.cs" />
     <Compile Include="ViewModel\Menu\D. Bills\01. Bills\BillsView.cs" />
     <Compile Include="ViewModel\Menu\D. Bills\01. Bills\BillsViewModel.cs" />
+    <None Include="ViewModel\PaymentInfoViewModel.cs" />
+    <Compile Include="ViewModel\Paymets\PaimentInfoUtils.cs" />
+    <Compile Include="ViewModel\Paymets\PaymentDateInfo.cs" />
+    <Compile Include="ViewModel\Paymets\PaymentDateInfoUtils.cs" />
+    <Compile Include="ViewModel\Paymets\PaymentDayInfo.cs" />
     <Compile Include="ViewModel\Queries\QueryOrderProviderViewModel.cs" />
     <Compile Include="ViewModel\Queries\QueryOrdersProviderViewModel.cs" />
+    <Compile Include="ViewModel\Queries\QueryPaymentForecastItemModel.cs" />
+    <Compile Include="ViewModel\Queries\QueryPaymentForecastViewModel.cs" />
     <Compile Include="ViewModel\Queries\QueryViewModel.cs" />
     <Compile Include="ViewModel\RelayCommand.cs" />
     <Compile Include="ViewModel\Reports\AgentReportView.cs" />

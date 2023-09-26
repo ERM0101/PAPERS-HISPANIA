@@ -30,6 +30,7 @@ namespace HispaniaComptabilitat.Data
         public string Unit_Billing_Definition { get; set; }
         public string Internal_Remark { get; set; }
         public Nullable<int> RowOrder { get; set; }
+        public string ClientName { get; set; }
     
         public virtual Good Good { get; set; }
         public virtual ProviderOrder ProviderOrder { get; set; }

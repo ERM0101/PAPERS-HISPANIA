@@ -92,6 +92,8 @@
     <Compile Include="Logs\Manager_Trace.cs" />
     <Compile Include="Managers\Manager_IU.cs" />
     <Compile Include="Managers\Manager_LN.cs" />
+    <Compile Include="OFFICE\ExcelColumnInfo.cs" />
+    <Compile Include="OFFICE\ExcelColumnInfoEX.cs" />
     <Compile Include="OFFICE\ExcelManager.cs" />
     <Compile Include="OFFICE\OutlookManager.cs" />
     <Compile Include="Messages\MsgManager.cs" />

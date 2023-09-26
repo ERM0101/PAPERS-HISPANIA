@@ -74,11 +74,14 @@ namespace HispaniaCommon.ViewModel
                     {
                         { "Numero de Comanda", "ProviderOrder_Id" },
                         { "Data de Comanda", "Date_Str" },
-                        { "Numero de Client", "Provider_Id_Str" },
-                        { "Client", "Provider_Alias" },
+                        { "Estat lliurament", "According_Str"},
+                        { "Nº Proveidor", "Provider_Id_Str"},
+                        { "Proveidor", "Provider_Alias"},
                         { "Adreça d'Enviament", "Address" },
                         { "Codi Postal / Població", "PostalCode_Str" },
                         { "Sistema de Lliurament", "SendType_Str" },
+                        { "Import", "TotalAmount_Str"},
+                        //{ "Línies Conformes", "AccordingMovements_Str"},
                         { "Comentari de Comanda", "Remarks" },
                     };
                 }
@@ -800,7 +803,6 @@ namespace HispaniaCommon.ViewModel
             _BillingData_Agent_Id = GlobalViewModel.GetIntFromIntIdValue(providerOrder.BillingData_Agent_Id);
             PrevisioLliurament = providerOrder.PrevisioLliurament.HasValue ? providerOrder.PrevisioLliurament.Value : false ;
             PrevisioLliuramentData = providerOrder.PrevisioLliuramentData.HasValue ? providerOrder.PrevisioLliuramentData.Value : DateTime.MinValue;
-            NameClientAssoc = providerOrder.NameClientAssoc;
         }
 
         /// <summary>
@@ -917,7 +919,6 @@ namespace HispaniaCommon.ViewModel
                 SurchargePercent = SurchargePercent,
                 PrevisioLliurament = PrevisioLliurament,
                 PrevisioLliuramentData = PrevisioLliuramentData,
-                NameClientAssoc = this.NameClientAssoc
             };
             return (ProviderOrder);
         }

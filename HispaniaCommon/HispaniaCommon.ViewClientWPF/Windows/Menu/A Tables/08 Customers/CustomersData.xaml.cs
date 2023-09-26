@@ -1487,7 +1487,7 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                         Data = EditedCustomer
                     };
                     HistoCumulativeCustomersWindow.Closed += HistoCumulativeCustomersWindow_Closed;
-                    HistoCumulativeCustomersWindow.ShowDialog();
+                    HistoCumulativeCustomersWindow.Show();
 
                 }
                 catch (Exception ex)

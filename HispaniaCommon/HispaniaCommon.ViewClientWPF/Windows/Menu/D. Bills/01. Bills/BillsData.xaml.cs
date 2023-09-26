@@ -1191,7 +1191,7 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                         Data = EditedBill.Customer
                     };
                     HistoCustomersWindow.Closed += HistoCustomersWindow_Closed;
-                    HistoCustomersWindow.ShowDialog();
+                    HistoCustomersWindow.Show();
                 }
                 catch (Exception ex)
                 {

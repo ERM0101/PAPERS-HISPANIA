@@ -4,10 +4,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:Culture="clr-namespace:MBCode.Framework.Managers.Culture;assembly=MBCode.Framework"
+             xmlns:convs="clr-namespace:HispaniaCommon.ViewClientWPF.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="1075" MinWidth="1075">
     <UserControl.Resources>
         <ResourceDictionary >
+            <convs:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/HispaniaCommon.ViewClientWPF;component/Recursos/Resources/HispaniaCommon.ViewClientWPF.es.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/HispaniaCommon.ViewClientWPF;component/Recursos/Themes/HispaniaComptabilitat.xaml" />
@@ -20,6 +22,7 @@
             <RowDefinition Height="40" Name="rdDeliveryNote"/>
             <RowDefinition Height="40" Name="rdBill"/>
             <RowDefinition Height="40" Name="rdDeliveryNote1"/>
+            <RowDefinition Height="auto" Name="rdPaymentInfo"/>
             <RowDefinition Height="*" />
             <RowDefinition Height="30" Name="cdButtons"/>
         </Grid.RowDefinitions>
@@ -59,10 +62,10 @@
                 <ColumnDefinition Width="150"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            
+
             <Label Grid.Column="0" x:Name="lblDeliveryNoteId1"  Content="NUMERO D'ALBARÀ :" Margin="42,4,4,0" FontWeight="Bold" HorizontalAlignment="Left" 
                    VerticalAlignment="Center" IsEnabled="True"/>
-            
+
             <Label Grid.Column="0" x:Name="lblDeliveryNoteId"  Content="NUMERO D'ALBARÀ :" Margin="42,4,4,0" FontWeight="Bold" HorizontalAlignment="Left" 
                    VerticalAlignment="Center" IsEnabled="False"/>
             <TextBox Grid.Column="1" x:Name="tbDeliveryNoteId" Height="23" HorizontalAlignment="Stretch" VerticalAlignment="Center"  Margin="0,4,4,0"
@@ -72,7 +75,7 @@
             <TextBox Grid.Column="3" x:Name="tbDeliveryNoteDate" Height="23" IsReadOnly="True" HorizontalAlignment="Stretch" VerticalAlignment="Center"  
                      Margin="0,4,4,0" HorizontalContentAlignment="Center" FontWeight="Bold" IsTabStop="False"/>
             <DatePicker Grid.Column="4" Name="dtpDeliveryNoteDate" SelectedDateFormat="Long" BorderBrush="#FF9B211D" HorizontalAlignment="Stretch" 
-                        VerticalAlignment="Center" Margin="0,6,0,0" IsEnabled="False"/>            
+                        VerticalAlignment="Center" Margin="0,6,0,0" IsEnabled="False"/>
         </Grid>
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
@@ -97,7 +100,7 @@
             <TextBox Grid.Column="5" x:Name="tbBillSerieId" Height="23" HorizontalAlignment="Stretch" VerticalAlignment="Center"  Margin="0,4,4,0"
                                  HorizontalContentAlignment="Center" MaxLength="4" IsEnabled="False" IsTabStop="False"/>
         </Grid>
-        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center">            
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center">
             <Label Grid.Column="0" x:Name="lblAccording"  Content="MATERIAL LLIURAT :" Margin="0,4,4,0" 
                    FontWeight="Bold" HorizontalAlignment="Right" 
                    VerticalAlignment="Center" IsEnabled="False"/>
@@ -111,9 +114,19 @@
             <DatePicker Grid.Column="5" Name="dtpPrevisioLliurament" SelectedDateFormat="Long" 
                         HorizontalAlignment="Left" VerticalAlignment="Center" IsEnabled="False" />
         </StackPanel>
-        <TabControl Grid.Row="4" Margin="15,5,15,5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <StackPanel Grid.Row="4" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" 
+                    Name="spPaymentInfo"
+                    Visibility="{ Binding Visible, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
+            <Label Name="lbPaymentInfo" Content="{Binding PaymentsInfoText}"></Label>
+        </StackPanel>
+        <TabControl Grid.Row="5" Margin="15,5,15,5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <TabItem Header="Dades de Capçelera" Name="tiHeaderData" Style="{DynamicResource NonEditableTabItem}">
                 <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="128*"/>
+                        <ColumnDefinition Width="18*"/>
+                        <ColumnDefinition Width="889*"/>
+                    </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="2*"/>
@@ -124,7 +137,7 @@
                         <RowDefinition Height="2*"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    <Grid Grid.Row="1">
+                    <Grid Grid.ColumnSpan="3" Margin="0,26,0,0" Grid.RowSpan="2">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="200"/>
                             <ColumnDefinition Width="*"/>
@@ -148,7 +161,7 @@
                             </StackPanel>
                         </Button>
                     </Grid>
-                    <Grid Grid.Row="2">
+                    <Grid Grid.Row="1" Grid.ColumnSpan="3" Margin="0,53,0,0" Grid.RowSpan="2">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="50"/>
                             <ColumnDefinition Width="*" MinWidth="250"/>
@@ -164,7 +177,7 @@
                         <TextBox Grid.Column="3" x:Name="tbCompanyName" Height="23" MaxLength="50" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" 
                                  VerticalAlignment="Center" Margin="0,4,4,0" IsReadOnly="True" IsTabStop="False"/>
                     </Grid>
-                    <Grid Grid.Row="3">
+                    <Grid Grid.Row="2" Grid.ColumnSpan="3" Margin="0,53,0,0" Grid.RowSpan="2">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="65"/>
                             <ColumnDefinition Width="165"/>
@@ -174,15 +187,9 @@
                         <Label Grid.Column="0" x:Name="lblCompanyCif"  Content="DNI/CIF :" Margin="0,4,4,0" FontWeight="Bold" HorizontalAlignment="Center" 
                                VerticalAlignment="Center" IsEnabled="False"/>
                         <TextBox Grid.Column="1" x:Name="tbCompanyCif" Height="23" Margin="0,4,4,0" HorizontalAlignment="Stretch" VerticalAlignment="Center" 
-                                 HorizontalContentAlignment="Center" MaxLength="20" IsReadOnly="True" IsTabStop="False"/>
-                        <Label Grid.Column="2" x:Name="lblNameClientAssoc"  Content="NOM DEL CLIENT ASSOCIAT A LA COMANDA" Margin="4,4,0,0" FontWeight="Bold" HorizontalAlignment="Center" 
-                               VerticalAlignment="Center" IsEnabled="False"/>
-                        <TextBox Grid.Column="3" x:Name="tbNameClientAssoc" Height="23" 
-                                 HorizontalAlignment="Stretch"  
-                                 HorizontalContentAlignment="Left" Margin="4,4,4,0" 
-                                 IsTabStop="True"/>
+                                 HorizontalContentAlignment="Center" MaxLength="20" IsReadOnly="True" IsTabStop="False"/>                        
                     </Grid>
-                    <Grid Grid.Row="4">
+                    <Grid Grid.Row="3" Grid.ColumnSpan="3" Margin="0,53,0,53" Grid.RowSpan="3">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="150"/>
                             <ColumnDefinition Width="500"/>
@@ -192,7 +199,7 @@
                         <ComboBox Grid.Column="1" x:Name="cbSendType" Height="23" HorizontalContentAlignment="Left" VerticalContentAlignment="Center"
                                   HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="4,4,4,0" IsEnabled="False"/>
                     </Grid>
-                    <Grid Grid.Row="5">
+                    <Grid Grid.Row="5" Grid.ColumnSpan="3" Margin="0,0,0,53" Grid.RowSpan="2">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="155"/>
                             <ColumnDefinition Width="*" MinWidth="630"/>
@@ -209,7 +216,7 @@
                             </StackPanel>
                         </Button>
                     </Grid>
-                    <Grid Grid.Row="6">
+                    <Grid Grid.Row="6" Grid.ColumnSpan="3" Margin="0,0,0,26" Grid.RowSpan="2">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="150"/>
                             <ColumnDefinition Width="4*"/>
@@ -288,6 +295,7 @@
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>
+
                                     <GridViewColumn Width="Auto">
                                         <GridViewColumnHeader Content="Descripció artícle" HorizontalContentAlignment="Left"/>
                                         <GridViewColumn.CellTemplate>
@@ -298,16 +306,32 @@
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>
+
                                     <GridViewColumn Width="Auto">
-                                        <GridViewColumnHeader Content="Quantitat (UE)" HorizontalContentAlignment="Left"/>
+                                        <GridViewColumnHeader Content="Descripció artícle" HorizontalContentAlignment="Left"/>
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
                                                 <Grid Background="Transparent" HorizontalAlignment="Stretch" >
-                                                    <TextBlock Text="{Binding Unit_Shipping_Str}" TextAlignment="Center" Margin="0,0,2,0"/>
+                                                    <TextBlock Text="{Binding Description}" TextAlignment="Left" Margin="0,0,2,0"/>
                                                 </Grid>
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>
+
+
+
+
+                                    <GridViewColumn Width="Auto">
+                                        <GridViewColumnHeader Content="Nam CLient" HorizontalContentAlignment="Left"/>
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Grid Background="Transparent" HorizontalAlignment="Stretch" >
+                                                    <TextBlock Text="{Binding ClientName}" TextAlignment="Left" Margin="0,0,2,0"/>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+
                                     <!--<GridViewColumn Width="Auto">
                                         <GridViewColumnHeader Content="Unit. Expedició" HorizontalContentAlignment="Left"/>
                                         <GridViewColumn.CellTemplate>
@@ -915,7 +939,7 @@
                 </Grid>
             </TabItem>
         </TabControl>
-        <Grid Grid.Row="5" Margin="15,0,15,0">
+        <Grid Grid.Row="6" Margin="15,0,15,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="3*"/>
                 <ColumnDefinition Width="120" Name="cbAcceptButton"/>

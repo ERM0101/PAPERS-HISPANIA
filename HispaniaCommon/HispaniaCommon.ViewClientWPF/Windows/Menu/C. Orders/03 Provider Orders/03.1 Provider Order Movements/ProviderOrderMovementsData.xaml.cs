@@ -406,7 +406,8 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                 cbFieldItemToSearch,
                 tbItemToSearch,
                 btnAcceptSearch,
-                btnHistoric
+                btnHistoric,
+                tbNameClientAssoc,
             };
         }
 
@@ -491,6 +492,9 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                 chkbAccording.IsChecked = movement.According;
                 tbRemark.Text = movement.Remark;
                 tbInternalRemark.Text = movement.Internal_Remark;
+
+                tbNameClientAssoc.Text = movement.ClientName;
+
             //  Reactivate managers
                 DataChangedManagerActive = true;
         }
@@ -546,8 +550,12 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                 tbGoodDescription.PreviewTextInput += TBPreviewTextInput;
                 tbGoodDescription.TextChanged += TBDataChanged;
                 tbItemToSearch.TextChanged += TBItemToSearchDataChanged;
+                
+                tbNameClientAssoc.PreviewTextInput += TBPreviewTextInput;
+                tbNameClientAssoc.TextChanged += TBDataChanged;
+
             //  CheckBox
-                chkbAccording.Checked += ChkbAccording_Checked;
+            chkbAccording.Checked += ChkbAccording_Checked;
                 chkbAccording.Unchecked += ChkbAccording_Unchecked;
             //  ComboBox
                 cbFieldItemToSearch.SelectionChanged += CbFieldItemToSearch_SelectionChanged;
@@ -601,7 +609,8 @@ namespace HispaniaCommon.ViewClientWPF.Windows
             {
                 e.Handled = ! GlobalViewModel.IsValidCurrencyChar(e.Text);
             }            
-            else if ((sender == tbRemark) || (sender == tbGoodDescription) || (sender == tbInternalRemark))
+            else if ((sender == tbRemark) || (sender == tbGoodDescription) || (sender == tbInternalRemark) 
+                    || (sender == tbNameClientAssoc) )
             {
                 e.Handled = ! GlobalViewModel.IsValidCommentChar(e.Text);
             } 
@@ -621,6 +630,8 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                     if (sender == tbRemark) EditedProviderOrderMovement.Remark = value;
                     else if (sender == tbInternalRemark) EditedProviderOrderMovement.Internal_Remark = value;
                     else if (sender == tbGoodDescription) EditedProviderOrderMovement.Description = value;
+                    else if(sender == tbNameClientAssoc )
+                        EditedProviderOrderMovement.ClientName = value;
                 }
                 catch (Exception ex)
                 {

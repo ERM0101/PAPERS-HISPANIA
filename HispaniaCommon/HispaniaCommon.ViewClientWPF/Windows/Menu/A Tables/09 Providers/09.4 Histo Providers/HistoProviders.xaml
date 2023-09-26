@@ -172,8 +172,8 @@
                 <ListView x:Name="ListItems" ItemsSource="{Binding DataList}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
                           IsSynchronizedWithCurrentItem="True" SelectionMode="Single">
                     <ListView.View>
-                        <GridView>
-                            <GridViewColumn Width="Auto">
+                        <GridView>                            
+                            <!--<GridViewColumn Width="Auto">
                                 <GridViewColumnHeader Content="Nº Factura" />
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
@@ -243,7 +243,18 @@
                                         </Grid>
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
+                            </GridViewColumn>-->
+                            <GridViewColumn Width="Auto">
+                                <GridViewColumnHeader Content="Client" />
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Grid Background="#FF0A3E69">
+                                            <TextBlock Text="{Binding ClientName}" Foreground="White" TextAlignment="Center" Margin="2,0,2,0"/>
+                                        </Grid>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
                             </GridViewColumn>
+                            
                             <GridViewColumn Width="Auto">
                                 <GridViewColumnHeader Content="Article" />
                                 <GridViewColumn.CellTemplate>

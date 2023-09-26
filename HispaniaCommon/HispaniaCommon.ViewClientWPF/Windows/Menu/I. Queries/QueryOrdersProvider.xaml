@@ -122,6 +122,7 @@
                 </Grid>
             </Grid>
         </GroupBox>
+        
         <GroupBox Grid.Row ="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <GroupBox.Header>
                 <BulletDecorator>
@@ -149,6 +150,7 @@
                     </DataGrid>
                 </ScrollViewer>
         </GroupBox>
+        
         <Grid Grid.Row="2" Margin="10,10,10,10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition></ColumnDefinition>

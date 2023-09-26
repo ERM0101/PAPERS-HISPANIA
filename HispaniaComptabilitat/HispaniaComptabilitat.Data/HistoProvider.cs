@@ -33,6 +33,7 @@ namespace HispaniaComptabilitat.Data
         public int ProviderOrderMovement_Id { get; set; }
         public string Unit_Shipping_Definition { get; set; }
         public string Unit_Billing_Definition { get; set; }
+        public string ClientName { get; set; }
     
         public virtual Bill Bill { get; set; }
         public virtual BillingSerie BillingSerie { get; set; }
