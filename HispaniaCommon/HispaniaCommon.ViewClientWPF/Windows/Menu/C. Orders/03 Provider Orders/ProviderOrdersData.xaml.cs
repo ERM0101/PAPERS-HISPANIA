@@ -1553,7 +1553,13 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                         ActualizeGoodInfo(newMovement, MovementOp.Add);
                         ListItems.SelectedItem = newMovement;
                         ActualizeAmountInfo(EditedProviderOrder);
-                        AreDataChanged = AreNotEquals(DataList, SourceDataList);
+                        if (EditedProviderOrder.According)
+                        {
+                            var providerOrders = new List<ProviderOrdersView>();
+                            providerOrders.Add(EditedProviderOrder);
+                            GlobalViewModel.Instance.HispaniaViewModel.CreateHistoProviders(EditedProviderOrder.Provider, providerOrders);
+                        }
+                    AreDataChanged = AreNotEquals(DataList, SourceDataList);
                     }
                     catch (Exception ex)
                     {
