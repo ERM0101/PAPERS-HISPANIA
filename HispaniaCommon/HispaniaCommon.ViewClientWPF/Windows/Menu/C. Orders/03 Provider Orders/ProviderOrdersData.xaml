@@ -322,7 +322,7 @@
 
 
                                     <GridViewColumn Width="Auto">
-                                        <GridViewColumnHeader Content="Nam CLient" HorizontalContentAlignment="Left"/>
+                                        <GridViewColumnHeader Content="Nom Client" HorizontalContentAlignment="Left"/>
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
                                                 <Grid Background="Transparent" HorizontalAlignment="Stretch" >
