@@ -356,7 +356,7 @@ namespace HispaniaCommon.ViewModel
             GrossAmount = 0;
             foreach (ProviderOrderMovementsView movement in Movements)
             {
-                GrossAmount += movement.Amount;
+                GrossAmount += movement.RetailPrice;
             }
             //  Calculate Early Payement Discount amount value.
             EarlyPayementDiscountAmount = 0;

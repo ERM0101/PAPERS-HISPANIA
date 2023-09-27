@@ -4156,6 +4156,24 @@ namespace HispaniaCommon.DataAccess
             }
         }
 
+        [OperationContract]
+        public HispaniaCompData.HistoProvider GetHistoProviderByProviderOrderMovement(int ProviderOrderMovement_Id)
+        {
+            try
+            {
+                using (var db = new HispaniaComptabilitat.Data.Entities())
+                {
+                    return (db.HistoProviders.Where(x=>x.ProviderOrderMovement_Id == ProviderOrderMovement_Id)).FirstOrDefault();
+                }
+            }
+            catch (DataException ex)
+            {
+                string MsgError = string.Format("No es pot trobar l'històric de client amb identificador de linea de pedido '{0}'.\r\n{1}.", ProviderOrderMovement_Id,
+                                                "Intentiu de nou, i si el problema persisteix consulti l'administrador");
+                throw new Exception(MsgError, ex);
+            }
+        }
+
         #endregion
 
         #region HistoCumulativeProvider [CRUD]
