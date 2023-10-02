@@ -187,8 +187,13 @@ namespace HispaniaCommon.ViewModel
         /// <returns></returns>
         private QueryPaymentForecastItemModel CreateQueryPaymentForecastItemModel( ProviderOrder order, DateTime date )
         {
+            decimal earlyDiscount = 1;
+            if (order.BillingData_EarlyPaymentDiscount.HasValue && order.BillingData_EarlyPaymentDiscount.Value>0)
+            {
+                earlyDiscount = 1-(order.BillingData_EarlyPaymentDiscount.Value/100);
+            }
             decimal base_imposable = order.ProviderOrderMovements
-                                   .Select( i => (i.Unit_Billing * i.RetailPrice) )
+                                   .Select( i => (i.Unit_Billing * i.RetailPrice * earlyDiscount) )
                                    .Sum( i => (i.HasValue ? i.Value : 0) );
 
             decimal iva = ( (base_imposable / 100.000m ) * order.IVAPercent );
@@ -296,10 +301,15 @@ namespace HispaniaCommon.ViewModel
                         }
                     }
 
+                    decimal earlyDiscount = 1;
+                    if (raw_item.BillingData_EarlyPaymentDiscount.HasValue && raw_item.BillingData_EarlyPaymentDiscount.Value>0)
+                    {
+                        earlyDiscount = 1 - (raw_item.BillingData_EarlyPaymentDiscount.Value / 100);
+                    }
                     foreach(ProviderOrderMovement movement in movemients)
                     {
                         QueryOrderProviderViewModel item = CreateQueryOrderProviderViewModel( raw_item, movement.Description );
-                        item.LineAmount = movement.RetailPrice.Value;
+                        item.LineAmount = movement.RetailPrice.Value * earlyDiscount;
                         item.Client = movement.ClientName;
                         item.FacturationUnits = movement.Unit_Billing.Value;
                         item.ExpeditionUnits = movement.Unit_Shipping.Value;
