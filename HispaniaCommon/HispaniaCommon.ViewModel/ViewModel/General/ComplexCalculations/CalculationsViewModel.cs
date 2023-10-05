@@ -293,7 +293,11 @@ namespace HispaniaCommon.ViewModel
                 }
                 ProvidersView Provider = ProviderOrder.Provider;
                 IVATypesView IVAType = Provider.BillingData_IVAType;
-                decimal EarlyPaymentDiscountPrecent = Provider.BillingData_EarlyPaymentDiscount;
+                decimal EarlyPaymentDiscountPrecent = ProviderOrder.BillingData_EarlyPaymentDiscount;
+                if (ProviderOrder.BillingData_EarlyPaymentDiscount <= 0)
+                {
+                    EarlyPaymentDiscountPrecent = Provider.BillingData_EarlyPaymentDiscount;
+                }                
                 decimal IVAPercent = (IVAType is null) ? 0 : IVAType.IVAPercent;
                 decimal SurchargePercent = (IVAType is null) ? 0 : IVAType.SurchargePercent;
                 CalculateAmountInfo(Movements, EarlyPaymentDiscountPrecent, IVAPercent, SurchargePercent,
