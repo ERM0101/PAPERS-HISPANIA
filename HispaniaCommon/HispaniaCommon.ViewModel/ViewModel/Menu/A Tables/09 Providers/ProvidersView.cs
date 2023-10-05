@@ -42,6 +42,7 @@ namespace HispaniaCommon.ViewModel
         BillingData_Agent,
         BillingData_IVAType,
         BillingData_SendType,
+        BillingData_Valued,
         DataBank_Bank,
         DataBank_BankAddress,
         DataBank_NumEffect,
@@ -758,12 +759,13 @@ namespace HispaniaCommon.ViewModel
                 Comment = Comment,
                 Canceled = Canceled,
                 PostalCode_Id = _PostalCode_Id,
-                Agent_Id = _Data_Agent_Id,
+                //Agent_Id = _Data_Agent_Id,
 
                 DataBank_EffectType_Id = this.DataBank_EffectType.EffectType_Id,
-                BillingData_Agent_Id = this.Data_Agent.Agent_Id,
+                //BillingData_Agent_Id = this.Data_Agent.Agent_Id,
                 BillingData_IVAType_Id = this.BillingData_IVAType.IVAType_Id,
                 BillingData_SendType_Id = this.BillingData_SendType.SendType_Id,
+                BillingData_Valued = this.BillingData_Valued,
 
                 DataBank_ExpirationInterval = this.DataBank_ExpirationInterval,
                 DataBank_FirstExpirationData = this.DataBank_FirstExpirationData,
@@ -999,13 +1001,7 @@ namespace HispaniaCommon.ViewModel
             {
                 ErrorField = ProvidersAttributes.BillingData_SendType;
                 throw new FormatException("Error, manca seleccionar el Tipus d'Enviament.");
-            }
-
-            if( this.Data_Agent == null )
-            {
-                ErrorField = ProvidersAttributes.Data_Agent;
-                throw new FormatException("Error, manca seleccionar el Representant.");
-            }
+            }           
         }
 
         /// <summary>
@@ -1051,6 +1047,7 @@ namespace HispaniaCommon.ViewModel
             BillingData_Unpaid = Data.BillingData_Unpaid;
             BillingData_Duplicate = Data.BillingData_Duplicate;
             BillingData_NumUnpaid = Data.BillingData_NumUnpaid;
+            BillingData_Valued = Data.BillingData_Valued;
             Several_Remarks = Data.Several_Remarks;
             Company_PostalCode = Data.Company_PostalCode;
             DataBank_EffectType = Data.DataBank_EffectType;
@@ -1190,6 +1187,9 @@ namespace HispaniaCommon.ViewModel
                     break;
                 case ProvidersAttributes.BillingData_SendType:
                     BillingData_SendType = Data.BillingData_SendType;
+                    break;
+                case ProvidersAttributes.BillingData_Valued:
+                    BillingData_Valued = Data.BillingData_Valued;
                     break;
                 default:
                      break;

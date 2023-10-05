@@ -816,7 +816,7 @@ namespace HispaniaCommon.ViewClientWPF.Windows
             try
             {
                 EditedProviderOrderMovement.Validate(out ErrorField);
-                IsCanceled = false;
+                IsCanceled = false;                
                 Close();
             }
             catch (FormatException fex)

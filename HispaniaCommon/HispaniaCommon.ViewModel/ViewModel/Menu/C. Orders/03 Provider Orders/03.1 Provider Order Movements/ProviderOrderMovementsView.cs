@@ -123,7 +123,12 @@ namespace HispaniaCommon.ViewModel
         {
             get
             {
-                return GlobalViewModel.GetStringFromDecimalValue(RetailPrice, DecimalType.Currency, true);
+                decimal earlyDiscount = 1;
+                if (ProviderOrder.BillingData_EarlyPaymentDiscount > 0)
+                {
+                    earlyDiscount = 1 - (ProviderOrder.BillingData_EarlyPaymentDiscount / 100);
+                }
+                return GlobalViewModel.GetStringFromDecimalValue(RetailPrice * earlyDiscount, DecimalType.Currency, true);
             }
         }
         public decimal Comission { get; set; }
@@ -265,8 +270,8 @@ namespace HispaniaCommon.ViewModel
         public decimal Amount
         {
             get
-            {
-                return GlobalViewModel.GetValueDecimalForCalculations(Unit_Billing * RetailPrice, DecimalType.Currency);
+            {                
+                return GlobalViewModel.GetValueDecimalForCalculations(Unit_Billing * RetailPrice , DecimalType.Currency);
             }
         }
 
@@ -274,7 +279,12 @@ namespace HispaniaCommon.ViewModel
         {
             get
             {
-                return GlobalViewModel.GetStringFromDecimalValue(Amount, DecimalType.Currency, true);
+                decimal earlyDiscount = 1;
+                if (ProviderOrder.BillingData_EarlyPaymentDiscount > 0)
+                {
+                    earlyDiscount = 1 - (ProviderOrder.BillingData_EarlyPaymentDiscount / 100);
+                }
+                return GlobalViewModel.GetStringFromDecimalValue(Amount * earlyDiscount, DecimalType.Currency, true);
             }
         }
 

@@ -146,7 +146,11 @@
                             <DataGridTextColumn Binding="{Binding Path = SendTypeDescription}" Header="Sistema de Lliurament" IsReadOnly="True" />
                             <DataGridTextColumn Binding="{Binding Path = TotalAmountStr}" Header="Import" IsReadOnly="True" />
                             <DataGridTextColumn Binding="{Binding Path=Good}" Header="Article" />
-                        </DataGrid.Columns>
+                        <DataGridTextColumn Binding="{Binding Path = LineAmountStr}" Header="Linea Import" IsReadOnly="True" />
+                        <DataGridTextColumn Binding="{Binding Path = Client}" Header="Cliente Destino" IsReadOnly="True" />
+                        <DataGridTextColumn Binding="{Binding Path = ExpeditionUnits}" Header="Ud. Expedicion" IsReadOnly="True" />
+                        <DataGridTextColumn Binding="{Binding Path = FacturationUnits}" Header="Ud. Facturacion" IsReadOnly="True" />
+                    </DataGrid.Columns>
                     </DataGrid>
                 </ScrollViewer>
         </GroupBox>

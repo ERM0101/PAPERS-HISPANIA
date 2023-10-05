@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using HispaniaCompData = HispaniaComptabilitat.Data;
 using System.Text;
+using HispaniaComptabilitat.Data;
 
 #endregion
 
@@ -347,16 +348,33 @@ namespace HispaniaCommon.ViewModel
             List<HispaniaCompData.HistoProvider> HistoricMovementsList = new List<HispaniaCompData.HistoProvider>(Movements.Count);
             foreach (ProviderOrderMovementsView Movement in Movements)
             {
-                HistoProvidersView HistoProviderView = new HistoProvidersView(Movement)
-                {
-                    HistoProvider_Id = Historic_Id,
-                    Good_Description = Movement.Description,
-                    Bill_Date = DateTime.Today,
-                    DeliveryNote_Date = DateTime.Today
+                HistoProvider historic = HispaniaDataAccess.Instance.GetHistoProviderByProviderOrderMovement(Movement.ProviderOrderMovement_Id);
 
-                };
-                Historic_Id--;
-                HistoricMovementsList.Add(HistoProviderView.GetHistoProvider());
+                if (historic == null)
+                {
+                    HistoProvidersView HistoProviderView = new HistoProvidersView(Movement)
+                    {
+                        HistoProvider_Id = Historic_Id,
+                        Good_Description = Movement.Description,
+                        Bill_Date = DateTime.Today,
+                        DeliveryNote_Date = DateTime.Today
+
+                    };
+                    Historic_Id--;
+                    HistoricMovementsList.Add(HistoProviderView.GetHistoProvider());
+                }else
+                {
+                    historic.Good_Description = Movement.Description;
+                    historic.Bill_Date = DateTime.Today;
+                    historic.DeliveryNote_Date = DateTime.Today;
+                    historic.Retail_Price = Movement.RetailPrice;
+                    historic.Shipping_Units = Movement.Unit_Shipping;
+                    historic.Unit_Billing_Definition = Movement.Unit_Billing_Definition;
+                    historic.Unit_Shipping_Definition = Movement.Unit_Shipping_Definition;
+                    HispaniaDataAccess.Instance.UpdateHistoProvider(historic);
+                }
+
+                
             }
 
             HispaniaDataAccess.Instance.CreateHistoProvider(HistoricMovementsList);

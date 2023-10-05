@@ -466,7 +466,17 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                             GlobalViewModel.Instance.HispaniaViewModel.UnlockRegister(AddressStoresToDelete, out ErrMsg);
                             DataChangedManagerActive = false;
                             if (ListItems.SelectedItem != null) ListItems.UnselectAll();
-                            DataList = GlobalViewModel.Instance.HispaniaViewModel.GetAddressStores(Data.Customer_Id);
+                            int personId = -1;
+                            if (Data!=null)
+                            {
+                                personId = Data.Customer_Id;
+                            }
+                            else if (DataProv!=null)
+                            {
+                                personId = DataProv.Provider_Id;
+                            }
+
+                            DataList = GlobalViewModel.Instance.HispaniaViewModel.GetAddressStores(personId);
                             DataChangedManagerActive = true;
                             ListItems.UpdateLayout();
                             HideItemPannel();

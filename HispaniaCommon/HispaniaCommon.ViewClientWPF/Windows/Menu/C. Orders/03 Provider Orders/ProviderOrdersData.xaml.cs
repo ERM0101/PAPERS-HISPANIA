@@ -278,7 +278,7 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                 {
                     AreDataChanged = false;
                     m_ProviderOrder = value;
-                    EditedProviderOrder = new ProviderOrdersView(m_ProviderOrder);
+                    EditedProviderOrder = new ProviderOrdersView(m_ProviderOrder);                    
                     LoadDataInControls(m_ProviderOrder, true, 1);
                 }
                 else throw new ArgumentNullException("Error, no s'han trobat les dades de la Comanda de Proveidor a carregar."); 
@@ -677,9 +677,7 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                 lblIVAPercent,
                 tbIVAPercent,
                 lblSurchargePercent,
-                tbSurchargePercent,
-                lblBillingDataEarlyPaymentDiscount,
-                tbBillingDataEarlyPaymentDiscount,
+                tbSurchargePercent,                
                 tbProviderId,
                 tbProviderAliasProveidor,
                 tbCompanyNameProveidor,
@@ -749,7 +747,9 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                 lblDataBankIBANCheckDigits,
                 tbDataBankIBANCheckDigits,
                 lblDataBankIBANAccountNumber,
-                tbDataBankIBANAccountNumber,                
+                tbDataBankIBANAccountNumber,
+                lblBillingDataEarlyPaymentDiscount,
+                tbBillingDataEarlyPaymentDiscount,
                 gbItemsList,
                 ListItems,
                 gbIBAN,
@@ -893,7 +893,8 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                     DataList = GlobalViewModel.Instance.HispaniaViewModel.GetProviderOrderMovements(ProviderOrder.ProviderOrder_Id);
                     DataManagementId = GlobalViewModel.Instance.HispaniaViewModel.InitializeDataManaged(DataList);
                 }
-            //  Foot Data Tab Controls
+            //  Foot Data Tab Controls                
+                
                 tbBillingDataEarlyPaymentDiscount.Text = GlobalViewModel.GetStringFromDecimalValue(ProviderOrder.BillingData_EarlyPaymentDiscount, DecimalType.Percent, true);
                 ActualizeAmountInfo(ProviderOrder);
                 tbProviderOrderRemarks.Text = ProviderOrder.Remarks;
@@ -1298,7 +1299,7 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                             EditedProviderOrder.PostalCode = null;
                         }
                         EditedProviderOrder.EffectType = providerSelected.DataBank_EffectType;
-                        EditedProviderOrder.BillingData_EarlyPaymentDiscount = providerSelected.BillingData_EarlyPaymentDiscount;
+                        EditedProviderOrder.BillingData_EarlyPaymentDiscount = providerSelected.PromptPaymentDiscount;
                         if (providerSelected.BillingData_IVAType is null)
                         {
                             EditedProviderOrder.IVAPercent = 0;
@@ -1584,7 +1585,13 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
 
                         ListItems.SelectedItem = newMovement;
                         ActualizeAmountInfo(EditedProviderOrder);
-                        AreDataChanged = AreNotEquals(DataList, SourceDataList);
+                        if (EditedProviderOrder.According)
+                        {
+                            var providerOrders = new List<ProviderOrdersView>();
+                            providerOrders.Add(EditedProviderOrder);
+                            GlobalViewModel.Instance.HispaniaViewModel.CreateHistoProviders(EditedProviderOrder.Provider, providerOrders);
+                        }
+                    AreDataChanged = AreNotEquals(DataList, SourceDataList);
                     }
                     catch (Exception ex)
                     {

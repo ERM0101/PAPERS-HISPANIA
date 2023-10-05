@@ -322,7 +322,7 @@
 
 
                                     <GridViewColumn Width="Auto">
-                                        <GridViewColumnHeader Content="Nam CLient" HorizontalContentAlignment="Left"/>
+                                        <GridViewColumnHeader Content="Nom Client" HorizontalContentAlignment="Left"/>
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
                                                 <Grid Background="Transparent" HorizontalAlignment="Stretch" >
@@ -384,7 +384,7 @@
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>-->
-                                    <!--<GridViewColumn Width="Auto">
+                                    <GridViewColumn Width="Auto">
                                         <GridViewColumnHeader Content="Conforme" HorizontalContentAlignment="Left"/>
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
@@ -393,7 +393,7 @@
                                                 </Grid>
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
-                                    </GridViewColumn>-->
+                                    </GridViewColumn>
                                     <GridViewColumn Width="Auto">
                                         <GridViewColumnHeader Content="TOTAL"/>
                                         <GridViewColumn.CellTemplate>
