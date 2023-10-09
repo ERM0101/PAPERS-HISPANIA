@@ -245,6 +245,26 @@
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>-->
                             <GridViewColumn Width="Auto">
+                                <GridViewColumnHeader Content="Num. Pedido" />
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Grid Background="#FF0A3E69">
+                                            <TextBlock Text="{Binding ProviderOrderMovement_Id}" Foreground="White" TextAlignment="Center" Margin="2,0,2,0"/>
+                                        </Grid>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn Width="Auto">
+                                <GridViewColumnHeader Content="Data"/>
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Grid Background="Transparent" HorizontalAlignment="Stretch" >
+                                            <TextBlock Text="{Binding Bill_Date_Str}" TextAlignment="Center" Margin="2,0,2,0"/>
+                                        </Grid>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn Width="Auto">
                                 <GridViewColumnHeader Content="Client" />
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>

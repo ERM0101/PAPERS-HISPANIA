@@ -4078,22 +4078,9 @@ namespace HispaniaCommon.DataAccess
         {
             using (var db = new HispaniaComptabilitat.Data.Entities())
             {
-                if (WithChilds)
-                {
-                    List<int> RelatedProviders = new List<int>();
-                    RelatedProviders.Add(Provider_Id);
-                    RelatedProviders.AddRange(db.RelatedProviders.Where(x => (x.Provider_Id == Provider_Id)).Select(x => (x.Provider_Canceled_Id)).ToList());
-                    return db.HistoProviders.Where(p => RelatedProviders.Contains(p.Provider_Id)).OrderByDescending(p => p.Bill_Date)
-                                                                                                 .ThenByDescending(p => p.DeliveryNote_Date)
-                                                                                                 .ThenByDescending(p => p.DeliveryNote_Id)
-                                                                                                 .ThenBy(p => p.ProviderOrderMovement_Id).ToList();
-                }
-                else
                 {
                     return db.HistoProviders.Where(p => p.Provider_Id == Provider_Id).OrderByDescending(p => p.Bill_Date)
-                                                                                     .ThenByDescending(p => p.DeliveryNote_Date)
-                                                                                     .ThenByDescending(p => p.DeliveryNote_Id)
-                                                                                     .ThenBy(p => p.ProviderOrderMovement_Id).ToList();
+                                                                                     .ThenByDescending(p => p.ProviderOrderMovement_Id).ToList();
                 }
             }
         }
