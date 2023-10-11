@@ -357,8 +357,8 @@ namespace HispaniaCommon.ViewModel
                         HistoProvider_Id = Historic_Id,
                         Good_Description = Movement.Description,
                         Bill_Date = DateTime.Today,
-                        DeliveryNote_Date = DateTime.Today
-
+                        DeliveryNote_Date = DateTime.Today,
+                        ProviderOrder_Id = Movement.ProviderOrder.ProviderOrder_Id
                     };
                     Historic_Id--;
                     HistoricMovementsList.Add(HistoProviderView.GetHistoProvider());
@@ -746,6 +746,8 @@ namespace HispaniaCommon.ViewModel
                 this._ProviderOrdersInDb = value;
             }
         }
+
+        public int ProviderOrder_Id { get; private set; }
 
         private void UpdateProviderOrderInDb(HispaniaCompData.ProviderOrder providerOrder)
         {

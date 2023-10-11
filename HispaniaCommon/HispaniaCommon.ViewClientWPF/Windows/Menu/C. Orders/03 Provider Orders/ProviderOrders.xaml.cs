@@ -979,6 +979,9 @@ namespace HispaniaCommon.ViewClientWPF.Windows
             try
             {
                 ProviderOrdersView NewProviderOrder = new ProviderOrdersView(NewOrEditedProviderOrder);
+                //var providerOrders = new List<ProviderOrdersView>();
+                //providerOrders.Add(NewOrEditedProviderOrder);
+                //GlobalViewModel.Instance.HispaniaViewModel.CreateHistoProviders(NewOrEditedProviderOrder.Provider, providerOrders);
                 switch (ProviderOrderDataControl.CtrlOperation)
                 {
                     case Operation.Add:
@@ -991,7 +994,7 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                          ListItems.UpdateLayout();
                          gbEditOrCreateItem.SetResourceReference(Control.StyleProperty, "NonEditableGroupBox");
                          HideItemPannel();
-                         break;
+                        break;
                     case Operation.Edit:
                          GlobalViewModel.Instance.HispaniaViewModel.UpdateProviderOrder(NewProviderOrder, DataManagementId);
                          if (!GlobalViewModel.Instance.HispaniaViewModel.UnlockRegister(ProviderOrderDataControl.ProviderOrder, out string ErrMsg))
@@ -1015,7 +1018,7 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                          ListItems.UpdateLayout();
                          gbEditOrCreateItem.SetResourceReference(Control.StyleProperty, "NonEditableGroupBox");
                          HideItemPannel();
-                         break;
+                        break;
                 }
             }
             catch (Exception ex)
