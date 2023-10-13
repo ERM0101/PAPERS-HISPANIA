@@ -1240,12 +1240,6 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                 {
                     EditedProviderOrder.Validate(out ErrorField);
                     EvAccept?.Invoke(new ProviderOrdersView(EditedProviderOrder), DataManagementId);
-
-                    
-                    var providerOrders = new List<ProviderOrdersView>();
-                    providerOrders.Add(EditedProviderOrder);
-                    GlobalViewModel.Instance.HispaniaViewModel.CreateHistoProviders(EditedProviderOrder.Provider, providerOrders);
-                    
                 }
             }
             catch (Exception ex)

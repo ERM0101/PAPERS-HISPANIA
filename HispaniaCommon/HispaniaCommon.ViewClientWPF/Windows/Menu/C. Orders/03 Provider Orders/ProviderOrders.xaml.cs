@@ -979,47 +979,46 @@ namespace HispaniaCommon.ViewClientWPF.Windows
             try
             {
                 ProviderOrdersView NewProviderOrder = new ProviderOrdersView(NewOrEditedProviderOrder);
-                //var providerOrders = new List<ProviderOrdersView>();
-                //providerOrders.Add(NewOrEditedProviderOrder);
-                //GlobalViewModel.Instance.HispaniaViewModel.CreateHistoProviders(NewOrEditedProviderOrder.Provider, providerOrders);
+
                 switch (ProviderOrderDataControl.CtrlOperation)
                 {
                     case Operation.Add:
-                         GlobalViewModel.Instance.HispaniaViewModel.CreateProviderOrder(NewProviderOrder, DataManagementId);
-                         DataChangedManagerActive = false;
-                         if (ListItems.SelectedItem != null) ListItems.UnselectAll();
-                         DataList.Add(NewProviderOrder);
-                         DataChangedManagerActive = true;
-                         ListItems.SelectedItem = NewProviderOrder;
-                         ListItems.UpdateLayout();
-                         gbEditOrCreateItem.SetResourceReference(Control.StyleProperty, "NonEditableGroupBox");
-                         HideItemPannel();
+                        GlobalViewModel.Instance.HispaniaViewModel.CreateProviderOrder(NewProviderOrder, DataManagementId);
+                        DataChangedManagerActive = false;
+                        if (ListItems.SelectedItem != null) ListItems.UnselectAll();
+                        DataList.Add(NewProviderOrder);
+                        DataChangedManagerActive = true;
+                        ListItems.SelectedItem = NewProviderOrder;
+                        ListItems.UpdateLayout();
+                        gbEditOrCreateItem.SetResourceReference(Control.StyleProperty, "NonEditableGroupBox");
+                        HideItemPannel();
                         break;
                     case Operation.Edit:
-                         GlobalViewModel.Instance.HispaniaViewModel.UpdateProviderOrder(NewProviderOrder, DataManagementId);
-                         if (!GlobalViewModel.Instance.HispaniaViewModel.UnlockRegister(ProviderOrderDataControl.ProviderOrder, out string ErrMsg))
-                         {
-                             MsgManager.ShowMessage(ErrMsg);
-                         }
-                         if (ProviderOrderDataControl.ProviderOrder.HasBill)
-                         {
-                             if (!GlobalViewModel.Instance.HispaniaViewModel.UnlockRegister(ProviderOrderDataControl.ProviderOrder.Bill, out ErrMsg))
-                             {
-                                 MsgManager.ShowMessage(ErrMsg);
-                             }
-                         }
-                         DataChangedManagerActive = false;
-                         ProviderOrdersView SourceProviderOrder = (ProviderOrdersView)ListItems.SelectedItem;
-                         if (ListItems.SelectedItem != null) ListItems.UnselectAll();
-                         DataList.Remove(SourceProviderOrder);
-                         DataList.Add(GlobalViewModel.Instance.HispaniaViewModel.GetProviderOrderFromDb(NewProviderOrder));
-                         DataChangedManagerActive = true;
-                         ListItems.SelectedItem = NewProviderOrder;
-                         ListItems.UpdateLayout();
-                         gbEditOrCreateItem.SetResourceReference(Control.StyleProperty, "NonEditableGroupBox");
-                         HideItemPannel();
+                        GlobalViewModel.Instance.HispaniaViewModel.UpdateProviderOrder(NewProviderOrder, DataManagementId);
+                        if (!GlobalViewModel.Instance.HispaniaViewModel.UnlockRegister(ProviderOrderDataControl.ProviderOrder, out string ErrMsg))
+                        {
+                            MsgManager.ShowMessage(ErrMsg);
+                        }
+                        if (ProviderOrderDataControl.ProviderOrder.HasBill)
+                        {
+                            if (!GlobalViewModel.Instance.HispaniaViewModel.UnlockRegister(ProviderOrderDataControl.ProviderOrder.Bill, out ErrMsg))
+                            {
+                                MsgManager.ShowMessage(ErrMsg);
+                            }
+                        }
+                        DataChangedManagerActive = false;
+                        ProviderOrdersView SourceProviderOrder = (ProviderOrdersView)ListItems.SelectedItem;
+                        if (ListItems.SelectedItem != null) ListItems.UnselectAll();
+                        DataList.Remove(SourceProviderOrder);
+                        DataList.Add(GlobalViewModel.Instance.HispaniaViewModel.GetProviderOrderFromDb(NewProviderOrder));
+                        DataChangedManagerActive = true;
+                        ListItems.SelectedItem = NewProviderOrder;
+                        ListItems.UpdateLayout();
+                        gbEditOrCreateItem.SetResourceReference(Control.StyleProperty, "NonEditableGroupBox");
+                        HideItemPannel();
                         break;
                 }
+                CreateHistoProvider(NewProviderOrder);
             }
             catch (Exception ex)
             {
@@ -1036,6 +1035,13 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                          break;
                 }
             }
+        }
+
+        private static void CreateHistoProvider(ProviderOrdersView NewProviderOrder)
+        {
+            var providerOrders = new List<ProviderOrdersView>();
+            providerOrders.Add(NewProviderOrder);
+            GlobalViewModel.Instance.HispaniaViewModel.CreateHistoProviders(NewProviderOrder.Provider, providerOrders);
         }
 
         /// <summary>
