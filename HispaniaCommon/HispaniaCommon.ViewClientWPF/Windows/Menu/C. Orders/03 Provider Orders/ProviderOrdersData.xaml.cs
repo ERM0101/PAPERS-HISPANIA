@@ -1240,13 +1240,6 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                 {
                     EditedProviderOrder.Validate(out ErrorField);
                     EvAccept?.Invoke(new ProviderOrdersView(EditedProviderOrder), DataManagementId);
-                                     
-                    if (AreAccordingChanged)
-                    {
-                        var providerOrders = new List<ProviderOrdersView>();
-                        providerOrders.Add(EditedProviderOrder);
-                        GlobalViewModel.Instance.HispaniaViewModel.CreateHistoProviders(EditedProviderOrder.Provider, providerOrders);
-                    }
                 }
             }
             catch (Exception ex)
@@ -1585,12 +1578,7 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
 
                         ListItems.SelectedItem = newMovement;
                         ActualizeAmountInfo(EditedProviderOrder);
-                        if (EditedProviderOrder.According)
-                        {
-                            var providerOrders = new List<ProviderOrdersView>();
-                            providerOrders.Add(EditedProviderOrder);
-                            GlobalViewModel.Instance.HispaniaViewModel.CreateHistoProviders(EditedProviderOrder.Provider, providerOrders);
-                        }
+                        
                     AreDataChanged = AreNotEquals(DataList, SourceDataList);
                     }
                     catch (Exception ex)

@@ -445,6 +445,7 @@
           <Property Name="Unit_Shipping_Definition" Type="nvarchar" MaxLength="25" />
           <Property Name="Unit_Billing_Definition" Type="nvarchar" MaxLength="25" />
           <Property Name="ClientName" Type="nvarchar(max)" />
+          <Property Name="ProviderOrder_Id" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="IVAType">
           <Key>
@@ -719,8 +720,8 @@
           <Property Name="Code" Type="nvarchar" MaxLength="2" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="50" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'COMPTABILITAT.dbo.TEMP_DIARY_BANDAGE' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'COMPTABILITAT_TEST.dbo.TEMP_DIARY_BANDAGE' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="TEMP_DIARY_BANDAGE">
           <Key>
             <PropertyRef Name="Bill_Id" />
@@ -2414,6 +2415,7 @@ warning 6002: The table/view 'COMPTABILITAT.dbo.TEMP_DIARY_BANDAGE' does not hav
           <NavigationProperty Name="Good" Relationship="Self.FK_HistoProvider_Good" FromRole="HistoProvider" ToRole="Good" />
           <NavigationProperty Name="Provider" Relationship="Self.FK_HistoProvider_Provider" FromRole="HistoProvider" ToRole="Provider" />
           <Property Name="ClientName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ProviderOrder_Id" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="IVAType">
           <Key>
@@ -4536,6 +4538,7 @@ warning 6002: The table/view 'COMPTABILITAT.dbo.TEMP_DIARY_BANDAGE' does not hav
           <EntitySetMapping Name="HistoProviders">
             <EntityTypeMapping TypeName="HispaniaComptabilitat.Data.HistoProvider">
               <MappingFragment StoreEntitySet="HistoProvider">
+                <ScalarProperty Name="ProviderOrder_Id" ColumnName="ProviderOrder_Id" />
                 <ScalarProperty Name="ClientName" ColumnName="ClientName" />
                 <ScalarProperty Name="HistoProvider_Id" ColumnName="HistoProvider_Id" />
                 <ScalarProperty Name="Provider_Id" ColumnName="Provider_Id" />

@@ -153,6 +153,13 @@ namespace HispaniaCommon.ViewModel
 
         #endregion
 
+        #region Provider Order
+        public int ProviderOrder_Id
+        {
+            get;
+            set;
+        }
+        #endregion
         #region Provider Order Movement
 
         public int ProviderOrderMovement_Id
@@ -349,6 +356,7 @@ namespace HispaniaCommon.ViewModel
             Billing_Units = GlobalViewModel.YearInitValue;
             Retail_Price = GlobalViewModel.YearInitValue;
             Comission = GlobalViewModel.YearInitValue;
+            ProviderOrder_Id = GlobalViewModel.IntIdInitValue;
             ProviderOrderMovement_Id = GlobalViewModel.IntIdInitValue;
             Unit_Shipping_Definition = string.Empty;
             Unit_Billing_Definition = string.Empty;
@@ -378,6 +386,7 @@ namespace HispaniaCommon.ViewModel
             Comission = GlobalViewModel.GetDecimalValue(histoProvider.Comission);
             Unit_Shipping_Definition = histoProvider.Unit_Shipping_Definition;
             Unit_Billing_Definition = histoProvider.Unit_Billing_Definition;
+            ProviderOrder_Id = GlobalViewModel.GetIntFromIntIdValue(histoProvider.ProviderOrder_Id);
             ProviderOrderMovement_Id = GlobalViewModel.GetIntFromIntIdValue(histoProvider.ProviderOrderMovement_Id);
             Good_Code = histoProvider.Good_Code;
             Good_Description = histoProvider.Good_Description;
@@ -404,11 +413,13 @@ namespace HispaniaCommon.ViewModel
             Comission = ProviderOrderMovement.Comission;
             Unit_Shipping_Definition = ProviderOrderMovement.Unit_Shipping_Definition;
             Unit_Billing_Definition = ProviderOrderMovement.Unit_Billing_Definition;
+            ProviderOrder_Id = ProviderOrderMovement._ProviderOrder_Id;
             ProviderOrderMovement_Id = ProviderOrderMovement.ProviderOrderMovement_Id;
             _Good_Id = ProviderOrderMovement.Good.Good_Id;
             Good_Code = ProviderOrderMovement.Good.Good_Code;
             Good_Description = String.IsNullOrEmpty(ProviderOrderMovement.Description) ? ProviderOrderMovement.Good.Good_Description : ProviderOrderMovement.Description;
-            this.ClientName = ProviderOrderMovement.ClientName; 
+            this.ClientName = ProviderOrderMovement.ClientName;
+            this.ProviderOrder_Id = ProviderOrderMovement._ProviderOrder_Id;
         }
 
         /// <summary>
@@ -431,6 +442,7 @@ namespace HispaniaCommon.ViewModel
             Comission = histoProvider.Comission;
             Unit_Shipping_Definition = histoProvider.Unit_Shipping_Definition;
             Unit_Billing_Definition = histoProvider.Unit_Billing_Definition;
+            ProviderOrder_Id = histoProvider.ProviderOrder_Id;
             ProviderOrderMovement_Id = histoProvider.ProviderOrderMovement_Id;
             Good_Code = histoProvider.Good_Code;
             Good_Description = histoProvider.Good_Description;
@@ -463,6 +475,7 @@ namespace HispaniaCommon.ViewModel
                 Comission = Comission,
                 Unit_Shipping_Definition = Unit_Shipping_Definition,
                 Unit_Billing_Definition = Unit_Billing_Definition,
+                ProviderOrder_Id = ProviderOrder_Id,
                 ProviderOrderMovement_Id = ProviderOrderMovement_Id,
                 Good_Code = Good_Code,
                 Good_Description = Good_Description,
