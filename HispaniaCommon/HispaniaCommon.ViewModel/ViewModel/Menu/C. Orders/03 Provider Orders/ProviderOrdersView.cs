@@ -214,6 +214,12 @@ namespace HispaniaCommon.ViewModel
                 return GlobalViewModel.GetStringFromDecimalValue(TotalAmount, DecimalType.Currency, true);
             }
         }
+        public string TotalAmountWithOutDiscount {
+            get
+            {
+                return GlobalViewModel.GetStringFromDecimalValue(TotalAmount/(1-BillingData_EarlyPaymentDiscount/100), DecimalType.Currency, true);
+            }
+        }
         public string Remarks { get; set; }
         public DateTime Daily_Dates { get; set; }
         public bool According { get; set; }

@@ -12,6 +12,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data.Entity.Infrastructure;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -19,6 +20,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 //using System.Windows.Forms;
 using System.Windows.Input;
+using System.Windows.Markup;
 using System.Windows.Media;
 
 #endregion
@@ -1111,8 +1113,15 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                                 DataChangedManagerActive = false;
                                 if (ListItems.SelectedItem != null) ListItems.UnselectAll();
                                 DataList.Remove(ProviderOrdersToDelete);
+
+                                foreach (var item in GlobalViewModel.Instance.HispaniaViewModel.GetHistoProviders(ProviderOrdersToDelete.Provider.Provider_Id).Where(x=>x.ProviderOrder_Id == ProviderOrdersToDelete.ProviderOrder_Id))
+                                {
+                                    GlobalViewModel.Instance.HispaniaViewModel.DeleteHistoProvider(item);
+                                }
+
                                 DataChangedManagerActive = true;
                                 ListItems.UpdateLayout();
+
                             }
                             else MsgManager.ShowMessage(ErrMsg);
                         }

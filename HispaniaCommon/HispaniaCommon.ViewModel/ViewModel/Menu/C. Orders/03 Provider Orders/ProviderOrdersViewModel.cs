@@ -142,7 +142,7 @@ namespace HispaniaCommon.ViewModel
         {
 
             //  Delete the Provider Order in the Database.
-                DeleteProviderOrderInDb(ProviderOrderView.GetProviderOrder());
+            DeleteProviderOrderInDb(ProviderOrderView.GetProviderOrder());           
         }
 
         #endregion

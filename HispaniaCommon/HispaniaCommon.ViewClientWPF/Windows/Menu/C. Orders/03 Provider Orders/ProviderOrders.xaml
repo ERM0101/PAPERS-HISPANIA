@@ -99,11 +99,21 @@
                     </GridViewColumn.CellTemplate>
                 </GridViewColumn>
                 <GridViewColumn Width="Auto">
-                    <GridViewColumnHeader Content="Import" HorizontalContentAlignment="Left"/>
+                    <GridViewColumnHeader Content="Base Imp." HorizontalContentAlignment="Left"/>
                     <GridViewColumn.CellTemplate>
                         <DataTemplate>
                             <Grid Background="Transparent" HorizontalAlignment="Stretch" >
                                 <TextBlock Text="{Binding TotalAmount_Str}" TextAlignment="Right" Margin="0,0,2,0"/>
+                            </Grid>
+                        </DataTemplate>
+                    </GridViewColumn.CellTemplate>
+                </GridViewColumn>
+                <GridViewColumn Width="Auto">
+                    <GridViewColumnHeader Content="Import" HorizontalContentAlignment="Left"/>
+                    <GridViewColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid Background="Transparent" HorizontalAlignment="Stretch" >
+                                <TextBlock Text="{Binding TotalAmountWithOutDiscount}" TextAlignment="Right" Margin="0,0,2,0"/>
                             </Grid>
                         </DataTemplate>
                     </GridViewColumn.CellTemplate>
