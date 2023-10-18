@@ -352,16 +352,16 @@
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>
-                                    <!--<GridViewColumn Width="Auto">
-                                        <GridViewColumnHeader Content="Unit. Facturació" HorizontalContentAlignment="Left"/>
+                                    <GridViewColumn Width="Auto">
+                                        <GridViewColumnHeader Content="Import" HorizontalContentAlignment="Left"/>
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
                                                 <Grid Background="Transparent" HorizontalAlignment="Stretch" >
-                                                    <TextBlock Text="{Binding Unit_Billing_Definition}" TextAlignment="Left" Margin="0,0,2,0"/>
+                                                    <TextBlock Text="{Binding RetailPriceWithoutDiscount}" TextAlignment="Left" Margin="0,0,2,0"/>
                                                 </Grid>
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
-                                    </GridViewColumn>-->
+                                    </GridViewColumn>
                                     <GridViewColumn Width="Auto">
                                         <GridViewColumnHeader Content="Preu (PVP)" HorizontalContentAlignment="Left"/>
                                         <GridViewColumn.CellTemplate>

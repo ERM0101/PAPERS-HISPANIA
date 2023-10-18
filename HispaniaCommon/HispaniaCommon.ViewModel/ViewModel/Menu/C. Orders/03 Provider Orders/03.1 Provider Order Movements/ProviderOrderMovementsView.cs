@@ -131,6 +131,16 @@ namespace HispaniaCommon.ViewModel
                 return GlobalViewModel.GetStringFromDecimalValue(RetailPrice * earlyDiscount, DecimalType.Currency, true);
             }
         }
+
+        public string RetailPriceWithoutDiscount
+        {
+            get
+            {
+                return GlobalViewModel.GetStringFromDecimalValue(RetailPrice , DecimalType.Currency, true);
+            }
+        }
+        
+
         public decimal Comission { get; set; }
 
         public string Comission_Str
