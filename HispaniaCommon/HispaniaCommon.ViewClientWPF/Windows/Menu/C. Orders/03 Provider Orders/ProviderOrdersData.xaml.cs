@@ -2135,10 +2135,10 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
             ProviderOrderMovementsView newMovement = new ProviderOrderMovementsView(currentMovement)
             {
                 According = NewAccordingValue
-            };
-            GlobalViewModel.Instance.HispaniaViewModel.UpdateItemInDataManaged(DataManagementId, currentMovement, newMovement);
-            int Index = ListItems.SelectedIndex;
+            };          
             DataChangedManagerActive = false;
+            GlobalViewModel.Instance.HispaniaViewModel.UpdateItemInDataManaged(DataManagementId, currentMovement, newMovement);
+            int Index = ListItems.SelectedIndex;         
             ListItems.SelectedItem = null;
             DataChangedManagerActive = true;
             DataList.Remove(currentMovement);
@@ -2565,7 +2565,7 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                 DataChangedManagerActive = false;
                 ProviderOrderMovementsView currentMovement = (ProviderOrderMovementsView)ListItems.Items[Index];
                 ProviderOrderMovementsView previousMovement = (ProviderOrderMovementsView)ListItems.Items[Index - 1];
-                if ((currentMovement._ProviderOrder_Id <= 0 || previousMovement._ProviderOrder_Id <= 0) || ((currentMovement.ProviderOrder.EffectType == null) || (previousMovement.ProviderOrder.EffectType == null)))
+                if ((currentMovement._ProviderOrder_Id <= 0 || previousMovement._ProviderOrder_Id <= 0) || ((currentMovement.ProviderOrder.EffectType == null) || (previousMovement.ProviderOrder.EffectType == null) || currentMovement.ProviderOrderMovement_Id < 0 || previousMovement.ProviderOrderMovement_Id < 0))
                 {
                     MessageBox.Show("Debe guardar la comanda antes de poder ordenar las líneas");
                     return;
@@ -2607,7 +2607,7 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                 DataChangedManagerActive = false;
                 ProviderOrderMovementsView currentMovement = (ProviderOrderMovementsView)ListItems.Items[Index];
                 ProviderOrderMovementsView nextMovement = (ProviderOrderMovementsView)ListItems.Items[Index + 1];
-                if ((currentMovement._ProviderOrder_Id <= 0 || nextMovement._ProviderOrder_Id <= 0) || ((currentMovement.ProviderOrder.EffectType == null) ||(nextMovement.ProviderOrder.EffectType==null)))
+                if ((currentMovement._ProviderOrder_Id <= 0 || nextMovement._ProviderOrder_Id <= 0) || ((currentMovement.ProviderOrder.EffectType == null) ||(nextMovement.ProviderOrder.EffectType==null) || currentMovement.ProviderOrderMovement_Id < 0 || nextMovement.ProviderOrderMovement_Id < 0))
                 {
                     MessageBox.Show("Debe guardar la comanda antes de poder ordenar las líneas");
                     return;
