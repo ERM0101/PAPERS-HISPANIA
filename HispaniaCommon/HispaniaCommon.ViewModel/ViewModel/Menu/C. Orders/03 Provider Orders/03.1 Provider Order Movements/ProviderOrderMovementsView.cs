@@ -294,7 +294,7 @@ namespace HispaniaCommon.ViewModel
                 {
                     earlyDiscount = 1 - (ProviderOrder.BillingData_EarlyPaymentDiscount / 100);
                 }
-                return GlobalViewModel.GetStringFromDecimalValue(Amount * earlyDiscount, DecimalType.Currency, true);
+                return GlobalViewModel.GetStringFromDecimalValue(Amount, DecimalType.Currency, true);
             }
         }
 
