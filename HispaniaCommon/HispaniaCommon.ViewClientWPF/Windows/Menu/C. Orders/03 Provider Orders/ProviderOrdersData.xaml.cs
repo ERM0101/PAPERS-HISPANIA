@@ -1672,7 +1672,7 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                 ProviderOrderMovementsView Movement = (ProviderOrderMovementsView)ListItems.SelectedItem;
                 try
                 {
-                    string Question = string.Format("Està segur que vol esborrar la línia de Comanda de Client '{0}' ?",
+                    string Question = string.Format("Està segur que vol esborrar la línia de Comanda de Proveidor '{0}' ?",
                                                     ((ProviderOrderMovementsView)ListItems.SelectedItem).ProviderOrderMovement_Id);
                     if (MsgManager.ShowQuestion(Question) == MessageBoxResult.Yes)
                     {
