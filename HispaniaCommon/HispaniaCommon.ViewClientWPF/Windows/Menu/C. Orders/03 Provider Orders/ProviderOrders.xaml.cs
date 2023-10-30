@@ -1018,8 +1018,11 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                         ListItems.UpdateLayout();
                         gbEditOrCreateItem.SetResourceReference(Control.StyleProperty, "NonEditableGroupBox");
                         HideItemPannel();
+                        GlobalViewModel.Instance.HispaniaViewModel.DeleteHistoProvider(NewProviderOrder, DataManagementId);
                         break;
                 }
+
+                //Dictionary<DataBaseOp, List<HispaniaCompData.ProviderOrderMovement>> Movements = GetProviderOrderMovements(DataManagementId);
                 CreateHistoProvider(NewProviderOrder);
             }
             catch (Exception ex)

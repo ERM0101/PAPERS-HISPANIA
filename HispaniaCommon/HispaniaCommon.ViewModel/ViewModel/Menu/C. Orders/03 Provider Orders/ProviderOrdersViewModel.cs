@@ -629,6 +629,23 @@ namespace HispaniaCommon.ViewModel
                 UpdateProviderOrderInDb(providerOrderToUpdate, Movements);
         }
 
+        public void DeleteHistoProvider(ProviderOrdersView providerOrderView, Guid DataManagementId)
+        {
+            HispaniaCompData.ProviderOrder providerOrder = providerOrderView.GetProviderOrder();
+            //  Validate movements values
+            Dictionary<DataBaseOp, List<HispaniaCompData.ProviderOrderMovement>> Movements = GetProviderOrderMovements(DataManagementId);
+            foreach (HispaniaCompData.ProviderOrderMovement Movement in Movements[DataBaseOp.DELETE])
+            {
+                DeleteHistoProviderMovementInDb(providerOrder, Movement);
+            }
+        }
+
+        private void DeleteHistoProviderMovementInDb(HispaniaCompData.ProviderOrder providerOrder,
+                                           HispaniaCompData.ProviderOrderMovement movement)
+        {
+            HispaniaDataAccess.Instance.DeleteHistoProviderMovement(providerOrder.ProviderOrder_Id, movement.ProviderOrderMovement_Id);
+        }
+        
         #endregion
 
         #region SplitProviderOrder

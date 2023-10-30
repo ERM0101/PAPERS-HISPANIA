@@ -4161,6 +4161,26 @@ namespace HispaniaCommon.DataAccess
             }
         }
 
+        [OperationContract]
+        public void DeleteHistoProviderMovement(int providerOrderId, int ProviderOrderMovementId)
+        {
+            try
+            {
+                using (var db = new HispaniaComptabilitat.Data.Entities())
+                {  
+                    HispaniaCompData.HistoProvider HistoProviderToDelete = (db.HistoProviders.Where(x => x.ProviderOrderMovement_Id == ProviderOrderMovementId)).FirstOrDefault();
+                    db.HistoProviders.Remove(HistoProviderToDelete);
+                    db.SaveChanges();
+                }
+            }
+            catch (DataException ex)
+            {
+                string MsgError = string.Format("No es pot esborrar l'historic de la comanda '{0}' movimiento '{1}'\r\n{2}.",
+                                                providerOrderId, ProviderOrderMovementId,
+                                                "Intentiu de nou, i si el problema persisteix consulti l'administrador");
+                throw new Exception(MsgError, ex);
+            }
+        }
         #endregion
 
         #region HistoCumulativeProvider [CRUD]
