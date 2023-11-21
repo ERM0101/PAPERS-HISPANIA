@@ -8,6 +8,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -578,19 +579,37 @@ namespace HispaniaCommon.ViewClientWPF.Windows
         private void Initialize(ApplicationType AppType)
         {
             //  Actualize the Application Type, DataContext associated and defines the Load manager for this Window.
-                this.AppType = AppType;
-                this.DataContext = GlobalViewModel.Instance.HispaniaViewModel;
+            this.AppType = AppType;
+            this.DataContext = GlobalViewModel.Instance.HispaniaViewModel;
             //  Apply Theme to window.
-                ThemeManager.ActualTheme = AppTheme;
-                rdTancament.Height = HideHeaderPanel;
-                rdTancament.MinHeight = HideHeaderPanel.Value;
-                rdEspai.Height = ExpandEspaiPanel;
+            ThemeManager.ActualTheme = AppTheme;
+            rdTancament.Height = HideHeaderPanel;
+            rdTancament.MinHeight = HideHeaderPanel.Value;
+            rdEspai.Height = ExpandEspaiPanel;
             //  Define Managers for the Window controls
-                LoadManagers();
+            LoadManagers();
+
+            ComprobarTestMode();
+        }
+
+        private static void ComprobarTestMode()
+        {
+            if (ConfigurationManager.AppSettings["TestMode"] == "1")
+            {
+                var rdActiveResourceTheme = ThemeManager.ActiveResourceTheme;
+
+                var myBrush1 = rdActiveResourceTheme["NormalBrush"] as LinearGradientBrush;
+                //myBrush1 = myBrush1.Clone();
+                myBrush1.GradientStops[0].Color = (Color)ColorConverter.ConvertFromString("#FFffdfd4");
+                myBrush1.GradientStops[1].Color = (Color)ColorConverter.ConvertFromString("#FFff9e81");
+                myBrush1.GradientStops[2].Color = (Color)ColorConverter.ConvertFromString("#FFff5232");
+                myBrush1.GradientStops[3].Color = (Color)ColorConverter.ConvertFromString("#FFff0000");
+            }
+           
         }
 
         #endregion
-        
+
         #region Managers
 
         /// <summary>

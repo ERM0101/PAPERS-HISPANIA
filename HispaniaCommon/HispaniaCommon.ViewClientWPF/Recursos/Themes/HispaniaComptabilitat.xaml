@@ -31,17 +31,17 @@
         <GradientStop Color="{StaticResource RefreshBrushGradient3}" Offset="0.418" />
         <GradientStop Color="{StaticResource RefreshBrushGradient4}" Offset="1" />
     </LinearGradientBrush>
-
+     
     <Color x:Key="NormalBrushGradient1">#FFBAE4FF</Color>
     <Color x:Key="NormalBrushGradient2">#FF398FDF</Color>
     <Color x:Key="NormalBrushGradient3">#FF006DD4</Color>
     <Color x:Key="NormalBrushGradient4">#FF0A3E69</Color>
 
     <LinearGradientBrush x:Key="NormalBrush" EndPoint="0.5,1" StartPoint="0.5,0">
-        <GradientStop Color="{StaticResource NormalBrushGradient1}" Offset="0" />
-        <GradientStop Color="{StaticResource NormalBrushGradient2}" Offset="0.41800001263618469" />
-        <GradientStop Color="{StaticResource NormalBrushGradient3}" Offset="0.418" />
-        <GradientStop Color="{StaticResource NormalBrushGradient4}" Offset="1" />
+        <GradientStop Color="{DynamicResource NormalBrushGradient1}" Offset="0" />
+        <GradientStop Color="{DynamicResource NormalBrushGradient2}" Offset="0.41800001263618469" />
+        <GradientStop Color="{DynamicResource NormalBrushGradient3}" Offset="0.418" />
+        <GradientStop Color="{DynamicResource NormalBrushGradient4}" Offset="1" />
     </LinearGradientBrush>
 
     <RadialGradientBrush x:Key="HoverBrush">
