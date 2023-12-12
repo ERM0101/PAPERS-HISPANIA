@@ -58,6 +58,22 @@ namespace HispaniaCommon.ViewModel
             return (New_Data_Id);
         }
 
+
+        public Guid InitializeDataManaged(ObservableCollection<ProviderOrderMovementsView> InitialCollection)
+        {
+            Dictionary<object, DataBaseOp> Data = new Dictionary<object, DataBaseOp>();
+            if (InitialCollection != null)
+            {
+                foreach (object item in InitialCollection)
+                {
+                    Data.Add(item, DataBaseOp.READ);
+                }
+            }
+            Guid New_Data_Id = Guid.NewGuid();
+            DataManaged.Add(New_Data_Id, Data);
+            return (New_Data_Id);
+        }
+
         public void CreateItemInDataManaged(Guid CollectionId, object ItemData)
         {
             if (!DataManaged.ContainsKey(CollectionId))

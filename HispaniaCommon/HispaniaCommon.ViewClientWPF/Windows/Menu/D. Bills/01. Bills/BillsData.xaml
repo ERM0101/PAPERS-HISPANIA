@@ -152,10 +152,10 @@
                                                 <GridViewColumn.CellTemplate>
                                                     <DataTemplate>
                                                         <Grid Background="Transparent" HorizontalAlignment="Stretch" >
-                                                            <TextBlock Text="{Binding Expiration_Date_Str}" TextAlignment="Center" Margin="0,0,2,0"/>
-                                                        </Grid>
+                                                             <TextBlock Name="tbExpirationDate" Text="{Binding Expiration_Date_Str}" TextAlignment="Center" Margin="0,0,2,0"/>
+                                                        </Grid>                                                       
                                                     </DataTemplate>
-                                                </GridViewColumn.CellTemplate>
+                                                </GridViewColumn.CellTemplate>                                              
                                             </GridViewColumn>
                                             <!--<GridViewColumn Width="Auto">
                                                     <GridViewColumnHeader Content="Estat" HorizontalContentAlignment="Left"/>
@@ -236,6 +236,20 @@
                                        HorizontalAlignment="Center" VerticalAlignment="Center" IsEnabled="False"/>
                                 <RadioButton Grid.Column="11" x:Name="rbPending" Height="23" HorizontalAlignment="Stretch" VerticalAlignment="Center" 
                                              Margin="0,14,4,0" IsEnabled="False"/>
+                                <Button Grid.Column="12" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,2,0,0" x:Name="btnChangeDataVenciment" Width="150" Height="23">
+                                    <StackPanel x:Name="spChangeDataVenciment"  Margin="2" Orientation="Horizontal">
+                                        <Image Height="16" Margin="0,0,10,0" Source="{DynamicResource Edit}" Width="16" />
+                                        <TextBlock x:Name="tbChangeDataVenciment" Text="Data de Venciment" />
+                                    </StackPanel>
+                                </Button>
+                                <DatePicker Grid.Column="12" Name="dtpExpirationDate" SelectedDateFormat="Long" BorderBrush="#FF9B211D" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="0,0,0,12" Width="150" Height="23" Visibility="Hidden" />
+                                <Button Grid.Column="12" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="300,2,0,0" x:Name="btnSaveDataVenciment" Width="120" Height="23" Visibility="Hidden">
+                                    <StackPanel x:Name="spSaveDataVenciment"  Margin="2" Orientation="Horizontal">
+                                        <Image Height="16" Margin="0,0,10,0" Source="{DynamicResource Accept}" Width="16" />
+                                        <TextBlock x:Name="tbSaveDataVenciment" Text="Guardar" />
+                                    </StackPanel>
+                                </Button>
+
                                 <Label Grid.Column="13" x:Name="lblCumulateExpiration"  Content="TOTAL :" Margin="4,4,0,0" FontWeight="Bold" HorizontalAlignment="Right" 
                                        VerticalAlignment="Center" IsEnabled="False"/>
                                 <TextBox Grid.Column="14" x:Name="tbCumulateExpiration" Height="23" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" 

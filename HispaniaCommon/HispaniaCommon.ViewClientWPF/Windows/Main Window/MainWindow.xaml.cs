@@ -1,5 +1,6 @@
 ﻿#region Libraries used for the class
 
+using HispaniaCommon.ViewClientWPF.Windows.Menu.I._Queries;
 using HispaniaCommon.ViewModel;
 using MBCode.Framework.Managers.Messages;
 using MBCode.Framework.Managers.Theme;
@@ -7,6 +8,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -196,7 +199,7 @@ namespace HispaniaCommon.ViewClientWPF.Windows
         /// <summary>
         /// Store the Issuance Supplier Orders Window Type Active.
         /// </summary>
-        //private IssuanceSupplierOrders IssuanceSupplierOrdersWindow = null;
+        private ProviderOrders ProviderOrdersManagementWindow = null;
 
         /// <summary>
         /// Store the Issuance Supplier Orders Window Type Active.
@@ -576,19 +579,37 @@ namespace HispaniaCommon.ViewClientWPF.Windows
         private void Initialize(ApplicationType AppType)
         {
             //  Actualize the Application Type, DataContext associated and defines the Load manager for this Window.
-                this.AppType = AppType;
-                this.DataContext = GlobalViewModel.Instance.HispaniaViewModel;
+            this.AppType = AppType;
+            this.DataContext = GlobalViewModel.Instance.HispaniaViewModel;
             //  Apply Theme to window.
-                ThemeManager.ActualTheme = AppTheme;
-                rdTancament.Height = HideHeaderPanel;
-                rdTancament.MinHeight = HideHeaderPanel.Value;
-                rdEspai.Height = ExpandEspaiPanel;
+            ThemeManager.ActualTheme = AppTheme;
+            rdTancament.Height = HideHeaderPanel;
+            rdTancament.MinHeight = HideHeaderPanel.Value;
+            rdEspai.Height = ExpandEspaiPanel;
             //  Define Managers for the Window controls
-                LoadManagers();
+            LoadManagers();
+
+            ComprobarTestMode();
+        }
+
+        private static void ComprobarTestMode()
+        {
+            if (ConfigurationManager.AppSettings["TestMode"] == "1")
+            {
+                var rdActiveResourceTheme = ThemeManager.ActiveResourceTheme;
+
+                var myBrush1 = rdActiveResourceTheme["NormalBrush"] as LinearGradientBrush;
+                //myBrush1 = myBrush1.Clone();
+                myBrush1.GradientStops[0].Color = (Color)ColorConverter.ConvertFromString("#FFffdfd4");
+                myBrush1.GradientStops[1].Color = (Color)ColorConverter.ConvertFromString("#FFff9e81");
+                myBrush1.GradientStops[2].Color = (Color)ColorConverter.ConvertFromString("#FFff5232");
+                myBrush1.GradientStops[3].Color = (Color)ColorConverter.ConvertFromString("#FFff0000");
+            }
+           
         }
 
         #endregion
-        
+
         #region Managers
 
         /// <summary>
@@ -842,10 +863,96 @@ namespace HispaniaCommon.ViewClientWPF.Windows
             lblConsultaHistoCliDataAgent.MouseEnter += Manage_MouseEnter;
             lblConsultaHistoCliDataAgent.MouseLeave += Manage_MouseLeave;
             lblConsultaHistoCliDataAgent.MouseDoubleClick += ManageLabel_MouseDoubleClick;
+
+
+            lblConsultaProviders.MouseEnter += Manage_MouseEnter;
+            lblConsultaProviders.MouseLeave += Manage_MouseLeave;
+            lblConsultaProviders.MouseDoubleClick += LblConsultaProviders_MouseDoubleClick;
+
+            lblQueryPaymentForecast.MouseEnter += Manage_MouseEnter;
+            lblQueryPaymentForecast.MouseLeave += Manage_MouseLeave;
+            lblQueryPaymentForecast.MouseDoubleClick += LblQueryPaimentForecast_MouseDoubleClick;
+
+
             //  Option 06 'Consulta Customitzada'
             lblConsultaParam.MouseEnter += Manage_MouseEnter;
             lblConsultaParam.MouseLeave += Manage_MouseLeave;
             lblConsultaParam.MouseDoubleClick += ManageLabel_MouseDoubleClick;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void LblConsultaProviders_MouseDoubleClick( object sender, MouseButtonEventArgs e )
+        {
+            Window window = FindWindow( typeof( QueryOrdersProvider ) );
+            if(null == window)
+            {
+                // Create
+                QueryOrdersProvider query_window = new QueryOrdersProvider();
+
+                this.Active_Windows.Add( query_window );
+                query_window.Closed += UniwersalOnClosedWindow;
+                window = query_window;
+            }
+            else
+            {
+                // Show
+            }
+            window.Show();
+            window.Activate();
+        }
+
+        private void LblQueryPaimentForecast_MouseDoubleClick( object sender, MouseButtonEventArgs e )
+        {
+            Window window = FindWindow( typeof( PaymentForecast ) );
+            if(null == window)
+            {
+                // Create
+                PaymentForecast query_window = new PaymentForecast();
+
+                this.Active_Windows.Add( query_window );
+                query_window.Closed += UniwersalOnClosedWindow;
+                window = query_window;
+            }
+            else
+            {
+                // Show
+            }
+            window.Show();
+            window.Activate();
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void UniwersalOnClosedWindow( object sender, EventArgs e )
+        {
+            Window window = (Window)sender;
+            if(sender != null)
+            {
+                this.Active_Windows.Remove( window );
+                window.Closed -= UniwersalOnClosedWindow;                    
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="typeWindow"></param>
+        /// <returns></returns>
+        private Window FindWindow( Type typeWindow )
+        {
+
+            Window result = this.Active_Windows.Where( i => i.GetType() == typeWindow )
+                                .FirstOrDefault();           
+
+            return result;
         }
 
         #endregion
@@ -1049,6 +1156,8 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                 else if (sender == lblConsultaComandesClient) grdConsultaComandesClient.Background = BrBackActiveItemSelected;
                 else if (sender == lblConsultaHistoCliData) grdConsultaHistoCliData.Background = BrBackActiveItemSelected;
                 else if (sender == lblConsultaHistoCliDataAgent) grdConsultaHistoCliDataAgent.Background = BrBackActiveItemSelected;
+                else if(sender == lblConsultaProviders )
+                    grdConsultaProviders.Background = BrBackActiveItemSelected;
                 else if (sender == lblConsultaParam) grdConsultaParam.Background = BrBackActiveItemSelected;
                 #endregion
                 #region MENU WAREHOUSE
@@ -1100,73 +1209,128 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                 ((Label)sender).Foreground = ItemActiveOriginalForeground;
                 ((Label)sender).HorizontalContentAlignment = ItemActiveOriginalHorizontalContentAlignment;
                 #region MENU TABLES
-                if (sender == lblParametresGenerals) grdParameters.Background = new SolidColorBrush(Colors.WhiteSmoke);
-                else if (sender == lblSeriesFacturacio) grdBillingSeries.Background = new SolidColorBrush(Colors.WhiteSmoke);
-                else if (sender == lblPoblacions) grdPostalCodes.Background = new SolidColorBrush(Colors.WhiteSmoke);
-                else if (sender == lblTipusIVA) grdIVATypes.Background = new SolidColorBrush(Colors.WhiteSmoke);
-                else if (sender == lblTipusEnviament) grdSendTypes.Background = new SolidColorBrush(Colors.WhiteSmoke);
-                else if (sender == lblRepresentants) grdAgents.Background = new SolidColorBrush(Colors.WhiteSmoke);
-                else if (sender == lblEfectes) grdEffectTypes.Background = new SolidColorBrush(Colors.WhiteSmoke);
-                else if (sender == lblGestioClients) grdCustomers.Background = new SolidColorBrush(Colors.WhiteSmoke);
-                else if (sender == lblImpressioFitxesClients) grdCustomersPrint.Background = new SolidColorBrush(Colors.WhiteSmoke);
-                else if (sender == lblGestioProveidors) grdProviders.Background = new SolidColorBrush(Colors.WhiteSmoke);
-                else if (sender == lblImpressioFitxesProveidors) grdProvidersPrint.Background = new SolidColorBrush(Colors.WhiteSmoke);
+                if(sender == lblParametresGenerals)
+                    grdParameters.Background = new SolidColorBrush( Colors.WhiteSmoke );
+                else if(sender == lblSeriesFacturacio)
+                    grdBillingSeries.Background = new SolidColorBrush( Colors.WhiteSmoke );
+                else if(sender == lblPoblacions)
+                    grdPostalCodes.Background = new SolidColorBrush( Colors.WhiteSmoke );
+                else if(sender == lblTipusIVA)
+                    grdIVATypes.Background = new SolidColorBrush( Colors.WhiteSmoke );
+                else if(sender == lblTipusEnviament)
+                    grdSendTypes.Background = new SolidColorBrush( Colors.WhiteSmoke );
+                else if(sender == lblRepresentants)
+                    grdAgents.Background = new SolidColorBrush( Colors.WhiteSmoke );
+                else if(sender == lblEfectes)
+                    grdEffectTypes.Background = new SolidColorBrush( Colors.WhiteSmoke );
+                else if(sender == lblGestioClients)
+                    grdCustomers.Background = new SolidColorBrush( Colors.WhiteSmoke );
+                else if(sender == lblImpressioFitxesClients)
+                    grdCustomersPrint.Background = new SolidColorBrush( Colors.WhiteSmoke );
+                else if(sender == lblGestioProveidors)
+                    grdProviders.Background = new SolidColorBrush( Colors.WhiteSmoke );
+                else if(sender == lblImpressioFitxesProveidors)
+                    grdProvidersPrint.Background = new SolidColorBrush( Colors.WhiteSmoke );
                 #endregion
                 #region MENU GOODS
-                else if (sender == lblUnitExpedFact) grdUnitExpedFact.Background = new SolidColorBrush(Colors.WhiteSmoke);
-                else if (sender == lblGestioArticles) grdGestioArticles.Background = new SolidColorBrush(Colors.WhiteSmoke);                    
-                else if (sender == lblActualitzarEstocInicial) grdActualitzarEstocInicial.Background = new SolidColorBrush(Colors.WhiteSmoke);
+                else if(sender == lblUnitExpedFact)
+                    grdUnitExpedFact.Background = new SolidColorBrush( Colors.WhiteSmoke );
+                else if(sender == lblGestioArticles)
+                    grdGestioArticles.Background = new SolidColorBrush( Colors.WhiteSmoke );
+                else if(sender == lblActualitzarEstocInicial)
+                    grdActualitzarEstocInicial.Background = new SolidColorBrush( Colors.WhiteSmoke );
                 #endregion
                 #region MENU ORDERS
-                else if (sender == lblGestioComandesProveidors) grdGestioComandesProveidors.Background = new SolidColorBrush(Colors.WhiteSmoke);
-                else if (sender == lblCompararComandes) grdCompararComandes.Background = new SolidColorBrush(Colors.WhiteSmoke);
-                else if (sender == lblGestioComandesClients) grdGestioComandesClients.Background = new SolidColorBrush(Colors.WhiteSmoke);
-                else if (sender == lblGestioAlbarans) grdGestioAlbarans.Background = new SolidColorBrush(Colors.WhiteSmoke);
-                else if (sender == lblImpressioComandesClients) grdComandesClientsPrint.Background = new SolidColorBrush(Colors.WhiteSmoke);
+                else if(sender == lblGestioComandesProveidors)
+                    grdGestioComandesProveidors.Background = new SolidColorBrush( Colors.WhiteSmoke );
+                else if(sender == lblCompararComandes)
+                    grdCompararComandes.Background = new SolidColorBrush( Colors.WhiteSmoke );
+                else if(sender == lblGestioComandesClients)
+                    grdGestioComandesClients.Background = new SolidColorBrush( Colors.WhiteSmoke );
+                else if(sender == lblGestioAlbarans)
+                    grdGestioAlbarans.Background = new SolidColorBrush( Colors.WhiteSmoke );
+                else if(sender == lblImpressioComandesClients)
+                    grdComandesClientsPrint.Background = new SolidColorBrush( Colors.WhiteSmoke );
                 #endregion
                 #region MENU BILLS
-                else if (sender == lblGestioFactures) grdGestioFactures.Background = new SolidColorBrush(Colors.WhiteSmoke);
-                else if (sender == lblImpressioFactures) grdFacturesPrint.Background = new SolidColorBrush(Colors.WhiteSmoke);
-                else if (sender == lblRevisaDesquadresVenciment) grdRevisaDesquadresVenciment.Background = new SolidColorBrush(Colors.WhiteSmoke);
-                else if (sender == lblLiquidacions) grdLiquidacions.Background = new SolidColorBrush(Colors.WhiteSmoke);
-                else if (sender == lblImpagats) grdImpagats.Background = new SolidColorBrush(Colors.WhiteSmoke);
+                else if(sender == lblGestioFactures)
+                    grdGestioFactures.Background = new SolidColorBrush( Colors.WhiteSmoke );
+                else if(sender == lblImpressioFactures)
+                    grdFacturesPrint.Background = new SolidColorBrush( Colors.WhiteSmoke );
+                else if(sender == lblRevisaDesquadresVenciment)
+                    grdRevisaDesquadresVenciment.Background = new SolidColorBrush( Colors.WhiteSmoke );
+                else if(sender == lblLiquidacions)
+                    grdLiquidacions.Background = new SolidColorBrush( Colors.WhiteSmoke );
+                else if(sender == lblImpagats)
+                    grdImpagats.Background = new SolidColorBrush( Colors.WhiteSmoke );
                 #endregion
                 #region MENU QUERIES
-                else if (sender == lblConsultaArticles) grdConsultaArticles.Background = new SolidColorBrush(Colors.WhiteSmoke);
-                else if (sender == lblConsultaClients) grdConsultaClients.Background = new SolidColorBrush(Colors.WhiteSmoke);
-                else if (sender == lblConsultaComandesClient) grdConsultaComandesClient.Background = new SolidColorBrush(Colors.WhiteSmoke);
-                else if (sender == lblConsultaHistoCliData) grdConsultaHistoCliData.Background = new SolidColorBrush(Colors.WhiteSmoke);
-                else if (sender == lblConsultaHistoCliDataAgent) grdConsultaHistoCliDataAgent.Background = new SolidColorBrush(Colors.WhiteSmoke);
-                else if (sender == lblConsultaParam) grdConsultaParam.Background = new SolidColorBrush(Colors.WhiteSmoke);
+                else if(sender == lblConsultaArticles)
+                    grdConsultaArticles.Background = new SolidColorBrush( Colors.WhiteSmoke );
+                else if(sender == lblConsultaClients)
+                    grdConsultaClients.Background = new SolidColorBrush( Colors.WhiteSmoke );
+                else if(sender == lblConsultaComandesClient)
+                    grdConsultaComandesClient.Background = new SolidColorBrush( Colors.WhiteSmoke );
+                else if(sender == lblConsultaHistoCliData)
+                    grdConsultaHistoCliData.Background = new SolidColorBrush( Colors.WhiteSmoke );
+                else if(sender == lblConsultaHistoCliDataAgent)
+                    grdConsultaHistoCliDataAgent.Background = new SolidColorBrush( Colors.WhiteSmoke );
+                else if(sender == lblConsultaProviders)
+                {
+                    grdConsultaProviders.Background = new SolidColorBrush( Colors.WhiteSmoke );
+                }
+                else if(sender == lblConsultaParam)
+                    grdConsultaParam.Background = new SolidColorBrush( Colors.WhiteSmoke );
                 #endregion
                 #region MENU WAREHOUSE
-                else if (sender == lblAfegirMovimentsMagatzem) grdAfegirMovimentsMagatzem.Background = new SolidColorBrush(Colors.WhiteSmoke);
-                else if (sender == lblGestioMovimentsMagatzem) grdGestioMovimentsMagatzem.Background = new SolidColorBrush(Colors.WhiteSmoke);
+                else if(sender == lblAfegirMovimentsMagatzem)
+                    grdAfegirMovimentsMagatzem.Background = new SolidColorBrush( Colors.WhiteSmoke );
+                else if(sender == lblGestioMovimentsMagatzem)
+                    grdGestioMovimentsMagatzem.Background = new SolidColorBrush( Colors.WhiteSmoke );
                 #endregion
                 #region MENU REVISIONS
-                else if (sender == lblRevisioFactures) grdRevisioFactures.Background = new SolidColorBrush(Colors.WhiteSmoke);
-                else if (sender == lblEstocsDisponibles) grdEstocsDisponibles.Background = new SolidColorBrush(Colors.WhiteSmoke);
-                else if (sender == lblEstocsExistencies) grdEstocsExistencies.Background = new SolidColorBrush(Colors.WhiteSmoke);
-                else if (sender == lblDisponibles) grdDisponibles.Background = new SolidColorBrush(Colors.WhiteSmoke);
-                else if (sender == lblExistencies) grdExistencies.Background = new SolidColorBrush(Colors.WhiteSmoke);
+                else if(sender == lblRevisioFactures)
+                    grdRevisioFactures.Background = new SolidColorBrush( Colors.WhiteSmoke );
+                else if(sender == lblEstocsDisponibles)
+                    grdEstocsDisponibles.Background = new SolidColorBrush( Colors.WhiteSmoke );
+                else if(sender == lblEstocsExistencies)
+                    grdEstocsExistencies.Background = new SolidColorBrush( Colors.WhiteSmoke );
+                else if(sender == lblDisponibles)
+                    grdDisponibles.Background = new SolidColorBrush( Colors.WhiteSmoke );
+                else if(sender == lblExistencies)
+                    grdExistencies.Background = new SolidColorBrush( Colors.WhiteSmoke );
                 #endregion
                 #region LISTINGS
-                else if (sender == lblLlistatInventaris) grdLlistatInventaris.Background = new SolidColorBrush(Colors.WhiteSmoke);
-                else if (sender == lblLlistatMarges) grdLlistatMarges.Background = new SolidColorBrush(Colors.WhiteSmoke);
-                else if (sender == lblLlistatImpagats) grdLlistatImpagats.Background = new SolidColorBrush(Colors.WhiteSmoke);
-                else if (sender == lblLlistatLiniesAlbara) grdLlistatLiniesAlbara.Background = new SolidColorBrush(Colors.WhiteSmoke);
-                else if (sender == lblLlistatDiariVendes) grdLlistatDiariVendes.Background = new SolidColorBrush(Colors.WhiteSmoke);
-                else if (sender == lblLlistatDiariVendesComptabilitat) grdLlistatDiariVendesComptabilitat.Background = new SolidColorBrush(Colors.WhiteSmoke);
+                else if(sender == lblLlistatInventaris)
+                    grdLlistatInventaris.Background = new SolidColorBrush( Colors.WhiteSmoke );
+                else if(sender == lblLlistatMarges)
+                    grdLlistatMarges.Background = new SolidColorBrush( Colors.WhiteSmoke );
+                else if(sender == lblLlistatImpagats)
+                    grdLlistatImpagats.Background = new SolidColorBrush( Colors.WhiteSmoke );
+                else if(sender == lblLlistatLiniesAlbara)
+                    grdLlistatLiniesAlbara.Background = new SolidColorBrush( Colors.WhiteSmoke );
+                else if(sender == lblLlistatDiariVendes)
+                    grdLlistatDiariVendes.Background = new SolidColorBrush( Colors.WhiteSmoke );
+                else if(sender == lblLlistatDiariVendesComptabilitat)
+                    grdLlistatDiariVendesComptabilitat.Background = new SolidColorBrush( Colors.WhiteSmoke );
                 #endregion
                 #region MENU CLOSING
-                else if (sender == lblInformeVendesSuperiorA) grdInformeVendesSuperiorA.Background = new SolidColorBrush(Colors.WhiteSmoke);
-                else if (sender == lblHistoricsAcumulatClient) grdHistoricsAcumulatClient.Background = new SolidColorBrush(Colors.WhiteSmoke);
-                else if (sender == lblHistoricsAcumulatArticles) grdHistoricsAcumulatArticles.Background = new SolidColorBrush(Colors.WhiteSmoke);
-                else if (sender == lblTraspassarEstocsIncials) grdTraspassarEstocsIncials.Background = new SolidColorBrush(Colors.WhiteSmoke);
-                else if (sender == lblTraspassarComandesClient) grdTraspassarComandesClient.Background = new SolidColorBrush(Colors.WhiteSmoke);
-                else if (sender == lblTraspassarAlbarans) grdTraspassarAlbarans.Background = new SolidColorBrush(Colors.WhiteSmoke);
-                else if (sender == lblEliminarMovimentsMagatzem) grdEliminarMovimentsMagatzem.Background = new SolidColorBrush(Colors.WhiteSmoke);
-                else if (sender == lblResetejarNumeroFactura) grdResetejarNumeroFactura.Background = new SolidColorBrush(Colors.WhiteSmoke);
+                else if(sender == lblInformeVendesSuperiorA)
+                    grdInformeVendesSuperiorA.Background = new SolidColorBrush( Colors.WhiteSmoke );
+                else if(sender == lblHistoricsAcumulatClient)
+                    grdHistoricsAcumulatClient.Background = new SolidColorBrush( Colors.WhiteSmoke );
+                else if(sender == lblHistoricsAcumulatArticles)
+                    grdHistoricsAcumulatArticles.Background = new SolidColorBrush( Colors.WhiteSmoke );
+                else if(sender == lblTraspassarEstocsIncials)
+                    grdTraspassarEstocsIncials.Background = new SolidColorBrush( Colors.WhiteSmoke );
+                else if(sender == lblTraspassarComandesClient)
+                    grdTraspassarComandesClient.Background = new SolidColorBrush( Colors.WhiteSmoke );
+                else if(sender == lblTraspassarAlbarans)
+                    grdTraspassarAlbarans.Background = new SolidColorBrush( Colors.WhiteSmoke );
+                else if(sender == lblEliminarMovimentsMagatzem)
+                    grdEliminarMovimentsMagatzem.Background = new SolidColorBrush( Colors.WhiteSmoke );
+                else if(sender == lblResetejarNumeroFactura)
+                    grdResetejarNumeroFactura.Background = new SolidColorBrush( Colors.WhiteSmoke );
                 #endregion
             }
         }
@@ -1203,11 +1367,11 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                 else if (sender == lblActualitzarEstocInicial) ManageActualitzarEstocInicial();
                 #endregion
                 #region MENU ORDERS
-                else if ((sender == lblGestioComandesProveidors) || (sender == lblCompararComandes))
-                {
-                    MsgManager.ShowMessage("Avís, opció encara pendent de definició.", MsgType.Information);
-                }
-                //else if (sender == lblGestioComandesProveidors) ManageGestioComandesProveidors();
+                //else if ((sender == lblGestioComandesProveidors) || (sender == lblCompararComandes))
+                //{
+                //    MsgManager.ShowMessage("Avís, opció encara pendent de definició.", MsgType.Information);
+                //}
+                else if (sender == lblGestioComandesProveidors) ManageGestioComandesProveidors();
                 //else if (sender == lblCompararComandes) ManageCompararComandes();
                 else if (sender == lblGestioComandesClients) ManageGestioComandesClients();
                 else if (sender == lblGestioAlbarans) ManageGestioAlbarans();
@@ -1222,10 +1386,11 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                 #endregion
                 #region MENU QUERIES
                 else if (sender == lblConsultaArticles) ManageGestioConsultes(QueryType.Goods);
-                else if (sender == lblConsultaClients) ManageGestioConsultes(QueryType.Customers);
+                else if (sender == lblConsultaClients) ManageGestioConsultes(QueryType.Customers_Full);
                 else if (sender == lblConsultaComandesClient) ManageGestioConsultes(QueryType.CustomerOrders);
                 else if (sender == lblConsultaHistoCliData) ManageGestioConsultes(QueryType.HistoCustomerForData);
                 else if (sender == lblConsultaHistoCliDataAgent) ManageGestioConsultes(QueryType.HistoCustomerForDataAndAgent);
+                else if( sender == lblConsultaProviders ) ManageGestioConsultes( QueryType.Providers );
                 else if (sender == lblConsultaParam) ManageGestioConsultes(QueryType.CustomQuery);
                 #endregion
                 #region MENU WAREHOUSE
@@ -1748,7 +1913,10 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                     ProvidersWindow = new Providers(AppType)
                     {
                         Print = false,
+                        EffectTypes = GlobalViewModel.Instance.HispaniaViewModel.EffectTypesDict,
                         PostalCodes = GlobalViewModel.Instance.HispaniaViewModel.PostalCodesDict,
+                        SendTypes = GlobalViewModel.Instance.HispaniaViewModel.SendTypesDict,
+                        IVATypes = GlobalViewModel.Instance.HispaniaViewModel.IVATypesDict,
                         Agents = GlobalViewModel.Instance.HispaniaViewModel.AgentsDict,
                         DataList = GlobalViewModel.Instance.HispaniaViewModel.Providers
                     };
@@ -1801,7 +1969,10 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                     {
                         Print = true,
                         PostalCodes = GlobalViewModel.Instance.HispaniaViewModel.PostalCodesDict,
+                        EffectTypes = GlobalViewModel.Instance.HispaniaViewModel.EffectTypesDict,
+                        SendTypes = GlobalViewModel.Instance.HispaniaViewModel.SendTypesDict,
                         Agents = GlobalViewModel.Instance.HispaniaViewModel.AgentsDict,
+                        IVATypes = GlobalViewModel.Instance.HispaniaViewModel.IVATypesDict,
                         DataList = GlobalViewModel.Instance.HispaniaViewModel.Providers
                     };
                     ProvidersPrintWindow.Closed += ProvidersPrintWindow_Closed;
@@ -1911,6 +2082,7 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                     };
                     GoodsWindow.Closed += GoodsWindow_Closed;
                     GoodsWindow.Show();
+                    GoodsWindow.GoodsVM.Managemend = true;
                     Active_Windows.Add(GoodsWindow);
                 }
                 catch (Exception ex)
@@ -1922,6 +2094,9 @@ namespace HispaniaCommon.ViewClientWPF.Windows
             else
             {
                 if (GoodsWindow.WindowState == WindowState.Minimized) GoodsWindow.WindowState = WindowState.Normal;
+
+                GoodsWindow.GoodsVM.Managemend = true;
+
                 GoodsWindow.Activate();
             }
             Mouse.OverrideCursor = Cursors.Arrow;
@@ -2002,19 +2177,37 @@ namespace HispaniaCommon.ViewClientWPF.Windows
         /// </summary>
         private void ManageGestioComandesProveidors()
         {
-            //if (IssuanceSupplierOrdersWindow == null)
-            //{
-            //    IssuanceSupplierOrdersWindow = new IssuanceSupplierOrders(AppType);
-            //    GlobalViewModel.Instance.HispaniaViewModel.RefreshIssuanceSupplierOrders();
-            //    IssuanceSupplierOrdersWindow.DataList = GlobalViewModel.Instance.HispaniaViewModel.IssuanceSupplierOrders;
-            //    GlobalViewModel.Instance.HispaniaViewModel.RefreshProviders();
-            //    IssuanceSupplierOrdersWindow.Providers = GlobalViewModel.Instance.HispaniaViewModel.ProvidersDict;
-            //    GlobalViewModel.Instance.HispaniaViewModel.RefreshMovementsOrdersSuppliersGestioComandesProveidors();
-            //    IssuanceSupplierOrdersWindow.MovementsOrdersSuppliers = GlobalViewModel.Instance.HispaniaViewModel.MovementsOrdersSuppliersGestioComandesProveidors;
-            //    IssuanceSupplierOrdersWindow.Closed += IssuanceSupplierOrdersWindow_Closed;
-            //    IssuanceSupplierOrdersWindow.Show();
-            //}
-            //else UnitsWindow.Activate();
+            Mouse.OverrideCursor = Cursors.Wait;
+            if (ProviderOrdersManagementWindow == null)
+            {
+                try
+                {
+                    RefreshDataViewModel.Instance.RefreshData(WindowToRefresh.ProviderOrdersWindow);
+                    ProviderOrdersManagementWindow = new ProviderOrders(AppType, false, true, false )
+                    {
+                        Providers = GlobalViewModel.Instance.HispaniaViewModel.ProvidersActiveDict,
+                        SendTypes = GlobalViewModel.Instance.HispaniaViewModel.SendTypesDict,
+                        EffectTypes = GlobalViewModel.Instance.HispaniaViewModel.EffectTypesDict,
+                        Parameters = GlobalViewModel.Instance.HispaniaViewModel.Parameters,
+                        DataList = GlobalViewModel.Instance.HispaniaViewModel.ProviderOrders
+                    };
+                    ProviderOrdersManagementWindow.Closed += ProviderOrdersManagementWindow_Closed;
+                    ProviderOrdersManagementWindow.Show();
+                    Active_Windows.Add(ProviderOrdersManagementWindow);
+                }
+                catch (Exception ex)
+                {
+                    MsgManager.ShowMessage(
+                       string.Format("Error, a l'obrir el formulari de Gestió de Comandes de Proveidors.\r\nDetalls: {0}", MsgManager.ExcepMsg(ex)));
+                }
+            }
+            else
+            {
+                if (ProviderOrdersManagementWindow.WindowState == WindowState.Minimized)ProviderOrdersManagementWindow.WindowState = WindowState.Normal;
+                ProviderOrdersManagementWindow.Activate();
+            }
+            Mouse.OverrideCursor = Cursors.Arrow;
+
         }
 
         /// <summary>
@@ -2022,10 +2215,10 @@ namespace HispaniaCommon.ViewClientWPF.Windows
         /// </summary>
         /// <param name="sender">Label that prodece the event</param>
         /// <param name="e">Parameters of the event</param>
-        private void IssuanceSupplierOrdersWindow_Closed(object sender, EventArgs e)
+        private void ProviderOrdersManagementWindow_Closed(object sender, EventArgs e)
         {
-            //IssuanceSupplierOrdersWindow.Closed -= IssuanceSupplierOrdersWindow_Closed;
-            //IssuanceSupplierOrdersWindow = null;
+            ProviderOrdersManagementWindow.Closed -= ProviderOrdersManagementWindow_Closed;
+            ProviderOrdersManagementWindow = null;
         }
 
         #endregion
@@ -2196,7 +2389,10 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                         DataList = GlobalViewModel.Instance.HispaniaViewModel.CustomerOrders
                     };
                     DeliveryNotesPrintWindow.Closed += CustomerOrdersPrintWindow_Closed;
+
                     DeliveryNotesPrintWindow.Show();
+                    DeliveryNotesPrintWindow.Activate();
+                    
                     Active_Windows.Add(DeliveryNotesPrintWindow);
                 }
                 catch (Exception ex)
@@ -2208,7 +2404,10 @@ namespace HispaniaCommon.ViewClientWPF.Windows
             }
             else
             {
-                if (DeliveryNotesPrintWindow.WindowState == WindowState.Minimized) DeliveryNotesPrintWindow.WindowState = WindowState.Normal;
+                if (DeliveryNotesPrintWindow.WindowState == WindowState.Minimized)
+                    DeliveryNotesPrintWindow.WindowState = WindowState.Normal;
+                
+                DeliveryNotesPrintWindow.Show();
                 DeliveryNotesPrintWindow.Activate();
             }
             Mouse.OverrideCursor = Cursors.Arrow;
@@ -2512,19 +2711,18 @@ namespace HispaniaCommon.ViewClientWPF.Windows
             {
                 try
                 {
-                    RefreshDataViewModel.Instance.RefreshData(WindowToRefresh.QueriesWindow);
-                    QueriesWindow = new Queries(AppType, queryType)
+                    RefreshDataViewModel.Instance.RefreshData( WindowToRefresh.QueriesWindow );
+                    QueriesWindow = new Queries( AppType, queryType )
                     {
                         DataList = GlobalViewModel.Instance.HispaniaViewModel.Agents
                     };
                     QueriesWindow.Closed += QueriesWindow_Closed;
                     QueriesWindow.Show();
-                    Active_Windows.Add(QueriesWindow);
-                }
-                catch (Exception ex)
+                    Active_Windows.Add( QueriesWindow );
+                } catch(Exception ex)
                 {
                     MsgManager.ShowMessage(
-                       string.Format("Error, a l'obrir el formulari de Consultes.\r\nDetalls: {0}", MsgManager.ExcepMsg(ex)));
+                       string.Format( "Error, a l'obrir el formulari de Consultes.\r\nDetalls: {0}", MsgManager.ExcepMsg( ex ) ) );
                 }
             }
             else

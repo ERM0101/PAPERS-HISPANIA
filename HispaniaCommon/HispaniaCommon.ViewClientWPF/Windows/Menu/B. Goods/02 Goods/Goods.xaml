@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:UserControls="clr-namespace:HispaniaCommon.ViewClientWPF.UserControls"
+    xmlns:convs="clr-namespace:HispaniaCommon.ViewClientWPF.Converters"
     xmlns:my="clr-namespace:MBCode.Framework.Managers.Culture;assembly=MBCode.Framework"
     x:Class="HispaniaCommon.ViewClientWPF.Windows.Goods" 
         mc:Ignorable="d"
@@ -11,11 +12,13 @@
         WindowStartupLocation="CenterScreen" ResizeMode="CanResize">
     <Window.Resources>
         <ResourceDictionary >
+            <convs:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+            <convs:BoolToHeightConverter x:Key="BoolToHeightConverter"/>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/HispaniaCommon.ViewClientWPF;component/Recursos/Resources/HispaniaCommon.ViewClientWPF.es.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/HispaniaCommon.ViewClientWPF;component/Recursos/Themes/HispaniaComptabilitat.xaml" />
             </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
+        </ResourceDictionary>        
     </Window.Resources>
     <Grid>
         <Grid>
@@ -26,7 +29,15 @@
             </Grid.RowDefinitions>
             <Grid Grid.Row="0" Name="GridList">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="30" Name="rdSearchPannel"/>
+                    <RowDefinition Name="rdSearchPannel">
+                        <RowDefinition.Height>
+                        <MultiBinding Converter="{StaticResource BoolToHeightConverter}">
+                        <Binding Path="IsSearchPanelShow" Mode="TwoWay"/>
+                        <Binding Source="0.0"/>
+                        <Binding Source="30.0"/>
+                        </MultiBinding>
+                        </RowDefinition.Height>
+                    </RowDefinition>
                     <RowDefinition Height="*" />
                     <RowDefinition Height="30" Name="rdOperationPannel"/>
                 </Grid.RowDefinitions>
@@ -38,13 +49,14 @@
                         <ColumnDefinition Width="20"/>
                         <ColumnDefinition Width="35"/>
                     </Grid.ColumnDefinitions>
-                    <ComboBox Grid.Column="0" x:Name="cbFieldItemToSearch" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="4,4,4,0" Height="23"/>
+                    <ComboBox Grid.Column="0" x:Name="cbFieldItemToSearch" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="4,4,4,0" Height="23"
+                              ItemsSource="{Binding Fields}" SelectedValuePath="Value" DisplayMemberPath="Key"   SelectedValue="{Binding FieldEntry}"/>
                     <TextBox Grid.Column="1" x:Name="tbItemToSearch" HorizontalAlignment="Stretch" VerticalAlignment="Center" HorizontalContentAlignment="Left" 
                              Margin="4,4,4,0" Height="23" GotFocus="TBGotFocus"/>
                     <Label Grid.Column="2" x:Name="lblCanceled"  Content="Anulat" Margin="0,8,4,0" FontWeight="Bold" HorizontalAlignment="Right" 
                            VerticalAlignment="Center"/>
                     <CheckBox Grid.Column="3" x:Name="chkbCanceled" Height="23" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="0,14,4,0"/>
-                    <Button Grid.Column="4" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,4,0,0" x:Name="btnRefresh" Width="30" Height="25" 
+                    <Button  Grid.Column="4" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,4,0,0" x:Name="btnRefresh" Width="30" Height="25" 
                             Background="{DynamicResource RefreshBrush}" ToolTip="Refrescar Dades">
                             <StackPanel x:Name="spRefresh" Margin="2" Orientation="Horizontal">
                                 <Image Height="16" Margin="0" Source="{DynamicResource RefreshButtonImage}" Width="16"/>
@@ -60,7 +72,7 @@
                             <TextBlock Margin="10,0"><Run Text="Articles"/></TextBlock>
                         </BulletDecorator>
                     </GroupBox.Header>
-                    <ListView x:Name="ListItems" ItemsSource="{Binding DataList}" IsSynchronizedWithCurrentItem="True"
+                    <ListView x:Name="ListItems" ItemsSource="{Binding ListItems}" IsSynchronizedWithCurrentItem="True"
                               HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectionMode="Single">
                         <ListView.View>
                             <GridView>
@@ -179,6 +191,13 @@
                         <StackPanel x:Name="spViewData"  Margin="2" Orientation="Horizontal">
                             <Image Height="16" Margin="0,0,10,0" Source="{DynamicResource DetailsItem}" Width="16" />
                             <TextBlock x:Name="tbViewData" Text="Veure Dades" />
+                        </StackPanel>
+                    </Button>
+                    <Button Grid.Column="5" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,2,0,0" x:Name="btnAddNewLine" Width="130" Height="23" 
+                            Visibility="{ Binding NewLineaButtonVisibility, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <StackPanel x:Name="spAddNewLine"  Margin="2" Orientation="Horizontal">
+                            <Image Height="16" Margin="0,0,10,0" Source="{DynamicResource AddDeliveryNote}" Width="16" />
+                            <TextBlock x:Name="tbAddNewLine" Text="Afegir nova línia" />
                         </StackPanel>
                     </Button>
                 </Grid>

@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>HispaniaCommon.ViewModel</RootNamespace>
     <AssemblyName>HispaniaCommon.ViewModel</AssemblyName>
-    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -49,6 +49,7 @@
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
@@ -60,6 +61,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Definitions\Definitions.cs" />
+    <Compile Include="ViewModel\ComboBoxViewModel.cs" />
     <Compile Include="ViewModel\General\ComplexCalculations\CalculationsViewModel.cs" />
     <Compile Include="ViewModel\General\ComplexCalculations\MoneyValueConverterView.cs" />
     <Compile Include="ViewModel\General\DataValidators\CompanyData\GoodData\GoodCode.cs" />
@@ -107,7 +109,21 @@
     <Compile Include="ViewModel\General\LanguageUtilsViewModel.cs" />
     <Compile Include="ViewModel\Menu\A Tables\08 Customers\RelatedCustomersView.cs" />
     <Compile Include="ViewModel\Menu\A Tables\08 Customers\RelatedCustomersViewModel.cs" />
+    <Compile Include="ViewModel\Menu\A Tables\09 Providers\09.2 Histo Cumulative Providers\HistoCumulativeProvidersView.cs" />
+    <Compile Include="ViewModel\Menu\A Tables\09 Providers\09.2 Histo Cumulative Providers\HistoCumulativeProvidersViewModel.cs" />
+    <Compile Include="ViewModel\Menu\A Tables\09 Providers\09.4 Histo Providers\HistoProvidersView.cs" />
+    <Compile Include="ViewModel\Menu\A Tables\09 Providers\09.4 Histo Providers\HistoProvidersViewModel.cs" />
+    <Compile Include="ViewModel\Menu\A Tables\09 Providers\RelatedProvidersView.cs" />
+    <Compile Include="ViewModel\Menu\A Tables\09 Providers\RelatedProvidersViewModel.cs" />
+    <Compile Include="ViewModel\Menu\B Goods\02 Goods\GoodsVM.cs" />
     <Compile Include="ViewModel\Menu\C. Orders\02 Customer Orders\DataForBill.cs" />
+    <Compile Include="ViewModel\Menu\C. Orders\03 Provider Orders\03.1 Provider Order Movements\ProviderOrderMovementsView.cs" />
+    <Compile Include="ViewModel\Menu\C. Orders\03 Provider Orders\03.1 Provider Order Movements\ProviderOrderMovementsViewModel.cs" />
+    <Compile Include="ViewModel\Menu\C. Orders\03 Provider Orders\DataForProviderBill.cs" />
+    <Compile Include="ViewModel\Menu\C. Orders\03 Provider Orders\ProviderOrdersView.cs" />
+    <Compile Include="ViewModel\Menu\C. Orders\03 Provider Orders\ProviderOrdersViewModel.cs" />
+    <Compile Include="ViewModel\Menu\C. Orders\_Provider Orders\ProviderOrderMovementsCommentsViewModel.cs" />
+    <Compile Include="ViewModel\Menu\C. Orders\_Provider Orders\LiniesConformesViewModel.cs" />
     <Compile Include="ViewModel\Menu\D. Bills\04. BadDebts\BadDebtMovementsView.cs" />
     <Compile Include="ViewModel\Menu\D. Bills\04. BadDebts\BadDebtsView.cs" />
     <Compile Include="ViewModel\Menu\D. Bills\04. BadDebts\BadDebtMovementsViewModel.cs" />
@@ -191,9 +207,20 @@
     <Compile Include="ViewModel\Menu\B Goods\02 Goods\GoodsViewModel.cs" />
     <Compile Include="ViewModel\Menu\D. Bills\01. Bills\BillsView.cs" />
     <Compile Include="ViewModel\Menu\D. Bills\01. Bills\BillsViewModel.cs" />
+    <None Include="ViewModel\PaymentInfoViewModel.cs" />
+    <Compile Include="ViewModel\Paymets\PaimentInfoUtils.cs" />
+    <Compile Include="ViewModel\Paymets\PaymentDateInfo.cs" />
+    <Compile Include="ViewModel\Paymets\PaymentDateInfoUtils.cs" />
+    <Compile Include="ViewModel\Paymets\PaymentDayInfo.cs" />
+    <Compile Include="ViewModel\Queries\QueryOrderProviderViewModel.cs" />
+    <Compile Include="ViewModel\Queries\QueryOrdersProviderViewModel.cs" />
+    <Compile Include="ViewModel\Queries\QueryPaymentForecastItemModel.cs" />
+    <Compile Include="ViewModel\Queries\QueryPaymentForecastViewModel.cs" />
     <Compile Include="ViewModel\Queries\QueryViewModel.cs" />
+    <Compile Include="ViewModel\RelayCommand.cs" />
     <Compile Include="ViewModel\Reports\AgentReportView.cs" />
     <Compile Include="ViewModel\Reports\BillsReportView.cs" />
+    <Compile Include="ViewModel\Reports\ProviderOrdersReportView.cs" />
     <Compile Include="ViewModel\Reports\CustomerOrdersReportView.cs" />
     <Compile Include="ViewModel\Reports\DeliveryNotesReportView.cs" />
     <Compile Include="ViewModel\Reports\DeliveryNoteLinesReportView.cs" />
@@ -209,6 +236,7 @@
     <Compile Include="ViewModel\Reports\CustomersReportView.cs" />
     <Compile Include="ViewModel\Reports\CommonReportView.cs" />
     <Compile Include="ViewModel\Reports\ReportView.cs" />
+    <Compile Include="ViewModel\ViewModelBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="DLL\itextsharp.dll" />

@@ -15,7 +15,7 @@
     <OldToolsVersion>3.5</OldToolsVersion>
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
-    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <IsWebBootstrapper>true</IsWebBootstrapper>
     <PublishUrl>http://localhost/Framework/</PublishUrl>
     <Install>true</Install>
@@ -88,10 +88,12 @@
     </Compile>
     <Compile Include="Culture\CultureManager.cs" />
     <Compile Include="DataType\DataTimeManager.cs" />
-    <Compile Include="Logs\Manager_Trace.cs" />
     <Compile Include="Logs\Manager_Log.cs" />
+    <Compile Include="Logs\Manager_Trace.cs" />
     <Compile Include="Managers\Manager_IU.cs" />
     <Compile Include="Managers\Manager_LN.cs" />
+    <Compile Include="OFFICE\ExcelColumnInfo.cs" />
+    <Compile Include="OFFICE\ExcelColumnInfoEX.cs" />
     <Compile Include="OFFICE\ExcelManager.cs" />
     <Compile Include="OFFICE\OutlookManager.cs" />
     <Compile Include="Messages\MsgManager.cs" />

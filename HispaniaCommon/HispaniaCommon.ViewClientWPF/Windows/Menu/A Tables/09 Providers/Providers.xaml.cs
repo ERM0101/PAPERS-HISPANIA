@@ -177,6 +177,28 @@ namespace HispaniaCommon.ViewClientWPF.Windows
         }
 
         /// <summary>
+        /// Get or Set the EffectTypes
+        /// </summary>
+        public Dictionary<string, EffectTypesView> EffectTypes
+        {
+            set
+            {
+                ProviderDataControl.EffectTypes = value;
+            }
+        }
+
+        /// <summary>
+        /// Get or Set the SendTypes
+        /// </summary>
+        public Dictionary<string, SendTypesView> SendTypes
+        {
+            set
+            {
+                ProviderDataControl.SendTypes = value;
+            }
+        }
+
+        /// <summary>
         /// Get or Set the Agents
         /// </summary>
         public Dictionary<string, AgentsView> Agents
@@ -184,6 +206,17 @@ namespace HispaniaCommon.ViewClientWPF.Windows
             set
             {
                 ProviderDataControl.Agents = value;
+            }
+        }
+
+        /// <summary>
+        /// Get or Set the IVATypes
+        /// </summary>
+        public Dictionary<string, IVATypesView> IVATypes
+        {
+            set
+            {
+                ProviderDataControl.IVATypes = value;
             }
         }
 
@@ -347,8 +380,8 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                 chkbCanceled.Checked += ChkbCanceled_Checked;
                 chkbCanceled.Unchecked += ChkbCanceled_Unchecked;
             //  Define ListView events to manage.
-                ListItems.SelectionChanged += ListItems_SelectionChanged;   
-            //  Define CustomerDataControl events to manage.
+                ListItems.SelectionChanged += ListItems_SelectionChanged;
+            //  Define CustomerDataControl events to manage.            
                 ProviderDataControl.EvAccept += ProviderDataControl_evAccept;
                 ProviderDataControl.EvCancel += ProviderDataControl_evCancel;
         }
@@ -493,6 +526,7 @@ namespace HispaniaCommon.ViewClientWPF.Windows
         /// <param name="e">Parameters with the event was sended.</param>
         private void BtnAdd_Click(object sender, RoutedEventArgs e)
         {
+            InitializeProviderDataControlData();
             ProviderDataControl.CtrlOperation = Operation.Add;
             gbEditOrCreateItem.SetResourceReference(Control.StyleProperty, "EditableGroupBox");
             ShowItemPannel();
@@ -567,7 +601,7 @@ namespace HispaniaCommon.ViewClientWPF.Windows
         /// </summary>
         /// <param name="sender">Object that sends the event.</param>
         /// <param name="e">Parameters with the event was sended.</param>
-        private void ProviderDataControl_evAccept(ProvidersView NewOrEditedProvider)
+        private void ProviderDataControl_evAccept(ProvidersView NewOrEditedProvider, List<RelatedProvidersView> NewOrEditedRelatedProviders)
         {
             try
             {
@@ -588,7 +622,7 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                          break;
                     case Operation.Edit:
                          ValidateProvidersInList(NewProvider);
-                         GlobalViewModel.Instance.HispaniaViewModel.UpdateProvider(NewProvider);
+                         GlobalViewModel.Instance.HispaniaViewModel.UpdateProvider(NewProvider, NewOrEditedRelatedProviders);
                          if (!GlobalViewModel.Instance.HispaniaViewModel.UnlockRegister(ProviderDataControl.Provider, out string ErrMsg))
                          {
                              MsgManager.ShowMessage(ErrMsg);
@@ -727,6 +761,18 @@ namespace HispaniaCommon.ViewClientWPF.Windows
 
         #region Database Operations
 
+
+        private void InitializeProviderDataControlData()
+        {
+            //  Deactivate managers
+            DataChangedManagerActive = false;
+            //  Actualize Item Information From DataBase
+            ProviderDataControl.DataListDefinedProviders = DataList;
+            ProviderDataControl.DataListRelatedProviders = new ObservableCollection<ProvidersView>();
+            //  Activate managers
+            DataChangedManagerActive = true;
+        }
+
         private void ActualizeProvidersRefreshFromDb()
         {
             //  Deactivate managers
@@ -734,7 +780,10 @@ namespace HispaniaCommon.ViewClientWPF.Windows
             //  Actualize Item Information From DataBase
                 RefreshDataViewModel.Instance.RefreshData(WindowToRefresh.ProvidersWindow);
                 PostalCodes = GlobalViewModel.Instance.HispaniaViewModel.PostalCodesDict;
+                EffectTypes = GlobalViewModel.Instance.HispaniaViewModel.EffectTypesDict;
+                SendTypes = GlobalViewModel.Instance.HispaniaViewModel.SendTypesDict;
                 Agents = GlobalViewModel.Instance.HispaniaViewModel.AgentsDict;
+                IVATypes = GlobalViewModel.Instance.HispaniaViewModel.IVATypesDict;
                 DataList = GlobalViewModel.Instance.HispaniaViewModel.Providers;
             //  Deactivate managers
                 DataChangedManagerActive = true;
@@ -753,6 +802,18 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                 DataList.Insert(Index, ItemInDb);
                 ListItems.SelectedItem = ItemInDb;
                 ProviderDataControl.Provider = ItemInDb;
+
+                ProviderDataControl.DataListDefinedProviders = DataList;
+                GlobalViewModel.Instance.HispaniaViewModel.RefreshRelatedProviders(ItemInDb.Provider_Id);
+                ObservableCollection<ProvidersView> RelatedProviders = new ObservableCollection<ProvidersView>();
+                foreach (RelatedProvidersView relatedProvider in GlobalViewModel.Instance.HispaniaViewModel.RelatedProviders)
+                {
+                    ProvidersView provider = GlobalViewModel.Instance.HispaniaViewModel.GetProviderFromDb(relatedProvider.Provider_Canceled_Id);
+                    ProviderDataControl.DataListDefinedProviders.Remove(provider);
+                    RelatedProviders.Add(provider);
+                }
+                ProviderDataControl.DataListDefinedProviders = RelatedProviders;
+
                 ListItems.UpdateLayout();
             //  Deactivate managers
                 DataChangedManagerActive = true;

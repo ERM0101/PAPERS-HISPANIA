@@ -343,12 +343,29 @@ namespace HispaniaCommon.ViewClientWPF.Windows
             //  Apply the filter by selected field value
                 if (!String.IsNullOrEmpty(tbItemToSearch.Text))
                 {
-                    object valueToTest = ItemData.GetType().GetProperty(ProperyName).GetValue(ItemData);
-                    if ((valueToTest is null) || 
-                        (!(valueToTest.ToString().ToUpper()).Contains(tbItemToSearch.Text.ToUpper())))
+                    if (ProperyName == "Company_EMail")
                     {
-                        return false;
-                    }
+                        object valueToTest = ItemData.GetType().GetProperty(ProperyName).GetValue(ItemData);
+                        object valueToTest2 = ItemData.GetType().GetProperty("Company_EMail2").GetValue(ItemData);
+                        object valueToTest3 = ItemData.GetType().GetProperty("Company_EMail3").GetValue(ItemData);
+                        if (((valueToTest is null) ||
+                            (!(valueToTest.ToString().ToUpper()).Contains(tbItemToSearch.Text.ToUpper()))) &&
+                            ((valueToTest2 is null) ||
+                                (!(valueToTest2.ToString().ToUpper()).Contains(tbItemToSearch.Text.ToUpper()))) &&
+                            ((valueToTest3 is null) ||
+                                (!(valueToTest3.ToString().ToUpper()).Contains(tbItemToSearch.Text.ToUpper()))))
+                        {
+                            return false;
+                        }
+                    }else
+                    {
+                        object valueToTest = ItemData.GetType().GetProperty(ProperyName).GetValue(ItemData);
+                        if ((valueToTest is null) ||
+                            (!(valueToTest.ToString().ToUpper()).Contains(tbItemToSearch.Text.ToUpper())))
+                        {
+                            return false;
+                        }
+                    }                   
                 }
             //  Calculate the Visibility value with properties values.
                 return (chkbCanceled.IsChecked == ItemData.Canceled);

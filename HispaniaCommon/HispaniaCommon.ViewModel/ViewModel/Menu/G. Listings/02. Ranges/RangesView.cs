@@ -139,7 +139,7 @@ namespace HispaniaCommon.ViewModel
         /// <summary>
         /// Builder by default of the class.
         /// </summary>
-        internal RangesView(HispaniaCompData.Range range)
+        internal RangesView(HispaniaCompData.Ranges_Result range)
         {
             Good_Code = range.Good_Code;
             Good_Description = range.Good_Description;
@@ -213,9 +213,9 @@ namespace HispaniaCommon.ViewModel
         /// <summary>
         /// Builder by default of the class.
         /// </summary>
-        internal HispaniaCompData.Range GetRange()
+        internal HispaniaCompData.Ranges_Result GetRange()
         {
-            HispaniaCompData.Range range = new HispaniaCompData.Range()
+            HispaniaCompData.Ranges_Result range = new HispaniaCompData.Ranges_Result()
             {
                 Good_Code = Good_Code,
                 Good_Description = Good_Description,

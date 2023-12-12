@@ -81,6 +81,8 @@
     <ImageSource x:Key="CalendarStop">pack://application:,,,/HispaniaCommon.ViewClientWPF;component/recursos/Imagenes/CalendarStop.png</ImageSource>
     <ImageSource x:Key="CredentialWindowIcon">pack://application:,,,/HispaniaCommon.ViewClientWPF;component/recursos/Imagenes/CredentialWindowIcon.png</ImageSource>
     <ImageSource x:Key="Store">pack://application:,,,/HispaniaCommon.ViewClientWPF;component/recursos/Imagenes/Store.png</ImageSource>
+    <ImageSource x:Key="Up">pack://application:,,,/HispaniaCommon.ViewClientWPF;component/recursos/Imagenes/Up.png</ImageSource>
+    <ImageSource x:Key="Down">pack://application:,,,/HispaniaCommon.ViewClientWPF;component/recursos/Imagenes/Down.png</ImageSource>
     <system:String x:Key="ErrorMovementsOrdersSuppliersGestioComandesProveidors_01">Error, al validar les dades de la nova Línia de Comanda.\r\nDetalls: {0}</system:String>
     <system:String x:Key="ErrorGoods_01">Error, al validar les dades del nou Article.\r\nDetalls: {0}</system:String>
     <system:String x:Key="ErrorComissions_01">Error, al validar les dades de la nova Comissió.\r\nDetalls: {0}</system:String>

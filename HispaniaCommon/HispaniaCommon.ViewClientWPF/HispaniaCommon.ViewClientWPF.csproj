@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>HispaniaCommon.ViewClientWPF</RootNamespace>
     <AssemblyName>HispaniaCommon.ViewClientWPF</AssemblyName>
-    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
@@ -45,8 +45,15 @@
       <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime, Version=4.1.1.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Runtime.4.3.1\lib\net462\System.Runtime.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -63,6 +70,13 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Converters\BoolToHeightConverter.cs" />
+    <Compile Include="Converters\BoolToVisibilityConverter.cs" />
+    <Compile Include="Converters\ConvectorException.cs" />
+    <Compile Include="Converters\DateTimeToStringConverter.cs" />
+    <Compile Include="Converters\DecimalToStringConverter.cs" />
+    <Compile Include="Extensions\DataGridEX.cs" />
+    <Compile Include="Extensions\ICollectionViewEX.cs" />
     <Compile Include="Managers\Manager_IU.cs" />
     <Compile Include="Windows\Common\Class\FocusAdvancement.cs" />
     <Compile Include="Windows\Common\Windows\DataSelector.xaml.cs">
@@ -135,6 +149,21 @@
     </Compile>
     <Compile Include="Windows\Menu\A Tables\08 Customers\08.2 Histo Cumulative Customers\HistoCumulativeCustomers.xaml.cs">
       <DependentUpon>HistoCumulativeCustomers.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\Menu\A Tables\09 Providers\09.2 Histo Cumulative Providers\HistoCumulativeProviders.xaml.cs">
+      <DependentUpon>HistoCumulativeProviders.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\Menu\A Tables\09 Providers\09.4 Histo Providers\HistoProviders.xaml.cs">
+      <DependentUpon>HistoProviders.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\Menu\C. Orders\03 Provider Orders\03.1 Provider Order Movements\ProviderOrderMovementsData.xaml.cs">
+      <DependentUpon>ProviderOrderMovementsData.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\Menu\C. Orders\03 Provider Orders\ProviderOrders.xaml.cs">
+      <DependentUpon>ProviderOrders.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\Menu\C. Orders\03 Provider Orders\ProviderOrdersData.xaml.cs">
+      <DependentUpon>ProviderOrdersData.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\Menu\D. Bills\04. BadDebts\BadDebts.xaml.cs">
       <DependentUpon>BadDebts.xaml</DependentUpon>
@@ -268,6 +297,12 @@
     <Compile Include="Windows\Menu\H. Closing\04. RemoveWarehouseMovements\RemoveWarehouseMovements.xaml.cs">
       <DependentUpon>RemoveWarehouseMovements.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\Menu\I. Queries\PaymentForecast.xaml.cs">
+      <DependentUpon>PaymentForecast.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\Menu\I. Queries\QueryOrdersProvider.xaml.cs">
+      <DependentUpon>QueryOrdersProvider.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\Menu\I. Queries\_Common\Queries.xaml.cs">
       <DependentUpon>Queries.xaml</DependentUpon>
     </Compile>
@@ -276,6 +311,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -386,6 +422,26 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Windows\Menu\A Tables\08 Customers\08.2 Histo Cumulative Customers\HistoCumulativeCustomers.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\Menu\A Tables\09 Providers\09.2 Histo Cumulative Providers\HistoCumulativeProviders.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\Menu\A Tables\09 Providers\09.4 Histo Providers\HistoProviders.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\Menu\C. Orders\03 Provider Orders\03.1 Provider Order Movements\ProviderOrderMovementsData.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\Menu\C. Orders\03 Provider Orders\ProviderOrders.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\Menu\C. Orders\03 Provider Orders\ProviderOrdersData.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -564,6 +620,14 @@
     <Page Include="Windows\Menu\H. Closing\04. RemoveWarehouseMovements\RemoveWarehouseMovements.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\Menu\I. Queries\PaymentForecast.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\Menu\I. Queries\QueryOrdersProvider.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\Menu\I. Queries\_Common\Queries.xaml">
       <SubType>Designer</SubType>
@@ -747,6 +811,12 @@
   <ItemGroup>
     <Resource Include="Recursos\Imagenes\Select.png" />
     <Resource Include="Recursos\Imagenes\Unselect.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Recursos\Imagenes\Down.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Recursos\Imagenes\Up.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

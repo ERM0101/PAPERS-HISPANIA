@@ -1110,7 +1110,7 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                         DataList = GlobalViewModel.Instance.HispaniaViewModel.GetHistoGoods(EditedGood.Good_Id)
                     };
                     HistoGoodsWindow.Closed += HistoGoodsWindow_Closed;
-                    HistoGoodsWindow.ShowDialog();
+                    HistoGoodsWindow.Show();
 
                 }
                 catch (Exception ex)

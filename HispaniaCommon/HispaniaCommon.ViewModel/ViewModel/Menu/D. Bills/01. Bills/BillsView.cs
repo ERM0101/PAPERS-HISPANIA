@@ -1,5 +1,6 @@
 ﻿#region Librerias usadas por la clase
 
+using HispaniaComptabilitat.Data;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -136,6 +137,52 @@ namespace HispaniaCommon.ViewModel
         public string Company_Cif { get; set; }
         public string Company_Address { get; set; }
         public string Company_NumProv { get; set; }
+
+        #endregion
+
+        #region Provider 
+        public string Provider_Alias { get; set; }
+        public string Provider_Company_Name { get; set; }
+        public string Provider_Company_Cif { get; set; }
+        public string Provider_Company_Address { get; set; }
+        public string Provider_Company_NumProv { get; set; }
+        public int Provider_Id { get; set; }
+
+        private ProvidersView _Provider;
+
+        public ProvidersView Provider
+        {
+            get
+            {
+                if ((_Provider == null) && (Provider_Id != GlobalViewModel.IntIdInitValue))
+                {
+                    _Provider = new ProvidersView(GlobalViewModel.Instance.HispaniaViewModel.GetProvider((int)Provider_Id));
+                }
+                return (_Provider);
+            }
+            set
+            {
+                if (value != null)
+                {
+                    _Provider = new ProvidersView(value);
+                    if (_Provider == null) Provider_Id = GlobalViewModel.IntIdInitValue;
+                    else Provider_Id = _Provider.Provider_Id;
+                }
+                else
+                {
+                    _Provider = null;
+                    Provider_Id = GlobalViewModel.IntIdInitValue;
+                }
+            }
+        }
+
+        public string Provider_Id_Str
+        {
+            get
+            {
+                return GlobalViewModel.GetStringFromIntIdValue(Provider_Id);
+            }
+        }
 
         #endregion
 
@@ -436,6 +483,24 @@ namespace HispaniaCommon.ViewModel
 
         #endregion
 
+        #region ProviderOrders
+
+        private ObservableCollection<ProviderOrdersView> _ProviderOrders;
+
+        public ObservableCollection<ProviderOrdersView> ProviderOrders
+        {
+            get
+            {
+                if (_ProviderOrders == null)
+                {
+                    _ProviderOrders = GlobalViewModel.Instance.HispaniaViewModel.GetProviderOrdersFromBill(Bill_Id, Year);
+                }
+                return (_ProviderOrders);
+            }
+        }
+
+        #endregion
+
         #endregion
 
         #region Information
@@ -630,7 +695,7 @@ namespace HispaniaCommon.ViewModel
         /// <summary>
         /// Builder by default of the class.
         /// </summary>
-        public BillsView(CustomersView customer)
+        public BillsView(CustomersView customer, CustomerOrdersView customerOrder )
         {
             Bill_Id = -1;         //  Aquest camp tindrà valor al crear l'Item a la Base de Dades
             Date = DateTime.Now;  //  Aquest camp tindrà valor al crear l'Item a la Base de Dades
@@ -642,19 +707,22 @@ namespace HispaniaCommon.ViewModel
             Company_Cif = customer.Company_Cif;
             Company_Address = customer.Company_Address;
             Company_NumProv = customer.Company_NumProv;
-            DataBank_Bank = customer.DataBank_Bank;
-            DataBank_BankAddress = customer.DataBank_BankAddress;
-            DataBank_NumEffect = customer.DataBank_NumEffect;
-            DataBank_FirstExpirationData = customer.DataBank_FirstExpirationData;
-            DataBank_ExpirationInterval = customer.DataBank_ExpirationInterval;
-            DataBank_Payday_1 = customer.DataBank_Payday_1;
-            DataBank_Payday_2 = customer.DataBank_Payday_2;
-            DataBank_Payday_3 = customer.DataBank_Payday_3;
-            DataBank_IBAN_CountryCode = customer.DataBank_IBAN_CountryCode;
-            DataBank_IBAN_BankCode = customer.DataBank_IBAN_BankCode;
-            DataBank_IBAN_OfficeCode = customer.DataBank_IBAN_OfficeCode;
-            DataBank_IBAN_CheckDigits = customer.DataBank_IBAN_CheckDigits;
-            DataBank_IBAN_AccountNumber = customer.DataBank_IBAN_AccountNumber;
+            //TODO: from Albaran
+            _DataBank_EffectType_Id = customerOrder.EffectType.EffectType_Id;
+            DataBank_Bank = customerOrder.DataBank_Bank;
+            DataBank_BankAddress = customerOrder.DataBank_BankAddress;
+            DataBank_NumEffect = customerOrder.DataBank_NumEffect;
+            DataBank_FirstExpirationData = customerOrder.DataBank_ExpirationDays;
+            DataBank_ExpirationInterval = customerOrder.DataBank_ExpirationInterval;
+            DataBank_Payday_1 = customerOrder.DataBank_Payday_1;
+            DataBank_Payday_2 = customerOrder.DataBank_Payday_2;
+            DataBank_Payday_3 = customerOrder.DataBank_Payday_3;
+            DataBank_IBAN_CountryCode = customerOrder.DataBank_IBAN_CountryCode;
+            DataBank_IBAN_BankCode = customerOrder.DataBank_IBAN_BankCode;
+            DataBank_IBAN_OfficeCode = customerOrder.DataBank_IBAN_OfficeCode;
+            DataBank_IBAN_CheckDigits = customerOrder.DataBank_IBAN_CheckDigits;
+            DataBank_IBAN_AccountNumber = customerOrder.DataBank_IBAN_AccountNumber;
+            //------------
             BillingData_EarlyPaymentDiscount = customer.BillingData_EarlyPaymentDiscount;
             BillingData_NumUnpaid = customer.BillingData_NumUnpaid;
             Customer_Remarks = customer.Several_Remarks;
@@ -665,12 +733,55 @@ namespace HispaniaCommon.ViewModel
             ExpirationDate = string.Empty;
             TotalAmount = GlobalViewModel.DecimalInitValue;
             Company_PostalCode = customer.Company_PostalCode;
-            DataBank_EffectType = customer.DataBank_EffectType;
+            DataBank_EffectType = customerOrder.EffectType;
             IVAPercent = customer.BillingData_IVAType.IVAPercent;
             SurchargePercent = customer.BillingData_IVAType.SurchargePercent;
             BillingData_Agent = customer.BillingData_Agent;
         }
 
+        /// <summary>
+        /// Builder by default of the class.
+        /// </summary>
+        public BillsView(ProvidersView provider)
+        {
+            Bill_Id = -1;         //  Aquest camp tindrà valor al crear l'Item a la Base de Dades
+            Date = DateTime.Now;  //  Aquest camp tindrà valor al crear l'Item a la Base de Dades
+            Year = Date.Year;     //  Aquest camp tindrà valor al crear l'Item a la Base de Dades
+            _BillingSerie_Id = 1; //  Aquest camp tindrà valor al crear l'Item a la Base de Dades Sèrie de Facturació A (Factures normals (valor > 0)).
+            Provider_Id = provider.Provider_Id;
+            Provider_Alias = provider.Alias;
+            Company_Name = provider.Name;
+            Company_Cif = provider.NIF;
+            Company_Address = provider.Address;
+            Company_NumProv = provider.Provider_Id.ToString();
+            DataBank_Bank = provider.DataBank_Bank;
+            DataBank_BankAddress = provider.DataBank_BankAddress;
+            DataBank_NumEffect = provider.DataBank_NumEffect;
+            DataBank_FirstExpirationData = provider.DataBank_FirstExpirationData;
+            DataBank_ExpirationInterval = provider.DataBank_ExpirationInterval;
+            DataBank_Payday_1 = provider.DataBank_Payday_1;
+            DataBank_Payday_2 = provider.DataBank_Payday_2;
+            DataBank_Payday_3 = provider.DataBank_Payday_3;
+            DataBank_IBAN_CountryCode = provider.DataBank_IBAN_CountryCode;
+            DataBank_IBAN_BankCode = provider.DataBank_IBAN_BankCode;
+            DataBank_IBAN_OfficeCode = provider.DataBank_IBAN_OfficeCode;
+            DataBank_IBAN_CheckDigits = provider.DataBank_IBAN_CheckDigits;
+            DataBank_IBAN_AccountNumber = provider.DataBank_IBAN_AccountNumber;
+            BillingData_EarlyPaymentDiscount = provider.BillingData_EarlyPaymentDiscount;
+            BillingData_NumUnpaid = provider.BillingData_NumUnpaid;
+            Customer_Remarks = provider.Several_Remarks;
+            Remarks = string.Empty;
+            Print = false;
+            SendByEMail = false;
+            FileNamePDF = string.Empty;
+            ExpirationDate = string.Empty;
+            TotalAmount = GlobalViewModel.DecimalInitValue;
+            Company_PostalCode = provider.Company_PostalCode;
+            DataBank_EffectType = provider.DataBank_EffectType;
+            IVAPercent = provider.BillingData_IVAType.IVAPercent;
+            SurchargePercent = provider.BillingData_IVAType.SurchargePercent;
+            BillingData_Agent = provider.BillingData_Agent;
+        }
         #endregion
 
         #region GetBill
@@ -715,7 +826,7 @@ namespace HispaniaCommon.ViewModel
                 ExpirationDate = ExpirationDate,
                 TotalAmount = TotalAmount,
                 Company_PostalCode_Id = _Company_PostalCode_Id,
-                DataBank_EffectType_Id = _DataBank_EffectType_Id,
+                DataBank_EffectType_Id = DataBank_EffectType.EffectType_Id,
                 IVAPercent = IVAPercent,
                 SurchargePercent = SurchargePercent,
                 BillingData_Agent_Id = _BillingData_Agent_Id

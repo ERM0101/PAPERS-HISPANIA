@@ -45,7 +45,7 @@
                     </Button>
                 </Grid>
             </GroupBox.Header>
-            <Grid>
+            <Grid Name="mainGrid">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="450"/>
                     <ColumnDefinition Width="*"/>
@@ -73,10 +73,11 @@
                     <DatePicker Grid.Row="1" Grid.Column="2" Name="dtpEndData" SelectedDateFormat="Long" BorderBrush="#FF9B211D" 
                                 HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="0,6,0,0"/>
                 </Grid>
-                <Grid Grid.Column="1">
+                <Grid Grid.Column="1" Name="filterGrid">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="120"/>
-                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*" Name="RepresentantsFilter"/>
+                        <ColumnDefinition Width="*" Name="ProvedorArticleFilter"/>
                     </Grid.ColumnDefinitions>
                     <Grid Grid.Column="0">
                         <Grid.RowDefinitions>
@@ -184,6 +185,29 @@
                             </GridView>
                         </ListView.View>
                     </ListView>
+                    <Grid Grid.Column="2">
+                        <Grid Name="spArticukoProviderFilter">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                            </Grid.RowDefinitions>
+
+                            <Label Grid.Row="0" Grid.Column="0" Name="lblProvedorFilter" Content="Proveedor :" Margin="10,10,10,10" FontWeight="Bold" 
+                                      HorizontalAlignment="Right" VerticalAlignment= "Center"/>
+
+                            <ComboBox Grid.Row="0" Grid.Column="1" Name="cbProveforFilter" Margin="10,10,10,10"
+                                      HorizontalAlignment="Stretch" VerticalAlignment= "Center"/>
+
+                            <Label Grid.Row="1" Grid.Column="0" Name="lblArticleFilter" Content="Article :" Margin="10,10,10,10" FontWeight="Bold" 
+                                       HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                            <ComboBox Grid.Row="1" Grid.Column="1" Name="cbArticleFilter" Margin="10,10,10,10" VerticalAlignment= "Top" />
+
+                        </Grid>
+                    </Grid>
                 </Grid>
             </Grid>
         </GroupBox>

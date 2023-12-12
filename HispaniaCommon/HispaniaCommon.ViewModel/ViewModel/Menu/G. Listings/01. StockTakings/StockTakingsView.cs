@@ -122,7 +122,7 @@ namespace HispaniaCommon.ViewModel
         /// <summary>
         /// Builder by default of the class.
         /// </summary>
-        internal StockTakingsView(HispaniaCompData.StockTaking stockTaking)
+        internal StockTakingsView(HispaniaCompData.StockTaking_Result stockTaking )
         {
             GoodCode = stockTaking.Good_Code;
             Price_Cost = GlobalViewModel.GetDecimalValue(stockTaking.Price_Cost);
@@ -170,9 +170,9 @@ namespace HispaniaCommon.ViewModel
         /// <summary>
         /// Builder by default of the class.
         /// </summary>
-        internal HispaniaCompData.StockTaking GetStockTaking()
+        internal HispaniaCompData.StockTaking_Result GetStockTaking()
         {
-            HispaniaCompData.StockTaking StockTaking = new HispaniaCompData.StockTaking()
+            HispaniaCompData.StockTaking_Result StockTaking = new HispaniaCompData.StockTaking_Result()
             {
                 Good_Code = GoodCode,
                 Price_Cost = Price_Cost,

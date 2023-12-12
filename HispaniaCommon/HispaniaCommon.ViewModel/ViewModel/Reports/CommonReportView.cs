@@ -12,8 +12,10 @@ namespace HispaniaCommon.ViewModel
 {
     public enum CustomerInfoType
     {
-        CustomerOrder,
+        CustomerOrderProforma,
+        CustomerOrderComanda,
         DeliveryNote,
+        
     }
 
     public class CommonReportView
@@ -167,7 +169,7 @@ namespace HispaniaCommon.ViewModel
         #region Customer Info
 
         public static void InsertCustomerInfo(Document doc, CustomersView Customer, bool IsBill = false, 
-                                              CustomerInfoType Type = CustomerInfoType.CustomerOrder)
+                                              CustomerInfoType Type = CustomerInfoType.CustomerOrderProforma)
         {
             List<PdfPCell> CellsDeliveryNote;
             List<Tuple<string, int, PDF_Align>> Columns = null;
@@ -192,7 +194,7 @@ namespace HispaniaCommon.ViewModel
                     }
                 };
             }
-            string AdditionalText = IsBill ? "FACTURA" : Type == CustomerInfoType.CustomerOrder ? "PRO FORMA" : "ALBARÀ";
+            string AdditionalText = IsBill ? "FACTURA" : (Type == CustomerInfoType.CustomerOrderProforma ? "PRO FORMA" : (Type == CustomerInfoType.CustomerOrderComanda ? "COMANDA" : "ALBARÀ"));
             CellsDeliveryNote = NumProvExist ? new List<PdfPCell>(8)
                                                {
                                                     ReportView.CreateEmptyRow(4),
@@ -232,6 +234,93 @@ namespace HispaniaCommon.ViewModel
                 ReportView.CreateRow(Customer.Company_PostalCode_Str, 9, ForeFontCustomerInfo, BackColorCustomerInfo, BackColorCustomerInfo, PDF_Align.Left),
                 ReportView.CreateEmptyRow(BackColorCustomerInfo, BackColorCustomerInfo, 1),
                 ReportView.CreateRow(TimeTable, 9, ForeFontCustomerInfo, BackColorCustomerInfo, BackColorCustomerInfo, PDF_Align.Left), 
+            };
+            List<PdfPCell> Cells = new List<PdfPCell>(3)
+            {
+                ReportView.CreateEmptyRow(1),
+                ReportView.CreateNestedTable(CellsCustomerInfo, BackColorCustomerInfo, BackColorCustomerInfo, 8, 10),
+                ReportView.CreateEmptyRow(1),
+            };
+            List<PdfPCell> CellsCustInfo = new List<PdfPCell>(4)
+            {
+                ReportView.CreateNestedTable(CellsDeliveryNote, BaseColor.WHITE, BaseColor.WHITE, 3, 6),
+                ReportView.CreateEmptyRow(1),
+                ReportView.CreateNestedTable(ReportView.CreateTable(Cells, 10), 6),
+            };
+            doc.Add(ReportView.CreateTable(CellsCustInfo, 10));
+            doc.Add(new Paragraph(Environment.NewLine));
+        }
+
+        #endregion
+
+        #region Provider Info
+
+        public static void InsertProviderInfo(Document doc, ProvidersView Provider, bool IsBill = false,
+                                              CustomerInfoType Type = CustomerInfoType.CustomerOrderProforma)
+        {
+            List<PdfPCell> CellsDeliveryNote;
+            List<Tuple<string, int, PDF_Align>> Columns = null;
+            List<List<Tuple<string, PDF_Align>>> Items = null;
+            bool NumProvExist = !String.IsNullOrEmpty(Provider.Provider_Id.ToString());
+            if (NumProvExist)
+            {
+                string NumProvInfo =
+                          string.Format("{0}{1}",
+                                        Provider.Provider_Id.ToString(),
+                                        Provider.Provider_Id == 233 || Provider.Provider_Id == 3893 ? " (ESB08949950)"
+                                                                                                    : string.Empty);
+                Columns = new List<Tuple<string, int, PDF_Align>>(1)
+                {
+                    { new Tuple<string, int, PDF_Align>("NÚMERO PROVEÏDOR", 14, PDF_Align.Center) }
+                };
+                Items = new List<List<Tuple<string, PDF_Align>>>(1)
+                {
+                    new List<Tuple<string, PDF_Align>>(1)
+                    {
+                        new Tuple<string, PDF_Align>(NumProvInfo, PDF_Align.Center),
+                    }
+                };
+            }
+            string AdditionalText = IsBill ? "FACTURA" : (Type == CustomerInfoType.CustomerOrderProforma ? "PRO FORMA" : (Type == CustomerInfoType.CustomerOrderComanda ? "COMANDA" : "ALBARÀ"));
+            CellsDeliveryNote = NumProvExist ? new List<PdfPCell>(8)
+                                               {
+                                                    ReportView.CreateEmptyRow(4),
+                                                    ReportView.CreateEmptyRow(4),
+                                                    ReportView.CreateRow(AdditionalText, 14, ForeFontDeliveryNote),
+                                                    ReportView.CreateEmptyRow(3),
+                                                    ReportView.CreateEmptyRow(4),
+                                                    ReportView.CreateNestedTable(ReportView.CreateTable(Columns, Items, ForeFontTable), 14),
+                                                    ReportView.CreateEmptyRow(4),
+                                                    ReportView.CreateEmptyRow(4),
+                                               } :
+                                               new List<PdfPCell>(8)
+                                               {
+                                                    ReportView.CreateEmptyRow(6),
+                                                    ReportView.CreateEmptyRow(6),
+                                                    ReportView.CreateEmptyRow(6),
+                                                    ReportView.CreateEmptyRow(2),
+                                                    ReportView.CreateRow(AdditionalText, 5, ForeFontCustomerOrder),
+                                                    ReportView.CreateEmptyRow(1),
+                                                    ReportView.CreateEmptyRow(6),
+                                                    ReportView.CreateEmptyRow(6),
+                                               };
+            //string TimeTable = IsBill ? string.Empty : Provider.Company_TimeTable;
+            List<PdfPCell> CellsCustomerInfo = new List<PdfPCell>()
+            {
+                ReportView.CreateEmptyRow(BackColorCustomerInfo, BackColorCustomerInfo, 1),
+                ReportView.CreateRow(Provider.Provider_Id.ToString(), 2, ForeFontCustomerInfo, BackColorCustomerInfo, BackColorCustomerInfo, PDF_Align.Left),
+                ReportView.CreateRow("D.N.I./C.I.F.: ", 3, ForeFontCustomerInfo, BackColorCustomerInfo, BackColorCustomerInfo),
+                ReportView.CreateRow(Provider.NIF, 4, ForeFontCustomerInfo, BackColorCustomerInfo, BackColorCustomerInfo, PDF_Align.Left),
+                ReportView.CreateEmptyRow(BackColorCustomerInfo, BackColorCustomerInfo, 1),
+                ReportView.CreateRow(Provider.Name, 9, ForeFontCustomerInfo, BackColorCustomerInfo, BackColorCustomerInfo, PDF_Align.Left),
+                ReportView.CreateEmptyRow(BackColorCustomerInfo, BackColorCustomerInfo, 1),
+                ReportView.CreateRow(Provider.Address, 9, ForeFontCustomerInfo, BackColorCustomerInfo, BackColorCustomerInfo, PDF_Align.Left),
+                ReportView.CreateEmptyRow(BackColorCustomerInfo, BackColorCustomerInfo, 1),
+                ReportView.CreateRow(Provider.Company_City_Str, 9, ForeFontCustomerInfo, BackColorCustomerInfo, BackColorCustomerInfo, PDF_Align.Left),
+                ReportView.CreateEmptyRow(BackColorCustomerInfo, BackColorCustomerInfo, 1),
+                ReportView.CreateRow(Provider.Company_PostalCode_Str, 9, ForeFontCustomerInfo, BackColorCustomerInfo, BackColorCustomerInfo, PDF_Align.Left),
+                ReportView.CreateEmptyRow(BackColorCustomerInfo, BackColorCustomerInfo, 1),
+                //ReportView.CreateRow(TimeTable, 9, ForeFontCustomerInfo, BackColorCustomerInfo, BackColorCustomerInfo, PDF_Align.Left),
             };
             List<PdfPCell> Cells = new List<PdfPCell>(3)
             {

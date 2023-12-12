@@ -1,12 +1,18 @@
 ﻿#region Libraries used for this control
 
+using HispaniaCommon.ViewClientWPF.Windows;
 using HispaniaCommon.ViewModel;
 using MBCode.Framework.Managers.Messages;
 using MBCode.Framework.Managers.Theme;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Input;
 using System.Windows.Media;
 
 #endregion
@@ -31,9 +37,24 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
         private ThemeInfo HispaniaSupportApp = new ThemeInfo("HispaniaCommon.ViewClientWPF", "component/Recursos/Themes/", "HispaniaHelp");
 
         /// <summary>
+        /// Show the button bar.
+        /// </summary>
+        private GridLength ViewHistoricButton = new GridLength(160.0);
+
+        /// <summary>
+        /// Hide the button bar.
+        /// </summary>
+        private GridLength HideHistoricButton = new GridLength(0.0);
+
+        /// <summary>
         /// Show the Accept button.
         /// </summary>
-        private GridLength ViewButton = new GridLength(120.0);
+        private GridLength ViewAcceptButton = new GridLength(120.0);
+
+        /// <summary>
+        /// Show the middle column.
+        /// </summary>
+        private GridLength ViewMiddleColumn = new GridLength(1.0, GridUnitType.Star);
 
         /// <summary>
         /// Show the Comissions Button.
@@ -43,7 +64,18 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
         /// <summary>
         /// Hide the button bar.
         /// </summary>
-        private GridLength HideButton = new GridLength(0.0);
+        private GridLength HideAcceptButton = new GridLength(0.0);
+
+        /// <summary>
+        /// Hide the button bar.
+        /// </summary>
+        private GridLength HideComponent = new GridLength(0.0);
+
+        /// <summary>
+        /// Store normal color.
+        /// </summary>
+        private Brush brNormalDatePickerForeColor = new SolidColorBrush(Color.FromArgb(255, 5, 86, 158));
+
 
         /// <summary>
         /// Store normal color.
@@ -69,7 +101,8 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
         /// Provider is correct.
         /// </summary>
         /// <param name="NewOrEditedProvider">New or Edited Provider.</param>
-        public delegate void dlgAccept(ProvidersView NewOrEditedProvider);
+        ///  /// <param name="RelatedProviders">Related Providers from the Provider.</param>
+        public delegate void dlgAccept(ProvidersView NewOrEditedProvider, List<RelatedProvidersView> RelatedProviders);
 
         /// <summary>
         /// Delegate that defines the firm of event produced when the Button Cancel is pressed.
@@ -105,9 +138,24 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
         public Dictionary<string, PostalCodesView> m_PostalCodes;
 
         /// <summary>
+        /// Store the EffectTypes
+        /// </summary>
+        public Dictionary<string, EffectTypesView> m_EffectTypes;
+
+        /// <summary>
+        /// Store the SendTypes
+        /// </summary>
+        public Dictionary<string, SendTypesView> m_SendTypes;
+
+        /// <summary>
         /// Store the Agents
         /// </summary>
         public Dictionary<string, AgentsView> m_Agents;
+
+        /// <summary>
+        /// Store the SendByTypes
+        /// </summary>
+        public Dictionary<string, IVATypesView> m_IVATypes;
 
         /// <summary>
         /// Store the type of Application with the user want open.
@@ -118,11 +166,21 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
         /// Store the Operation of the UserControl.
         /// </summary>
         private Operation m_CtrlOperation = Operation.Show;
-        
+
         /// <summary>
-        /// Stotre if the data of the Customer has changed.
+        /// Stotre if the data of the Provider has changed.
         /// </summary>
         private bool m_AreDataChanged;
+
+        /// <summary>
+        /// Store the data to show in List of Items.
+        /// </summary>
+        private ObservableCollection<ProvidersView> m_DataListDefinedProviders = new ObservableCollection<ProvidersView>();
+
+        /// <summary>
+        /// Store the data to show in List of Items.
+        /// </summary>
+        private ObservableCollection<ProvidersView> m_DataListRelatedProviders = new ObservableCollection<ProvidersView>();
 
         /// <summary>
         /// Store the list of Editable Controls.
@@ -133,6 +191,46 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
         /// Store the list of Non Editable Controls.
         /// </summary>
         private List<Control> NonEditableControls = null;
+
+        /// <summary>
+        /// Store the list of Editable Controls.
+        /// </summary>
+        private List<Control> OnlyQueryControls = null;
+
+        /// <summary>
+        /// Context Menu to calculate and validate the IBAN.
+        /// </summary>
+        private ContextMenu ctxmnuIBAN_Initial;
+
+        /// <summary>
+        /// Store the Provider Orders Window Type Active.
+        /// </summary>
+        private ProviderOrders ProviderOrdersWindow = null;
+
+        /// <summary>
+        /// Store the Provider Orders Window Type Active.
+        /// </summary>
+        private ProviderOrders ProviderOrders2Window = null;
+
+        /// <summary>
+        /// Window instance of HistoCumulativeProviders.
+        /// </summary>
+        private HistoCumulativeProviders HistoCumulativeProvidersWindow = null;
+
+        /// <summary>
+        /// Window instance of BadDebt.
+        /// </summary>
+        private BadDebts BadDebtsWindow = null;
+
+        /// <summary>
+        /// Window instance of HistoProviders.
+        /// </summary>
+        private HistoProviders HistoProvidersWindow = null;
+
+        /// <summary>
+        /// Store the Agents Window Type Active.
+        /// </summary>
+        private Agents AgentsWindow = null;
 
         #region GUI
 
@@ -186,9 +284,59 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
         }
 
         /// <summary>
+        /// Get or Set the data to show in List of Items.
+        /// </summary>
+        public ObservableCollection<ProvidersView> DataListDefinedProviders
+        {
+            get
+            {
+                return (m_DataListDefinedProviders);
+            }
+            set
+            {
+                if (value != null) m_DataListDefinedProviders = new ObservableCollection<ProvidersView>(value);
+                else m_DataListDefinedProviders = new ObservableCollection<ProvidersView>();
+// TODO: leo
+//                 ListItemsDefinedProviders.ItemsSource = m_DataListDefinedProviders;
+//                 ListItemsDefinedProviders.DataContext = this;
+//                 CollectionViewSource.GetDefaultView(ListItemsDefinedProviders.ItemsSource).SortDescriptions.Add(new SortDescription("Provider_Id", ListSortDirection.Descending));
+//                 CollectionViewSource.GetDefaultView(ListItemsDefinedProviders.ItemsSource).Filter = UserFilterDefinedProviders;
+                UpdateRelatedProvidersControls();
+            }
+        }
+
+        /// <summary>
+        /// Get or Set the data to show in List of Items.
+        /// </summary>
+        public ObservableCollection<ProvidersView> DataListRelatedProviders
+        {
+            get
+            {
+                return (m_DataListRelatedProviders);
+            }
+            set
+            {
+                if (value != null) m_DataListRelatedProviders = new ObservableCollection<ProvidersView>(value);
+                else m_DataListRelatedProviders = new ObservableCollection<ProvidersView>();
+                SourceDataListRelatedProviders = new ObservableCollection<ProvidersView>(m_DataListRelatedProviders);
+
+                UpdateRelatedProvidersControls();
+            }
+        }
+
+        /// <summary>
         /// Get or Set the Edited Provider information.
         /// </summary>
         private ProvidersView EditedProvider
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Get or Set the data to show in List of Items.
+        /// </summary>
+        private ObservableCollection<ProvidersView> SourceDataListRelatedProviders
         {
             get;
             set;
@@ -210,37 +358,76 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                 {
                     case Operation.Show :
                          if (Provider == null) throw new InvalidOperationException("Error, impossible visualitzar un Proveïdor sense dades.");
-                         cbMiddlePanel.Width = HideButton;
+                        cbMiddleColumn_1.Width = HideAcceptButton;
+                         tiConsullation.Visibility = Visibility.Visible;
+                         cbHistoricButton.Width = ViewHistoricButton;
+                         tbDataBankIBANCountryCode.ContextMenu = null;
                          tbCancel.Text = "Tornar";
                          break;
                     case Operation.Add:
-                         Provider = new ProvidersView();
-                         if (Provider == null) throw new InvalidOperationException("Error, impossible realitzar l'alta d'un Proveïdor sense Identificador.");
-                         cbMiddlePanel.Width = ViewButton;
+                        ProvidersView NewProvider = new ProvidersView();
+                        //if (Provider == null) throw new InvalidOperationException("Error, impossible realitzar l'alta d'un Proveïdor sense Identificador.");
+                        cbMiddleColumn_1.Width = ViewAcceptButton;
+                         NewProvider.Provider_Id = GlobalViewModel.Instance.HispaniaViewModel.GetNextIdentityValueTable(NewProvider);
+                         Provider = NewProvider;
+                         tiConsullation.Visibility = Visibility.Hidden;
+                         cbHistoricButton.Width = HideHistoricButton;
+                         tbDataBankIBANCountryCode.ContextMenu = ctxmnuIBAN_Initial;
                          tbCancel.Text = "Cancel·lar";
                          break;
                     case Operation.Edit:
                          if (Provider == null) throw new InvalidOperationException("Error, impossible editar un Representant sense dades.");
-                         cbMiddlePanel.Width = ViewButton;
+                         tiConsullation.Visibility = Visibility.Visible;
+                         cbHistoricButton.Width = ViewHistoricButton;
+                         tbDataBankIBANCountryCode.ContextMenu = ctxmnuIBAN_Initial;
+                         cbMiddleColumn_1.Width = ViewAcceptButton;
                          tbCancel.Text = "Cancel·lar";
                          break;
                 }
+                string properyValue;
                 foreach (Control control in EditableControls)
                 {
                     if (control is TextBox) ((TextBox)control).IsReadOnly = (m_CtrlOperation == Operation.Show);
                     else if (control is RichTextBox) ((RichTextBox)control).IsReadOnly = (m_CtrlOperation == Operation.Show);
+                    //else if (control is GroupBox)
+                    //{
+                    //    ((GroupBox)control).SetResourceReference(Control.StyleProperty,
+                    //                                             ((m_CtrlOperation == Operation.Show) ? "NonEditableGroupBox" : "EditableGroupBox"));
+                    //}
                     else if (control is GroupBox)
                     {
-                        ((GroupBox)control).SetResourceReference(Control.StyleProperty,
-                                                                 ((m_CtrlOperation == Operation.Show) ? "NonEditableGroupBox" : "EditableGroupBox"));
+                        properyValue = ((m_CtrlOperation == Operation.Show) ? "NonEditableGroupBox" : "EditableGroupBox");
+                        ((GroupBox)control).SetResourceReference(Control.StyleProperty, properyValue);
+                    }
+                    else if (control is TabItem)
+                    {
+                        properyValue = ((m_CtrlOperation == Operation.Show) ? "NonEditableTabItem" : "EditableTabItem");
+                        ((TabItem)control).SetResourceReference(Control.StyleProperty, properyValue);
+                    }
+                    else if (control is DatePicker)
+                    {
+                        control.BorderBrush = ((m_CtrlOperation == Operation.Show) ? BrAppColor : brNormalDatePickerForeColor);
+                        control.IsEnabled = (m_CtrlOperation != Operation.Show);
                     }
                     else control.IsEnabled = (m_CtrlOperation != Operation.Show);
                 }
+                foreach (Control control in OnlyQueryControls)
+                {
+                    if (control is Button) control.IsEnabled = (m_CtrlOperation == Operation.Show);
+                    else if (control is GroupBox)
+                    {
+                        properyValue = ((m_CtrlOperation == Operation.Show) ? "EditableGroupBox" : "NonEditableGroupBox");
+                        ((GroupBox)control).SetResourceReference(Control.StyleProperty, properyValue);
+                    }
+                }
+                cbLblGuarantedRisk.Width = cbGuarantedRisk.Width = HideComponent;
+                cbLblCurrentRisk.Width = cbCurrentRisk.Width = HideComponent;
+                tiGeneral.IsSelected = true;
             }
         }
 
         /// <summary>
-        /// Get or Set if the data of the Customer has changed.
+        /// Get or Set if the data of the Provider has changed.
         /// </summary>
         private bool AreDataChanged
         {
@@ -251,14 +438,24 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
             set
             {
                 m_AreDataChanged = value;
-                if (m_AreDataChanged) cbAcceptButton.Width = ViewButton;
-                else cbAcceptButton.Width = HideButton;
+                if (m_AreDataChanged)
+                {
+                    cbAcceptButton.Width = ViewAcceptButton;
+                    cbMiddleColumn_1.Width = ViewMiddleColumn;
+                    cbMiddleColumn_2.Width = ViewMiddleColumn;
+                }
+                else
+                {
+                    cbAcceptButton.Width = HideAcceptButton;
+                    cbMiddleColumn_1.Width = HideAcceptButton;
+                    cbMiddleColumn_2.Width = HideAcceptButton;
+                }
             }
         }
 
 
         /// <summary>
-        /// Get or Set if the manager of the data change for the Customer has active.
+        /// Get or Set if the manager of the data change for the Provider has active.
         /// </summary>
         private bool DataChangedManagerActive
         {
@@ -285,6 +482,69 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                     cbProviderPostalCode.ItemsSource = m_PostalCodes;
                     cbProviderPostalCode.DisplayMemberPath = "Key";
                     cbProviderPostalCode.SelectedValuePath = "Value";
+                }
+            }
+        }
+
+        /// <summary>
+        /// Get or Set the Effect Types 
+        /// </summary>
+        public Dictionary<string, EffectTypesView> EffectTypes
+        {
+            get
+            {
+                return (m_EffectTypes);
+            }
+            set
+            {
+                m_EffectTypes = value;
+                if (m_EffectTypes != null)
+                {
+                    cbDataBankEffect.ItemsSource = m_EffectTypes;
+                    cbDataBankEffect.DisplayMemberPath = "Key";
+                    cbDataBankEffect.SelectedValuePath = "Value";
+                }
+            }
+        }
+
+        /// <summary>
+        /// Get or Set the Send Types 
+        /// </summary>
+        public Dictionary<string, SendTypesView> SendTypes
+        {
+            get
+            {
+                return (m_SendTypes);
+            }
+            set
+            {
+                m_SendTypes = value;
+                if (m_SendTypes != null)
+                {
+                    cbBillingDataSendByType.ItemsSource = m_SendTypes;
+                    cbBillingDataSendByType.DisplayMemberPath = "Key";
+                    cbBillingDataSendByType.SelectedValuePath = "Value";
+                }
+            }
+        }
+
+        /// <summary>
+        /// Get or Set the IVATypes 
+        /// </summary>
+        public Dictionary<string, IVATypesView> IVATypes
+        {
+            get
+            {
+                return (m_IVATypes);
+            }
+            set
+            {
+                m_IVATypes = value;
+                if (m_IVATypes != null)
+                {
+                    cbBillingDataIVAType.ItemsSource = m_IVATypes;
+                    cbBillingDataIVAType.DisplayMemberPath = "Key";
+                    cbBillingDataIVAType.SelectedValuePath = "Value";
                 }
             }
         }
@@ -361,8 +621,10 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
             //  Initialization of controls of the UserControl
                 InitializeComponent();
             //  Initialize GUI.
+                ctxmnuIBAN_Initial = ctxmnuIBAN;
                 InitEditableControls();
                 InitNonEditableControls();
+                InitOnlyQueryControls();
             //  Load the managers of the controls of the UserControl.
                 LoadManagers();
         }
@@ -381,7 +643,17 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                 lblProviderAgentPhone,
                 tbProviderAgentPhone,
                 lblProviderAgentFax,
-                tbProviderAgentFax
+                tbProviderAgentFax,                
+
+                tbBillingDataRegister,
+                lblBillingDataUnpaid,
+                tbBillingDataUnpaid,
+                lblBillingDataNumUnpaid,
+                tbBillingDataNumUnpaid,
+                lblBillingDataCurrentRisk,
+                tbBillingDataCurrentRisk,
+                lblBillingDataRiskGranted,
+                tbBillingDataRiskGranted,
             };
         }
 
@@ -430,7 +702,77 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                 tbProviderComment,
                 lblCanceled,
                 chkbCanceled,
-                gbAgent
+                gbAgent,
+                lblCompanyContactPerson,
+                tbCompanyContactPerson,
+                lblCompanyTimeTable,
+                tbCompanyTimeTable,
+                lblCompanyNumProv,
+                tbCompanyNumProv,
+                lblDataBankEffect,
+                cbDataBankEffect,
+                lblDataBankNumEffect,
+                tbDataBankNumEffect,
+                lblDataBankFirstExpirationData,
+                tbDataBankFirstExpirationData,
+                lblDataBankExpirationInterval,
+                tbDataBankExpirationInterval,
+                lblDataBankPayday_1,
+                tbDataBankPayday_1,
+                lblDataBankPayday_2,
+                tbDataBankPayday_2,
+                lblDataBankPayday_3,
+                tbDataBankPayday_3,
+                lblDataBankBank,
+                tbDataBankBank,
+                lblDataBankBankAddress,
+                tbDataBankBankAddress,
+                lblDataBankIBANCountryCode,
+                tbDataBankIBANCountryCode,
+                lblDataBankIBANBankCode,
+                tbDataBankIBANBankCode,
+                lblDataBankIBANOfficeCode,
+                tbDataBankIBANOfficeCode,
+                lblDataBankIBANCheckDigits,
+                tbDataBankIBANCheckDigits,
+                lblDataBankIBANAccountNumber,
+                tbDataBankIBANAccountNumber,
+                lblCompanyCif,
+                tbCompanyCif,
+                lblBillingDataSendByType,
+                cbBillingDataSendByType,
+                lblBillingDataBillingType,
+                tbBillingDataBillingType,
+                lblBillingDataDuplicate,
+                tbBillingDataDuplicate,
+                lblBillingDataEarlyPaymentDiscount,
+                tbBillingDataEarlyPaymentDiscount,
+                lblBillingDataValued,
+                chkbBillingDataValued,
+                lblBillingDataIVAType,
+                cbBillingDataIVAType,
+                lblBillingDataRegister,
+                dtpBillingDataRegister,
+                gbIBAN,
+                tiGeneral,
+                tiBankData,
+                tiBillingData,
+                tiConsullation,
+                lblCanceled,
+                chkbCanceled,
+            };
+        }
+
+        /// <summary>
+        /// Initialize the list of NonEditable Controls.
+        /// </summary>
+        private void InitOnlyQueryControls()
+        {
+            OnlyQueryControls = new List<Control>
+            {
+                btnHistoric,
+                btnHistoricAcum,
+                gbQueries
             };
         }
 
@@ -443,7 +785,7 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
             //  Apply Theme to UserControl.
                 ThemeManager.ActualTheme = AppTheme;
             //  Put the UserControl in Initial State.
-                cbAcceptButton.Width = HideButton;
+                cbAcceptButton.Width = HideAcceptButton;
         }
 
         /// <summary>
@@ -469,6 +811,55 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
             tbProviderPromptPaymentDiscount.Text = GlobalViewModel.GetStringFromDecimalValue(providersView.PromptPaymentDiscount, DecimalType.Percent);
             tbProviderAdditionalDiscount.Text = GlobalViewModel.GetStringFromDecimalValue(providersView.AdditionalDiscount, DecimalType.Percent);
             tbProviderComment.Text = providersView.Comment;
+            //  DataBank Controls
+
+            #region Type Effect
+            
+            if((EffectTypes != null) && ( providersView.DataBank_EffectType != null))
+            {
+                Dictionary<string, EffectTypesView> Items = (Dictionary<string, EffectTypesView>)cbDataBankEffect.ItemsSource;
+                string Key = GlobalViewModel.Instance.HispaniaViewModel.GetKeyEffectTypeView( providersView.DataBank_EffectType );
+                if(Items.ContainsKey( Key ))
+                    cbDataBankEffect.SelectedValue = EffectTypes[ Key ];
+                else
+                {
+                    if(ThrowException)
+                    {
+                        throw new Exception( string.Format( "No s'ha trobat el Tipus d'Efecte '{0}-{1}'.", EffectTypes[ Key ].Code, EffectTypes[ Key ].Description ) );
+                    }
+                }
+            }
+
+            #endregion
+
+            tbDataBankNumEffect.Text = GlobalViewModel.GetStringFromDecimalValue(providersView.DataBank_NumEffect, DecimalType.WithoutDecimals);
+            tbDataBankFirstExpirationData.Text = GlobalViewModel.GetStringFromDecimalValue(providersView.DataBank_FirstExpirationData, DecimalType.WithoutDecimals);
+            tbDataBankExpirationInterval.Text = GlobalViewModel.GetStringFromDecimalValue(providersView.DataBank_ExpirationInterval, DecimalType.WithoutDecimals);
+            tbDataBankPayday_1.Text = GlobalViewModel.GetStringFromDecimalValue(providersView.DataBank_Payday_1, DecimalType.WithoutDecimals);
+            tbDataBankPayday_2.Text = GlobalViewModel.GetStringFromDecimalValue(providersView.DataBank_Payday_2, DecimalType.WithoutDecimals);
+            tbDataBankPayday_3.Text = GlobalViewModel.GetStringFromDecimalValue(providersView.DataBank_Payday_3, DecimalType.WithoutDecimals);
+            tbDataBankBank.Text = providersView.DataBank_Bank;
+            tbDataBankBankAddress.Text = providersView.DataBank_BankAddress;
+            tbDataBankIBANCountryCode.Text = providersView.DataBank_IBAN_CountryCode;
+            tbDataBankIBANBankCode.Text = providersView.DataBank_IBAN_BankCode;
+            tbDataBankIBANOfficeCode.Text = providersView.DataBank_IBAN_OfficeCode;
+            tbDataBankIBANCheckDigits.Text = providersView.DataBank_IBAN_CheckDigits;
+            tbDataBankIBANAccountNumber.Text = providersView.DataBank_IBAN_AccountNumber;
+            //  BillingData
+            tbCompanyCif.Text = providersView.NIF;
+            tbBillingDataBillingType.Text = providersView.BillingData_BillingType;
+            tbBillingDataDuplicate.Text = GlobalViewModel.GetStringFromDecimalValue(providersView.BillingData_Duplicate, DecimalType.WithoutDecimals);
+            tbBillingDataEarlyPaymentDiscount.Text = GlobalViewModel.GetStringFromDecimalValue(providersView.BillingData_EarlyPaymentDiscount, DecimalType.Percent);
+            chkbBillingDataValued.IsChecked = providersView.BillingData_Valued;
+            tbBillingDataRiskGranted.Text = GlobalViewModel.GetStringFromDecimalValue(providersView.BillingData_RiskGranted, DecimalType.Currency);
+            tbBillingDataCurrentRisk.Text = GlobalViewModel.GetStringFromDecimalValue(providersView.BillingData_CurrentRisk, DecimalType.Currency);
+            tbBillingDataUnpaid.Text = GlobalViewModel.GetStringFromDecimalValue(providersView.BillingData_Unpaid, DecimalType.Currency);
+            tbBillingDataNumUnpaid.Text = GlobalViewModel.GetStringFromDecimalValue(providersView.BillingData_NumUnpaid, DecimalType.WithoutDecimals);
+            dtpBillingDataRegister.SelectedDate = providersView.BillingData_Register;
+            if (dtpBillingDataRegister.SelectedDate != null) tbBillingDataRegister.Text = GlobalViewModel.GetLongDateString(providersView.BillingData_Register);
+            LoadExternalTablesInfo(providersView, ThrowException);
+            //  Several Remarks
+
             LoadExternalTablesInfo(providersView, ThrowException);
             DataChangedManagerActive = true;
         }
@@ -494,6 +885,34 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                 }
             }
             else cbProviderPostalCode.SelectedIndex = -1;
+            if ((EffectTypes != null) && (providersView.DataBank_EffectType != null))
+            {
+                Dictionary<string, EffectTypesView> Items = (Dictionary<string, EffectTypesView>)cbDataBankEffect.ItemsSource;
+                string Key = GlobalViewModel.Instance.HispaniaViewModel.GetKeyEffectTypeView(providersView.DataBank_EffectType);
+                if (Items.ContainsKey(Key)) cbDataBankEffect.SelectedValue = EffectTypes[Key];
+                else
+                {
+                    if (ThrowException)
+                    {
+                        throw new Exception(string.Format("No s'ha trobat el Tipus d'Efecte '{0}-{1}'.", EffectTypes[Key].Code, EffectTypes[Key].Description));
+                    }
+                }
+            }
+            else cbDataBankEffect.SelectedIndex = -1;
+            if ((SendTypes != null) && (providersView.BillingData_SendType != null))
+            {
+                Dictionary<string, SendTypesView> Items = (Dictionary<string, SendTypesView>)cbBillingDataSendByType.ItemsSource;
+                string Key = GlobalViewModel.Instance.HispaniaViewModel.GetKeySendTypeView(providersView.BillingData_SendType);
+                if (Items.ContainsKey(Key)) cbBillingDataSendByType.SelectedValue = SendTypes[Key];
+                else
+                {
+                    if (ThrowException)
+                    {
+                        throw new Exception(string.Format("No s'ha trobat el Tipus d'Enviament '{0}-{1}'.", SendTypes[Key].Code, SendTypes[Key].Description));
+                    }
+                }
+            }
+            else cbBillingDataSendByType.SelectedIndex = -1;
             if ((Agents != null) && (providersView.Data_Agent != null))
             {
                 Dictionary<string, AgentsView> Items = (Dictionary<string, AgentsView>)cbProviderDataAgent.ItemsSource;
@@ -513,6 +932,54 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                 }
             }
             else cbProviderDataAgent.SelectedIndex = -1;
+            if ((IVATypes != null) && (providersView.BillingData_IVAType != null))
+            {
+                Dictionary<string, IVATypesView> Items = (Dictionary<string, IVATypesView>)cbBillingDataIVAType.ItemsSource;
+                string Key = GlobalViewModel.Instance.HispaniaViewModel.GetKeyIVATypeView(providersView.BillingData_IVAType);
+                if (Items.ContainsKey(Key)) cbBillingDataIVAType.SelectedValue = IVATypes[Key];
+                else
+                {
+                    if (ThrowException)
+                    {
+                        throw new Exception(
+                                     string.Format("No s'ha trobat el Tipus d'IVA '{0}-{1}-{2}'.",
+                                                   IVATypes[Key].Type, IVATypes[Key].IVAPercent_Str, IVATypes[Key].SurchargePercent_Str));
+                    }
+                }
+            }
+            else cbBillingDataIVAType.SelectedIndex = -1;
+        }
+
+        /// <summary>
+        /// Method that filter the elements that are showing in the list
+        /// </summary>
+        /// <param name="item">Item to test</param>
+        /// <returns>true, if the item must be loaded, false, if not.</returns>
+        private bool UserFilterDefinedProviders(object item)
+        {
+            //  Don't do anything if Provider doesn't have any value.
+            if (Provider is null) return true;
+            //  Get Acces to the object and the property name To Filter.
+            ProvidersView ItemData = (ProvidersView)item;
+            //  If the item is the Provider don't show this item.
+            if (ItemData.Provider_Id == Provider.Provider_Id) return false;
+            //  Calculate the Visibility value with properties values.
+            return (DataListRelatedProviders is null) || (!m_DataListRelatedProviders.Contains(ItemData));
+        }
+
+        /// <summary>
+        /// Method that filter the elements that are showing in the list
+        /// </summary>
+        /// <param name="item">Item to test</param>
+        /// <returns>true, if the item must be loaded, false, if not.</returns>
+        private bool UserFilterRelatedProviders(object item)
+        {
+            //  Get Acces to the object and the property name To Filter.
+            ProvidersView ItemData = (ProvidersView)item;
+            //  If the item is the Provider don't show this item.
+            if (ItemData.Provider_Id == Provider.Provider_Id) return false;
+            //  Calculate the Visibility value with properties values.
+            return (DataListDefinedProviders is null) || (!m_DataListDefinedProviders.Contains(ItemData));
         }
 
         #endregion
@@ -524,8 +991,8 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
         /// </summary>
         private void LoadManagers()
         {
-            //  By default the manager for the Customer Data changes is active.
-                DataChangedManagerActive = true;
+            //  By default the manager for the Provider Data changes is active.
+            DataChangedManagerActive = true;
             //  TextBox
                 tbProviderNumber.TextChanged += TBDataChanged;
                 tbProviderNumber.PreviewTextInput += TBPreviewTextInput;
@@ -547,23 +1014,91 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                 tbProviderFax.PreviewTextInput += TBPreviewTextInput;
                 tbProviderAcountAcounting.TextChanged += TBDataChanged;
                 tbProviderAcountAcounting.PreviewTextInput += TBPreviewTextInput;
-                tbProviderTransferPercent.TextChanged += TBPrecentDataChanged;
+                tbProviderTransferPercent.TextChanged += TBPercentDataChanged;
                 tbProviderTransferPercent.PreviewTextInput += TBPreviewTextInput;
-                tbProviderPromptPaymentDiscount.TextChanged += TBPrecentDataChanged;
+                tbProviderPromptPaymentDiscount.TextChanged += TBPercentDataChanged;
                 tbProviderPromptPaymentDiscount.PreviewTextInput += TBPreviewTextInput;
-                tbProviderAdditionalDiscount.TextChanged += TBPrecentDataChanged;
+                tbProviderAdditionalDiscount.TextChanged += TBPercentDataChanged;
                 tbProviderAdditionalDiscount.PreviewTextInput += TBPreviewTextInput;
                 tbProviderComment.TextChanged += TBDataChanged;
                 tbProviderComment.PreviewTextInput += TBPreviewTextInput;
+            tbCompanyEmail2.PreviewTextInput += TBPreviewTextInput;
+            tbCompanyEmail2.TextChanged += TBDataChanged;
+            tbCompanyEmail3.PreviewTextInput += TBPreviewTextInput;
+            tbCompanyEmail3.TextChanged += TBDataChanged;
+            tbCompanyContactPerson.PreviewTextInput += TBPreviewTextInput;
+            tbCompanyContactPerson.TextChanged += TBDataChanged;
+            tbCompanyTimeTable.PreviewTextInput += TBPreviewTextInput;
+            tbCompanyTimeTable.TextChanged += TBDataChanged;
+            tbCompanyNumProv.PreviewTextInput += TBPreviewTextInput;
+            tbCompanyNumProv.TextChanged += TBDataChanged;
+            tbDataBankNumEffect.PreviewTextInput += TBPreviewTextInput;
+            tbDataBankNumEffect.TextChanged += TBWithoutDecimalsDataChanged;
+            tbDataBankFirstExpirationData.PreviewTextInput += TBPreviewTextInput;
+            tbDataBankFirstExpirationData.TextChanged += TBWithoutDecimalsDataChanged;
+            tbDataBankExpirationInterval.PreviewTextInput += TBPreviewTextInput;
+            tbDataBankExpirationInterval.TextChanged += TBWithoutDecimalsDataChanged;
+            tbDataBankPayday_1.PreviewTextInput += TBPreviewTextInput;
+            tbDataBankPayday_1.TextChanged += TBWithoutDecimalsDataChanged;
+            tbDataBankPayday_2.PreviewTextInput += TBPreviewTextInput;
+            tbDataBankPayday_2.TextChanged += TBWithoutDecimalsDataChanged;
+            tbDataBankPayday_3.PreviewTextInput += TBPreviewTextInput;
+            tbDataBankPayday_3.TextChanged += TBWithoutDecimalsDataChanged;
+            tbDataBankBank.PreviewTextInput += TBPreviewTextInput;
+            tbDataBankBank.TextChanged += TBDataChanged;
+            tbDataBankBankAddress.PreviewTextInput += TBPreviewTextInput;
+            tbDataBankBankAddress.TextChanged += TBDataChanged;
+            tbDataBankIBANCountryCode.PreviewTextInput += TBPreviewTextInput;
+            tbDataBankIBANCountryCode.TextChanged += TBDataChanged;
+            tbDataBankIBANBankCode.PreviewTextInput += TBPreviewTextInput;
+            tbDataBankIBANBankCode.TextChanged += TBDataChanged;
+            tbDataBankIBANOfficeCode.PreviewTextInput += TBPreviewTextInput;
+            tbDataBankIBANOfficeCode.TextChanged += TBDataChanged;
+            tbDataBankIBANCheckDigits.PreviewTextInput += TBPreviewTextInput;
+            tbDataBankIBANCheckDigits.TextChanged += TBDataChanged;
+            tbDataBankIBANAccountNumber.PreviewTextInput += TBPreviewTextInput;
+            tbDataBankIBANAccountNumber.TextChanged += TBDataChanged;
+            tbCompanyCif.PreviewTextInput += TBPreviewTextInput;
+            tbCompanyCif.TextChanged += TBDataChanged;
+            tbBillingDataBillingType.PreviewTextInput += TBPreviewTextInput;
+            tbBillingDataBillingType.TextChanged += TBDataChanged;
+            tbBillingDataDuplicate.PreviewTextInput += TBPreviewTextInput;
+            tbBillingDataDuplicate.TextChanged += TBWithoutDecimalsDataChanged;
+            tbBillingDataEarlyPaymentDiscount.PreviewTextInput += TBPreviewTextInput;
+            tbBillingDataEarlyPaymentDiscount.TextChanged += TBPercentDataChanged;
+            //tbBillingDataRiskGranted.PreviewTextInput += TBPreviewTextInput;
+            //tbBillingDataRiskGranted.TextChanged += TBCurrencyDataChanged;
+            //tbBillingDataCurrentRisk.PreviewTextInput += TBPreviewTextInput;
+            //tbBillingDataCurrentRisk.TextChanged += TBCurrencyDataChanged;
+            //tbBillingDataUnpaid.PreviewTextInput += TBPreviewTextInput;
+            //tbBillingDataUnpaid.TextChanged += TBCurrencyDataChanged;
+            //tbBillingDataNumUnpaid.PreviewTextInput += TBPreviewTextInput;
+            //tbBillingDataNumUnpaid.TextChanged += TBDataChanged;
+
+            //  DatePiker
+            dtpBillingDataRegister.SelectedDateChanged += DtpBillingDataRegister_SelectedDateChanged;
+
             //  CheckBox
-                chkbCanceled.Checked += ChkbCanceled_Checked;
+            chkbBillingDataValued.Checked += ChkbBillingDataValued_Checked;
+            chkbBillingDataValued.Unchecked += ChkbBillingDataValued_Unchecked;
+            chkbCanceled.Checked += ChkbCanceled_Checked;
                 chkbCanceled.Unchecked += ChkbCanceled_Unchecked;
             //  ComboBox
                 cbProviderPostalCode.SelectionChanged += CbProviderPostalCode_SelectionChanged;
-                cbProviderDataAgent.SelectionChanged += CbProviderDataAgent_SelectionChanged;
+            cbDataBankEffect.SelectionChanged += CbDataBankEffect_SelectionChanged;
+            cbBillingDataSendByType.SelectionChanged += CbBillingDataSendByType_SelectionChanged;
+            cbProviderDataAgent.SelectionChanged += CbProviderDataAgent_SelectionChanged;
+            cbBillingDataIVAType.SelectionChanged += CbBillingDataIVAType_SelectionChanged;
+            //  ContextMenuItem
+            ctxmnuItemCalculateIBAN.Click += CtxmnuItemCalculateIBAN_Click;
+            ctxmnuItemValidateIBAN.Click += CtxmnuItemValidateIBAN_Click;
+
             //  Buttons
-                btnAccept.Click += BtnAccept_Click;
-                btnCancel.Click += BtnCancel_Click;
+            btnAccept.Click += BtnAccept_Click;
+            btnCancel.Click += BtnCancel_Click;
+            btnHistoricAcum.Click += BtnHistoricAcum_Click;
+            btnHistoric.Click += BtnHistoric_Click;
+            
         }
 
         #region TextBox
@@ -598,6 +1133,25 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
             {
                 e.Handled = ! GlobalViewModel.IsValidPercentChar(e.Text);
             }
+            else if ((sender == tbDataBankNumEffect) || (sender == tbDataBankFirstExpirationData) ||
+                     (sender == tbDataBankExpirationInterval) || (sender == tbDataBankPayday_1) ||
+                     (sender == tbDataBankPayday_2) || (sender == tbDataBankPayday_3) ||
+                     (sender == tbBillingDataBillingType) || (sender == tbBillingDataDuplicate))
+            {
+                e.Handled = !GlobalViewModel.IsValidShortDecimalChar(e.Text);
+            }
+            //else if (sender == tbBillingDataNumUnpaid) e.Handled = ! GlobalViewModel.IsValidShortDecimalChar(e.Text);
+            else if (sender == tbDataBankIBANCountryCode) e.Handled = !GlobalViewModel.IsValidIBAN_CountryCodeChar(e.Text);
+            else if (sender == tbDataBankIBANBankCode) e.Handled = !GlobalViewModel.IsValidIBAN_BankCodeChar(e.Text);
+            else if (sender == tbDataBankIBANOfficeCode) e.Handled = !GlobalViewModel.IsValidIBAN_OfficeCodeChar(e.Text);
+            else if (sender == tbDataBankIBANCheckDigits) e.Handled = !GlobalViewModel.IsValidIBAN_CheckDigitsChar(e.Text);
+            else if (sender == tbDataBankIBANAccountNumber) e.Handled = !GlobalViewModel.IsValidIBAN_AccountNumberChar(e.Text);
+            //else if ((sender == tbBillingDataRiskGranted) || (sender == tbBillingDataUnpaid) || (sender == tbBillingDataCurrentRisk)) 
+            //{
+            //    e.Handled = ! GlobalViewModel.IsValidCurrencyChar(e.Text);
+            //} 
+            else if (sender == tbBillingDataEarlyPaymentDiscount) e.Handled = !GlobalViewModel.IsValidPercentChar(e.Text);
+
         }
 
         /// <summary>
@@ -624,13 +1178,22 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                     else if (sender == tbProviderFax) EditedProvider.Fax = value;
                     else if (sender == tbProviderAcountAcounting) EditedProvider.AcountAcounting = value;
                     else if (sender == tbProviderComment) EditedProvider.Comment = value;
+                    else if (sender == tbDataBankBank) EditedProvider.DataBank_Bank = value;
+                    else if (sender == tbDataBankBankAddress) EditedProvider.DataBank_BankAddress = value;
+                    else if (sender == tbDataBankIBANCountryCode) EditedProvider.DataBank_IBAN_CountryCode = value;
+                    else if (sender == tbDataBankIBANBankCode) EditedProvider.DataBank_IBAN_BankCode = value;
+                    else if (sender == tbDataBankIBANOfficeCode) EditedProvider.DataBank_IBAN_OfficeCode = value;
+                    else if (sender == tbDataBankIBANCheckDigits) EditedProvider.DataBank_IBAN_CheckDigits = value;
+                    else if (sender == tbDataBankIBANAccountNumber) EditedProvider.DataBank_IBAN_AccountNumber = value;
+                    else if (sender == tbBillingDataBillingType) EditedProvider.BillingData_BillingType = value;
+
                 }
                 catch (Exception ex)
                 {
                     MsgManager.ShowMessage(MsgManager.ExcepMsg(ex));
                     LoadDataInControls(EditedProvider);
                 }
-                AreDataChanged = (EditedProvider != Provider);
+                AreDataChanged = EditedProvider != Provider || ValidateChangesInRelatedProviders(); ;
                 DataChangedManagerActive = true;
             }
         }
@@ -640,7 +1203,42 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
         /// </summary>
         /// <param name="sender">Object that sends the event.</param>
         /// <param name="e">Parameters with the event was sended.</param>
-        private void TBPrecentDataChanged(object sender, TextChangedEventArgs e)
+        private void TBWithoutDecimalsDataChanged(object sender, TextChangedEventArgs e)
+        {
+            if (DataChangedManagerActive)
+            {
+                DataChangedManagerActive = false;
+                TextBox tbInput = (TextBox)sender;
+                try
+                {
+                    GlobalViewModel.NormalizeTextBox(sender, e, DecimalType.WithoutDecimals);
+                    decimal value = GlobalViewModel.GetUIDecimalValue(tbInput.Text);
+                    if (sender == tbDataBankNumEffect) EditedProvider.DataBank_NumEffect = value;
+                    else if (sender == tbDataBankFirstExpirationData) EditedProvider.DataBank_FirstExpirationData = value;
+                    else if (sender == tbDataBankExpirationInterval) EditedProvider.DataBank_ExpirationInterval = value;
+                    else if (sender == tbDataBankPayday_1) EditedProvider.DataBank_Payday_1 = value;
+                    else if (sender == tbDataBankPayday_2) EditedProvider.DataBank_Payday_2 = value;
+                    else if (sender == tbDataBankPayday_3) EditedProvider.DataBank_Payday_3 = value;
+                    else if (sender == tbBillingDataDuplicate) EditedProvider.BillingData_Duplicate = value;
+                    //else if (sender == tbBillingDataNumUnpaid) EditedProvider.BillingData_NumUnpaid = value;
+                }
+                catch (Exception ex)
+                {
+                    MsgManager.ShowMessage(MsgManager.ExcepMsg(ex));
+                    LoadDataInControls(EditedProvider);
+                }
+                AreDataChanged = EditedProvider != Provider || ValidateChangesInRelatedProviders();
+                DataChangedManagerActive = true;
+            }
+        }
+
+
+        /// <summary>
+        /// Manage the change of the Data in the sender object.
+        /// </summary>
+        /// <param name="sender">Object that sends the event.</param>
+        /// <param name="e">Parameters with the event was sended.</param>
+        private void TBPercentDataChanged(object sender, TextChangedEventArgs e)
         {
             if (DataChangedManagerActive)
             {
@@ -664,6 +1262,36 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
             }
         }
 
+        /// <summary>
+        /// Manage the change of the Data in the sender object.
+        /// </summary>
+        /// <param name="sender">Object that sends the event.</param>
+        /// <param name="e">Parameters with the event was sended.</param>
+        private void TBCurrencyDataChanged(object sender, TextChangedEventArgs e)
+        {
+            if (DataChangedManagerActive)
+            {
+                DataChangedManagerActive = false;
+                TextBox tbInput = (TextBox)sender;
+                try
+                {
+                    GlobalViewModel.NormalizeTextBox(sender, e, DecimalType.Currency);
+                    decimal value = GlobalViewModel.GetUIDecimalValue(tbInput.Text);
+                    //if (sender == tbBillingDataRiskGranted) EditedProvider.BillingData_RiskGranted = value;
+                    //else if (sender == tbBillingDataCurrentRisk) EditedProvider.BillingData_CurrentRisk = value;
+                    //else if (sender == tbBillingDataUnpaid) EditedProvider.BillingData_Unpaid = value;
+                }
+                catch (Exception ex)
+                {
+                    MsgManager.ShowMessage(MsgManager.ExcepMsg(ex));
+                    LoadDataInControls(EditedProvider);
+                }
+                AreDataChanged = EditedProvider != Provider || ValidateChangesInRelatedProviders();
+                DataChangedManagerActive = true;
+            }
+        }
+
+
         #endregion
 
         #region Button
@@ -671,7 +1299,7 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
         #region Accept
 
         /// <summary>
-        /// Accept the edition or creatin of the Customer.
+        /// Accept the edition or creatin of the Provider.
         /// </summary>
         /// <param name="sender">Object that sends the event.</param>
         /// <param name="e">Parameters with the event was sended.</param>
@@ -683,7 +1311,17 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                 if ((CtrlOperation == Operation.Add) || (CtrlOperation == Operation.Edit))
                 {
                     EditedProvider.Validate(out ErrorField);
-                    EvAccept?.Invoke(new ProvidersView(EditedProvider));
+                    List<RelatedProvidersView> RelatedProviders = new List<RelatedProvidersView>();
+                    foreach (ProvidersView relatedProvider in DataListRelatedProviders)
+                    {
+                        RelatedProviders.Add(new RelatedProvidersView()
+                        {
+                            Provider_Id = Provider.Provider_Id,
+                            Provider_Canceled_Id = relatedProvider.Provider_Id,
+                            Remarks = string.Empty
+                        });
+                    }
+                    EvAccept?.Invoke(new ProvidersView(EditedProvider), RelatedProviders);
                 }
             }
             catch (Exception ex)
@@ -698,7 +1336,7 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
         #region Cancel
 
         /// <summary>
-        /// Cancel the edition or creatin of the Customer.
+        /// Cancel the edition or creatin of the Provider.
         /// </summary>
         /// <param name="sender">Object that sends the event.</param>
         /// <param name="e">Parameters with the event was sended.</param>
@@ -709,6 +1347,230 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
         }
 
         #endregion
+
+        #region Add Agent (Update data)
+
+        /// <summary>
+        /// Defines a new Agent for the Provider.
+        /// </summary>
+        /// <param name="sender">Object that sends the event.</param>
+        /// <param name="e">Parameters with the event was sended.</param>
+        private void BtnAddAgent_Click(object sender, RoutedEventArgs e)
+        {
+            if (AgentsWindow == null)
+            {
+                try
+                {
+                    AgentsWindow = new Agents(AppType);
+                    GlobalViewModel.Instance.HispaniaViewModel.RefreshPostalCodes();
+                    AgentsWindow.PostalCodes = GlobalViewModel.Instance.HispaniaViewModel.PostalCodesDict;
+                    GlobalViewModel.Instance.HispaniaViewModel.RefreshAgents();
+                    AgentsWindow.DataList = GlobalViewModel.Instance.HispaniaViewModel.Agents;
+                    AgentsWindow.Closed += AgentsWindow_Closed;
+                    AgentsWindow.Show();
+
+                }
+                catch (Exception ex)
+                {
+                    MsgManager.ShowMessage(string.Format("Error, al carregar la finestra de gestió de Representants.\r\nDetalls: {0}", MsgManager.ExcepMsg(ex)));
+                }
+            }
+            else AgentsWindow.Activate();
+        }
+
+        /// <summary>
+        /// When the Provider Window is closed we actualize the AgentsWindow attribute value.
+        /// </summary>
+        /// <param name="sender">Label that prodece the event</param>
+        /// <param name="e">Parameters of the event</param>
+        private void AgentsWindow_Closed(object sender, EventArgs e)
+        {
+            GlobalViewModel.Instance.HispaniaViewModel.RefreshAgents();
+            Agents = GlobalViewModel.Instance.HispaniaViewModel.AgentsDict;
+            AgentsWindow.Closed -= AgentsWindow_Closed;
+            AgentsWindow = null;
+        }
+
+        #endregion
+
+        #region Delivery Notes (Update data)
+
+
+        /// <summary>
+        /// When the Provider Window is closed we actualize the ProvidersWindow attribute value.
+        /// </summary>
+        /// <param name="sender">Label that prodece the event</param>
+        /// <param name="e">Parameters of the event</param>
+        private void ProviderOrdersWindow_Closed(object sender, EventArgs e)
+        {
+            ProviderOrdersWindow.Closed -= ProviderOrdersWindow_Closed;
+            ProviderOrdersWindow = null;
+        }
+
+        #endregion
+
+        #region Provider Orders (Update data)
+
+
+        /// <summary>
+        /// When the Provider Window is closed we actualize the ProvidersWindow attribute value.
+        /// </summary>
+        /// <param name="sender">Label that prodece the event</param>
+        /// <param name="e">Parameters of the event</param>
+        private void ProviderOrders2Window_Closed(object sender, EventArgs e)
+        {
+            ProviderOrders2Window.Closed -= ProviderOrders2Window_Closed;
+            ProviderOrders2Window = null;
+        }
+
+        #endregion
+
+        #region HistoricAcum (Query data)
+
+        private void BtnHistoricAcum_Click(object sender, RoutedEventArgs e)
+        {
+            if (HistoCumulativeProvidersWindow == null)
+            {
+                Mouse.OverrideCursor = Cursors.Wait;
+                try
+                {
+                    HistoCumulativeProvidersWindow = new HistoCumulativeProviders(AppType)
+                    {
+                        DataList = GlobalViewModel.Instance.HispaniaViewModel.GetHistoCumulativeProviders(EditedProvider.Provider_Id),
+                        Data = EditedProvider
+                    };
+                    HistoCumulativeProvidersWindow.Closed += HistoCumulativeProvidersWindow_Closed;
+                    HistoCumulativeProvidersWindow.Show();
+
+                }
+                catch (Exception ex)
+                {
+                    MsgManager.ShowMessage(string.Format("Error, al carregar la finestra de l'Històric Acumulat de Proveidors.\r\nDetalls: {0}", MsgManager.ExcepMsg(ex)));
+                }
+                finally
+                {
+                    Mouse.OverrideCursor = Cursors.Arrow;
+                }
+            }
+            else HistoCumulativeProvidersWindow.Activate();
+        }
+
+        private void HistoCumulativeProvidersWindow_Closed(object sender, EventArgs e)
+        {
+            HistoCumulativeProvidersWindow.Closed -= HistoCumulativeProvidersWindow_Closed;
+            HistoCumulativeProvidersWindow = null;
+        }
+
+        #endregion
+
+        #region Data Debt (Query data)
+
+        private void BadDebtsWindow_Closed(object sender, EventArgs e)
+        {
+            BadDebtsWindow.Closed -= BadDebtsWindow_Closed;
+            BadDebtsWindow = null;
+        }
+
+        #endregion
+
+        #region Historic (Query data)
+
+        private void BtnHistoric_Click(object sender, RoutedEventArgs e)
+        {
+            if (HistoProvidersWindow == null)
+            {
+                Mouse.OverrideCursor = Cursors.Wait;
+                try
+                {
+                    HistoProvidersWindow = new HistoProviders(AppType, HistoProvidersMode.Historic)
+                    {
+                        DataList = GlobalViewModel.Instance.HispaniaViewModel.GetHistoProviders(EditedProvider.Provider_Id),
+                        Data = EditedProvider
+                    };
+                    HistoProvidersWindow.Closed += HistoProvidersWindow_Closed;
+                    HistoProvidersWindow.Show();
+
+                }
+                catch (Exception ex)
+                {
+                    MsgManager.ShowMessage(string.Format("Error, al carregar la finestra d'Històric.\r\nDetalls: {0}", MsgManager.ExcepMsg(ex)));
+                }
+                finally
+                {
+                    Mouse.OverrideCursor = Cursors.Arrow;
+                }
+            }
+            else HistoProvidersWindow.Activate();
+        }
+
+        private void HistoProvidersWindow_Closed(object sender, EventArgs e)
+        {
+            HistoProvidersWindow.Closed -= HistoProvidersWindow_Closed;
+            HistoProvidersWindow = null;
+        }
+
+        #endregion
+
+        #region Related Provider
+
+        private void BtnRelatedProvider_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void BtnUnRelatedProvider_Click(object sender, RoutedEventArgs e)
+        {
+        }
+
+        #endregion
+
+        #endregion
+
+        #region ContextMenuItem
+
+        /// <summary>
+        /// Métod that calculate the IBAN Country Code of the CCC introduced by the user.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CtxmnuItemCalculateIBAN_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                string CCC = string.Format("{0}{1}{2}{3}",
+                                            tbDataBankIBANBankCode.Text, tbDataBankIBANOfficeCode.Text,
+                                            tbDataBankIBANCheckDigits.Text, tbDataBankIBANAccountNumber.Text);
+                string IBAN = GlobalViewModel.Instance.HispaniaViewModel.CalculateSpanishIBAN(CCC);
+                MsgManager.ShowMessage("Còdi de pais de l'IBAN calculat correctament.", MsgType.Information);
+                tbDataBankIBANCountryCode.Text = IBAN.Substring(0, 4);
+            }
+            catch (Exception ex)
+            {
+                MsgManager.ShowMessage(MsgManager.ExcepMsg(ex));
+            }
+        }
+
+        /// <summary>
+        /// Métod that validate the IBAN introduced by the user.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CtxmnuItemValidateIBAN_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                string IBAN = string.Format("{0}{1}{2}{3}{4}",
+                                            tbDataBankIBANCountryCode.Text, tbDataBankIBANBankCode.Text,
+                                            tbDataBankIBANOfficeCode.Text, tbDataBankIBANCheckDigits.Text,
+                                            tbDataBankIBANAccountNumber.Text);
+                GlobalViewModel.Instance.HispaniaViewModel.ValidateSpanishIBAN(IBAN);
+                MsgManager.ShowMessage("Còdi de pais de l'IBAN correcte.", MsgType.Information);
+            }
+            catch (Exception ex)
+            {
+                MsgManager.ShowMessage(MsgManager.ExcepMsg(ex));
+            }
+        }
 
         #endregion
 
@@ -728,8 +1590,44 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                     DataChangedManagerActive = false;
                     PostalCodesView PostalCodeSelected = ((PostalCodesView)cbProviderPostalCode.SelectedValue);
                     EditedProvider.PostalCode = PostalCodeSelected;
-                    AreDataChanged = (EditedProvider != Provider);
+                    AreDataChanged = (EditedProvider != Provider) || ValidateChangesInRelatedProviders();
                     DataChangedManagerActive = true;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Manage the change of the Data in the combobox of EffectTypes.
+        /// </summary>
+        /// <param name="sender">Object that sends the event.</param>
+        /// <param name="e">Parameters with the event was sended.</param>
+        private void CbDataBankEffect_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (DataChangedManagerActive)
+            {
+                if (cbDataBankEffect.SelectedItem != null)
+                {
+                    EffectTypesView effectTypeSelected = ((EffectTypesView)cbDataBankEffect.SelectedValue);
+                    EditedProvider.DataBank_EffectType = effectTypeSelected;
+                    AreDataChanged = EditedProvider != Provider || ValidateChangesInRelatedProviders();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Manage the change of the Data in the combobox of SendTypes.
+        /// </summary>
+        /// <param name="sender">Object that sends the event.</param>
+        /// <param name="e">Parameters with the event was sended.</param>
+        private void CbBillingDataSendByType_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (DataChangedManagerActive)
+            {
+                if (cbBillingDataSendByType.SelectedItem != null)
+                {
+                    SendTypesView sendTypeSelected = ((SendTypesView)cbBillingDataSendByType.SelectedValue);
+                    EditedProvider.BillingData_SendType = sendTypeSelected;
+                    AreDataChanged = EditedProvider != Provider || ValidateChangesInRelatedProviders();
                 }
             }
         }
@@ -756,9 +1654,45 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
             }
         }
 
+        /// <summary>
+        /// Manage the change of the Data in the combobox of SendTypes.
+        /// </summary>
+        /// <param name="sender">Object that sends the event.</param>
+        /// <param name="e">Parameters with the event was sended.</param>
+        private void CbBillingDataIVAType_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (DataChangedManagerActive)
+            {
+                if (cbBillingDataIVAType.SelectedItem != null)
+                {
+                    IVATypesView ivaTypeSelected = ((IVATypesView)cbBillingDataIVAType.SelectedValue);
+                    EditedProvider.BillingData_IVAType = ivaTypeSelected;
+                    AreDataChanged = EditedProvider != Provider || ValidateChangesInRelatedProviders();
+                }
+            }
+        }
+
         #endregion
 
         #region CheckBox
+        private void ChkbBillingDataValued_Unchecked(object sender, RoutedEventArgs e)
+        {
+            if (DataChangedManagerActive)
+            {
+                EditedProvider.BillingData_Valued = false;
+                AreDataChanged = EditedProvider != Provider || ValidateChangesInRelatedProviders();
+            }
+        }
+
+        private void ChkbBillingDataValued_Checked(object sender, RoutedEventArgs e)
+        {
+            if (DataChangedManagerActive)
+            {
+                EditedProvider.BillingData_Valued = true;
+                AreDataChanged = EditedProvider != Provider || ValidateChangesInRelatedProviders();
+            }
+        }
+
 
         private void ChkbCanceled_Unchecked(object sender, RoutedEventArgs e)
         {
@@ -766,7 +1700,7 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
             {
                 DataChangedManagerActive = false;
                 EditedProvider.Canceled = false;
-                AreDataChanged = (EditedProvider != Provider);
+                AreDataChanged = (EditedProvider != Provider) || ValidateChangesInRelatedProviders();
                 DataChangedManagerActive = true;
             }
         }
@@ -777,12 +1711,51 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
             {
                 DataChangedManagerActive = false;
                 EditedProvider.Canceled = true;
-                AreDataChanged = (EditedProvider != Provider);
+                AreDataChanged = (EditedProvider != Provider) || ValidateChangesInRelatedProviders();
                 DataChangedManagerActive = true;
             }
         }
 
         #endregion
+
+        #region DatePicker
+
+        private void DtpBillingDataRegister_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (DataChangedManagerActive)
+            {
+                EditedProvider.BillingData_Register = (DateTime)dtpBillingDataRegister.SelectedDate;
+                tbBillingDataRegister.Text = GlobalViewModel.GetLongDateString(EditedProvider.BillingData_Register);
+                AreDataChanged = EditedProvider != Provider || ValidateChangesInRelatedProviders();
+            }
+        }
+
+        #endregion
+
+        #region ListItems
+
+        #endregion
+
+        #endregion
+
+        #region Update UI
+
+        private void UpdateRelatedProvidersControls()
+        {
+        }
+
+        private bool ValidateChangesInRelatedProviders()
+        {
+            if (SourceDataListRelatedProviders == null || SourceDataListRelatedProviders.Count != DataListRelatedProviders.Count) return true;
+            else
+            {
+                foreach (ProvidersView provider in SourceDataListRelatedProviders)
+                {
+                    if (!DataListRelatedProviders.Contains(provider)) return true;
+                }
+                return false;
+            }
+        }
 
         #endregion
 
@@ -795,7 +1768,7 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
         {
             EditedProvider.RestoreSourceValues(Provider);
             LoadDataInControls(EditedProvider);
-            AreDataChanged = (EditedProvider != Provider);
+            AreDataChanged = (EditedProvider != Provider) || ValidateChangesInRelatedProviders();
         }
 
         /// <summary>
@@ -806,7 +1779,7 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
         {
             EditedProvider.RestoreSourceValue(Provider, ErrorField);
             LoadDataInControls(EditedProvider);
-            AreDataChanged = (EditedProvider != Provider);
+            AreDataChanged = (EditedProvider != Provider) || ValidateChangesInRelatedProviders();
         }
 
         #endregion

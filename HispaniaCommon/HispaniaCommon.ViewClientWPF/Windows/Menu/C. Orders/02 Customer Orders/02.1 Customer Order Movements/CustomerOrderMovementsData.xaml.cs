@@ -515,7 +515,7 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                 {
                     object valueToTest = ItemData.GetType().GetProperty(ProperyName).GetValue(ItemData);
                     if ((valueToTest is null) || 
-                        (!(valueToTest.ToString().ToUpper()).StartsWith(tbItemToSearch.Text.ToUpper())))
+                        (!(valueToTest.ToString().ToUpper()).Contains(tbItemToSearch.Text.ToUpper())))
                     {
                         return false;
                     }
@@ -584,7 +584,7 @@ namespace HispaniaCommon.ViewClientWPF.Windows
         /// <param name="sender">Object that sends the event.</param>
         /// <param name="e">Parameters with the event was sended.</param>
         private void TBItemToSearchDataChanged(object sender, TextChangedEventArgs e)
-        {
+       {
             if (DataChangedManagerActive)
             {
                 DataChangedManagerActive = false;
@@ -888,7 +888,7 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                     Data = Customer
                 };
                 HistoCustomersWindow.Closed += HistoCustomersWindow_Closed;
-                HistoCustomersWindow.ShowDialog();
+                HistoCustomersWindow.Show();
             }
             else HistoCustomersWindow.Activate();
         }

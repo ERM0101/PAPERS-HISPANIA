@@ -67,6 +67,11 @@ namespace HispaniaCommon.ViewClientWPF.Windows
         /// </summary>
         private CustomersView m_Data = null;
 
+        /// <summary>
+        /// Store the data to show in List of Items.
+        /// </summary>
+        private ProvidersView m_DataProv = null;
+
         #region GUI
 
         /// <summary>
@@ -125,6 +130,26 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                 {
                     m_Data = value;
                     AddressStoreDataControl.Data = value;
+                }
+                else throw new ArgumentNullException("Error, no s'ha trobat l'Article a carregar.");
+            }
+        }
+
+        /// <summary>
+        /// Store the data to show in List of Items.
+        /// </summary>
+        public ProvidersView DataProv
+        {
+            get
+            {
+                return (m_DataProv);
+            }
+            set
+            {
+                if (value != null)
+                {
+                    m_DataProv = value;
+                    AddressStoreDataControl.DataProv = value;
                 }
                 else throw new ArgumentNullException("Error, no s'ha trobat l'Article a carregar.");
             }
@@ -441,7 +466,17 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                             GlobalViewModel.Instance.HispaniaViewModel.UnlockRegister(AddressStoresToDelete, out ErrMsg);
                             DataChangedManagerActive = false;
                             if (ListItems.SelectedItem != null) ListItems.UnselectAll();
-                            DataList = GlobalViewModel.Instance.HispaniaViewModel.GetAddressStores(Data.Customer_Id);
+                            int personId = -1;
+                            if (Data!=null)
+                            {
+                                personId = Data.Customer_Id;
+                            }
+                            else if (DataProv!=null)
+                            {
+                                personId = DataProv.Provider_Id;
+                            }
+
+                            DataList = GlobalViewModel.Instance.HispaniaViewModel.GetAddressStores(personId);
                             DataChangedManagerActive = true;
                             ListItems.UpdateLayout();
                             HideItemPannel();
@@ -489,7 +524,14 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                              GlobalViewModel.Instance.HispaniaViewModel.CreateAddressStore(NewAddressStore);
                              DataChangedManagerActive = false;
                              if (ListItems.SelectedItem != null) ListItems.UnselectAll();
-                             DataList = GlobalViewModel.Instance.HispaniaViewModel.GetAddressStores(Data.Customer_Id);
+                             if (Data == null)
+                            {
+                                DataList = GlobalViewModel.Instance.HispaniaViewModel.GetAddressStores(DataProv.Provider_Id);
+                            }else
+                            {
+                                DataList = GlobalViewModel.Instance.HispaniaViewModel.GetAddressStores(Data.Customer_Id);
+                            }
+                             
                              DataChangedManagerActive = true;
                          }
                          ListItems.SelectedItem = NewAddressStore;
@@ -516,7 +558,15 @@ namespace HispaniaCommon.ViewClientWPF.Windows
                             }
                             DataChangedManagerActive = false;
                             if (ListItems.SelectedItem != null) ListItems.UnselectAll();
-                            DataList = GlobalViewModel.Instance.HispaniaViewModel.GetAddressStores(Data.Customer_Id);
+                            if (Data==null)
+                            {
+                                DataList = GlobalViewModel.Instance.HispaniaViewModel.GetAddressStores(DataProv.Provider_Id);
+                            }
+                            else
+                            {
+                                DataList = GlobalViewModel.Instance.HispaniaViewModel.GetAddressStores(Data.Customer_Id);
+                            }
+                            
                             DataChangedManagerActive = true;
                          }
                          ListItems.SelectedItem = NewAddressStore;

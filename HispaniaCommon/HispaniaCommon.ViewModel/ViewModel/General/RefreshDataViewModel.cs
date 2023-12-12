@@ -33,6 +33,7 @@ namespace HispaniaCommon.ViewModel
         CustomerOrdersWindow,
         DeliveryNotesWindow,
         DeliveryNotesPrintWindow,
+        ProviderOrdersWindow,
         #endregion
         #region Menu Bills
         BillsWindow,
@@ -146,6 +147,9 @@ namespace HispaniaCommon.ViewModel
                     case WindowToRefresh.DeliveryNotesWindow:
                     case WindowToRefresh.DeliveryNotesPrintWindow:
                          RefreshCustomerOrdersData();
+                         break;
+                    case WindowToRefresh.ProviderOrdersWindow:
+                         RefreshSupplierOrdersData();
                          break;
                     #endregion
                     #region Bills
@@ -288,6 +292,9 @@ namespace HispaniaCommon.ViewModel
         /// </summary>
         private void RefreshProvidersData()
         {
+            GlobalViewModel.Instance.HispaniaViewModel.RefreshSendTypes();
+            GlobalViewModel.Instance.HispaniaViewModel.RefreshIVATypes();
+            GlobalViewModel.Instance.HispaniaViewModel.RefreshEffectTypes();
             GlobalViewModel.Instance.HispaniaViewModel.RefreshPostalCodes();
             GlobalViewModel.Instance.HispaniaViewModel.RefreshAgents();
             GlobalViewModel.Instance.HispaniaViewModel.RefreshProviders();
@@ -336,6 +343,17 @@ namespace HispaniaCommon.ViewModel
             GlobalViewModel.Instance.HispaniaViewModel.RefreshEffectTypes();
             GlobalViewModel.Instance.HispaniaViewModel.RefreshAgents();
             GlobalViewModel.Instance.HispaniaViewModel.RefreshCustomerOrders();
+            GlobalViewModel.Instance.HispaniaViewModel.RefreshGoods();
+            GlobalViewModel.Instance.HispaniaViewModel.RefreshParameters();
+        }
+
+        private void RefreshSupplierOrdersData()
+        {
+            GlobalViewModel.Instance.HispaniaViewModel.RefreshProviders();
+            GlobalViewModel.Instance.HispaniaViewModel.RefreshSendTypes();
+            GlobalViewModel.Instance.HispaniaViewModel.RefreshEffectTypes();
+            GlobalViewModel.Instance.HispaniaViewModel.RefreshAgents();
+            GlobalViewModel.Instance.HispaniaViewModel.RefreshProviderOrders();
             GlobalViewModel.Instance.HispaniaViewModel.RefreshGoods();
             GlobalViewModel.Instance.HispaniaViewModel.RefreshParameters();
         }

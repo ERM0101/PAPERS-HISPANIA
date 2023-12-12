@@ -20,6 +20,7 @@ namespace HispaniaCommon.ViewModel
         Customer,
         Provider,
         CustomerOrder,
+        ProviderOrder,
         DeliveryNote,
         Bill,
         Revision,
@@ -132,6 +133,8 @@ namespace HispaniaCommon.ViewModel
         private static string _GetProviderReportDirectory = string.Format("{0}\\Informes\\Proveïdors\\", _GetApplicationPath);
 
         private static string _GetCustomerOrderReportDirectory = string.Format("{0}\\Informes\\Comandes de Client\\", _GetApplicationPath);
+
+        private static string _GetProviderOrderReportDirectory = string.Format("{0}\\Informes\\Comandes de Proveidor\\", _GetApplicationPath);        
 
         private static string _GetDeliveryNoteReportDirectory = string.Format("{0}\\Informes\\Albarans\\", _GetApplicationPath);
 
@@ -264,6 +267,20 @@ namespace HispaniaCommon.ViewModel
                 _GetCustomerOrderReportDirectory = value;
             }
         }
+                
+        private static string GetProviderOrderReportDirectory
+        {
+            get
+            {
+                if (!Directory.Exists(_GetProviderOrderReportDirectory)) Directory.CreateDirectory(_GetProviderOrderReportDirectory);
+                return (_GetProviderOrderReportDirectory);
+            }
+            set
+            {
+                if (!Directory.Exists(value)) Directory.CreateDirectory(value);
+                _GetProviderOrderReportDirectory = value;
+            }
+        }
 
         private static string GetDeliveryNoteReportDirectory
         {
@@ -339,6 +356,10 @@ namespace HispaniaCommon.ViewModel
                      string BaseCustomerOrderReportDirectory = string.Format("{0}{1}\\", GetCustomerOrderReportDirectory, Year);
                      if (!Directory.Exists(BaseCustomerOrderReportDirectory)) Directory.CreateDirectory(BaseCustomerOrderReportDirectory);
                      return string.Format("{0}{1}.pdf", BaseCustomerOrderReportDirectory, pdfFileName);
+                case PDF_Report_Types.ProviderOrder:
+                    string BaseProviderOrderReportDirectory = string.Format("{0}{1}\\", GetProviderOrderReportDirectory, Year);
+                    if (!Directory.Exists(BaseProviderOrderReportDirectory)) Directory.CreateDirectory(BaseProviderOrderReportDirectory);
+                    return string.Format("{0}{1}.pdf", BaseProviderOrderReportDirectory, pdfFileName);
                 case PDF_Report_Types.DeliveryNote:
                      string BaseDeliveryNoteReportDirectory = string.Format("{0}{1}\\", GetDeliveryNoteReportDirectory, Year);
                      if (!Directory.Exists(BaseDeliveryNoteReportDirectory)) Directory.CreateDirectory(BaseDeliveryNoteReportDirectory);
@@ -379,6 +400,14 @@ namespace HispaniaCommon.ViewModel
                         return OldPdfReports.Length > 0;
                      }
                      else return false;
+                case PDF_Report_Types.ProviderOrder:
+                    string BaseProviderOrderReportDirectory = string.Format("{0}{1}\\", GetProviderOrderReportDirectory, Year);
+                    if (Directory.Exists(BaseProviderOrderReportDirectory))
+                    {
+                        OldPdfReports = Directory.GetFiles(BaseProviderOrderReportDirectory, FileNamePattern);
+                        return OldPdfReports.Length > 0;
+                    }
+                    else return false;
                 case PDF_Report_Types.DeliveryNote:
                      string BaseDeliveryNoteReportDirectory = string.Format("{0}{1}\\", GetDeliveryNoteReportDirectory, Year);
                      if (Directory.Exists(BaseDeliveryNoteReportDirectory))

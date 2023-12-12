@@ -101,7 +101,7 @@ namespace HispaniaCommon.ViewModel
         /// <summary>
         /// Builder by default of the class.
         /// </summary>
-        internal DiaryBandagesView(HispaniaCompData.DiaryBandage diaryBandage)
+        internal DiaryBandagesView( HispaniaCompData.DiaryBandages_Result diaryBandage )
         {
             Bill_Id = GlobalViewModel.GetIntValue(diaryBandage.Bill_Id);
             Bill_Date = GlobalViewModel.GetDateTimeValue(diaryBandage.Bill_Date);
@@ -139,9 +139,9 @@ namespace HispaniaCommon.ViewModel
         /// <summary>
         /// Builder by default of the class.
         /// </summary>
-        internal HispaniaCompData.DiaryBandage GetDiaryBandage()
+        internal HispaniaCompData.DiaryBandages_Result GetDiaryBandage()
         {
-            HispaniaCompData.DiaryBandage diaryBandage = new HispaniaCompData.DiaryBandage()
+            HispaniaCompData.DiaryBandages_Result diaryBandage = new HispaniaCompData.DiaryBandages_Result()
             {
                 Bill_Id = Bill_Id,
                 Bill_Date = Bill_Date,
