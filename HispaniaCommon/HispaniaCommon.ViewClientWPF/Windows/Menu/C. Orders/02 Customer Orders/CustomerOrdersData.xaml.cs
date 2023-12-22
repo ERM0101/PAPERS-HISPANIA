@@ -288,8 +288,8 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
         public ObservableCollection<CustomerOrderMovementsView> DataList
         {
             get
-            {
-                return (m_DataList);
+            {               
+                return m_DataList;
             }
             set
             {
@@ -307,7 +307,7 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                 }
                 else m_DataList = new ObservableCollection<CustomerOrderMovementsView>();
                 SourceDataList = new ObservableCollection<CustomerOrderMovementsView>(m_DataList);
-                ListItems.ItemsSource = m_DataList;
+                ListItems.ItemsSource = m_DataList.OrderBy(x => x.RowOrder); 
                 ListItems.DataContext = this;
                 //CollectionViewSource.GetDefaultView(ListItems.ItemsSource).SortDescriptions.Add(new SortDescription("CustomerOrderMovement_Id_For_Sort", ListSortDirection.Ascending));
                 CollectionViewSource.GetDefaultView(ListItems.ItemsSource).SortDescriptions.Add(new SortDescription("CustomerOrderMovement_RowOrder_For_Sort", ListSortDirection.Ascending));
@@ -1624,6 +1624,7 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                     CustomerOrderMovementsView Movement = (CustomerOrderMovementsView)ListItems.SelectedItem;
                     try
                     {
+                        CheckRowOrder();
                         CustomerOrderMovementsDataWindow = new CustomerOrderMovementsData(AppType)
                         {
                             CtrlOperation = Operation.Edit,
@@ -1658,9 +1659,10 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                         DataChangedManagerActive = false;
                         ListItems.SelectedItem = null;
                         DataChangedManagerActive = true;
+                        newMovement.RowOrder = currentMovement.RowOrder;
                         DataList.Remove(currentMovement);
                         DataList.Insert(Index, newMovement);
-                        ActualizeGoodInfo(currentMovement, newMovement);
+                        ActualizeGoodInfo(currentMovement, newMovement);                       
                         ListItems.SelectedItem = newMovement;
                         ActualizeAmountInfo(EditedCustomerOrder);
                         AreDataChanged = AreNotEquals(DataList, SourceDataList);
@@ -1763,6 +1765,7 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                             According = false,
                             Comi = false
                         };
+                        newMovement.RowOrder = DataList.Max(x => x.RowOrder) + 1;
                         DataList.Add(newMovement);
                         if (!Goods.ContainsKey(newMovement.Good_Key))
                         {
@@ -1778,6 +1781,7 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                     }
                 }
                 CollectionViewSource.GetDefaultView(ListItems.ItemsSource).Refresh();
+                DataList = new ObservableCollection<CustomerOrderMovementsView>(DataList.OrderBy(x => x.RowOrder));
                 ActualizeAmountInfo(EditedCustomerOrder);
                 AreDataChanged = AreNotEquals(DataList, SourceDataList);
             //  Undefine the close event manager.
@@ -2291,12 +2295,15 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
             DataChangedManagerActive = false;
             ListItems.SelectedItem = null;
             DataChangedManagerActive = true;
+            newMovement.RowOrder = currentMovement.RowOrder;
             DataList.Remove(currentMovement);
             DataList.Insert(Index, newMovement);
             ActualizeGoodInfo(currentMovement, newMovement);
             ListItems.SelectedItem = newMovement;
             ActualizeAmountInfo(EditedCustomerOrder);
             AreDataChanged = AreNotEquals(DataList, SourceDataList);
+            CollectionViewSource.GetDefaultView(ListItems.ItemsSource).Refresh();
+            DataList = new ObservableCollection<CustomerOrderMovementsView>(DataList.OrderBy(x => x.RowOrder));
         }
 
         private void ActualizeGoodsData()
