@@ -1314,7 +1314,15 @@ namespace HispaniaCommon.ViewClientWPF.Windows
             Mouse.OverrideCursor = Cursors.Wait;            
             try
             {
-                QueryViewModel.Instance.CreateExcelFromQuery(QueryType.CustomerConformedOrders);
+                if (CanShowDeliveryNotes)
+                {
+                    QueryViewModel.Instance.CreateExcelFromQuery(QueryType.CustomerOrders);
+                }
+                else
+                {
+                    QueryViewModel.Instance.CreateExcelFromQuery(QueryType.CustomerConformedOrders);
+                }
+                
             }
             catch (Exception ex)
             {
