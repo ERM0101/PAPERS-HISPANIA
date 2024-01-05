@@ -1311,10 +1311,18 @@ namespace HispaniaCommon.ViewClientWPF.Windows
         /// <param name="e">Parameters with the event was sended.</param>
         private void BtnCreateExcel_Click(object sender, RoutedEventArgs e)
         {
-            Mouse.OverrideCursor = Cursors.Wait;            
+            Mouse.OverrideCursor = Cursors.Wait;
             try
             {
-                QueryViewModel.Instance.CreateExcelFromQuery(QueryType.CustomerConformedOrders);
+                if (CanShowDeliveryNotes)
+                {
+                    QueryViewModel.Instance.CreateExcelFromQuery(QueryType.CustomerOrders);
+                }
+                else
+                {
+                    QueryViewModel.Instance.CreateExcelFromQuery(QueryType.CustomerConformedOrders);
+                }
+
             }
             catch (Exception ex)
             {
@@ -1322,14 +1330,14 @@ namespace HispaniaCommon.ViewClientWPF.Windows
             }
             finally
             {
-                Mouse.OverrideCursor = Cursors.Arrow;               
+                Mouse.OverrideCursor = Cursors.Arrow;
             }
         }
 
         //private Dictionary<string, object> CreateParams()
         //{
         //    Dictionary<string, object> Params = null;         
-            
+
         //    List<CustomerOrdersView> Orders = new List<CustomerOrdersView>();
         //    foreach (CustomerOrdersView CustomerOrder in m_DataList)
         //    {
