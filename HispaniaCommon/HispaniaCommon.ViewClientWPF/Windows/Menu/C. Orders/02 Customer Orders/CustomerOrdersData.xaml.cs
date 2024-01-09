@@ -1599,8 +1599,10 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                         ListItems.SelectedItem = newMovement;
                         ActualizeAmountInfo(EditedCustomerOrder);
                         AreDataChanged = AreNotEquals(DataList, SourceDataList);
-                    }
-                    catch (Exception ex)
+                        CollectionViewSource.GetDefaultView(ListItems.ItemsSource).Refresh();
+                        DataList = new ObservableCollection<CustomerOrderMovementsView>(DataList.OrderBy(x => x.RowOrder));
+                }
+                catch (Exception ex)
                     {
                         MsgManager.ShowMessage(
                            string.Format("Error, a l'actualitzar les dades de la nova línia de comanda.\r\nDetalls:{0}", MsgManager.ExcepMsg(ex)));
@@ -1667,6 +1669,7 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                         ActualizeAmountInfo(EditedCustomerOrder);
                         AreDataChanged = AreNotEquals(DataList, SourceDataList);
                     }
+
                     catch (Exception ex)
                     {
                         MsgManager.ShowMessage(
