@@ -1979,6 +1979,7 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
             foreach (CustomerOrderMovementsView item in ListItems.Items)
             {
                 item.RowOrder = i;
+                GlobalViewModel.Instance.HispaniaViewModel.UpdateCustomerOrderMovement(item);
                 i++;                
             }            
         }
