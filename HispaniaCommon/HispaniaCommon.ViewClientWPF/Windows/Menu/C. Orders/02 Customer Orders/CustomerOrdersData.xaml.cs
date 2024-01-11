@@ -1797,10 +1797,11 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                                          MsgManager.ExcepMsg(ex)));
                     }
                 }
-                CollectionViewSource.GetDefaultView(ListItems.ItemsSource).Refresh();
-                DataList = new ObservableCollection<CustomerOrderMovementsView>(DataList.OrderBy(x => x.RowOrder));
                 ActualizeAmountInfo(EditedCustomerOrder);
                 AreDataChanged = AreNotEquals(DataList, SourceDataList);
+                CollectionViewSource.GetDefaultView(ListItems.ItemsSource).Refresh();
+                DataList = new ObservableCollection<CustomerOrderMovementsView>(DataList.OrderBy(x => x.RowOrder));
+                
             //  Undefine the close event manager.
                 HistoCustomersWindow.Closed -= HistoCustomersWindow_Closed;
                 HistoCustomersWindow = null;
