@@ -1656,19 +1656,21 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                     try
                     {
                         CustomerOrderMovementsView newMovement = CustomerOrderMovementsDataWindow.EditedCustomerOrderMovement;
+                        newMovement.RowOrder = currentMovement.RowOrder;
                         GlobalViewModel.Instance.HispaniaViewModel.UpdateItemInDataManaged(DataManagementId, currentMovement, newMovement);
                         int Index = ListItems.SelectedIndex;
                         DataChangedManagerActive = false;
                         ListItems.SelectedItem = null;
-                        DataChangedManagerActive = true;
-                        newMovement.RowOrder = currentMovement.RowOrder;
+                        DataChangedManagerActive = true;                       
                         DataList.Remove(currentMovement);
                         DataList.Insert(Index, newMovement);
                         ActualizeGoodInfo(currentMovement, newMovement);                       
                         ListItems.SelectedItem = newMovement;
                         ActualizeAmountInfo(EditedCustomerOrder);
                         AreDataChanged = AreNotEquals(DataList, SourceDataList);
-                    }
+                        CollectionViewSource.GetDefaultView(ListItems.ItemsSource).Refresh();
+                        DataList = new ObservableCollection<CustomerOrderMovementsView>(DataList.OrderBy(x => x.RowOrder));
+                }
 
                     catch (Exception ex)
                     {
@@ -1704,6 +1706,9 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                         ListItems.SelectedItem = null;
                         ActualizeAmountInfo(EditedCustomerOrder);
                         AreDataChanged = AreNotEquals(DataList, SourceDataList);
+                        CollectionViewSource.GetDefaultView(ListItems.ItemsSource).Refresh();
+                        DataList = new ObservableCollection<CustomerOrderMovementsView>(DataList.OrderBy(x => x.RowOrder));
+
                     }
                     else MsgManager.ShowMessage("Operació cancel·lada per l'usuari.", MsgType.Information);
                 }
@@ -1768,7 +1773,16 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                             According = false,
                             Comi = false
                         };
-                        newMovement.RowOrder = DataList.Max(x => x.RowOrder) + 1;
+
+                        if (DataList.Count==0)
+                        {
+                            newMovement.RowOrder = 0;
+                        }
+                        else
+                        {
+                            newMovement.RowOrder = DataList.Max(x => x.RowOrder) + 1;
+                        }
+                        
                         DataList.Add(newMovement);
                         if (!Goods.ContainsKey(newMovement.Good_Key))
                         {
@@ -1783,10 +1797,11 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                                          MsgManager.ExcepMsg(ex)));
                     }
                 }
-                CollectionViewSource.GetDefaultView(ListItems.ItemsSource).Refresh();
-                DataList = new ObservableCollection<CustomerOrderMovementsView>(DataList.OrderBy(x => x.RowOrder));
                 ActualizeAmountInfo(EditedCustomerOrder);
                 AreDataChanged = AreNotEquals(DataList, SourceDataList);
+                CollectionViewSource.GetDefaultView(ListItems.ItemsSource).Refresh();
+                DataList = new ObservableCollection<CustomerOrderMovementsView>(DataList.OrderBy(x => x.RowOrder));
+                
             //  Undefine the close event manager.
                 HistoCustomersWindow.Closed -= HistoCustomersWindow_Closed;
                 HistoCustomersWindow = null;
@@ -1965,6 +1980,7 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
             foreach (CustomerOrderMovementsView item in ListItems.Items)
             {
                 item.RowOrder = i;
+                GlobalViewModel.Instance.HispaniaViewModel.UpdateCustomerOrderMovement(item);
                 i++;                
             }            
         }
