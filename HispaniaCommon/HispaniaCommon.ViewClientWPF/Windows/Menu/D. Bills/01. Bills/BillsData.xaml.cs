@@ -12,6 +12,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Data;
 using System.ComponentModel;
+using System.Linq;
 
 #endregion
 
@@ -279,7 +280,9 @@ namespace HispaniaCommon.ViewClientWPF.UserControls
                             Movements.Add(Movement);
                         }
                     }
+                    
                     DataList = Movements;
+                    DataList = new ObservableCollection<CustomerOrderMovementsView>(DataList.OrderBy(x => x.RowOrder));
                 }
                 else throw new ArgumentNullException("Error, no s'han trobat els albarans de la Factura a carregar.");
             }
