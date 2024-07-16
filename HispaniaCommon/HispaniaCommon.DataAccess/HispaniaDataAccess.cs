@@ -2751,14 +2751,16 @@ namespace HispaniaCommon.DataAccess
                     List<int> RelatedCustomers = new List<int>();
                     RelatedCustomers.Add(Customer_Id);
                     RelatedCustomers.AddRange(db.RelatedCustomers.Where(x => (x.Customer_Id == Customer_Id)).Select(x => (x.Customer_Canceled_Id)).ToList());
-                    return db.HistoCustomers.Where(p => RelatedCustomers.Contains(p.Customer_Id)).OrderByDescending(p => p.Bill_Date)
+                    return db.HistoCustomers.Where(p => RelatedCustomers.Contains(p.Customer_Id)).OrderByDescending(p => p.HistoCustomer_Id)
+                                                                                                 .ThenByDescending(p => p.Bill_Date)
                                                                                                  .ThenByDescending(p => p.DeliveryNote_Date)
                                                                                                  .ThenByDescending(p => p.DeliveryNote_Id)
                                                                                                  .ThenBy(p => p.CustomerOrderMovement_Id).ToList();
                 }
                 else
                 {
-                    return db.HistoCustomers.Where(p => p.Customer_Id == Customer_Id).OrderByDescending(p => p.Bill_Date)
+                    return db.HistoCustomers.Where(p => p.Customer_Id == Customer_Id).OrderByDescending(p=>p.HistoCustomer_Id)
+                                                                                     .ThenByDescending(p => p.Bill_Date)
                                                                                      .ThenByDescending(p => p.DeliveryNote_Date)
                                                                                      .ThenByDescending(p => p.DeliveryNote_Id)
                                                                                      .ThenBy(p => p.CustomerOrderMovement_Id).ToList();
